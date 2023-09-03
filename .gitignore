@@ -1,6 +1,7 @@
 ﻿*.suo
 *.snk
 /.vs
+/.vscode
 */bin
 */obj
 *.exe
