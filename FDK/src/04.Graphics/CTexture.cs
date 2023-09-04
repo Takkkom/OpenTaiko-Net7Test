@@ -429,10 +429,10 @@ namespace FDK
         }
         public void t2D描画(float x, float y, float depth, RectangleF rc画像内の描画領域)
         {
-            this.color4.Alpha = ((float)this._opacity) / 255f;
+            this.color4.Alpha = this._opacity / 255f;
 
-            float offsetX = (float)rc画像内の描画領域.Width;
-            float offsetY = (float)rc画像内の描画領域.Height;
+            float offsetX = rc画像内の描画領域.Width;
+            float offsetY = rc画像内の描画領域.Height;
             float aspect = (float)GameWindowSize.Width / GameWindowSize.Height;
 
             Matrix4X4<float> mvp = Matrix4X4<float>.Identity;
@@ -465,13 +465,11 @@ namespace FDK
 
             float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
             float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * Game.VerticalFix;
-            //float api_x = (x / GameWindowSize.Width);
-            //float api_y = -(y / GameWindowSize.Height);
 
             Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
             Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation(
-                ((float)rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
-                ((float)rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * Game.VerticalFix, 
+                (rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
+                (rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * Game.VerticalFix, 
                 0.0f);
             mvp *= translation * translation2;
 

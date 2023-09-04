@@ -1957,7 +1957,6 @@ for (int i = 0; i < 3; i++) {
 			#region [ 垂直基線同期切り替え ]
 			if ( this.b次のタイミングで垂直帰線同期切り替えを行う )
 			{
-				ConfigIni.b垂直帰線待ちを行う = !ConfigIni.b垂直帰線待ちを行う;
 				VSync = ConfigIni.b垂直帰線待ちを行う;
 				this.b次のタイミングで垂直帰線同期切り替えを行う = false;
 			}

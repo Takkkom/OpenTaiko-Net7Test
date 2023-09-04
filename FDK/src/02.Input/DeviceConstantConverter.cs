@@ -159,8 +159,8 @@ namespace FDK
 			{ Silk.NET.Input.Key.Delete, SlimDXKey.Delete },
 			{ Silk.NET.Input.Key.SuperLeft, SlimDXKey.LeftWindowsKey },
 			{ Silk.NET.Input.Key.SuperRight, SlimDXKey.RightWindowsKey },
+			{ Silk.NET.Input.Key.Menu, SlimDXKey.Applications },
 			/*
-			{ Silk.NET.Input.Key.Unknown, SlimDXKey.Applications },
 			{ Silk.NET.Input.Key.Unknown, SlimDXKey.Power },
 			{ Silk.NET.Input.Key.Unknown, SlimDXKey.Sleep },
 			{ Silk.NET.Input.Key.Unknown, SlimDXKey.Wake },

@@ -62,6 +62,8 @@ namespace FDK
 
 		public void tポーリング(bool bバッファ入力を使用する)
 		{
+			list入力イベント.Clear();
+			
 			for (int i = 0; i < ButtonStates.Length; i++)
 			{
 				if (ButtonStates[i].Item1)
@@ -73,6 +75,17 @@ namespace FDK
 					else
 					{
 						ButtonStates[i].Item2 = 1;
+
+						list入力イベント.Add(
+							new STInputEvent()
+							{
+								nKey = i,
+								b押された = true,
+								b離された = false,
+								nTimeStamp = SampleFramework.Game.TimeMs,
+								nVelocity = 0,
+							}
+						);
 					}
 				}
 				else
@@ -84,6 +97,17 @@ namespace FDK
 					else
 					{
 						ButtonStates[i].Item2 = -1;
+
+						list入力イベント.Add(
+							new STInputEvent()
+							{
+								nKey = i,
+								b押された = false,
+								b離された = true,
+								nTimeStamp = SampleFramework.Game.TimeMs,
+								nVelocity = 0,
+							}
+						);
 					}
 				}
 			}
