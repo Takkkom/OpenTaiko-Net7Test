@@ -5,6 +5,14 @@ using SkiaSharp;
 
 namespace SampleFramework
 {
+    public enum BlendType
+    {
+        Normal,
+        Add,
+        Multi,
+        Sub,
+        Screen
+    }
     public interface IGraphicsDevice : IDisposable
     {
         void SetClearColor(float r, float g, float b, float a);
@@ -23,6 +31,6 @@ namespace SampleFramework
 
         ITexture GenTexture(SKBitmap bitmap);
 
-        void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture);
+        void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType);
     }
 }

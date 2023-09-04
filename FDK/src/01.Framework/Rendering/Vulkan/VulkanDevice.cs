@@ -50,7 +50,7 @@ namespace SampleFramework
             return null;
         }
 
-        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture)
+        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
         {
         }
 

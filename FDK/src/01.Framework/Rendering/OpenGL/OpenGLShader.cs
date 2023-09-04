@@ -12,7 +12,7 @@ namespace SampleFramework
 
         private int MVPID;
 
-        private int OpacityID;
+        private int ColorID;
 
         private int TextureRectID;
 
@@ -54,7 +54,7 @@ namespace SampleFramework
             
 
             MVPID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "mvp");
-            OpacityID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "opacity");
+            ColorID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "color");
             TextureRectID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "textureRect");
         }
 
@@ -63,9 +63,10 @@ namespace SampleFramework
             OpenGLDevice.Gl.UniformMatrix4(MVPID, 1, false, (float*)&mvp);
         }
 
-        public unsafe void SetOpacity(float opacity)
+        public unsafe void SetColor(Vector4D<float> color)
         {
-            OpenGLDevice.Gl.Uniform1(OpacityID, opacity);
+            System.Numerics.Vector4 vector4 = new(color.X, color.Y, color.Z, color.W);
+            OpenGLDevice.Gl.Uniform4(ColorID, ref vector4);
         }
 
         public unsafe void SetTextureRect(Vector4D<float> rect)

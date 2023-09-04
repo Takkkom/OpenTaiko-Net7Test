@@ -12,8 +12,8 @@ namespace SampleFramework
         public OpenGLDevice(IWindow window)
         {
             Gl = window.CreateOpenGL();
+            Gl.Enable(GLEnum.Texture2D);
             Gl.Enable(GLEnum.Blend);
-            Gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
         }
 
         public void SetClearColor(float r, float g, float b, float a)
@@ -74,18 +74,17 @@ namespace SampleFramework
                 in vec2 texcoord;
                 out vec4 out_color;
                 uniform sampler2D texture1;
-                uniform float opacity;
+                uniform vec4 color;
                 uniform vec4 textureRect;
 
                 void main()
                 {
-                    vec2 texcoord2 = vec2(textureRect.x, textureRect.y);
-                    texcoord2.x += texcoord.x * textureRect.z;
-                    texcoord2.y += texcoord.y * textureRect.w;
+                    vec2 texcoord2 = textureRect.xy;
+                    texcoord2.xy += texcoord.xy * textureRect.zw;
 
-                    vec4 color = texture(texture1, texcoord2);
-                    color.a *= opacity;
-                    out_color = color;
+                    vec4 totalcolor = texture(texture1, texcoord2);
+                    totalcolor *= color;
+                    out_color = totalcolor;
                 }
                 "
             );
@@ -96,7 +95,7 @@ namespace SampleFramework
             return new OpenGLTexture(bitmap);
         }
 
-        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture)
+        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
         {
             OpenGLPolygon glPolygon = (OpenGLPolygon)polygon;
             OpenGLShader glShader = (OpenGLShader)shader;
@@ -106,6 +105,31 @@ namespace SampleFramework
 
             Gl.BindTexture(TextureTarget.Texture2D, glTexture.TextureHandle);
             Gl.BindVertexArray(glPolygon.VAO);
+
+            switch(blendType)
+            {
+                case BlendType.Normal:
+                Gl.BlendEquation(BlendEquationModeEXT.FuncAdd);
+                Gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
+                break;
+                case BlendType.Add:
+                Gl.BlendEquation(BlendEquationModeEXT.FuncAdd);
+                Gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.One);
+                break;
+                case BlendType.Screen:
+                Gl.BlendEquation(BlendEquationModeEXT.FuncAdd);
+                Gl.BlendFunc(GLEnum.OneMinusDstColor, GLEnum.One);
+                break;
+                case BlendType.Multi:
+                Gl.BlendEquation(BlendEquationModeEXT.FuncAdd);
+                Gl.BlendFunc(GLEnum.Zero, GLEnum.SrcColor);
+                break;
+                case BlendType.Sub:
+                Gl.BlendEquation(BlendEquationModeEXT.FuncReverseSubtract);
+                Gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.One);
+                break;
+            }
+
             unsafe
             {
                 Gl.UseProgram(glShader.ShaderProgram);

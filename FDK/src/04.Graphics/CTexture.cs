@@ -190,6 +190,7 @@ namespace FDK
 
             SKBitmap bitmap = SKBitmap.Decode(strファイル名);
             MakeTexture(bitmap, b黒を透過する);
+            bitmap.Dispose();
         }
 
         public CTexture(SKBitmap bitmap, bool b黒を透過する)
@@ -473,7 +474,7 @@ namespace FDK
 
             //-----------------
 
-            Game.Shader_.SetOpacity(this.color4.Alpha);
+            Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
             Vector4D<float> rect = new(
                 rc画像内の描画領域.X / rc全画像.Width,
                 rc画像内の描画領域.Y / rc全画像.Height,
@@ -482,7 +483,26 @@ namespace FDK
             Game.Shader_.SetTextureRect(rect);
             Game.Shader_.SetMVP(mvp);
 
-            Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_);
+            if (b加算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Add);
+            }
+            else if (b乗算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Multi);
+            }
+            else if (b減算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Sub);
+            }
+            else if (bスクリーン合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Screen);
+            }
+            else 
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Normal);
+            }
         }
         public void t2D描画(int x, int y, float depth, Rectangle rc画像内の描画領域)
         {
@@ -574,12 +594,28 @@ namespace FDK
 
             Matrix4X4<float> mvp = mat;
 
-            Game.Shader_.SetOpacity(this.color4.Alpha);
+            Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
             Game.Shader_.SetMVP(mvp);
 
-            if (Texture_ != null)
+            if (b加算合成)
             {
-                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_);
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Add);
+            }
+            else if (b乗算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Multi);
+            }
+            else if (b減算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Sub);
+            }
+            else if (bスクリーン合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Screen);
+            }
+            else 
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Normal);
             }
         }
 
@@ -607,11 +643,28 @@ namespace FDK
 
             Matrix4X4<float> mvp = mat;
 
-            Game.Shader_.SetOpacity(this.color4.Alpha);
+            Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
             Game.Shader_.SetMVP(mvp);
-            if (Texture_ != null)
+            
+            if (b加算合成)
             {
-                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_);
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Add);
+            }
+            else if (b乗算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Multi);
+            }
+            else if (b減算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Sub);
+            }
+            else if (bスクリーン合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Screen);
+            }
+            else 
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Normal);
             }
         }
 
