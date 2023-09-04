@@ -568,6 +568,20 @@ namespace TJAPlayer3
 
         protected override void Configuration()
         {
+			#region [ strEXEのあるフォルダを決定する ]
+			//-----------------
+// BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
+#if DEBUG
+			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
+#else
+			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\"; // #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
+#endif
+			// END #23629 2010.11.13 from
+			//-----------------
+			#endregion
+
+			GraphicsDeviceType_ = GraphicsDeviceType.OpenGL;
+			
 			ConfigIni = new CConfigIni();
 			
 			string path = strEXEのあるフォルダ + "Config.ini";
@@ -597,6 +611,7 @@ namespace TJAPlayer3
 
 		protected override void Initialize()
 		{
+
 			this.t起動処理();
 
 			/*
@@ -1813,6 +1828,7 @@ for (int i = 0; i < 3; i++) {
 						if( this.n進行描画の戻り値 != 0 )
 						{
 							base.Exit();
+							return;
 						}
 						//-----------------------------
 						#endregion
@@ -1851,7 +1867,7 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 
-			    actScanningLoudness.On進行描画();
+			    actScanningLoudness?.On進行描画();
 
 				if (!ConfigIni.bTokkunMode)
 				{
@@ -2163,17 +2179,6 @@ for (int i = 0; i < 3; i++) {
 
         private void t起動処理()
 		{
-			#region [ strEXEのあるフォルダを決定する ]
-			//-----------------
-// BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
-#if DEBUG
-			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
-#else
-			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\"; // #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
-#endif
-			// END #23629 2010.11.13 from
-			//-----------------
-			#endregion
 
 			#region [ Read Config.ini and Database files ]
 			//---------------------

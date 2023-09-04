@@ -10,37 +10,31 @@ namespace SampleFramework
 {
     unsafe class DirectX11Device : IGraphicsDevice
     {
-        private D3D11 D3d11;
+        internal static D3D11 D3d11;
 
-        private DXGI DxGi;
+        internal static DXGI DxGi;
 
-        private D3DCompiler D3dCompiler;
+        internal static D3DCompiler D3dCompiler;
 
-        private ComPtr<IDXGIFactory> Factory;
+        internal static ComPtr<IDXGIFactory> Factory;
 
-        private ComPtr<ID3D11Device> Device;
+        internal static ComPtr<ID3D11Device> Device;
 
-        private ComPtr<ID3D11DeviceContext> ImmediateContext;
+        internal static ComPtr<ID3D11DeviceContext> ImmediateContext;
 
-        private ComPtr<IDXGISwapChain> SwapChain;
+        internal static ComPtr<IDXGISwapChain> SwapChain;
 
-        private ComPtr<ID3D11RenderTargetView> RenderTargetView;
+        internal static ComPtr<ID3D11RenderTargetView> RenderTargetView;
 
-        private ComPtr<ID3D11DepthStencilView> DepthStencilView;
+        internal static ComPtr<ID3D11DepthStencilView> DepthStencilView;
 
-        private float* CurrnetClearColor;
+        internal static float* CurrnetClearColor;
 
-        private IWindow Window_;
-
-
+        internal static IWindow Window_;
 
 
 
-        ComPtr<ID3D11Buffer> vertexBuffer = default;
-        ComPtr<ID3D11Buffer> indexBuffer = default;
-        ComPtr<ID3D11VertexShader> vertexShader = default;
-        ComPtr<ID3D11PixelShader> pixelShader = default;
-        ComPtr<ID3D11InputLayout> inputLayout = default;
+
 
 
 
@@ -59,7 +53,7 @@ namespace SampleFramework
         1, 2, 3
     };
 
-        uint vertexStride = 3U * sizeof(float);
+        uint vertexStride = 5U * sizeof(float);
         uint vertexOffset = 0U;
 
 
@@ -192,105 +186,6 @@ namespace SampleFramework
 
 
 
-
-
-
-
-
-
-
-            // Create our vertex buffer.
-            var bufferDesc = new BufferDesc
-            {
-                ByteWidth = (uint)(vertices.Length * sizeof(float)),
-                Usage = Usage.Default,
-                BindFlags = (uint)BindFlag.VertexBuffer
-            };
-
-            fixed (float* vertexData = vertices)
-            {
-                var subresourceData = new SubresourceData
-                {
-                    PSysMem = vertexData
-                };
-
-                SilkMarshal.ThrowHResult(Device.CreateBuffer(in bufferDesc, in subresourceData, ref vertexBuffer));
-            }
-
-            // Create our index buffer.
-            bufferDesc = new BufferDesc
-            {
-                ByteWidth = (uint)(indices.Length * sizeof(uint)),
-                Usage = Usage.Default,
-                BindFlags = (uint)BindFlag.IndexBuffer
-            };
-
-            fixed (uint* indexData = indices)
-            {
-                var subresourceData = new SubresourceData
-                {
-                    PSysMem = indexData
-                };
-
-                SilkMarshal.ThrowHResult(Device.CreateBuffer(in bufferDesc, in subresourceData, ref indexBuffer));
-            }
-
-
-
-            DirectXShaderSource directXShaderSource = new DirectXShaderSource(D3dCompiler);
-
-            // Create vertex shader.
-            SilkMarshal.ThrowHResult
-            (
-                Device.CreateVertexShader
-                (
-                    directXShaderSource.VertexCode.GetBufferPointer(),
-                    directXShaderSource.VertexCode.GetBufferSize(),
-                    default(ComPtr<ID3D11ClassLinkage>),
-                    ref vertexShader
-                )
-            );
-
-            // Create pixel shader.
-            SilkMarshal.ThrowHResult
-            (
-                Device.CreatePixelShader
-                (
-                    directXShaderSource.PixelCode.GetBufferPointer(),
-                    directXShaderSource.PixelCode.GetBufferSize(),
-                    default(ComPtr<ID3D11ClassLinkage>),
-                    ref pixelShader
-                )
-            );
-
-            // Describe the layout of the input data for the shader.
-            fixed (byte* name = SilkMarshal.StringToMemory("POS"))
-            {
-                var inputElement = new InputElementDesc
-                {
-                    SemanticName = name,
-                    SemanticIndex = 0,
-                    Format = Format.FormatR32G32B32Float,
-                    InputSlot = 0,
-                    AlignedByteOffset = 0,
-                    InputSlotClass = InputClassification.PerVertexData,
-                    InstanceDataStepRate = 0
-                };
-
-                SilkMarshal.ThrowHResult
-                (
-                    Device.CreateInputLayout
-                    (
-                        in inputElement,
-                        1,
-                        directXShaderSource.VertexCode.GetBufferPointer(),
-                        directXShaderSource.VertexCode.GetBufferSize(),
-                        ref inputLayout
-                    )
-                );
-            }
-
-            directXShaderSource.Dispose();
         }
 
         public void SetClearColor(float r, float g, float b, float a)
@@ -330,19 +225,6 @@ namespace SampleFramework
 
         public void SwapBuffer()
         {
-            ImmediateContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
-            ImmediateContext.IASetInputLayout(inputLayout);
-            ImmediateContext.IASetVertexBuffers(0, 1, vertexBuffer, in vertexStride, in vertexOffset);
-            ImmediateContext.IASetIndexBuffer(indexBuffer, Format.FormatR32Uint, 0);
-
-            // Bind our shaders.
-            ImmediateContext.VSSetShader(vertexShader, default(ComPtr<ID3D11ClassInstance>), 0);
-            ImmediateContext.PSSetShader(pixelShader, default(ComPtr<ID3D11ClassInstance>), 0);
-
-            // Draw the quad.
-            ImmediateContext.DrawIndexed(6, 0, 0);
-
-
 
             SilkMarshal.ThrowHResult
             (
@@ -353,12 +235,44 @@ namespace SampleFramework
 
         public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
         {
-            return null;
+            return new DirectX11Polygon(vertices, indices, uvs);
         }
 
         public IShader GenShader()
         {
-            return null;
+            return new DirectX11Shader(
+                @"
+                struct vs_in {
+                    float3 position_local : POS;
+                    float2 uvposition_local : UVPOS;
+                };
+
+                struct vs_out {
+                    float4 position_clip : SV_POSITION;
+                    float2 uvposition_clip : UVPOS;
+                };
+                
+                cbuffer ConstantBuffer
+                {
+                    float4x4 mvp;
+                    float4 color;
+                    float4 textureRect;
+                }
+
+                vs_out vs_main(vs_in input) {
+                    vs_out output = (vs_out)0;
+
+                    float4 position = float4(input.position_local, 1.0);
+                    output.position_clip = position;
+                    output.uvposition_clip = input.uvposition_local;
+                    return output;
+                }
+
+                float4 ps_main(vs_out input) : SV_TARGET {
+                    float2 uv = input.uvposition_clip;
+                    return float4( uv.x, uv.y, 0.0, 1.0 );
+                }
+                ");
         }
 
         public ITexture GenTexture(SKBitmap bitmap)
@@ -366,20 +280,28 @@ namespace SampleFramework
             return null;
         }
 
-        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
+        public unsafe void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
         {
+            DirectX11Polygon dx11polygon = (DirectX11Polygon)polygon;
+            DirectX11Shader dx11shader = (DirectX11Shader)shader;
+            ImmediateContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
+            ImmediateContext.IASetInputLayout(dx11shader.InputLayout);
+            ImmediateContext.IASetVertexBuffers(0, 1, dx11polygon.VertexBuffer, in vertexStride, in vertexOffset);
+            ImmediateContext.IASetIndexBuffer(dx11polygon.IndexBuffer, Format.FormatR32Uint, 0);
+
+            ImmediateContext.UpdateSubresource(dx11shader.ConstantBuffer, 0, null, dx11shader.ConstantBufferStruct_, 0, 0);
+            ImmediateContext.VSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
+
+            // Bind our shaders.
+            ImmediateContext.VSSetShader(dx11shader.VertexShader, default(ComPtr<ID3D11ClassInstance>), 0);
+            ImmediateContext.PSSetShader(dx11shader.PixelShader, default(ComPtr<ID3D11ClassInstance>), 0);
+
+            // Draw the quad.
+            ImmediateContext.DrawIndexed(polygon.IndiceCount, 0, 0);
         }
 
         public void Dispose()
         {
-            vertexBuffer.Dispose();
-            indexBuffer.Dispose();
-            vertexShader.Dispose();
-            pixelShader.Dispose();
-            inputLayout.Dispose();
-
-
-
             DepthStencilView.Dispose();
             RenderTargetView.Dispose();
             ImmediateContext.Dispose();

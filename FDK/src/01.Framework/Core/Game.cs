@@ -59,7 +59,7 @@ namespace SampleFramework
             }
         }
 
-        public GraphicsDeviceType GraphicsDeviceType_ = GraphicsDeviceType.OpenGL;
+        public static GraphicsDeviceType GraphicsDeviceType_ = GraphicsDeviceType.OpenGL;
 
         public IWindow Window_;
 
@@ -153,6 +153,14 @@ namespace SampleFramework
                     UpdateWindowFramerate(value, Framerate);
                     Window_.VSync = value;
                 }
+            }
+        }
+
+        internal static int VerticalFix
+        {
+            get 
+            {
+                return GraphicsDeviceType_ == GraphicsDeviceType.OpenGL ? -1 : 1;
             }
         }
 
@@ -346,10 +354,10 @@ namespace SampleFramework
                 Polygon_ = GraphicsDevice.GenPolygon(
                     new float[]
                     {
-                        1, 1, 0.0f,
-                        1, -1, 0.0f,
-                        -1, -1, 0.0f,
-                        -1, 1, 0.0f
+                        1, 1 * VerticalFix, 0.0f,
+                        1, -1 * VerticalFix, 0.0f,
+                        -1, -1 * VerticalFix, 0.0f,
+                        -1, 1 * VerticalFix, 0.0f
                     }
                     ,
                     new uint[]
@@ -360,10 +368,10 @@ namespace SampleFramework
                     ,
                     new float[]
                     {
-                        1.0f, 0.0f, 0.0f,
-                        1.0f, 1.0f, 0.0f,
-                        0.0f, 1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f
+                        1.0f, 0.0f,
+                        1.0f, 1.0f,
+                        0.0f, 1.0f,
+                        0.0f, 0.0f,
                     }
                 );
 
@@ -373,11 +381,12 @@ namespace SampleFramework
 
         public void Window_Closing()
         {
-            Polygon_.Dispose();
-            Shader_.Dispose();
 
             UnloadContent();
             OnExiting();
+            
+            Polygon_.Dispose();
+            Shader_.Dispose();
 
             GraphicsDevice.Dispose();
         }

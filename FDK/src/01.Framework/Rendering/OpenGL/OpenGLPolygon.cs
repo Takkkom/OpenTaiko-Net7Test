@@ -51,7 +51,7 @@ namespace SampleFramework
             OpenGLDevice.Gl.BindBuffer(BufferTargetARB.ElementArrayBuffer, EBO);
 
             OpenGLDevice.Gl.EnableVertexAttribArray(1);
-            OpenGLDevice.Gl.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), null);
+            OpenGLDevice.Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), null);
                 
             
             OpenGLDevice.Gl.BindVertexArray(0);

@@ -41,6 +41,13 @@ namespace SampleFramework
 
         public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
         {
+            for(int i = 0; i < vertices.Length; i++)
+            {
+                if (i % 3 == 1) 
+                {
+                    vertices[i] = -vertices[i];
+                }
+            }
             return new OpenGLPolygon(vertices, indices, uvs);
         }
 

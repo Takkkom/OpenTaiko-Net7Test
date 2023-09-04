@@ -463,13 +463,16 @@ namespace FDK
 
             //Translation------
 
-            float api_x = -1 + (x * 2.0f / GameWindowSize.Width);
-            float api_y = 1 - (y * 2.0f / GameWindowSize.Height);
+            float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
+            float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * Game.VerticalFix;
             //float api_x = (x / GameWindowSize.Width);
             //float api_y = -(y / GameWindowSize.Height);
 
             Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
-            Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation((float)rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width, -(float)rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height, 0.0f);
+            Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation(
+                ((float)rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
+                ((float)rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * Game.VerticalFix, 
+                0.0f);
             mvp *= translation * translation2;
 
             //-----------------
