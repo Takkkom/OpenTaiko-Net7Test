@@ -182,7 +182,7 @@ namespace TJAPlayer3
 		private int n本体X;
 		private int n本体Y;
 		//private CTexture txパネル本体;
-		private List<CTexture> tx文字列パネル;
+		private List<CTexture> tx文字列パネル = new();
   //      private CTexture[] txスコアボード = new CTexture[4];
   //      private CTexture tx文字;
 		//-----------------

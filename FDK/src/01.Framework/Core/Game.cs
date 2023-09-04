@@ -63,7 +63,11 @@ namespace SampleFramework
 
         public IWindow Window_;
 
-        private static IGraphicsDevice GraphicsDevice;
+        public static IShader Shader_;
+
+        public static IPolygon Polygon_;
+
+        public static IGraphicsDevice GraphicsDevice;
 
         private Vector2D<int> _WindowSize;
         public Vector2D<int> WindowSize
@@ -164,6 +168,8 @@ namespace SampleFramework
                     return GraphicsAPI.None;
             }
         }
+
+        public static long TimeMs;
 
         /// <summary>
         /// Initializes the <see cref="Game"/> class.
@@ -335,6 +341,31 @@ namespace SampleFramework
             GraphicsDevice.SetViewPort(0, 0, (uint)Window_.Size.X, (uint)Window_.FramebufferSize.Y);
             GraphicsDevice.SetFrameBuffer((uint)Window_.FramebufferSize.X, (uint)Window_.FramebufferSize.Y);
 
+            Shader_ = GraphicsDevice.GenShader();
+
+                Polygon_ = GraphicsDevice.GenPolygon(
+                    new float[]
+                    {
+                        1, 1, 0.0f,
+                        1, -1, 0.0f,
+                        -1, -1, 0.0f,
+                        -1, 1, 0.0f
+                    }
+                    ,
+                    new uint[]
+                    {
+                        0u, 1u, 3u,
+                        1u, 2u, 3u
+                    }
+                    ,
+                    new float[]
+                    {
+                        1.0f, 0.0f, 0.0f,
+                        1.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 0.0f, 0.0f
+                    }
+                );
 
             Initialize();
             LoadContent();
@@ -342,6 +373,9 @@ namespace SampleFramework
 
         public void Window_Closing()
         {
+            Polygon_.Dispose();
+            Shader_.Dispose();
+
             UnloadContent();
             OnExiting();
 
@@ -351,6 +385,7 @@ namespace SampleFramework
         public void Window_Update(double deltaTime)
         {
             double fps = 1.0f / deltaTime;
+            TimeMs = (long)(Window_.Time * 1000);
             Update();
         }
 
@@ -367,11 +402,13 @@ namespace SampleFramework
 
         public void Window_Resize(Vector2D<int> size)
         {
+            WindowSize = size;
             GraphicsDevice.SetViewPort(0, 0, (uint)size.X, (uint)size.Y);
         }
 
         public void Window_Move(Vector2D<int> size)
         {
+            WindowPosition = size;
         }
 
         public void Window_FramebufferResize(Vector2D<int> size)

@@ -1,6 +1,7 @@
 using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.Vulkan;
+using SkiaSharp;
 
 namespace SampleFramework
 {
@@ -30,6 +31,26 @@ namespace SampleFramework
         }
 
         public void SwapBuffer()
+        {
+        }
+
+
+        public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
+        {
+            return null;
+        }
+
+        public IShader GenShader()
+        {
+            return null;
+        }
+
+        public ITexture GenTexture(SKBitmap bitmap)
+        {
+            return null;
+        }
+
+        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture)
         {
         }
 

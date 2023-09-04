@@ -7,6 +7,7 @@ using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D12;
 using Silk.NET.DXGI;
+using SkiaSharp;
 
 
 namespace SampleFramework
@@ -614,6 +615,25 @@ namespace SampleFramework
             FrameBufferIndex = SwapChain.GetCurrentBackBufferIndex();
 
             WaitForPreviousFrame();
+        }
+
+        public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
+        {
+            return null;
+        }
+
+        public IShader GenShader()
+        {
+            return null;
+        }
+
+        public ITexture GenTexture(SKBitmap bitmap)
+        {
+            return null;
+        }
+
+        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture)
+        {
         }
 
         public void Dispose()

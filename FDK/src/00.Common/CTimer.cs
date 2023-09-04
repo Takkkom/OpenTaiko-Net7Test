@@ -48,7 +48,7 @@ namespace FDK
 				}
 				return 0;
 				*/
-				return Environment.TickCount;
+				return SampleFramework.Game.TimeMs;
 			}
 		}
 

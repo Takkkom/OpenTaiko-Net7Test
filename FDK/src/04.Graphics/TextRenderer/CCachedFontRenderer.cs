@@ -44,9 +44,9 @@ namespace FDK
 		/// <param name="drawstr">描画文字列</param>
 		/// <param name="fontColor">描画色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new SKBitmap DrawText( string drawstr, Color fontColor )
+		public new SKBitmap DrawText( string drawstr, Color fontColor, bool keepCenter = false )
 		{
-			return DrawText( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, 0 );
+			return DrawText( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, 0, keepCenter );
 		}
 
 		/// <summary>
@@ -56,9 +56,9 @@ namespace FDK
 		/// <param name="fontColor">描画色</param>
 		/// <param name="edgeColor">縁取色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new SKBitmap DrawText( string drawstr, Color fontColor, Color edgeColor, int edge_Ratio)
+		public new SKBitmap DrawText( string drawstr, Color fontColor, Color edgeColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, edge_Ratio );
+			return DrawText( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, edge_Ratio, keepCenter );
 		}
 
 		/// <summary>
@@ -68,23 +68,9 @@ namespace FDK
 		/// <param name="fontColor">描画色</param>
 		/// <param name="edgeColor">縁取色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public SKBitmap DrawText( string drawstr, Color fontColor, Color edgeColor, DrawMode dMode, int edge_Ratio)
+		public SKBitmap DrawText( string drawstr, Color fontColor, Color edgeColor, DrawMode dMode, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText( drawstr, dMode, fontColor, edgeColor, Color.White, Color.White, edge_Ratio );
-		}
-
-		/// <summary>
-		/// 文字列を描画したテクスチャを返す
-		/// </summary>
-		/// <param name="drawstr">描画文字列</param>
-		/// <param name="fontColor">描画色</param>
-		/// <param name="edgeColor">縁取色</param>
-		/// <param name="gradationTopColor">グラデーション 上側の色</param>
-		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
-		public new SKBitmap DrawText( string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio )
-		{
-			return DrawText( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, edge_Ratio );
+			return DrawText( drawstr, dMode, fontColor, edgeColor, Color.White, Color.White, edge_Ratio, keepCenter );
 		}
 
 		/// <summary>
@@ -96,14 +82,28 @@ namespace FDK
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new SKBitmap DrawText_V( string drawstr, Color fontColor, Color edgeColor, int edge_Ratio )
+		public new SKBitmap DrawText( string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio, bool keepCenter = false )
 		{
-			return DrawText_V(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.Black, Color.Black, edge_Ratio);
+			return DrawText( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, edge_Ratio, keepCenter );
+		}
+
+		/// <summary>
+		/// 文字列を描画したテクスチャを返す
+		/// </summary>
+		/// <param name="drawstr">描画文字列</param>
+		/// <param name="fontColor">描画色</param>
+		/// <param name="edgeColor">縁取色</param>
+		/// <param name="gradationTopColor">グラデーション 上側の色</param>
+		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
+		/// <returns>描画済テクスチャ</returns>
+		public new SKBitmap DrawText_V( string drawstr, Color fontColor, Color edgeColor, int edge_Ratio, bool keepCenter = false )
+		{
+			return DrawText_V(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.Black, Color.Black, edge_Ratio, keepCenter);
 		}
 
 		#endregion
 
-		protected new SKBitmap DrawText( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio )
+		protected new SKBitmap DrawText( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter = false )
 		{
 			#region [ 以前レンダリングしたことのある文字列/フォントか? (キャッシュにヒットするか?) ]
 			int index = listFontCache.FindIndex(
@@ -116,7 +116,8 @@ namespace FDK
 						edgeColor == fontcache.edgeColor &&
 						gradationTopColor == fontcache.gradationTopColor &&
 						gradationBottomColor == fontcache.gradationBottomColor &&
-						fontcache.Vertical == false
+						fontcache.Vertical == false &&
+						fontcache.KeepCenter == keepCenter
 					);
 				}
 			);
@@ -126,7 +127,7 @@ namespace FDK
 				// キャッシュにヒットせず。
 				#region [ レンダリングして、キャッシュに登録 ]
 				FontCache fc = new FontCache();
-				fc.bmp = base.DrawText( drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio);
+				fc.bmp = base.DrawText( drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio, keepCenter);
 				fc.drawstr = drawstr;
 				fc.drawmode = drawmode;
 				fc.fontColor = fontColor;
@@ -134,6 +135,7 @@ namespace FDK
 				fc.gradationTopColor = gradationTopColor;
 				fc.gradationBottomColor = gradationBottomColor;
 				fc.Vertical = false;
+				fc.KeepCenter = keepCenter;
 				listFontCache.Add( fc );
 				Debug.WriteLine( drawstr + ": Cacheにヒットせず。(cachesize=" + listFontCache.Count + ")" );
 				#endregion
@@ -162,7 +164,7 @@ namespace FDK
 			}
 		}
 
-		protected new SKBitmap DrawText_V(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio)
+		protected new SKBitmap DrawText_V(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
 			#region [ 以前レンダリングしたことのある文字列/フォントか? (キャッシュにヒットするか?) ]
 			int index = listFontCache.FindIndex(
@@ -175,7 +177,8 @@ namespace FDK
 						edgeColor == fontcache.edgeColor &&
 						gradationTopColor == fontcache.gradationTopColor &&
 						gradationBottomColor == fontcache.gradationBottomColor &&
-						fontcache.Vertical == true
+						fontcache.Vertical == true &&
+						fontcache.KeepCenter == keepCenter
 					);
 				}
 			);
@@ -185,13 +188,14 @@ namespace FDK
 				// キャッシュにヒットせず。
 				#region [ レンダリングして、キャッシュに登録 ]
 				FontCache fc = new FontCache();
-				fc.bmp = base.DrawText_V(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio);
+				fc.bmp = base.DrawText_V(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio, keepCenter);
 				fc.drawstr = drawstr;
 				fc.fontColor = fontColor;
 				fc.edgeColor = edgeColor;
 				fc.gradationTopColor = gradationTopColor;
 				fc.gradationBottomColor = gradationBottomColor;
 				fc.Vertical = true;
+				fc.KeepCenter = keepCenter;
 				listFontCache.Add( fc );
 				Debug.WriteLine( drawstr + ": Cacheにヒットせず。(cachesize=" + listFontCache.Count + ")" );
 				#endregion
@@ -266,6 +270,7 @@ namespace FDK
 			public Color gradationBottomColor;
 			public SKBitmap bmp;
 			public bool Vertical;
+			public bool KeepCenter;
 		}
 		private List<FontCache> listFontCache;
 

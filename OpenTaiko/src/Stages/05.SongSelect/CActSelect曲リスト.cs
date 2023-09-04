@@ -3187,14 +3187,14 @@ namespace TJAPlayer3
 			return texture;
 		}
 
-		public CTexture ResolveTitleTexture(TitleTextureKey titleTextureKey, bool bVertical)
+		public CTexture ResolveTitleTexture(TitleTextureKey titleTextureKey, bool bVertical, bool keepCenter = false)
 		{
 			if (!_titledictionary.TryGetValue(titleTextureKey, out var texture))
 			{
 				if (bVertical)
-					texture = GenerateTitleTextureTate(titleTextureKey);
+					texture = GenerateTitleTextureTate(titleTextureKey, keepCenter);
 				else
-					texture = GenerateTitleTexture(titleTextureKey);
+					texture = GenerateTitleTexture(titleTextureKey, keepCenter);
 				_titledictionary.Add(titleTextureKey, texture);
 			}
 
@@ -3212,10 +3212,10 @@ namespace TJAPlayer3
 			return texture;
 		}
 
-		private static CTexture GenerateTitleTextureTate(TitleTextureKey titleTextureKey)
+		private static CTexture GenerateTitleTextureTate(TitleTextureKey titleTextureKey, bool keepCenter = false)
 		{
 			using (var bmp = titleTextureKey.cPrivateFastFont.DrawText_V(
-				titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, 30))
+				titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, 30, keepCenter))
 			{
 				CTexture tx文字テクスチャ = TJAPlayer3.tテクスチャの生成(bmp, false);
 				if (tx文字テクスチャ.szテクスチャサイズ.Height > titleTextureKey.maxWidth)
@@ -3230,10 +3230,10 @@ namespace TJAPlayer3
 		}
 
 
-		private static CTexture GenerateTitleTexture(TitleTextureKey titleTextureKey)
+		private static CTexture GenerateTitleTexture(TitleTextureKey titleTextureKey, bool keepCenter = false)
 	    {
 			using (var bmp = titleTextureKey.cPrivateFastFont.DrawText(
-	            titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, 30))
+	            titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, 30, keepCenter))
 	        {
 	            CTexture tx文字テクスチャ = TJAPlayer3.tテクスチャの生成(bmp, false);
 	            if (tx文字テクスチャ.szテクスチャサイズ.Width > titleTextureKey.maxWidth)

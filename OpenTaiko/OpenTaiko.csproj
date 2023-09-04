@@ -17,6 +17,7 @@
     <Content Include="Licenses/**" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="Songs/**" CopyToOutputDirectory="PreserveNewest"/>
     <Content Include="System/**" CopyToOutputDirectory="PreserveNewest"/>
+    <Content Include="BGScriptAPI.lua" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

@@ -4,6 +4,7 @@ using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
 using Silk.NET.DXGI;
+using SkiaSharp;
 
 namespace SampleFramework
 {
@@ -347,6 +348,26 @@ namespace SampleFramework
             (
                 SwapChain.Present(Window_.VSync ? 1u : 0u, 0)
             );
+        }
+
+
+        public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
+        {
+            return null;
+        }
+
+        public IShader GenShader()
+        {
+            return null;
+        }
+
+        public ITexture GenTexture(SKBitmap bitmap)
+        {
+            return null;
+        }
+
+        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture)
+        {
         }
 
         public void Dispose()

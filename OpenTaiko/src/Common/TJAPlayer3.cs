@@ -569,6 +569,23 @@ namespace TJAPlayer3
         protected override void Configuration()
         {
 			ConfigIni = new CConfigIni();
+			
+			string path = strEXEのあるフォルダ + "Config.ini";
+			if( File.Exists( path ) )
+			{
+				try
+				{
+					// Load config info
+					ConfigIni.tファイルから読み込み( path );
+				}
+				catch (Exception e)
+				{
+					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
+					Trace.TraceError( e.ToString() );
+					Trace.TraceError( "例外が発生しましたが処理を継続します。 (b8d93255-bbe4-4ca3-8264-7ee5175b19f3)" );
+				}
+			}
+			
 			WindowPosition = new Silk.NET.Maths.Vector2D<int>(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);
 			WindowSize = new Silk.NET.Maths.Vector2D<int>(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);
 			FullScreen = ConfigIni.b全画面モード;
@@ -644,6 +661,14 @@ namespace TJAPlayer3
 		}
 		protected override void OnExiting()
 		{
+			ConfigIni.n初期ウィンドウ開始位置X = WindowPosition.X;
+			ConfigIni.n初期ウィンドウ開始位置Y = WindowPosition.Y;
+			ConfigIni.nウインドウwidth = WindowSize.X;
+			ConfigIni.nウインドウheight = WindowSize.Y;
+			ConfigIni.b全画面モード = FullScreen;
+			ConfigIni.b垂直帰線待ちを行う = VSync;
+			Framerate = 0;
+			
 			this.t終了処理();
 			base.OnExiting();
 		}
@@ -659,12 +684,6 @@ namespace TJAPlayer3
             FPS?.tカウンタ更新();
 
 			// #xxxxx 2013.4.8 yyagi; sleepの挿入位置を、EndScnene～Present間から、BeginScene前に移動。描画遅延を小さくするため。
-			#region [ スリープ ]
-			if ( ConfigIni.nフレーム毎スリープms >= 0 )			// #xxxxx 2011.11.27 yyagi
-			{
-				Thread.Sleep( ConfigIni.nフレーム毎スリープms );
-			}
-			#endregion
 
 			#region [ DTXCreatorからの指示 ]
 			/*
@@ -1922,6 +1941,8 @@ for (int i = 0; i < 3; i++) {
 			#region [ 垂直基線同期切り替え ]
 			if ( this.b次のタイミングで垂直帰線同期切り替えを行う )
 			{
+				ConfigIni.b垂直帰線待ちを行う = !ConfigIni.b垂直帰線待ちを行う;
+				VSync = ConfigIni.b垂直帰線待ちを行う;
 				this.b次のタイミングで垂直帰線同期切り替えを行う = false;
 			}
 			#endregion
@@ -1964,27 +1985,6 @@ for (int i = 0; i < 3; i++) {
         public static void tテクスチャの解放( ref CTextureAf tx )
 		{
 			TJAPlayer3.t安全にDisposeする( ref tx );
-		}
-		public static CTexture tテクスチャの生成( byte[] txData )
-		{
-			return tテクスチャの生成( txData, false );
-		}
-		public static CTexture tテクスチャの生成( byte[] txData, bool b黒を透過する )
-		{
-			if ( app == null )
-			{
-				return null;
-			}
-			try
-			{
-				return new CTexture( txData, b黒を透過する );
-			}
-			catch ( CTextureCreateFailedException e )
-			{
-				Trace.TraceError( e.ToString() );
-				Trace.TraceError( "テクスチャの生成に失敗しました。(txData)" );
-				return null;
-			}
 		}
 		public static CTexture tテクスチャの生成( SKBitmap bitmap )
 		{
@@ -2191,21 +2191,6 @@ for (int i = 0; i < 3; i++) {
 
 			VisualLogManager = new CVisualLogManager();
 
-			string path = strEXEのあるフォルダ + "Config.ini";
-			if( File.Exists( path ) )
-			{
-				try
-				{
-					// Load config info
-					ConfigIni.tファイルから読み込み( path );
-				}
-				catch (Exception e)
-				{
-					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
-					Trace.TraceError( e.ToString() );
-					Trace.TraceError( "例外が発生しましたが処理を継続します。 (b8d93255-bbe4-4ca3-8264-7ee5175b19f3)" );
-				}
-			}
 
             for (int i = 0; i < 5; i++)
             {
@@ -3077,6 +3062,8 @@ for (int i = 0; i < 3; i++) {
 		private void ChangeResolution(int nWidth, int nHeight)
 		{
 			//currentClientSize = this.Window.ClientSize;
+			GameWindowSize.Width = nWidth;
+			GameWindowSize.Height = nHeight;
 		}
 
 		public void RefleshSkin()

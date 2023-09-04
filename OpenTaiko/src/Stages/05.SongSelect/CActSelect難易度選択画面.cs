@@ -121,8 +121,8 @@ namespace TJAPlayer3
                 this.pfSubTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
             }
 
-            this.txTitle = TJAPlayer3.tテクスチャの生成(pfTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strタイトル, Color.White, Color.Black, 0 ));
-            this.txSubTitle = TJAPlayer3.tテクスチャの生成(pfSubTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strサブタイトル, Color.White, Color.Black, 0));
+            this.txTitle = TJAPlayer3.tテクスチャの生成(pfTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strタイトル, Color.White, Color.Black, 30 ));
+            this.txSubTitle = TJAPlayer3.tテクスチャの生成(pfSubTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strサブタイトル, Color.White, Color.Black, 30));
             
             this.n現在の選択行 = new int[5];
             this.bSelect[0] = false;

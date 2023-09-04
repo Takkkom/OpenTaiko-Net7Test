@@ -1,10 +1,11 @@
 using System;
 using Silk.NET.Windowing;
 using Silk.NET.Maths;
+using SkiaSharp;
 
 namespace SampleFramework
 {
-    interface IGraphicsDevice : IDisposable
+    public interface IGraphicsDevice : IDisposable
     {
         void SetClearColor(float r, float g, float b, float a);
 
@@ -15,5 +16,13 @@ namespace SampleFramework
         void ClearBuffer();
 
         void SwapBuffer();
+
+        IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs);
+
+        IShader GenShader();
+
+        ITexture GenTexture(SKBitmap bitmap);
+
+        void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture);
     }
 }

@@ -12,6 +12,7 @@ using Rectangle = System.Drawing.Rectangle;
 using RectangleF = System.Drawing.RectangleF;
 using Point = System.Drawing.Point;
 using Color = System.Drawing.Color;
+using SampleFramework;
 
 namespace FDK
 {
@@ -88,6 +89,8 @@ namespace FDK
         /// </summary>
         public static float f画面比率 = 1.0f;
 
+        internal ITexture Texture_;
+
         // コンストラクタ
 
         public CTexture()
@@ -109,11 +112,13 @@ namespace FDK
             this.b加算合成 = tx.b加算合成;
             this.fZ軸中心回転 = tx.fZ軸中心回転;
             this.vc拡大縮小倍率 = tx.vc拡大縮小倍率;
+            Texture_ = tx.Texture_;
             //			this._txData = null;
         }
 
         public void UpdateTexture(CTexture texture, int n幅, int n高さ)
         {
+            Texture_ = texture.Texture_;
             this.sz画像サイズ = new Size(n幅, n高さ);
             this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(this.sz画像サイズ);
             this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
@@ -135,9 +140,7 @@ namespace FDK
         {
             try
             {
-                this.sz画像サイズ = new Size(bitmap.Width, bitmap.Height);
-                this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(this.sz画像サイズ);
-                this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
+                MakeTexture(bitmap, false);
             }
             catch (Exception e)
             {
@@ -185,32 +188,8 @@ namespace FDK
             if (!File.Exists(strファイル名))     // #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
                 throw new FileNotFoundException(string.Format("ファイルが存在しません。\n[{0}]", strファイル名));
 
-            Byte[] _txData = File.ReadAllBytes(strファイル名);
-
             SKBitmap bitmap = SKBitmap.Decode(strファイル名);
             MakeTexture(bitmap, b黒を透過する);
-        }
-
-        public CTexture(byte[] txData, bool b黒を透過する)
-            : this()
-        {
-            MakeTexture(txData, b黒を透過する);
-        }
-        public void MakeTexture(byte[] txData, bool b黒を透過する)
-        {
-            try
-            {
-                //this.sz画像サイズ = new Size(information.Width, information.Height);
-                this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
-                int colorKey = (b黒を透過する) ? unchecked((int)0xFF000000) : 0;
-                this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(this.sz画像サイズ);
-            }
-            catch
-            {
-                this.Dispose();
-                // throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n{0}", strファイル名 ) );
-                throw new CTextureCreateFailedException(string.Format("テクスチャの生成に失敗しました。\n"));
-            }
         }
 
         public CTexture(SKBitmap bitmap, bool b黒を透過する)
@@ -226,15 +205,12 @@ namespace FDK
                 {
                     bitmap = new SKBitmap(10, 10);
                 }
+
+                Texture_ = Game.GraphicsDevice.GenTexture(bitmap);
+
                 this.sz画像サイズ = new Size(bitmap.Width, bitmap.Height);
                 this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
-                int colorKey = (b黒を透過する) ? unchecked((int)0xFF000000) : 0;
                 this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(this.sz画像サイズ);
-                //Trace.TraceInformation( "CTExture() start: " );
-                unsafe  // Bitmapの内部データ(a8r8g8b8)を自前でゴリゴリコピーする
-                {
-                }
-                //Trace.TraceInformation( "CTExture() End: " );
             }
             catch
             {
@@ -452,89 +428,65 @@ namespace FDK
         }
         public void t2D描画(float x, float y, float depth, RectangleF rc画像内の描画領域)
         {
-            if (this.fZ軸中心回転 == 0f)
-            {
-                #region [ (A) 回転なし ]
-                //-----------------
-                float f補正値X = -0.5f;    // -0.5 は座標とピクセルの誤差を吸収するための座標補正値。(MSDN参照)
-                float f補正値Y = -0.5f;    //
-                float w = rc画像内の描画領域.Width;
-                float h = rc画像内の描画領域.Height;
-                float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-                float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-                float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-                float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-                this.color4.Alpha = ((float)this._opacity) / 255f;
-                int color = ToArgb(this.color4);
+            this.color4.Alpha = ((float)this._opacity) / 255f;
+
+            float offsetX = (float)rc画像内の描画領域.Width;
+            float offsetY = (float)rc画像内の描画領域.Height;
+            float aspect = (float)GameWindowSize.Width / GameWindowSize.Height;
+
+            Matrix4X4<float> mvp = Matrix4X4<float>.Identity;
 
 
 
-                //-----------------
-                #endregion
-            }
-            else
-            {
-                #region [ (B) 回転あり ]
-                //-----------------
-                float f補正値X = ((rc画像内の描画領域.Width % 2) == 0) ? -0.5f : 0f;   // -0.5 は座標とピクセルの誤差を吸収するための座標補正値。(MSDN参照)
-                float f補正値Y = ((rc画像内の描画領域.Height % 2) == 0) ? -0.5f : 0f;  // 3D（回転する）なら補正はいらない。
-                float f中央X = ((float)rc画像内の描画領域.Width) / 2f;
-                float f中央Y = ((float)rc画像内の描画領域.Height) / 2f;
-                float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-                float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-                float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-                float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-                this.color4.Alpha = ((float)this._opacity) / 255f;
-                int color = ToArgb(this.color4);
+            //Scaling------
+
+            Matrix4X4<float> resizeMatrix2 = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
+            Matrix4X4<float> scaleMatrix = Matrix4X4.CreateScale(vc拡大縮小倍率.X, vc拡大縮小倍率.Y, vc拡大縮小倍率.Z);
+            mvp *= resizeMatrix2 * scaleMatrix;
+            
+            //-----------------
 
 
+            //Rotation--------------------------
 
-                //-----------------
-                #endregion
-            }
+            Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f / aspect, 1.0f, 1.0f);
+            rotationMatrix *= 
+            Matrix4X4.CreateRotationX(0.0f) * 
+            Matrix4X4.CreateRotationY(0.0f) * 
+            Matrix4X4.CreateRotationZ(fZ軸中心回転);
+            rotationMatrix *= Matrix4X4.CreateScale(1.0f * aspect, 1.0f, 1.0f);
+            
+            mvp *= rotationMatrix;
+
+            //---------------------------
+
+            //Translation------
+
+            float api_x = -1 + (x * 2.0f / GameWindowSize.Width);
+            float api_y = 1 - (y * 2.0f / GameWindowSize.Height);
+            //float api_x = (x / GameWindowSize.Width);
+            //float api_y = -(y / GameWindowSize.Height);
+
+            Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
+            Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation((float)rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width, -(float)rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height, 0.0f);
+            mvp *= translation * translation2;
+
+            //-----------------
+
+            Game.Shader_.SetOpacity(this.color4.Alpha);
+            Vector4D<float> rect = new(
+                rc画像内の描画領域.X / rc全画像.Width,
+                rc画像内の描画領域.Y / rc全画像.Height,
+                rc画像内の描画領域.Width / rc全画像.Width,
+                rc画像内の描画領域.Height / rc全画像.Height);
+            Game.Shader_.SetTextureRect(rect);
+            Game.Shader_.SetMVP(mvp);
+
+            Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_);
         }
         public void t2D描画(int x, int y, float depth, Rectangle rc画像内の描画領域)
         {
-            if (this.fZ軸中心回転 == 0f)
-            {
-                #region [ (A) 回転なし ]
-                //-----------------
-                float f補正値X = -0.5f;    // -0.5 は座標とピクセルの誤差を吸収するための座標補正値。(MSDN参照)
-                float f補正値Y = -0.5f;    //
-                float w = rc画像内の描画領域.Width;
-                float h = rc画像内の描画領域.Height;
-                float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-                float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-                float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-                float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-                this.color4.Alpha = ((float)this._opacity) / 255f;
-                int color = ToArgb(this.color4);
-
-
-
-                //-----------------
-                #endregion
-            }
-            else
-            {
-                #region [ (B) 回転あり ]
-                //-----------------
-                float f補正値X = ((rc画像内の描画領域.Width % 2) == 0) ? -0.5f : 0f;   // -0.5 は座標とピクセルの誤差を吸収するための座標補正値。(MSDN参照)
-                float f補正値Y = ((rc画像内の描画領域.Height % 2) == 0) ? -0.5f : 0f;  // 3D（回転する）なら補正はいらない。
-                float f中央X = ((float)rc画像内の描画領域.Width) / 2f;
-                float f中央Y = ((float)rc画像内の描画領域.Height) / 2f;
-                float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-                float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-                float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-                float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-                this.color4.Alpha = ((float)this._opacity) / 255f;
-                int color = ToArgb(this.color4);
-
-
-
-                //-----------------
-                #endregion
-            }
+            t2D描画((float)x, (float)y, depth, rc画像内の描画領域);
         }
         public void t2D上下反転描画(int x, int y)
         {
@@ -558,32 +510,11 @@ namespace FDK
         }
         public void t2D左右反転描画(float x, float y, float depth, Rectangle rc画像内の描画領域)
         {
-            float fx = x * CTexture.f画面比率 + CTexture.rc物理画面描画領域.X - 0.5f;   // -0.5 は座標とピクセルの誤差を吸収するための座標補正値。(MSDN参照)
-            float fy = y * CTexture.f画面比率 + CTexture.rc物理画面描画領域.Y - 0.5f;   //
-            float w = rc画像内の描画領域.Width * this.vc拡大縮小倍率.X * CTexture.f画面比率;
-            float h = rc画像内の描画領域.Height * this.vc拡大縮小倍率.Y * CTexture.f画面比率;
-            float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-            float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-            float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-            float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-            this.color4.Alpha = ((float)this._opacity) / 255f;
-            int color = ToArgb(this.color4);
-
-
+            t2D描画(x, y, depth, new RectangleF(rc画像内の描画領域.Width, 0, -rc画像内の描画領域.Width, rc画像内の描画領域.Height));
         }
         public void t2D上下反転描画(int x, int y, float depth, Rectangle rc画像内の描画領域)
         {
-            float fx = x * CTexture.f画面比率 + CTexture.rc物理画面描画領域.X - 0.5f;   // -0.5 は座標とピクセルの誤差を吸収するための座標補正値。(MSDN参照)
-            float fy = y * CTexture.f画面比率 + CTexture.rc物理画面描画領域.Y - 0.5f;   //
-            float w = rc画像内の描画領域.Width * this.vc拡大縮小倍率.X * CTexture.f画面比率;
-            float h = rc画像内の描画領域.Height * this.vc拡大縮小倍率.Y * CTexture.f画面比率;
-            float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-            float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-            float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-            float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-            this.color4.Alpha = ((float)this._opacity) / 255f;
-            int color = ToArgb(this.color4);
-
+            t2D描画(x, y, depth, new RectangleF(0, rc画像内の描画領域.Height, rc画像内の描画領域.Width, -rc画像内の描画領域.Height));
         }
         public void t2D上下反転描画(Point pt)
         {
@@ -641,6 +572,15 @@ namespace FDK
             this.color4.Alpha = ((float)this._opacity) / 255f;
             int color = ToArgb(this.color4);
 
+            Matrix4X4<float> mvp = mat;
+
+            Game.Shader_.SetOpacity(this.color4.Alpha);
+            Game.Shader_.SetMVP(mvp);
+
+            if (Texture_ != null)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_);
+            }
         }
 
         public void t3D左上基準描画(Matrix4X4<float> mat)
@@ -665,6 +605,14 @@ namespace FDK
             this.color4.Alpha = ((float)this._opacity) / 255f;
             int color = ToArgb(this.color4);
 
+            Matrix4X4<float> mvp = mat;
+
+            Game.Shader_.SetOpacity(this.color4.Alpha);
+            Game.Shader_.SetMVP(mvp);
+            if (Texture_ != null)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_);
+            }
         }
 
 
@@ -717,8 +665,7 @@ namespace FDK
         {
             if (!this.bDispose完了済み)
             {
-
-
+                Texture_?.Dispose();
 
 
 

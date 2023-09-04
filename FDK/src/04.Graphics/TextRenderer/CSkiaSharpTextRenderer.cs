@@ -72,7 +72,7 @@ namespace FDK
             paint.IsAntialias = true;
         }
 
-        public SKBitmap DrawText(string drawstr, CFontRenderer.DrawMode drawMode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio)
+        public SKBitmap DrawText(string drawstr, CFontRenderer.DrawMode drawMode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter)
         {
             if (string.IsNullOrEmpty(drawstr))
             {
@@ -85,7 +85,7 @@ namespace FDK
 
             for (int i = 0; i < strs.Length; i++) {
                 SKRect bounds = new SKRect();
-                int width = (int)Math.Ceiling(paint.MeasureText(drawstr, ref bounds)) + 50;
+                int width = (int)Math.Ceiling(paint.MeasureText(strs[i], ref bounds)) + 50;
                 int height = (int)Math.Ceiling(paint.FontMetrics.Descent - paint.FontMetrics.Ascent) + 50;
 
                 //少し大きめにとる(定数じゃない方法を考えましょう)
@@ -136,7 +136,7 @@ namespace FDK
             for(int i = 0; i < images.Length; i++)
             {
                 ret_width = Math.Max(ret_width, images[i].Width);
-                ret_height += images[i].Height;
+                ret_height += images[i].Height - 25;
             }
 
 
@@ -150,11 +150,18 @@ namespace FDK
 
 
 
-            int height_i = 0;
+            int height_i = -25;
             for (int i = 0; i < images.Length; i++) 
             {
-				skCanvas.DrawBitmap(images[i], new SKPoint(0, height_i));
-                height_i += images[i].Height;
+                if (keepCenter)
+                {
+				    skCanvas.DrawBitmap(images[i], new SKPoint((ret_width / 2) - (images[i].Width / 2.0f), height_i));
+                }
+				else 
+                {
+                    skCanvas.DrawBitmap(images[i], new SKPoint(0, height_i));
+                }
+                height_i += images[i].Height - 50;
                 images[i].Dispose();
             }
 

@@ -117,52 +117,52 @@ namespace FDK
 			}
 		}
 
-		public SKBitmap DrawText(string drawstr, Color fontColor)
+		public SKBitmap DrawText(string drawstr, Color fontColor, bool keepCenter = false)
 		{
-			return DrawText(drawstr, CFontRenderer.DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, 0);
+			return DrawText(drawstr, CFontRenderer.DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, 0, keepCenter);
 		}
 
-		public SKBitmap DrawText(string drawstr, Color fontColor, Color edgeColor, int edge_Ratio)
+		public SKBitmap DrawText(string drawstr, Color fontColor, Color edgeColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText(drawstr, CFontRenderer.DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, edge_Ratio);
+			return DrawText(drawstr, CFontRenderer.DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, edge_Ratio, keepCenter);
 		}
 
-		public SKBitmap DrawText(string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio)
+		public SKBitmap DrawText(string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText(drawstr, CFontRenderer.DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor, edge_Ratio);
+			return DrawText(drawstr, CFontRenderer.DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor, edge_Ratio, keepCenter);
 		}
 
-		public SKBitmap DrawText(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio)
+		public SKBitmap DrawText(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText(drawstr, CFontRenderer.DrawMode.Edge | CFontRenderer.DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, edge_Ratio);
+			return DrawText(drawstr, CFontRenderer.DrawMode.Edge | CFontRenderer.DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, edge_Ratio, keepCenter);
 		}
-		protected SKBitmap DrawText(string drawstr, CFontRenderer.DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio)
+		protected SKBitmap DrawText(string drawstr, CFontRenderer.DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
 			//横書きに対してのCorrectionは廃止
-			return this.textRenderer.DrawText(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio);
+			return this.textRenderer.DrawText(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio, keepCenter);
 		}
 
 
-		public SKBitmap DrawText_V(string drawstr, Color fontColor)
+		public SKBitmap DrawText_V(string drawstr, Color fontColor, bool keepCenter = false)
 		{
-			return DrawText_V(drawstr, CFontRenderer.DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, 0);
+			return DrawText_V(drawstr, CFontRenderer.DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, 0, keepCenter);
 		}
 
-		public SKBitmap DrawText_V(string drawstr, Color fontColor, Color edgeColor, int edge_Ratio)
+		public SKBitmap DrawText_V(string drawstr, Color fontColor, Color edgeColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText_V(drawstr, CFontRenderer.DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, edge_Ratio);
+			return DrawText_V(drawstr, CFontRenderer.DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, edge_Ratio, keepCenter);
 		}
 
-		public SKBitmap DrawText_V(string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio)
+		public SKBitmap DrawText_V(string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText_V(drawstr, CFontRenderer.DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor, edge_Ratio);
+			return DrawText_V(drawstr, CFontRenderer.DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor, edge_Ratio, keepCenter);
 		}
 
-		public SKBitmap DrawText_V(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio)
+		public SKBitmap DrawText_V(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
-			return DrawText_V(drawstr, CFontRenderer.DrawMode.Edge | CFontRenderer.DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, edge_Ratio);
+			return DrawText_V(drawstr, CFontRenderer.DrawMode.Edge | CFontRenderer.DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, edge_Ratio, keepCenter);
 		}
-		protected SKBitmap DrawText_V(string drawstr, CFontRenderer.DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio)
+		protected SKBitmap DrawText_V(string drawstr, CFontRenderer.DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter = false)
 		{
 			if (string.IsNullOrEmpty(drawstr))
 			{
@@ -182,7 +182,7 @@ namespace FDK
 			int nHeight = 0;
 			for (int i = 0; i < strImageList.Length; i++)
 			{
-				strImageList[i] = this.textRenderer.DrawText(strList[i], drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio);
+				strImageList[i] = this.textRenderer.DrawText(strList[i], drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, edge_Ratio, false);
 
 				//回転する文字
 				if(Rotate_Chara_List_Vertical.Contains(strList[i]))
@@ -195,7 +195,7 @@ namespace FDK
 				}
 
 				nWidth = Math.Max(nWidth, strImageList[i].Width);
-				nHeight += strImageList[i].Height;
+				nHeight += strImageList[i].Height - 25;
 			}
 
 			SKImageInfo skImageInfo = new SKImageInfo(nWidth, nHeight);
@@ -248,7 +248,7 @@ namespace FDK
 					}
 				}
 				skCanvas.DrawBitmap(strImageList[i], new SKPoint((nWidth - strImageList[i].Width) / 2 + Correction_X, nowHeightPos + Correction_Y));
-				nowHeightPos += strImageList[i].Height;
+				nowHeightPos += strImageList[i].Height - 25;
 			}
 
 			//1文字ずつ描画したやつの解放

@@ -646,23 +646,20 @@ namespace TJAPlayer3
 		{
 			try
 			{
-				SKBitmap image = new SKBitmap( 440, 288 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
-
+				string text = "";
 				switch( this.n現在のメニュー番号 )
 				{
 					case 0:
-						image.Dispose();
-						image = ftフォント.DrawText(CLangManager.LangInstance.GetString(10091), Color.White);
+						text = CLangManager.LangInstance.GetString(10091);
 						break;
 					case 1:
-						image.Dispose();
-						image = ftフォント.DrawText(CLangManager.LangInstance.GetString(10092), Color.White);
+						text = CLangManager.LangInstance.GetString(10092);
 						break;
 					case 2:
-						image.Dispose();
-						image = ftフォント.DrawText(CLangManager.LangInstance.GetString(10093), Color.White);
+						text = CLangManager.LangInstance.GetString(10093);
 						break;
                 }
+				SKBitmap image = ftフォント.DrawText(text, Color.White, Color.Black, 30);
 				if( this.tx説明文パネル != null )
 				{
 					this.tx説明文パネル.Dispose();
@@ -687,7 +684,7 @@ namespace TJAPlayer3
 				if( ( item.str説明文 != null ) && ( item.str説明文.Length > 0 ) )
 				{
 					image.Dispose();
-					image = ftフォント.DrawText(item.str説明文, Color.White);
+					image = ftフォント.DrawText(item.str説明文, Color.White, Color.Black, 30);
 				}
 				if( this.tx説明文パネル != null )
 				{

@@ -740,7 +740,7 @@ namespace TJAPlayer3
 									_bar.color4 = C変換.ColorToColor4(Color.DarkGray);
 								if (_chara != null)
 									_chara.color4 = C変換.ColorToColor4(Color.DarkGray);
-								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText).color4 = C変換.ColorToColor4(Color.DarkGray);
+								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true).color4 = C変換.ColorToColor4(Color.DarkGray);
 								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkTitle, TJAPlayer3.Skin.Title_VerticalText).color4 = C変換.ColorToColor4(Color.DarkGray);
 							}
 							else
@@ -749,7 +749,7 @@ namespace TJAPlayer3
 									_bar.color4 = C変換.ColorToColor4(Color.White);
 								if (_chara != null)
 									_chara.color4 = C変換.ColorToColor4(Color.White);
-								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText).color4 = C変換.ColorToColor4(Color.White);
+								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true).color4 = C変換.ColorToColor4(Color.White);
 								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkTitle, TJAPlayer3.Skin.Title_VerticalText).color4 = C変換.ColorToColor4(Color.White);
 							}
 
@@ -870,7 +870,7 @@ namespace TJAPlayer3
 									TJAPlayer3.Skin.Title_ModeSelect_Bar_Center_Title[0] + (TJAPlayer3.Skin.Title_ModeSelect_Bar_Center_Title_Move_X * BarAnimeCount),
 									TJAPlayer3.Skin.Title_ModeSelect_Bar_Center_Title[1] - (TJAPlayer3.Skin.Title_ModeSelect_Bar_Center_Title_Move * BarAnimeCount));
 
-								CTexture currentText = TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText);
+								CTexture currentText = TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true);
 								if (currentText != null)
 								{
 									currentText.Opacity = (int)(BarAnimeCount * 255f);

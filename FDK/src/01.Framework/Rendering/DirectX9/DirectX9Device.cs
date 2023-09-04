@@ -2,6 +2,7 @@ using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.Direct3D9;
 using Silk.NET.Core.Native;
+using SkiaSharp;
 
 namespace SampleFramework
 {
@@ -70,6 +71,26 @@ namespace SampleFramework
         {
             RGNData rGNData = default;
             Device.Present(null, null, 0, rGNData);
+        }
+
+
+        public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
+        {
+            return null;
+        }
+
+        public IShader GenShader()
+        {
+            return null;
+        }
+
+        public ITexture GenTexture(SKBitmap bitmap)
+        {
+            return null;
+        }
+
+        public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture)
+        {
         }
 
         public void Dispose()
