@@ -27,7 +27,7 @@ namespace TJAPlayer3
         public const string RESULT = @"6_Result\";
         public const string EXIT = @"7_Exit\";
         public const string DANRESULT = @"7_DanResult\";
-        const string TOWERRESULT = @"8_TowerResult\";
+        public const string TOWERRESULT = @"8_TowerResult\";
         public const string HEYA = @"10_Heya\";
         
         const string MODALS = @"11_Modals\";
@@ -862,6 +862,8 @@ namespace TJAPlayer3
 
             #region 6_結果発表
             Result_FadeIn = TxC(RESULT + @"FadeIn.png");
+            Result_Soul_Text = TxC(RESULT + @"Soul_Text.png");
+            Result_Soul_Fire = TxC(RESULT + @"Result_Soul_Fire.png");
 
             Result_Gauge[0] = TxC(RESULT + @"Gauge.png");
             Result_Gauge_Base[0] = TxC(RESULT + @"Gauge_Base.png");
@@ -879,50 +881,8 @@ namespace TJAPlayer3
             Result_Gauge_Clear_Base = TxC(RESULT + @"Gauge_Clear_Base.png");
             Result_Gauge_Killzone = TxC(RESULT + @"Gauge_Killzone.png");
 
-            Result_Header = TxC(RESULT + @"Header.png");
-            Result_Number = TxC(RESULT + @"Number.png");
-            Result_Panel = TxC(RESULT + @"Panel.png");
-            Result_Panel_2P = TxC(RESULT + @"Panel_2.png");
-            Result_Soul_Text = TxC(RESULT + @"Soul_Text.png");
-            Result_Soul_Fire = TxC(RESULT + @"Result_Soul_Fire.png");
-            Result_Diff_Bar = TxC(RESULT + @"DifficultyBar.png");
-            Result_Score_Number = TxC(RESULT + @"Score_Number.png");
-            Result_Dan = TxC(RESULT + @"Dan.png");
-
-            Result_CrownEffect = TxC(RESULT + @"CrownEffect.png");
-            Result_ScoreRankEffect = TxC(RESULT + @"ScoreRankEffect.png");
-            //Result_Cloud = TxC(RESULT + @"Cloud.png");
-            Result_Shine = TxC(RESULT + @"Shine.png");
-
-            Result_Speech_Bubble[0] = TxC(RESULT + @"Speech_Bubble.png");
-            Result_Speech_Bubble[1] = TxC(RESULT + @"Speech_Bubble_2.png");
-
-            Result_Flower = TxC(RESULT + @"Flower\Flower.png");
-
-            for (int i = 0; i < 4; i++)
-                Result_Panel_4P[i] = TxC(RESULT + @"Panel_4P_" + (i + 1).ToString() + ".png");
-
-            for (int i = 0; i < 5; i++)
-                Result_Panel_5P[i] = TxC(RESULT + @"Panel_5P_" + (i + 1).ToString() + ".png");
-
-            for (int i = 1; i <= 5; i++)
-                Result_Flower_Rotate[i - 1] = TxC(RESULT + @"Flower\Rotate_" + i.ToString() + ".png");
-
-            //for (int i = 0; i < 3; i++)
-                //Result_Work[i] = TxC(RESULT + @"Work\" + i.ToString() + ".png");
-
-
             for (int i = 0; i < 41; i++)
                 Result_Rainbow[i] = TxC(RESULT + @"Rainbow\" + i.ToString() + ".png");
-
-            //for (int i = 0; i < 6; i++)
-                //Result_Background[i] = TxC(RESULT + @"Background_" + i.ToString() + ".png");
-
-            //for (int i = 0; i < 4; i++)
-                //Result_Mountain[i] = TxC(RESULT + @"Background_Mountain_" + i.ToString() + ".png");
-
-            for (int i = 0; i < 3; i++)
-                Result_Crown[i] = TxC(RESULT + @"Crown\Crown_" + i.ToString() + ".png");
 
             #endregion
 
@@ -932,34 +892,20 @@ namespace TJAPlayer3
 
             #region 7_AIResults
 
-            Result_AIBattle_Panel_AI = TxC(RESULT + @"AIBattle\Panel_AI.png");
-            Result_AIBattle_Batch = TxC(RESULT + @"AIBattle\Batch.png");
-            Result_AIBattle_SectionPlate = TxC(RESULT + @"AIBattle\SectionPlate.png");
-            Result_AIBattle_WinFlag_Clear = TxC(RESULT + @"AIBattle\WinFlag_Win.png");
-            Result_AIBattle_WinFlag_Lose = TxC(RESULT + @"AIBattle\WinFlag_Lose.png");
-
             #endregion
 
             #region [7_DanResults]
 
             //DanResult_Background = TxC(DANRESULT + @"Background.png");
-            DanResult_Rank = TxC(DANRESULT + @"Rank.png");
-            DanResult_SongPanel_Base = TxC(DANRESULT + @"SongPanel_Base.png");
-            DanResult_StatePanel_Base = TxC(DANRESULT + @"StatePanel_Base.png");
-            DanResult_SongPanel_Main = TxC(DANRESULT + @"SongPanel_Main.png");
-            DanResult_StatePanel_Main = TxC(DANRESULT + @"StatePanel_Main.png");
 
             #endregion
 
             #region [8_TowerResults]
 
+            TowerResult_Background = TxC(TOWERRESULT + @"Background.png");
+
             TJAPlayer3.Skin.Game_Tower_Ptn_Result = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + TOWERRESULT + @"Tower\"));
             TowerResult_Tower = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Result];
-
-            TowerResult_Background = TxC(TOWERRESULT + @"Background.png");
-            TowerResult_Panel = TxC(TOWERRESULT + @"Panel.png");
-
-            TowerResult_ScoreRankEffect = TxC(TOWERRESULT + @"ScoreRankEffect.png");
 
             for (int i = 0; i < TJAPlayer3.Skin.Game_Tower_Ptn_Result; i++)
             {
@@ -971,14 +917,6 @@ namespace TJAPlayer3
             #region [10_Heya]
 
             //Heya_Background = TxC(HEYA + @"Background.png");
-            Heya_Center_Menu_Bar = TxC(HEYA + @"Center_Menu_Bar.png");
-            Heya_Center_Menu_Box = TxC(HEYA + @"Center_Menu_Box.png");
-            Heya_Center_Menu_Box_Slot = TxC(HEYA + @"Center_Menu_Box_Slot.png");
-            Heya_Side_Menu = TxC(HEYA + @"Side_Menu.png");
-            Heya_Render_Field = TxC(HEYA + @"Render_Field.png");
-            Heya_Box = TxC(HEYA + @"Box.png");
-            Heya_Lock = TxC(HEYA + @"Lock.png");
-
             #endregion
 
             #region [11_Characters]
@@ -1172,29 +1110,13 @@ namespace TJAPlayer3
 
             #region [12_OnlineLounge]
 
-            //OnlineLounge_Background = TxC(ONLINELOUNGE + @"Background.png");
-            OnlineLounge_Box = TxC(ONLINELOUNGE + @"Box.png");
-            OnlineLounge_Center_Menu_Bar = TxC(ONLINELOUNGE + @"Center_Menu_Bar.png");
-            OnlineLounge_Center_Menu_Box_Slot = TxC(ONLINELOUNGE + @"Center_Menu_Box_Slot.png");
-            OnlineLounge_Side_Menu = TxC(ONLINELOUNGE + @"Side_Menu.png");
-            OnlineLounge_Context = TxC(ONLINELOUNGE + @"Context.png");
-            OnlineLounge_Song_Box = TxC(ONLINELOUNGE + @"Song_Box.png");
-            OnlineLounge_Return_Box = TxC(ONLINELOUNGE + @"Return_Box.png");
-
             #endregion
 
             #region [13_TowerSelect]
 
-            TowerSelect_Tower = TxC(TOWERSELECT + @"Tower.png");
-
             #endregion
 
             #region [15_OpenEncyclopedia]
-
-            //OpenEncyclopedia_Background = TxC(OPENENCYCLOPEDIA + @"Background.png");
-            OpenEncyclopedia_Context = TxC(OPENENCYCLOPEDIA + @"Context.png");
-            OpenEncyclopedia_Side_Menu = TxC(OPENENCYCLOPEDIA + @"Side_Menu.png");
-            OpenEncyclopedia_Return_Box = TxC(OPENENCYCLOPEDIA + @"Return_Box.png");
 
             #endregion
 
@@ -2246,91 +2168,36 @@ namespace TJAPlayer3
 
         #region 6_結果発表
         public CTexture Result_FadeIn,
-            Result_Header,
-            Result_Number,
-            Result_Panel,
-            Result_Panel_2P,
             Result_Soul_Text,
             Result_Soul_Fire,
-            Result_Diff_Bar,
-            Result_Score_Number,
-
-            Result_CrownEffect,
-            Result_ScoreRankEffect,
-
-            //Result_Cloud,
-            Result_Flower,
-            Result_Shine,
             Result_Gauge_Frame,
             Result_Gauge_Clear,
             Result_Gauge_Clear_Base,
-            Result_Gauge_Killzone,
-
-            Result_Dan;
+            Result_Gauge_Killzone;
             
         public CTexture[]
-            Result_Panel_5P = new CTexture[5],
-            Result_Panel_4P = new CTexture[4],
             Result_Rainbow = new CTexture[41],
-            //Result_Background = new CTexture[6],
-            Result_Crown = new CTexture[3],
-
-            Result_Flower_Rotate = new CTexture[5],
-            //Result_Work = new CTexture[3],
 
             Result_Gauge = new CTexture[5],
-            Result_Gauge_Base = new CTexture[5],
-            Result_Speech_Bubble = new CTexture[2]
-/*,
-Result_Mountain = new CTexture[4]*/;
+            Result_Gauge_Base = new CTexture[5];
         #endregion
 
         #region 7_AIResults
-        public CTexture Result_AIBattle_Panel_AI,
-            Result_AIBattle_Batch,
-            Result_AIBattle_SectionPlate,
-            Result_AIBattle_WinFlag_Clear,
-            Result_AIBattle_WinFlag_Lose;
         #endregion
 
         #region 7_終了画面
-        //public CTexture Exit_Background/* , */
-        /*Exit_Text; */
         #endregion
 
         #region [7_DanResults]
-
-        public CTexture 
-            //DanResult_Background,
-            DanResult_Rank,
-            DanResult_SongPanel_Base,
-            DanResult_StatePanel_Base,
-            DanResult_SongPanel_Main,
-            DanResult_StatePanel_Main;
 
         #endregion
 
         #region [8_TowerResults]
 
-        public CTexture TowerResult_Background,
-            TowerResult_ScoreRankEffect,
-            TowerResult_Panel;
-        public CTexture[]
-            TowerResult_Tower;
-
         #endregion
 
         #region [10_Heya]
 
-        public CTexture 
-            //Heya_Background,
-            Heya_Center_Menu_Bar,
-            Heya_Center_Menu_Box,
-            Heya_Center_Menu_Box_Slot,
-            Heya_Side_Menu,
-            Heya_Box,
-            Heya_Render_Field,
-            Heya_Lock;
 
         #endregion
 
@@ -2380,32 +2247,16 @@ Result_Mountain = new CTexture[4]*/;
 
         #region [12_OnlineLounge]
 
-        public CTexture 
-            //OnlineLounge_Background,
-            OnlineLounge_Box,
-            OnlineLounge_Center_Menu_Bar,
-            OnlineLounge_Center_Menu_Box_Slot,
-            OnlineLounge_Side_Menu,
-            OnlineLounge_Context,
-            OnlineLounge_Return_Box,
-            OnlineLounge_Song_Box;
-
         #endregion
 
         #region [13_TowerSelect]
 
-        public CTexture
-            TowerSelect_Tower;
+        public CTexture TowerResult_Background;
+        public CTexture[] TowerResult_Tower;
 
         #endregion
 
         #region [15_OpenEncyclopedia]
-
-        public CTexture 
-            //OpenEncyclopedia_Background,
-            OpenEncyclopedia_Context,
-            OpenEncyclopedia_Return_Box,
-            OpenEncyclopedia_Side_Menu;
 
         #endregion
 

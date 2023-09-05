@@ -1050,6 +1050,9 @@ namespace TJAPlayer3
             SongSelect_Frame_Score[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Frame_Score_Tower.png"));
             SongSelect_Frame_Score[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Frame_Score_Dan.png"));
 
+			TowerResult_ScoreRankEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERRESULT}ScoreRankEffect.png"));
+			DanResult_Rank = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANRESULT}Rank.png"));
+
             TJAPlayer3.Skin.SongSelect_Bar_Genre_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Bar_Genre\"), "Bar_Genre_");
 
             if (TJAPlayer3.Skin.SongSelect_Bar_Genre_Count != 0)
@@ -1192,6 +1195,9 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_Score[0]);
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_Score[1]);
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Frame_Score[2]);
+
+			TJAPlayer3.t安全にDisposeする(ref TowerResult_ScoreRankEffect);
+			TJAPlayer3.t安全にDisposeする(ref DanResult_Rank);
 
             for (int i = 0; i < SongSelect_Bar_Genre.Length; i++)
             {
@@ -2610,26 +2616,29 @@ namespace TJAPlayer3
         private CTexture SongSelect_Bar_Select;
         private CTexture SongSelect_Bar_Genre_Overlay;
 
-        public CTexture SongSelect_Level_Number;
-        public CTexture SongSelect_Level_Number_Colored;
-        public CTexture SongSelect_Level_Number_Icon;
-        public CTexture SongSelect_Level_Number_Big;
-        public CTexture SongSelect_Level_Number_Big_Colored;
-        public CTexture SongSelect_Level_Number_Big_Icon;
-        public CTexture SongSelect_Crown;
+        private CTexture SongSelect_Level_Number;
+        private CTexture SongSelect_Level_Number_Colored;
+        private CTexture SongSelect_Level_Number_Icon;
+        private CTexture SongSelect_Level_Number_Big;
+        private CTexture SongSelect_Level_Number_Big_Colored;
+        private CTexture SongSelect_Level_Number_Big_Icon;
+        private CTexture SongSelect_Crown;
         public CTexture SongSelect_ScoreRank;
 
-        public CTexture SongSelect_Favorite;
+        private CTexture SongSelect_Favorite;
 
-        public CTexture SongSelect_Level_Icons;
-        public CTexture SongSelect_Search_Arrow;
-        public CTexture SongSelect_Search_Arrow_Glow;
-        public CTexture SongSelect_Search_Window;
+        private CTexture SongSelect_Level_Icons;
+        private CTexture SongSelect_Search_Arrow;
+        private CTexture SongSelect_Search_Arrow_Glow;
+        private CTexture SongSelect_Search_Window;
 
-		public CTexture[] SongSelect_Bar_Genre;
-        public CTexture[] SongSelect_Bar_Genre_Overlap;
-        public CTexture[] SongSelect_Box_Chara;
-        public CTexture[] SongSelect_Frame_Score = new CTexture[3];
+		private CTexture[] SongSelect_Bar_Genre;
+        private CTexture[] SongSelect_Bar_Genre_Overlap;
+        private CTexture[] SongSelect_Box_Chara;
+        private CTexture[] SongSelect_Frame_Score = new CTexture[3];
+
+        private CTexture TowerResult_ScoreRankEffect;
+        private CTexture DanResult_Rank;
 
 
 
@@ -3055,8 +3064,8 @@ namespace TJAPlayer3
 			SongSelect_Bar_Genre_Random.Opacity = opct;
 			SongSelect_Bar_Genre_Overlay.Opacity = opct;
 			SongSelect_Favorite.Opacity = opct; 
-			TJAPlayer3.Tx.TowerResult_ScoreRankEffect.Opacity = opct;
-			TJAPlayer3.Tx.DanResult_Rank.Opacity = opct;
+			TowerResult_ScoreRankEffect.Opacity = opct;
+			DanResult_Rank.Opacity = opct;
 			SongSelect_Level_Number_Big?.tUpdateOpacity(opct);
             SongSelect_Level_Number_Big_Colored?.tUpdateOpacity(opct);
             SongSelect_Level_Number_Big_Icon?.tUpdateOpacity(opct);
@@ -3140,33 +3149,33 @@ namespace TJAPlayer3
 
 		public void displayTowerStatus(int x, int y, int grade, float _resize)
         {
-			if (grade >= 0 && TJAPlayer3.Tx.TowerResult_ScoreRankEffect != null)
+			if (grade >= 0 && TowerResult_ScoreRankEffect != null)
 			{
-				int scoreRankEffect_width = TJAPlayer3.Tx.TowerResult_ScoreRankEffect.szテクスチャサイズ.Width / 7;
-				int scoreRankEffect_height = TJAPlayer3.Tx.TowerResult_ScoreRankEffect.szテクスチャサイズ.Height;
+				int scoreRankEffect_width = TowerResult_ScoreRankEffect.szテクスチャサイズ.Width / 7;
+				int scoreRankEffect_height = TowerResult_ScoreRankEffect.szテクスチャサイズ.Height;
 
-				TJAPlayer3.Tx.TowerResult_ScoreRankEffect.Opacity = 255;
-				TJAPlayer3.Tx.TowerResult_ScoreRankEffect.vc拡大縮小倍率.X = _resize;
-				TJAPlayer3.Tx.TowerResult_ScoreRankEffect.vc拡大縮小倍率.Y = _resize;
-				TJAPlayer3.Tx.TowerResult_ScoreRankEffect.t2D拡大率考慮中央基準描画(x, y, new Rectangle(grade * scoreRankEffect_width, 0, scoreRankEffect_width, scoreRankEffect_height));
-				TJAPlayer3.Tx.TowerResult_ScoreRankEffect.vc拡大縮小倍率.X = 1f;
-				TJAPlayer3.Tx.TowerResult_ScoreRankEffect.vc拡大縮小倍率.Y = 1f;
+				TowerResult_ScoreRankEffect.Opacity = 255;
+				TowerResult_ScoreRankEffect.vc拡大縮小倍率.X = _resize;
+				TowerResult_ScoreRankEffect.vc拡大縮小倍率.Y = _resize;
+				TowerResult_ScoreRankEffect.t2D拡大率考慮中央基準描画(x, y, new Rectangle(grade * scoreRankEffect_width, 0, scoreRankEffect_width, scoreRankEffect_height));
+				TowerResult_ScoreRankEffect.vc拡大縮小倍率.X = 1f;
+				TowerResult_ScoreRankEffect.vc拡大縮小倍率.Y = 1f;
 			}
 		}
 
 		public void displayDanStatus(int x, int y, int grade, float _resize)
         {
-			if (grade >= 0 && TJAPlayer3.Tx.DanResult_Rank != null)
+			if (grade >= 0 && DanResult_Rank != null)
 			{
-				int danResult_rank_width = TJAPlayer3.Tx.DanResult_Rank.szテクスチャサイズ.Width / 7;
-				int danResult_rank_height = TJAPlayer3.Tx.DanResult_Rank.szテクスチャサイズ.Height;
+				int danResult_rank_width = DanResult_Rank.szテクスチャサイズ.Width / 7;
+				int danResult_rank_height = DanResult_Rank.szテクスチャサイズ.Height;
 
-				TJAPlayer3.Tx.DanResult_Rank.Opacity = 255;
-				TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.X = _resize;
-				TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.Y = _resize;
-				TJAPlayer3.Tx.DanResult_Rank.t2D拡大率考慮中央基準描画(x, y, new Rectangle(danResult_rank_width * (grade + 1), 0, danResult_rank_width, danResult_rank_height));
-				TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.X = 1f;
-				TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.Y = 1f;
+				DanResult_Rank.Opacity = 255;
+				DanResult_Rank.vc拡大縮小倍率.X = _resize;
+				DanResult_Rank.vc拡大縮小倍率.Y = _resize;
+				DanResult_Rank.t2D拡大率考慮中央基準描画(x, y, new Rectangle(danResult_rank_width * (grade + 1), 0, danResult_rank_width, danResult_rank_height));
+				DanResult_Rank.vc拡大縮小倍率.X = 1f;
+				DanResult_Rank.vc拡大縮小倍率.Y = 1f;
 			}
 		}
 

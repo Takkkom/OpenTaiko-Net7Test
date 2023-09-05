@@ -56,6 +56,10 @@ namespace TJAPlayer3
                 Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Script.lua"));
                 Background.Init();
 
+                OpenEncyclopedia_Context = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Context.png"));
+                OpenEncyclopedia_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Side_Menu.png"));
+                OpenEncyclopedia_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Return_Box.png"));
+
                 base.OnManagedリソースの作成();
             }
         }
@@ -67,6 +71,10 @@ namespace TJAPlayer3
             if (!base.b活性化してない)
             {
                 TJAPlayer3.t安全にDisposeする(ref Background);
+
+                TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Context);
+                TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Side_Menu);
+                TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Return_Box);
 
                 base.OnManagedリソースの解放();
             }
@@ -86,11 +94,11 @@ namespace TJAPlayer3
             Background.Update();
             Background.Draw();
 
-            //TJAPlayer3.Tx.OpenEncyclopedia_Background?.t2D描画(0, 0);
+            //OpenEncyclopedia_Background?.t2D描画(0, 0);
 
             if (_arePagesOpened)
             {
-                TJAPlayer3.Tx.OpenEncyclopedia_Context?.t2D描画(0, 0);
+                OpenEncyclopedia_Context?.t2D描画(0, 0);
 
                 if (_controler.Pages.Length > 0)
                 {
@@ -114,14 +122,14 @@ namespace TJAPlayer3
 
                 if (i != 0)
                 {
-                    TJAPlayer3.Tx.OpenEncyclopedia_Return_Box?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
-                    TJAPlayer3.Tx.OpenEncyclopedia_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
+                    OpenEncyclopedia_Return_Box?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
+                    OpenEncyclopedia_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
                     _menu.Item2?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
                 }
                 else
                 {
-                    TJAPlayer3.Tx.OpenEncyclopedia_Return_Box?.tUpdateColor4(C変換.ColorToColor4(Color.White));
-                    TJAPlayer3.Tx.OpenEncyclopedia_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.White));
+                    OpenEncyclopedia_Return_Box?.tUpdateColor4(C変換.ColorToColor4(Color.White));
+                    OpenEncyclopedia_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.White));
                     _menu.Item2?.tUpdateColor4(C変換.ColorToColor4(Color.White));
                 }
 
@@ -129,9 +137,9 @@ namespace TJAPlayer3
                 int y = TJAPlayer3.Skin.OpenEncyclopedia_Side_Menu[1] + TJAPlayer3.Skin.OpenEncyclopedia_Side_Menu_Move[1] * i;
 
                 if (_pos == 0)
-                    TJAPlayer3.Tx.OpenEncyclopedia_Return_Box?.t2D中心基準描画(x, y);
+                    OpenEncyclopedia_Return_Box?.t2D中心基準描画(x, y);
                 else
-                    TJAPlayer3.Tx.OpenEncyclopedia_Side_Menu?.t2D中心基準描画(x, y);
+                    OpenEncyclopedia_Side_Menu?.t2D中心基準描画(x, y);
                 _menu.Item2?.t2D中心基準描画(
                     x + TJAPlayer3.Skin.OpenEncyclopedia_Side_Menu_Text_Offset[0], 
                     y + TJAPlayer3.Skin.OpenEncyclopedia_Side_Menu_Text_Offset[1]);
@@ -211,6 +219,10 @@ namespace TJAPlayer3
         #region [Private]
 
         private ScriptBG Background;
+
+        private CTexture OpenEncyclopedia_Context;
+        private CTexture OpenEncyclopedia_Return_Box;
+        private CTexture OpenEncyclopedia_Side_Menu;
 
         private CEncyclopediaControler _controler;
         private bool _arePagesOpened;

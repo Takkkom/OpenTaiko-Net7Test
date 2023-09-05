@@ -41,13 +41,28 @@ namespace TJAPlayer3
             base.On非活性化();
         }
 
+        public override void OnManagedリソースの作成()
+        {
+			TowerResult_ScoreRankEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERRESULT}ScoreRankEffect.png"));
+
+            base.OnManagedリソースの作成();
+        }
+
+        public override void OnManagedリソースの解放()
+        {
+
+			TJAPlayer3.t安全にDisposeする(ref TowerResult_ScoreRankEffect);
+
+            base.OnManagedリソースの解放();
+        }
+
         private void displayScoreRank(int i, int player, float x, float y, int mode = 0)
         {
             CCounter cct = this.counter[player][i];
 
             CTexture tex = TJAPlayer3.Tx.ScoreRank;
             if (mode == 1) // tower
-                tex = TJAPlayer3.Tx.TowerResult_ScoreRankEffect;
+                tex = TowerResult_ScoreRankEffect;
 
             if (tex == null)
                 return;
@@ -236,6 +251,8 @@ namespace TJAPlayer3
 
             return base.On進行描画();
         }
+
+        private CTexture TowerResult_ScoreRankEffect;
 
         public int[][] ScoreRank = new int[5][];
         private CCounter[][] counter = new CCounter[5][] {
