@@ -27,6 +27,20 @@ namespace TJAPlayer3
             base.On非活性化();
         }
 
+        public override void OnManagedリソースの作成()
+        {
+            for (int i = 0; i < Challenge_Select.Length; i++)
+                Challenge_Select[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Challenge_Select_" + i.ToString() + ".png"));
+            base.OnManagedリソースの作成();
+        }
+
+        public override void OnManagedリソースの解放()
+        {
+            for (int i = 0; i < Challenge_Select.Length; i++)
+				TJAPlayer3.t安全にDisposeする(ref Challenge_Select[i]);
+            base.OnManagedリソースの解放();
+        }
+
         public override int On進行描画()
         {
             if(TJAPlayer3.stage段位選択.bDifficultyIn || ctBarOut.n現在の値 < ctBarOut.n終了値)
@@ -34,19 +48,19 @@ namespace TJAPlayer3
                 ctBarIn.t進行();
                 ctBarOut.t進行();
 
-                TJAPlayer3.Tx.Challenge_Select[0].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
-                TJAPlayer3.Tx.Challenge_Select[1].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
-                TJAPlayer3.Tx.Challenge_Select[2].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
+                Challenge_Select[0].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
+                Challenge_Select[1].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
+                Challenge_Select[2].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
 
-                TJAPlayer3.Tx.Challenge_Select[0].t2D描画(0, 0);
+                Challenge_Select[0].t2D描画(0, 0);
 
                 int selectIndex = (2 - n現在の選択行);
                 int[] challenge_select_rect = TJAPlayer3.Skin.DaniSelect_Challenge_Select_Rect[selectIndex];
 
-                TJAPlayer3.Tx.Challenge_Select[2].t2D描画(TJAPlayer3.Skin.DaniSelect_Challenge_Select_X[selectIndex], TJAPlayer3.Skin.DaniSelect_Challenge_Select_Y[selectIndex], 
+                Challenge_Select[2].t2D描画(TJAPlayer3.Skin.DaniSelect_Challenge_Select_X[selectIndex], TJAPlayer3.Skin.DaniSelect_Challenge_Select_Y[selectIndex], 
                     new Rectangle(challenge_select_rect[0], challenge_select_rect[1], challenge_select_rect[2], challenge_select_rect[3]));
 
-                TJAPlayer3.Tx.Challenge_Select[1].t2D描画(0, 0);
+                Challenge_Select[1].t2D描画(0, 0);
 
 
                 if (TJAPlayer3.stage段位選択.ct待機.b開始した)
@@ -105,6 +119,8 @@ namespace TJAPlayer3
 
             return base.On進行描画();
         }
+
+        private CTexture[] Challenge_Select = new CTexture[3];
 
         public CCounter ctBarIn;
         public CCounter ctBarOut;

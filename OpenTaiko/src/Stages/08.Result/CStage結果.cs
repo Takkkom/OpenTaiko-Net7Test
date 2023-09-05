@@ -780,6 +780,7 @@ namespace TJAPlayer3
 				else
 					ctTower_Animation = new CCounter();
 
+            	Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
 				Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @"\Dan_Plate.png");
 
 				ctDanSongInfoChange = new CCounter(0, 3000, 1, TJAPlayer3.Timer);
@@ -860,6 +861,7 @@ namespace TJAPlayer3
 				}
 
 				TJAPlayer3.t安全にDisposeする(ref Background);
+            	TJAPlayer3.t安全にDisposeする(ref Dani_Difficulty_Cymbol);
 
 				Dan_Plate?.Dispose();
 
@@ -1850,12 +1852,12 @@ namespace TJAPlayer3
 			TJAPlayer3.Tx.DanResult_SongPanel_Main.Opacity = opacity;
 			TJAPlayer3.Tx.DanResult_SongPanel_Main.t2D描画(TJAPlayer3.Skin.DanResult_SongPanel_Main_X[drawPos] + offset, TJAPlayer3.Skin.DanResult_SongPanel_Main_Y[drawPos], new Rectangle(0, songPanel_main_height * Math.Min(i, 2), songPanel_main_width, songPanel_main_height));
 
-			int difficulty_cymbol_width = TJAPlayer3.Tx.Dani_Difficulty_Cymbol.szテクスチャサイズ.Width / 5;
-			int difficulty_cymbol_height = TJAPlayer3.Tx.Dani_Difficulty_Cymbol.szテクスチャサイズ.Height;
+			int difficulty_cymbol_width = Dani_Difficulty_Cymbol.szテクスチャサイズ.Width / 5;
+			int difficulty_cymbol_height = Dani_Difficulty_Cymbol.szテクスチャサイズ.Height;
 
-			TJAPlayer3.Tx.Dani_Difficulty_Cymbol.Opacity = opacity;
-			TJAPlayer3.Tx.Dani_Difficulty_Cymbol.t2D中心基準描画(TJAPlayer3.Skin.DanResult_Difficulty_Cymbol_X[drawPos] + offset, TJAPlayer3.Skin.DanResult_Difficulty_Cymbol_Y[drawPos], new Rectangle(song.Difficulty * difficulty_cymbol_width, 0, difficulty_cymbol_width, difficulty_cymbol_height));
-            TJAPlayer3.Tx.Dani_Difficulty_Cymbol.Opacity = 255;
+			Dani_Difficulty_Cymbol.Opacity = opacity;
+			Dani_Difficulty_Cymbol.t2D中心基準描画(TJAPlayer3.Skin.DanResult_Difficulty_Cymbol_X[drawPos] + offset, TJAPlayer3.Skin.DanResult_Difficulty_Cymbol_Y[drawPos], new Rectangle(song.Difficulty * difficulty_cymbol_width, 0, difficulty_cymbol_width, difficulty_cymbol_height));
+            Dani_Difficulty_Cymbol.Opacity = 255;
 
             TJAPlayer3.Tx.Dani_Level_Number.Opacity = opacity;
 			TJAPlayer3.stage段位選択.段位リスト.tLevelNumberDraw(TJAPlayer3.Skin.DanResult_Level_Number_X[drawPos] + offset, TJAPlayer3.Skin.DanResult_Level_Number_Y[drawPos], song.Level);
@@ -2021,6 +2023,8 @@ namespace TJAPlayer3
 
 		#region [ private ]
 		//-----------------
+        
+        public CTexture Dani_Difficulty_Cymbol;
 
 		public bool b最近遊んだ曲追加済み;
 		public bool b音声再生;

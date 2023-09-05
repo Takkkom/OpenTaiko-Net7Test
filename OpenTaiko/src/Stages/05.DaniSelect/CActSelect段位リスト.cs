@@ -77,16 +77,27 @@ namespace TJAPlayer3
 
         public override void On非活性化()
         {
+            TJAPlayer3.t安全にDisposeする(ref pfDanSong);
+            TJAPlayer3.t安全にDisposeする(ref pfExamFont);
+            
             base.On非活性化();
         }
 
         public override void OnManagedリソースの作成()
         {
+            Dani_Bar_Center = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Bar_Center.png"));
+            Dani_DanSides = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}DanSides.png"));
+            Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
+            DanResult_Rank = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANRESULT}Rank.png"));
             base.OnManagedリソースの作成();
         }
 
         public override void OnManagedリソースの解放()
         {
+			TJAPlayer3.t安全にDisposeする(ref Dani_Bar_Center);
+			TJAPlayer3.t安全にDisposeする(ref Dani_DanSides);
+            TJAPlayer3.t安全にDisposeする(ref Dani_Difficulty_Cymbol);
+			TJAPlayer3.t安全にDisposeする(ref DanResult_Rank);
             base.OnManagedリソースの解放();
         }
 
@@ -212,11 +223,11 @@ namespace TJAPlayer3
 
                 if (currentRank >= 0)
                 {
-                    TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.X = 0.20f;
-                    TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.Y = 0.20f;
-                    int rank_width = TJAPlayer3.Tx.DanResult_Rank.szテクスチャサイズ.Width / 7;
-                    int rank_height = TJAPlayer3.Tx.DanResult_Rank.szテクスチャサイズ.Height;
-                    TJAPlayer3.Tx.DanResult_Rank.t2D拡大率考慮上中央基準描画(xPos - 2, yPos - 14, new Rectangle(rank_width * (currentRank + 1), 0, rank_width, rank_height));
+                    DanResult_Rank.vc拡大縮小倍率.X = 0.20f;
+                    DanResult_Rank.vc拡大縮小倍率.Y = 0.20f;
+                    int rank_width = DanResult_Rank.szテクスチャサイズ.Width / 7;
+                    int rank_height = DanResult_Rank.szテクスチャサイズ.Height;
+                    DanResult_Rank.t2D拡大率考慮上中央基準描画(xPos - 2, yPos - 14, new Rectangle(rank_width * (currentRank + 1), 0, rank_width, rank_height));
                 }
 
                 #endregion
@@ -283,6 +294,11 @@ namespace TJAPlayer3
         static CCachedFontRenderer pfDanIconTitle = null;
 
         private Dictionary<string, CTexture> BarTexCache = new Dictionary<string, CTexture>();
+
+        private CTexture Dani_Bar_Center;
+        private CTexture Dani_DanSides;
+        private CTexture Dani_Difficulty_Cymbol;
+        private CTexture DanResult_Rank;
 
         public static void RefleshSkin()
         {
@@ -415,24 +431,24 @@ namespace TJAPlayer3
                         }
                         else
                         {
-                            int unit = TJAPlayer3.Tx.Dani_DanSides.szテクスチャサイズ.Width / 6;
-                            TJAPlayer3.Tx.Dani_DanSides.color4 = C変換.ColorToColor4(danTickColor);
+                            int unit = Dani_DanSides.szテクスチャサイズ.Width / 6;
+                            Dani_DanSides.color4 = C変換.ColorToColor4(danTickColor);
 
-                            TJAPlayer3.Tx.Dani_Bar_Center.t2D描画(scroll + Anime, 0);
+                            Dani_Bar_Center.t2D描画(scroll + Anime, 0);
 
                             // Bar sides
-                            TJAPlayer3.Tx.Dani_DanSides.t2D描画((int)(scroll + Anime) + TJAPlayer3.Skin.DaniSelect_DanSides_X[0], TJAPlayer3.Skin.DaniSelect_DanSides_Y[0], new Rectangle(
+                            Dani_DanSides.t2D描画((int)(scroll + Anime) + TJAPlayer3.Skin.DaniSelect_DanSides_X[0], TJAPlayer3.Skin.DaniSelect_DanSides_Y[0], new Rectangle(
                                 unit * danTick,
                                 0,
                                 unit,
-                                TJAPlayer3.Tx.Dani_DanSides.szテクスチャサイズ.Height
+                                Dani_DanSides.szテクスチャサイズ.Height
                             ));
 
-                            TJAPlayer3.Tx.Dani_DanSides.t2D左右反転描画((int)(scroll + Anime) + TJAPlayer3.Skin.DaniSelect_DanSides_X[1], TJAPlayer3.Skin.DaniSelect_DanSides_Y[1], new Rectangle(
+                            Dani_DanSides.t2D左右反転描画((int)(scroll + Anime) + TJAPlayer3.Skin.DaniSelect_DanSides_X[1], TJAPlayer3.Skin.DaniSelect_DanSides_Y[1], new Rectangle(
                                 unit * danTick,
                                 0,
                                 unit,
-                                TJAPlayer3.Tx.Dani_DanSides.szテクスチャサイズ.Height
+                                Dani_DanSides.szテクスチャサイズ.Height
                             ));
                         }
 
@@ -446,13 +462,13 @@ namespace TJAPlayer3
 
                         if (currentRank >= 0)
                         {
-                            TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.X = 0.8f;
-                            TJAPlayer3.Tx.DanResult_Rank.vc拡大縮小倍率.Y = 0.8f;
+                            DanResult_Rank.vc拡大縮小倍率.X = 0.8f;
+                            DanResult_Rank.vc拡大縮小倍率.Y = 0.8f;
 
-                            int rank_width = TJAPlayer3.Tx.DanResult_Rank.szテクスチャサイズ.Width / 7;
-                            int rank_height = TJAPlayer3.Tx.DanResult_Rank.szテクスチャサイズ.Height;
+                            int rank_width = DanResult_Rank.szテクスチャサイズ.Width / 7;
+                            int rank_height = DanResult_Rank.szテクスチャサイズ.Height;
 
-                            TJAPlayer3.Tx.DanResult_Rank.t2D拡大率考慮中央基準描画(scroll + Anime + TJAPlayer3.Skin.DaniSelect_Rank[0], TJAPlayer3.Skin.DaniSelect_Rank[1], new Rectangle(rank_width * (currentRank + 1), 0, rank_width, rank_height));
+                            DanResult_Rank.t2D拡大率考慮中央基準描画(scroll + Anime + TJAPlayer3.Skin.DaniSelect_Rank[0], TJAPlayer3.Skin.DaniSelect_Rank[1], new Rectangle(rank_width * (currentRank + 1), 0, rank_width, rank_height));
                         }
 
                         #endregion
@@ -512,8 +528,8 @@ namespace TJAPlayer3
                             */
                         }
 
-                        int difficulty_cymbol_width = TJAPlayer3.Tx.Dani_Difficulty_Cymbol.szテクスチャサイズ.Width / 5;
-                        int difficulty_cymbol_height = TJAPlayer3.Tx.Dani_Difficulty_Cymbol.szテクスチャサイズ.Height;
+                        int difficulty_cymbol_width = Dani_Difficulty_Cymbol.szテクスチャサイズ.Width / 5;
+                        int difficulty_cymbol_height = Dani_Difficulty_Cymbol.szテクスチャサイズ.Height;
                         int sections_count = 1 + ((stバー情報[currentSong].n曲レベル.Length - 1) / 3);
 
                         for (int i = 0; i < stバー情報[currentSong].ttkタイトル.Length - 1; i++)
@@ -536,10 +552,10 @@ namespace TJAPlayer3
                             int pos = i % 3;
                             if (stバー情報[currentSong].n曲難易度.Length > 3)
                             {
-                                TJAPlayer3.Tx.Dani_Difficulty_Cymbol.Opacity = getOpacity(i, sections_count);
+                                Dani_Difficulty_Cymbol.Opacity = getOpacity(i, sections_count);
                             }
-                            TJAPlayer3.Tx.Dani_Difficulty_Cymbol.t2D中心基準描画(scroll + Anime + TJAPlayer3.Skin.DaniSelect_Difficulty_Cymbol_X[pos], TJAPlayer3.Skin.DaniSelect_Difficulty_Cymbol_Y[pos], new Rectangle(stバー情報[currentSong].n曲難易度[i] * difficulty_cymbol_width, 0, difficulty_cymbol_width, difficulty_cymbol_height));
-                            TJAPlayer3.Tx.Dani_Difficulty_Cymbol.Opacity = 255;
+                            Dani_Difficulty_Cymbol.t2D中心基準描画(scroll + Anime + TJAPlayer3.Skin.DaniSelect_Difficulty_Cymbol_X[pos], TJAPlayer3.Skin.DaniSelect_Difficulty_Cymbol_Y[pos], new Rectangle(stバー情報[currentSong].n曲難易度[i] * difficulty_cymbol_width, 0, difficulty_cymbol_width, difficulty_cymbol_height));
+                            Dani_Difficulty_Cymbol.Opacity = 255;
                         }
 
                         for (int i = 0; i < stバー情報[currentSong].n曲レベル.Length; i++)

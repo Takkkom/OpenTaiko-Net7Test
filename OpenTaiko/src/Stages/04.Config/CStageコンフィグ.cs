@@ -162,6 +162,8 @@ namespace TJAPlayer3
 				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Script.lua"));
 				Background.Init();
 
+				Config_Cursor = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Cursor.png"));
+
 				//ctBackgroundAnime = new CCounter(0, TJAPlayer3.Tx.Config_Background.szテクスチャサイズ.Width, 20, TJAPlayer3.Timer);
 
 				ReloadMenus();
@@ -213,6 +215,8 @@ namespace TJAPlayer3
 
 				TJAPlayer3.t安全にDisposeする(ref Background);
 
+				TJAPlayer3.t安全にDisposeする(ref Config_Cursor);
+
 				TJAPlayer3.tテクスチャの解放( ref this.tx説明文パネル );
 				for ( int i = 0; i < txMenuItemLeft.GetLength( 0 ); i++ )
 				{
@@ -259,7 +263,7 @@ namespace TJAPlayer3
 
 			#region [ Menu Cursor ]
 			//---------------------
-			if ( TJAPlayer3.Tx.Config_Cursor != null )
+			if ( Config_Cursor != null )
 			{
 				#region Old
 				/*
@@ -288,25 +292,25 @@ namespace TJAPlayer3
 				int x = TJAPlayer3.Skin.Config_Item_X[this.n現在のメニュー番号];
 				int y = TJAPlayer3.Skin.Config_Item_Y[this.n現在のメニュー番号];
 
-				int width = TJAPlayer3.Tx.Config_Cursor.sz画像サイズ.Width / 3;
-				int height = TJAPlayer3.Tx.Config_Cursor.sz画像サイズ.Height;
+				int width = Config_Cursor.sz画像サイズ.Width / 3;
+				int height = Config_Cursor.sz画像サイズ.Height;
 
 				int move = TJAPlayer3.Skin.Config_Item_Width;
 
 				//Left
-				TJAPlayer3.Tx.Config_Cursor.t2D中心基準描画(x - (width / 2) - move, y, 
+				Config_Cursor.t2D中心基準描画(x - (width / 2) - move, y, 
 					new Rectangle(0, 0, width, height));
 
 				//Right
-				TJAPlayer3.Tx.Config_Cursor.t2D中心基準描画(x + (width / 2) + move, y, 
+				Config_Cursor.t2D中心基準描画(x + (width / 2) + move, y, 
 					new Rectangle(width * 2, 0, width, height));
 
 				//Center
-				TJAPlayer3.Tx.Config_Cursor.vc拡大縮小倍率.X = (move / (float)width) * 2.0f;
-				TJAPlayer3.Tx.Config_Cursor.t2D拡大率考慮中央基準描画(x, y, 
+				Config_Cursor.vc拡大縮小倍率.X = (move / (float)width) * 2.0f;
+				Config_Cursor.t2D拡大率考慮中央基準描画(x, y, 
 					new Rectangle(width, 0, width, height));
 
-				TJAPlayer3.Tx.Config_Cursor.vc拡大縮小倍率.X = 1.0f;
+				Config_Cursor.vc拡大縮小倍率.X = 1.0f;
 			}
             //---------------------
             #endregion
@@ -569,6 +573,11 @@ namespace TJAPlayer3
 		private CTexture[ , ] txMenuItemLeft;
 
 		private ScriptBG Background;
+		
+        private CTexture 
+            /*Config_Background,
+            Config_Header,*/
+            Config_Cursor;
 
 		private void tカーソルを下へ移動する()
 		{

@@ -23,7 +23,7 @@ namespace TJAPlayer3
         public CTexture barChara;
         public CStageタイトル.E戻り値 rp;
 
-        public CMainMenuTab(int boxId, Color col, CCachedFontRenderer tpf, CCachedFontRenderer boxpf, CStageタイトル.E戻り値 returnPoint, bool _1Ponly, bool impl)
+        public CMainMenuTab(int boxId, Color col, CCachedFontRenderer tpf, CCachedFontRenderer boxpf, CStageタイトル.E戻り値 returnPoint, bool _1Ponly, bool impl, CTexture[] modeSelect_Bar, CTexture[] modeSelect_Bar_Chara)
         {
             string title = CLangManager.LangInstance.GetString(100 + boxId);
 
@@ -37,11 +37,11 @@ namespace TJAPlayer3
 
             _1pRestricted = _1Ponly;
             implemented = impl;
-            barTex = (TJAPlayer3.Tx.ModeSelect_Bar.Length > boxId) ? TJAPlayer3.Tx.ModeSelect_Bar[boxId] : null;
-            barChara = (TJAPlayer3.Tx.ModeSelect_Bar_Chara.Length > boxId) ? TJAPlayer3.Tx.ModeSelect_Bar_Chara[boxId] : null;
+            barTex = (modeSelect_Bar.Length > boxId) ? modeSelect_Bar[boxId] : null;
+            barChara = (modeSelect_Bar_Chara.Length > boxId) ? modeSelect_Bar_Chara[boxId] : null;
         }
 
-        public static void tInitMenus(CCachedFontRenderer tpf, CCachedFontRenderer boxpf)
+        public static void tInitMenus(CCachedFontRenderer tpf, CCachedFontRenderer boxpf, CTexture[] modeSelect_Bar, CTexture[] modeSelect_Bar_Chara)
         {
             // Proceed the boxes only once
 
@@ -144,7 +144,7 @@ namespace TJAPlayer3
                     bool _1pr = (i >= _1PRestricts.Length) ? false : _1PRestricts[i];
                     bool _impl = (i >= _implemented.Length) ? false : _implemented[i];
 
-                    __Menus[i] = new CMainMenuTab(i, _mc, tpf, boxpf, _rp, _1pr, _impl);
+                    __Menus[i] = new CMainMenuTab(i, _mc, tpf, boxpf, _rp, _1pr, _impl, modeSelect_Bar, modeSelect_Bar_Chara);
                     
                 }
             }

@@ -102,7 +102,7 @@ namespace TJAPlayer3
 		public void tReloadMenus()
         {
 			if (this.pfMenuTitle != null && this.pfBoxText != null)
-				CMainMenuTab.tInitMenus(this.pfMenuTitle, this.pfBoxText);
+				CMainMenuTab.tInitMenus(this.pfMenuTitle, this.pfBoxText, ModeSelect_Bar, ModeSelect_Bar_Chara);
 		}
 
 		public override void OnManagedリソースの作成()
@@ -122,6 +122,38 @@ namespace TJAPlayer3
 				this.pfBoxText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.BoxFontName, TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[1]);
 			else
 				this.pfBoxText = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[1]);
+				
+            Entry_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Bar.png"));
+            Entry_Bar_Text = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Bar_Text.png"));
+
+            Banapas_Load[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load.png"));
+            Banapas_Load[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load_Text.png"));
+            Banapas_Load[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load_Anime.png"));
+
+            Banapas_Load_Clear[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load_Clear.png"));
+            Banapas_Load_Clear[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load_Clear_Anime.png"));
+
+            Banapas_Load_Failure[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load_Failure.png"));
+            Banapas_Load_Failure[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Banapas_Load_Clear_Anime.png"));
+
+            Entry_Player[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Player.png"));
+            Entry_Player[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Player_Select_Bar.png"));
+            Entry_Player[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Player_Select.png"));
+
+            ModeSelect_Bar = new CTexture[CMainMenuTab.__MenuCount + 1];
+            ModeSelect_Bar_Chara = new CTexture[CMainMenuTab.__MenuCount];
+
+            for (int i = 0; i < CMainMenuTab.__MenuCount; i++)
+            {
+                ModeSelect_Bar[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}ModeSelect_Bar_" + i.ToString() + ".png"));
+            }
+            
+            for(int i = 0; i < CMainMenuTab.__MenuCount; i++)
+            {
+                ModeSelect_Bar_Chara[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}ModeSelect_Bar_Chara_" + i.ToString() + ".png"));
+            }
+
+            ModeSelect_Bar[CMainMenuTab.__MenuCount] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}ModeSelect_Bar_Overlay.png"));
 
 			// Init Menus
 			tReloadMenus();
@@ -134,7 +166,27 @@ namespace TJAPlayer3
 				return;
 
 			TJAPlayer3.t安全にDisposeする(ref Background);
+			TJAPlayer3.t安全にDisposeする(ref Entry_Bar);
+			TJAPlayer3.t安全にDisposeする(ref Entry_Bar_Text);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load[0]);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load[1]);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load[2]);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load_Clear[0]);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load_Clear[1]);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load_Failure[0]);
+			TJAPlayer3.t安全にDisposeする(ref Banapas_Load_Failure[1]);
+			TJAPlayer3.t安全にDisposeする(ref Entry_Player[0]);
+			TJAPlayer3.t安全にDisposeする(ref Entry_Player[1]);
+			TJAPlayer3.t安全にDisposeする(ref Entry_Player[2]);
+			TJAPlayer3.t安全にDisposeする(ref Entry_Player[2]);
 
+            for (int i = 0; i < CMainMenuTab.__MenuCount; i++)
+            {
+				TJAPlayer3.t安全にDisposeする(ref ModeSelect_Bar[i]);
+				TJAPlayer3.t安全にDisposeする(ref ModeSelect_Bar_Chara[i]);
+            }
+			TJAPlayer3.t安全にDisposeする(ref ModeSelect_Bar[CMainMenuTab.__MenuCount]);
+            
 			TJAPlayer3.t安全にDisposeする(ref pfMenuTitle);
 			TJAPlayer3.t安全にDisposeする(ref pfBoxText);
 
@@ -408,8 +460,8 @@ namespace TJAPlayer3
 				Background.Update();
 				Background.Draw();
 
-				//if (TJAPlayer3.Tx.Title_Background != null)
-				//	TJAPlayer3.Tx.Title_Background.t2D描画(0, 0);
+				//if (Title_Background != null)
+				//	Title_Background.t2D描画(0, 0);
 
 				#endregion
 
@@ -419,17 +471,17 @@ namespace TJAPlayer3
 
 					if (!bバナパス読み込み && !bバナパス読み込み失敗)
 					{
-						TJAPlayer3.Tx.Entry_Bar.t2D描画(0, 0);
+						Entry_Bar.t2D描画(0, 0);
 
 						if (this.ctコインイン待機.n現在の値 <= 255)
-							TJAPlayer3.Tx.Entry_Bar_Text.Opacity = this.ctコインイン待機.n現在の値;
+							Entry_Bar_Text.Opacity = this.ctコインイン待機.n現在の値;
 						else if (this.ctコインイン待機.n現在の値 <= 2000 - 355)
-							TJAPlayer3.Tx.Entry_Bar_Text.Opacity = 255;
+							Entry_Bar_Text.Opacity = 255;
 						else
-							TJAPlayer3.Tx.Entry_Bar_Text.Opacity = 255 - (this.ctコインイン待機.n現在の値 - (2000 - 355));
+							Entry_Bar_Text.Opacity = 255 - (this.ctコインイン待機.n現在の値 - (2000 - 355));
 
-						TJAPlayer3.Tx.Entry_Bar_Text.t2D描画(TJAPlayer3.Skin.Title_Entry_Bar_Text_X[0], TJAPlayer3.Skin.Title_Entry_Bar_Text_Y[0], new RectangleF(0, 0, TJAPlayer3.Tx.Entry_Bar_Text.sz画像サイズ.Width, TJAPlayer3.Tx.Entry_Bar_Text.sz画像サイズ.Height / 2));
-						TJAPlayer3.Tx.Entry_Bar_Text.t2D描画(TJAPlayer3.Skin.Title_Entry_Bar_Text_X[1], TJAPlayer3.Skin.Title_Entry_Bar_Text_Y[1], new RectangleF(0, TJAPlayer3.Tx.Entry_Bar_Text.sz画像サイズ.Height / 2, TJAPlayer3.Tx.Entry_Bar_Text.sz画像サイズ.Width, TJAPlayer3.Tx.Entry_Bar_Text.sz画像サイズ.Height / 2));
+						Entry_Bar_Text.t2D描画(TJAPlayer3.Skin.Title_Entry_Bar_Text_X[0], TJAPlayer3.Skin.Title_Entry_Bar_Text_Y[0], new RectangleF(0, 0, Entry_Bar_Text.sz画像サイズ.Width, Entry_Bar_Text.sz画像サイズ.Height / 2));
+						Entry_Bar_Text.t2D描画(TJAPlayer3.Skin.Title_Entry_Bar_Text_X[1], TJAPlayer3.Skin.Title_Entry_Bar_Text_Y[1], new RectangleF(0, Entry_Bar_Text.sz画像サイズ.Height / 2, Entry_Bar_Text.sz画像サイズ.Width, Entry_Bar_Text.sz画像サイズ.Height / 2));
 					}
 					else
 					{
@@ -443,25 +495,25 @@ namespace TJAPlayer3
 									for (int j = 0; j < TJAPlayer3.Skin.Resolution[1] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height + 1; j++)
 										TJAPlayer3.Tx.Tile_Black.t2D描画(i * TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width, j * TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height);
 
-								TJAPlayer3.Tx.Banapas_Load[0].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 * 2;
-								TJAPlayer3.Tx.Banapas_Load[0].vc拡大縮小倍率.Y = ctバナパス読み込み成功.n現在の値 <= 100 ? ctバナパス読み込み成功.n現在の値 * 0.01f : 1.0f;
-								TJAPlayer3.Tx.Banapas_Load[0].t2D描画(0, 0);
+								Banapas_Load[0].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 * 2;
+								Banapas_Load[0].vc拡大縮小倍率.Y = ctバナパス読み込み成功.n現在の値 <= 100 ? ctバナパス読み込み成功.n現在の値 * 0.01f : 1.0f;
+								Banapas_Load[0].t2D描画(0, 0);
 
-								TJAPlayer3.Tx.Banapas_Load[1].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 <= 96 ? (int)((ctバナパス読み込み成功.n現在の値 - 96) * 7.96875f) : 255;
-								TJAPlayer3.Tx.Banapas_Load[1].t2D描画(0, 0);
+								Banapas_Load[1].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 <= 96 ? (int)((ctバナパス読み込み成功.n現在の値 - 96) * 7.96875f) : 255;
+								Banapas_Load[1].t2D描画(0, 0);
 
-								if (TJAPlayer3.Tx.Banapas_Load[2] != null)
+								if (Banapas_Load[2] != null)
 								{
-                                    int step = TJAPlayer3.Tx.Banapas_Load[2].szテクスチャサイズ.Width / TJAPlayer3.Skin.Title_LoadingPinFrameCount;
+                                    int step = Banapas_Load[2].szテクスチャサイズ.Width / TJAPlayer3.Skin.Title_LoadingPinFrameCount;
 									int cycle = TJAPlayer3.Skin.Title_LoadingPinCycle;
 									int _stamp = (ctバナパス読み込み成功.n現在の値 - 200) % (TJAPlayer3.Skin.Title_LoadingPinInstances * cycle);
 
                                     for (int i = 0; i < TJAPlayer3.Skin.Title_LoadingPinInstances; i++)
                                     {
-                                        TJAPlayer3.Tx.Banapas_Load[2].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 <= 96 ? (int)((ctバナパス読み込み成功.n現在の値 - 96) * 7.96875f) : 255;
+                                        Banapas_Load[2].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 <= 96 ? (int)((ctバナパス読み込み成功.n現在の値 - 96) * 7.96875f) : 255;
 
 
-                                        TJAPlayer3.Tx.Banapas_Load[2].t2D拡大率考慮中央基準描画(
+                                        Banapas_Load[2].t2D拡大率考慮中央基準描画(
                                             TJAPlayer3.Skin.Title_LoadingPinBase[0] + TJAPlayer3.Skin.Title_LoadingPinDiff[0] * i,
                                             TJAPlayer3.Skin.Title_LoadingPinBase[1] + TJAPlayer3.Skin.Title_LoadingPinDiff[1] * i,
                                             new Rectangle(step
@@ -472,7 +524,7 @@ namespace TJAPlayer3
                                                         : 0),
                                                 0,
                                                 step,
-                                                TJAPlayer3.Tx.Banapas_Load[2].szテクスチャサイズ.Height));
+                                                Banapas_Load[2].szテクスチャサイズ.Height));
                                     }
                                 }
                                 
@@ -489,9 +541,9 @@ namespace TJAPlayer3
 									TJAPlayer3.Skin.soundError.t再生する();
 
 								int count = this.ctバナパス読み込み失敗.n現在の値;
-								TJAPlayer3.Tx.Banapas_Load_Failure[0].Opacity = count >= 872 ? 255 - (count - 872) * 2 : count * 2;
-								TJAPlayer3.Tx.Banapas_Load_Failure[0].vc拡大縮小倍率.Y = count <= 100 ? count * 0.01f : 1.0f;
-								TJAPlayer3.Tx.Banapas_Load_Failure[0].t2D描画(0, 0);
+								Banapas_Load_Failure[0].Opacity = count >= 872 ? 255 - (count - 872) * 2 : count * 2;
+								Banapas_Load_Failure[0].vc拡大縮小倍率.Y = count <= 100 ? count * 0.01f : 1.0f;
+								Banapas_Load_Failure[0].t2D描画(0, 0);
 
 								if (ctバナパス読み込み失敗.n現在の値 >= 1128)
 								{
@@ -514,9 +566,9 @@ namespace TJAPlayer3
 									TJAPlayer3.Skin.SoundBanapas.t再生する();
 
 								int count = this.ctバナパス読み込み成功.n現在の値 - 1000;
-								TJAPlayer3.Tx.Banapas_Load_Clear[0].Opacity = count >= 1872 ? 255 - (count - 1872) * 2 : count * 2;
-								TJAPlayer3.Tx.Banapas_Load_Clear[0].vc拡大縮小倍率.Y = count <= 100 ? count * 0.01f : 1.0f;
-								TJAPlayer3.Tx.Banapas_Load_Clear[0].t2D描画(0, 0);
+								Banapas_Load_Clear[0].Opacity = count >= 1872 ? 255 - (count - 1872) * 2 : count * 2;
+								Banapas_Load_Clear[0].vc拡大縮小倍率.Y = count <= 100 ? count * 0.01f : 1.0f;
+								Banapas_Load_Clear[0].t2D描画(0, 0);
 
 								float anime = 0f;
 								float scalex = 0f;
@@ -549,10 +601,10 @@ namespace TJAPlayer3
 									}
 								}
 
-								TJAPlayer3.Tx.Banapas_Load_Clear[1].vc拡大縮小倍率.X = 1.0f + scalex;
-								TJAPlayer3.Tx.Banapas_Load_Clear[1].vc拡大縮小倍率.Y = 1.0f + scaley;
-								TJAPlayer3.Tx.Banapas_Load_Clear[1].Opacity = count >= 1872 ? 255 - (count - 1872) * 2 : count * 2;
-								TJAPlayer3.Tx.Banapas_Load_Clear[1].t2D拡大率考慮下中心基準描画(TJAPlayer3.Skin.Title_Banapas_Load_Clear_Anime[0], TJAPlayer3.Skin.Title_Banapas_Load_Clear_Anime[1] - anime);
+								Banapas_Load_Clear[1].vc拡大縮小倍率.X = 1.0f + scalex;
+								Banapas_Load_Clear[1].vc拡大縮小倍率.Y = 1.0f + scaley;
+								Banapas_Load_Clear[1].Opacity = count >= 1872 ? 255 - (count - 1872) * 2 : count * 2;
+								Banapas_Load_Clear[1].t2D拡大率考慮下中心基準描画(TJAPlayer3.Skin.Title_Banapas_Load_Clear_Anime[0], TJAPlayer3.Skin.Title_Banapas_Load_Clear_Anime[1] - anime);
 
 								if (ctバナパス読み込み成功.n現在の値 >= 2000)
 								{
@@ -571,7 +623,7 @@ namespace TJAPlayer3
 				{
 					if (!this.bどんちゃんカウンター初期化)
 					{
-						//this.ctどんちゃんエントリーループ = new CCounter(0, TJAPlayer3.Tx.Donchan_Entry.Length - 1, 1000 / 60, TJAPlayer3.Timer);
+						//this.ctどんちゃんエントリーループ = new CCounter(0, Donchan_Entry.Length - 1, 1000 / 60, TJAPlayer3.Timer);
 						CMenuCharacter.tMenuResetTimer(CMenuCharacter.ECharacterAnimation.ENTRY);
 
 						this.bどんちゃんカウンター初期化 = true;
@@ -579,8 +631,8 @@ namespace TJAPlayer3
 
 					int alpha = ctエントリーバー決定点滅.n現在の値 >= 800 ? 255 - (ctエントリーバー決定点滅.n現在の値 - 800) : (this.ctバナパス読み込み成功.n現在の値 - 3400);
 
-					TJAPlayer3.Tx.Entry_Player[0].Opacity = alpha;
-					TJAPlayer3.Tx.Entry_Player[1].Opacity = alpha;
+					Entry_Player[0].Opacity = alpha;
+					Entry_Player[1].Opacity = alpha;
 
 					/*
 					var ___ttx = CMenuCharacter._getReferenceArray(0, CMenuCharacter.ECharacterAnimation.ENTRY)
@@ -588,11 +640,11 @@ namespace TJAPlayer3
 					___ttx.Opacity = alpha;
 					*/
 
-					//TJAPlayer3.Tx.Donchan_Entry[this.ctどんちゃんエントリーループ.n現在の値].Opacity = alpha;
+					//Donchan_Entry[this.ctどんちゃんエントリーループ.n現在の値].Opacity = alpha;
 
-					TJAPlayer3.Tx.Entry_Player[0].t2D描画(0, 0);
+					Entry_Player[0].t2D描画(0, 0);
 
-					//TJAPlayer3.Tx.Donchan_Entry[this.ctどんちゃんエントリーループ.n現在の値].t2D描画(485, 140);
+					//Donchan_Entry[this.ctどんちゃんエントリーループ.n現在の値].t2D描画(485, 140);
 
 					int _actual = TJAPlayer3.GetActualPlayer(0);
 
@@ -626,23 +678,23 @@ namespace TJAPlayer3
                     //this.PuchiChara.On進行描画(485 + 100, 140 + 190, false, alpha);
                     this.PuchiChara.On進行描画(puchi_x, puchi_y, false, alpha);
 
-                    TJAPlayer3.Tx.Entry_Player[2].Opacity = ctエントリーバー決定点滅.n現在の値 >= 800 ? 255 - (ctエントリーバー決定点滅.n現在の値 - 800) : (this.ctバナパス読み込み成功.n現在の値 - 3400) - (this.ctエントリーバー点滅.n現在の値 <= 255 ? this.ctエントリーバー点滅.n現在の値 : 255 - (this.ctエントリーバー点滅.n現在の値 - 255));
-					TJAPlayer3.Tx.Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
+                    Entry_Player[2].Opacity = ctエントリーバー決定点滅.n現在の値 >= 800 ? 255 - (ctエントリーバー決定点滅.n現在の値 - 800) : (this.ctバナパス読み込み成功.n現在の値 - 3400) - (this.ctエントリーバー点滅.n現在の値 <= 255 ? this.ctエントリーバー点滅.n現在の値 : 255 - (this.ctエントリーバー点滅.n現在の値 - 255));
+					Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
 						new RectangleF(TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[0][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][0],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[0][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][1],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[0][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][2],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[0][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][3]
 						));
 
-					TJAPlayer3.Tx.Entry_Player[2].Opacity = alpha;
-					TJAPlayer3.Tx.Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
+					Entry_Player[2].Opacity = alpha;
+					Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
 						new RectangleF(TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[1][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][0],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[1][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][1],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[1][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][2],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[1][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][3]
 						));
 
-					TJAPlayer3.Tx.Entry_Player[1].t2D描画(0, 0);
+					Entry_Player[1].t2D描画(0, 0);
 
 					#region [ 透明度 ]
 
@@ -663,8 +715,8 @@ namespace TJAPlayer3
 
 					#endregion
 
-					TJAPlayer3.Tx.Entry_Player[2].Opacity = Opacity;
-					TJAPlayer3.Tx.Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
+					Entry_Player[2].Opacity = Opacity;
+					Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
 						new RectangleF(TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[2][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][0],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[2][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][1],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[2][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][2],
@@ -708,7 +760,7 @@ namespace TJAPlayer3
                         int puchi_x = chara_x + TJAPlayer3.Skin.Adjustments_MenuPuchichara_X[player];
                         int puchi_y = chara_y + TJAPlayer3.Skin.Adjustments_MenuPuchichara_Y[player];
 
-                        //TJAPlayer3.Tx.Entry_Donchan_Normal[ctどんちゃんループ.n現在の値].t2D描画(-200 + DonchanX, 341 - DonchanY);
+                        //Entry_Donchan_Normal[ctどんちゃんループ.n現在の値].t2D描画(-200 + DonchanX, 341 - DonchanY);
                         CMenuCharacter.tMenuDisplayCharacter(player, chara_x, chara_y, CMenuCharacter.ECharacterAnimation.ENTRY_NORMAL);
 
 						//int puchi_x = TJAPlayer3.Skin.Characters_Menu_X[_charaId][player] + TJAPlayer3.Skin.Adjustments_MenuPuchichara_X[player];
@@ -812,9 +864,9 @@ namespace TJAPlayer3
 								}
 
 
-								if (TJAPlayer3.Tx.ModeSelect_Bar[CMainMenuTab.__MenuCount] != null)
+								if (ModeSelect_Bar[CMainMenuTab.__MenuCount] != null)
 								{
-									CTexture _overlap = TJAPlayer3.Tx.ModeSelect_Bar[CMainMenuTab.__MenuCount];
+									CTexture _overlap = ModeSelect_Bar[CMainMenuTab.__MenuCount];
 
 									_overlap.vc拡大縮小倍率.X = 1.0f;
 									_overlap.vc拡大縮小倍率.Y = 1.0f;
@@ -913,9 +965,9 @@ namespace TJAPlayer3
 									_bar.t2D描画(pos.X + BarAnimeX - BarMoveX, pos.Y + BarAnimeY - BarMoveY);
 								}
 
-								if (TJAPlayer3.Tx.ModeSelect_Bar[CMainMenuTab.__MenuCount] != null)
+								if (ModeSelect_Bar[CMainMenuTab.__MenuCount] != null)
 								{
-									CTexture _overlap = TJAPlayer3.Tx.ModeSelect_Bar[CMainMenuTab.__MenuCount];
+									CTexture _overlap = ModeSelect_Bar[CMainMenuTab.__MenuCount];
 
 									_overlap.vc拡大縮小倍率.X = 1.0f;
 									_overlap.vc拡大縮小倍率.Y = 1.0f;
@@ -1016,6 +1068,18 @@ namespace TJAPlayer3
 
 		private ScriptBG Background;
 
+        public CTexture 
+            //Title_Background,
+            Entry_Bar,
+            Entry_Bar_Text;
+
+        public CTexture[] Banapas_Load = new CTexture[3];
+        public CTexture[] Banapas_Load_Clear = new CTexture[2];
+        public CTexture[] Banapas_Load_Failure = new CTexture[2];
+        public CTexture[] Entry_Player = new CTexture[3];
+        public CTexture[] ModeSelect_Bar;
+        public CTexture[] ModeSelect_Bar_Chara;
+
 		// Directly propose the different game options if the save file is already loaded, go back to save file select by pressing "Escape"
 		private void SkipSaveFileStep()
 		{
@@ -1061,7 +1125,7 @@ namespace TJAPlayer3
 			//this.ctどんちゃんエントリーループ = new CCounter();
 			CMenuCharacter.tMenuResetTimer(CMenuCharacter.ECharacterAnimation.ENTRY);
 			this.ctどんちゃんイン = new CCounter();
-			//this.ctどんちゃんループ = new CCounter(0, TJAPlayer3.Tx.Entry_Donchan_Normal.Length - 1, 1000 / 30, TJAPlayer3.Timer);
+			//this.ctどんちゃんループ = new CCounter(0, Entry_Donchan_Normal.Length - 1, 1000 / 30, TJAPlayer3.Timer);
 			CMenuCharacter.tMenuResetTimer(CMenuCharacter.ECharacterAnimation.ENTRY_NORMAL);
 
 
