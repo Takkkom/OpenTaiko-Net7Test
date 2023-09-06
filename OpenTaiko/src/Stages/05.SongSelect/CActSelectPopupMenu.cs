@@ -72,7 +72,7 @@ namespace TJAPlayer3
 			stqMenuTitle = new stQuickMenuItem();
 			stqMenuTitle.cItem = new CItemBase();
 			stqMenuTitle.cItem.str項目名 = title;
-		    using (var bitmap = prvFont.DrawText( title, Color.White, Color.Black, 30 ))
+		    using (var bitmap = prvFont.DrawText( title, Color.White, Color.Black, null, 30 ))
 		    {
 		        stqMenuTitle.txName = TJAPlayer3.tテクスチャの生成( bitmap, false );
 		    }
@@ -81,7 +81,7 @@ namespace TJAPlayer3
 			{
 				stQuickMenuItem stqm = new stQuickMenuItem();
 				stqm.cItem = menulist[ i ];
-			    using (var bitmap = prvFont.DrawText( menulist[ i ].str項目名, Color.White, Color.Black, 30 ))
+			    using (var bitmap = prvFont.DrawText( menulist[ i ].str項目名, Color.White, Color.Black, null, 30 ))
 			    {
 			        stqm.txName = TJAPlayer3.tテクスチャの生成( bitmap, false );
 			    }
@@ -116,14 +116,14 @@ namespace TJAPlayer3
 			TJAPlayer3.t安全にDisposeする(ref prvFont);
 			ConditionallyInitializePrvFont();
 
-			using (var bitmap = prvFont.DrawText(stqMenuTitle.cItem.str項目名, Color.White, Color.Black, 30))
+			using (var bitmap = prvFont.DrawText(stqMenuTitle.cItem.str項目名, Color.White, Color.Black, null, 30))
 			{
 				TJAPlayer3.t安全にDisposeする(ref stqMenuTitle.txName);
 				stqMenuTitle.txName = TJAPlayer3.tテクスチャの生成(bitmap, false);
 			}
 			for (int i = 0; i < lciMenuItems.Length; i++)
 			{
-				using (var bitmap = prvFont.DrawText(lciMenuItems[i].cItem.str項目名, Color.White, Color.Black, 30))
+				using (var bitmap = prvFont.DrawText(lciMenuItems[i].cItem.str項目名, Color.White, Color.Black, null, 30))
 				{
 					TJAPlayer3.t安全にDisposeする(ref lciMenuItems[i].txName);
 					lciMenuItems[i].txName = TJAPlayer3.tテクスチャの生成(bitmap, false);
@@ -423,8 +423,8 @@ namespace TJAPlayer3
                         }
                         //font.t文字列描画( (int)(340 * Scale.X), (int)(80 + i * 32), s, bValueBold, 1.0f * Scale.Y);
                         using (var bmpStr = bValueBold ?
-                            prvFont.DrawText(s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed, 0) :
-                            prvFont.DrawText(s, Color.White, Color.Black, 0))
+                            prvFont.DrawText(s, Color.White, Color.Black, null, Color.Yellow, Color.OrangeRed, 0) :
+                            prvFont.DrawText(s, Color.White, Color.Black, null, 0))
                         {
                             using (var ctStr = TJAPlayer3.tテクスチャの生成(bmpStr, false))
                             {

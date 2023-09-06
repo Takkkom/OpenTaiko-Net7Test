@@ -136,7 +136,7 @@ namespace TJAPlayer3
 			{
 				for (int i = 0; i < strMenuItem.Length; i++)
 				{
-					using (var bmpStr = prvFont.DrawText(strMenuItem[i], Color.White, Color.Black, 30))
+					using (var bmpStr = prvFont.DrawText(strMenuItem[i], Color.White, Color.Black, null, 30))
 					{
 						txMenuItemLeft[i, 0]?.Dispose();
 						txMenuItemLeft[i, 0] = TJAPlayer3.tテクスチャの生成(bmpStr, false);
@@ -144,6 +144,7 @@ namespace TJAPlayer3
 					using (var bmpStr = prvFont.DrawText(strMenuItem[i], 
 						Color.White, 
 						Color.Black,
+						null,
                         TJAPlayer3.Skin.Config_Selected_Menu_Text_Grad_Color_1,
                         TJAPlayer3.Skin.Config_Selected_Menu_Text_Grad_Color_2,
 						30))
@@ -668,7 +669,7 @@ namespace TJAPlayer3
 						text = CLangManager.LangInstance.GetString(10093);
 						break;
                 }
-				SKBitmap image = ftフォント.DrawText(text, Color.White, Color.Black, 30);
+				SKBitmap image = ftフォント.DrawText(text, Color.White, Color.Black, null, 30);
 				if( this.tx説明文パネル != null )
 				{
 					this.tx説明文パネル.Dispose();
@@ -693,7 +694,7 @@ namespace TJAPlayer3
 				if( ( item.str説明文 != null ) && ( item.str説明文.Length > 0 ) )
 				{
 					image.Dispose();
-					image = ftフォント.DrawText(item.str説明文, Color.White, Color.Black, 30);
+					image = ftフォント.DrawText(item.str説明文, Color.White, Color.Black, null, 30);
 				}
 				if( this.tx説明文パネル != null )
 				{

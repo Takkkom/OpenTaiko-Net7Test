@@ -6115,7 +6115,7 @@ namespace TJAPlayer3
             else if (command == "#LYRIC" && !usingLyricsFile && TJAPlayer3.ConfigIni.nPlayerCount < 4) // Do not parse LYRIC tags if a lyric file is already loaded
             {
                 if (TJAPlayer3.r現在のステージ.eステージID == CStage.Eステージ.曲読み込み)//起動時に重たくなってしまう問題の修正用
-                    this.listLyric.Add(this.pf歌詞フォント.DrawText(argument, TJAPlayer3.Skin.Game_Lyric_ForeColor, TJAPlayer3.Skin.Game_Lyric_BackColor, 30));
+                    this.listLyric.Add(this.pf歌詞フォント.DrawText(argument, TJAPlayer3.Skin.Game_Lyric_ForeColor, TJAPlayer3.Skin.Game_Lyric_BackColor, null, 30));
 
                 var chip = new CChip();
 
@@ -7755,7 +7755,7 @@ namespace TJAPlayer3
                         {
                             STLYRIC stlrc;
                             stlrc.Text = strSplit後[i];
-                            stlrc.TextTex = this.pf歌詞フォント.DrawText(strSplit後[i], TJAPlayer3.Skin.Game_Lyric_ForeColor, TJAPlayer3.Skin.Game_Lyric_BackColor, 30);
+                            stlrc.TextTex = this.pf歌詞フォント.DrawText(strSplit後[i], TJAPlayer3.Skin.Game_Lyric_ForeColor, TJAPlayer3.Skin.Game_Lyric_BackColor, null, 30);
                             stlrc.Time = list[listindex];
                             stlrc.index = ordnumber;
                             this.listLyric2.Add(stlrc);

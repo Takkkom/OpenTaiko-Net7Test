@@ -72,7 +72,7 @@ namespace TJAPlayer3
 				{
 					try
 					{
-					    using (var bmpSongTitle = pfMusicName.DrawText(songName, TJAPlayer3.Skin.Game_MusicName_ForeColor, TJAPlayer3.Skin.Game_MusicName_BackColor, 30))
+					    using (var bmpSongTitle = pfMusicName.DrawText(songName, TJAPlayer3.Skin.Game_MusicName_ForeColor, TJAPlayer3.Skin.Game_MusicName_BackColor, null, 30))
 					    {
 					        this.txMusicName = TJAPlayer3.tテクスチャの生成( bmpSongTitle, false );
 					    }
@@ -106,11 +106,11 @@ namespace TJAPlayer3
                                     strDiff = "おに ";
                                     break;
                             }
-                            bmpDiff = pfMusicName.DrawText(strDiff + stageText, TJAPlayer3.Skin.Game_StageText_ForeColor, TJAPlayer3.Skin.Game_StageText_BackColor, 30 );
+                            bmpDiff = pfMusicName.DrawText(strDiff + stageText, TJAPlayer3.Skin.Game_StageText_ForeColor, TJAPlayer3.Skin.Game_StageText_BackColor, null, 30 );
                         }
                         else
                         {
-                            bmpDiff = pfMusicName.DrawText(stageText, TJAPlayer3.Skin.Game_StageText_ForeColor, TJAPlayer3.Skin.Game_StageText_BackColor, 30 );
+                            bmpDiff = pfMusicName.DrawText(stageText, TJAPlayer3.Skin.Game_StageText_ForeColor, TJAPlayer3.Skin.Game_StageText_BackColor, null, 30 );
                         }
 
 					    using (bmpDiff)

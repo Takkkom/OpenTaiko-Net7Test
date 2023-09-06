@@ -72,7 +72,7 @@ namespace FDK
             paint.IsAntialias = true;
         }
 
-        public SKBitmap DrawText(string drawstr, CFontRenderer.DrawMode drawMode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter)
+        public SKBitmap DrawText(string drawstr, CFontRenderer.DrawMode drawMode, Color fontColor, Color edgeColor, Color? secondEdgeColor, Color gradationTopColor, Color gradationBottomColor, int edge_Ratio, bool keepCenter)
         {
             if (string.IsNullOrEmpty(drawstr))
             {
@@ -94,15 +94,26 @@ namespace FDK
 
                 if (drawMode.HasFlag(CFontRenderer.DrawMode.Edge))
                 {
-                    SKPaint edgePaint = new SKPaint();
+                    
                     SKPath path = paint.GetTextPath(strs[i], 25, -paint.FontMetrics.Ascent + 25);
-                    edgePaint.StrokeWidth = paint.TextSize * 8 / edge_Ratio;
-                    //https://docs.microsoft.com/ja-jp/xamarin/xamarin-forms/user-interface/graphics/skiasharp/paths/paths
+
+                    if (secondEdgeColor != null)
+                    {
+                        SKPaint secondEdgePaint = new SKPaint();
+                        secondEdgePaint.StrokeWidth = paint.TextSize * 8 / edge_Ratio;
+                        secondEdgePaint.StrokeJoin = SKStrokeJoin.Round;
+                        secondEdgePaint.Color = new SKColor(secondEdgeColor.Value.R, secondEdgeColor.Value.G, secondEdgeColor.Value.B, secondEdgeColor.Value.A);
+                        secondEdgePaint.Style = SKPaintStyle.Stroke;
+                        secondEdgePaint.IsAntialias = true;
+                        canvas.DrawPath(path, secondEdgePaint);
+                    }
+
+                    SKPaint edgePaint = new SKPaint();
+                    edgePaint.StrokeWidth = paint.TextSize * (secondEdgeColor == null ? 8 : 4) / edge_Ratio;
                     edgePaint.StrokeJoin = SKStrokeJoin.Round;
                     edgePaint.Color = new SKColor(edgeColor.R, edgeColor.G, edgeColor.B, edgeColor.A);
                     edgePaint.Style = SKPaintStyle.Stroke;
                     edgePaint.IsAntialias = true;
-
                     canvas.DrawPath(path, edgePaint);
                 }
 

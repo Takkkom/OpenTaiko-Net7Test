@@ -970,7 +970,7 @@ namespace TJAPlayer3
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					using (var texture = pfBoxText.DrawText(this.r現在選択中の曲.strBoxText[i], r現在選択中の曲.ForeColor, r現在選択中の曲.BackColor, 26))
+					using (var texture = pfBoxText.DrawText(this.r現在選択中の曲.strBoxText[i], r現在選択中の曲.ForeColor, r現在選択中の曲.BackColor, null, 26))
 					{
 						this.txBoxText[i] = TJAPlayer3.tテクスチャの生成(texture);
 						this.strBoxText = this.r現在選択中の曲.strBoxText[0] + this.r現在選択中の曲.strBoxText[1] + this.r現在選択中の曲.strBoxText[2];
@@ -1290,7 +1290,7 @@ namespace TJAPlayer3
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					using (var texture = pfBoxText.DrawText(this.r現在選択中の曲.strBoxText[i], r現在選択中の曲.ForeColor, r現在選択中の曲.BackColor, 26))
+					using (var texture = pfBoxText.DrawText(this.r現在選択中の曲.strBoxText[i], r現在選択中の曲.ForeColor, r現在選択中の曲.BackColor, null, 26))
 					{
 						this.txBoxText[i] = TJAPlayer3.tテクスチャの生成(texture);
 						this.strBoxText = this.r現在選択中の曲.strBoxText[0] + this.r現在選択中の曲.strBoxText[1] + this.r現在選択中の曲.strBoxText[2];
@@ -3380,7 +3380,7 @@ namespace TJAPlayer3
 		private static CTexture GenerateTitleTextureTate(TitleTextureKey titleTextureKey, bool keepCenter = false)
 		{
 			using (var bmp = titleTextureKey.cPrivateFastFont.DrawText_V(
-				titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, 30, keepCenter))
+				titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, titleTextureKey.secondEdge, 30, keepCenter))
 			{
 				CTexture tx文字テクスチャ = TJAPlayer3.tテクスチャの生成(bmp, false);
 				if (tx文字テクスチャ.szテクスチャサイズ.Height > titleTextureKey.maxWidth)
@@ -3398,7 +3398,7 @@ namespace TJAPlayer3
 		private static CTexture GenerateTitleTexture(TitleTextureKey titleTextureKey, bool keepCenter = false)
 	    {
 			using (var bmp = titleTextureKey.cPrivateFastFont.DrawText(
-	            titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, 30, keepCenter))
+	            titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, titleTextureKey.secondEdge, 30, keepCenter))
 	        {
 	            CTexture tx文字テクスチャ = TJAPlayer3.tテクスチャの生成(bmp, false);
 	            if (tx文字テクスチャ.szテクスチャサイズ.Width > titleTextureKey.maxWidth)

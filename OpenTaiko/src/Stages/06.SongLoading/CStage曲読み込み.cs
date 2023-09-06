@@ -163,14 +163,14 @@ namespace TJAPlayer3
                         //this.txタイトル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 
 
-					    using (var bmpSongTitle = this.pfTITLE.DrawText( タイトル, TJAPlayer3.Skin.SongLoading_Title_ForeColor, TJAPlayer3.Skin.SongLoading_Title_BackColor, 30 ))
+					    using (var bmpSongTitle = this.pfTITLE.DrawText( タイトル, TJAPlayer3.Skin.SongLoading_Title_ForeColor, TJAPlayer3.Skin.SongLoading_Title_BackColor, null, 30 ))
 
 					    {
 					        this.txタイトル = new CTexture( bmpSongTitle );
 					        txタイトル.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref txタイトル, 710);
 					    }
 
-					    using (var bmpSongSubTitle = this.pfSUBTITLE.DrawText( サブタイトル, TJAPlayer3.Skin.SongLoading_SubTitle_ForeColor, TJAPlayer3.Skin.SongLoading_SubTitle_BackColor, 30 ))
+					    using (var bmpSongSubTitle = this.pfSUBTITLE.DrawText( サブタイトル, TJAPlayer3.Skin.SongLoading_SubTitle_ForeColor, TJAPlayer3.Skin.SongLoading_SubTitle_BackColor, null, 30 ))
 
 
 					    {
@@ -542,7 +542,7 @@ namespace TJAPlayer3
                                 {
                                     if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[i].Title))
                                     {
-                                        using (var bmpSongTitle = pfTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].Title, titleForeColor, titleBackColor, 30))
+                                        using (var bmpSongTitle = pfTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].Title, titleForeColor, titleBackColor, null, 30))
                                         {
                                             TJAPlayer3.DTX.List_DanSongs[i].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
                                             TJAPlayer3.DTX.List_DanSongs[i].TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].TitleTex, TJAPlayer3.Skin.Game_DanC_Title_MaxWidth);
@@ -551,7 +551,7 @@ namespace TJAPlayer3
 
                                     if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[i].SubTitle))
                                     {
-                                        using (var bmpSongSubTitle = pfSubTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].SubTitle, subtitleForeColor, subtitleBackColor, 30))
+                                        using (var bmpSongSubTitle = pfSubTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].SubTitle, subtitleForeColor, subtitleBackColor, null, 30))
                                         {
                                             TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
                                             TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex, TJAPlayer3.Skin.Game_DanC_SubTitle_MaxWidth);

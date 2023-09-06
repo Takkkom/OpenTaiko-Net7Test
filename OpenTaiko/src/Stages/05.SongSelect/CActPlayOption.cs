@@ -400,7 +400,7 @@ namespace TJAPlayer3
 
         public CTexture OptionTypeTx(string str文字, Color forecolor, Color backcolor)
         {
-            using (var bmp = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Option_Font_Scale).DrawText(str文字, forecolor, backcolor, 30))
+            using (var bmp = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Option_Font_Scale).DrawText(str文字, forecolor, backcolor, null, 30))
             {
                 return TJAPlayer3.tテクスチャの生成(bmp);
             }

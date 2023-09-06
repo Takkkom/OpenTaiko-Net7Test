@@ -34,23 +34,6 @@ namespace FDK
 			if( d != null )
 				d.Dispose();
 		}
-		public static void tCOMオブジェクトを解放する<T>( ref T obj )
-		{
-			if( obj != null )
-			{
-				try
-				{
-					Marshal.ReleaseComObject( obj );
-				}
-				catch
-				{
-					// COMがマネージドコードで書かれている場合、ReleaseComObject は例外を発生させる。
-					// http://www.infoq.com/jp/news/2010/03/ReleaseComObject-Dangerous
-				}
-
-				obj = default( T );
-			}
-		}
 
 		public static void t完全なガベージコレクションを実施する()
 		{

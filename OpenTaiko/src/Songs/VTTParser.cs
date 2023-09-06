@@ -446,13 +446,13 @@ namespace TJAPlayer3
                 string fontfamily = !string.IsNullOrEmpty(TJAPlayer3.Skin.Game_Lyric_FontName) ? TJAPlayer3.Skin.Game_Lyric_FontName : "MS UI Gothic"; // everytime CPrivateFont is disposed, it also disposes fontfamily, so I gotta reinitialize this everytime :(
                 using (CCachedFontRenderer fastdraw = new CCachedFontRenderer(fontfamily, TJAPlayer3.Skin.Game_Lyric_FontSize, data.Style))
                 {
-                    SKBitmap textdrawing = fastdraw.DrawText(data.Text, data.ForeColor, data.BackColor, 30); // Draw main text
+                    SKBitmap textdrawing = fastdraw.DrawText(data.Text, data.ForeColor, data.BackColor, null, 30); // Draw main text
                     
                     if (data.IsRuby) // hell yeah ruby time
                     {
                         using (CCachedFontRenderer rubydraw = new CCachedFontRenderer(fontfamily, TJAPlayer3.Skin.Game_Lyric_FontSize / 2, data.Style))
                         {
-                            SKBitmap ruby = rubydraw.DrawText(data.RubyText, data.ForeColor, data.BackColor, 30);
+                            SKBitmap ruby = rubydraw.DrawText(data.RubyText, data.ForeColor, data.BackColor, null, 30);
                             Size size = new Size(textdrawing.Width > ruby.Width ? textdrawing.Width : ruby.Width, textdrawing.Height + (TJAPlayer3.Skin.Game_Lyric_VTTRubyOffset + (ruby.Height / 2)));
                             SKBitmap fullruby = new SKBitmap(size.Width, size.Height);
 

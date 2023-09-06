@@ -1207,7 +1207,7 @@ namespace TJAPlayer3
 				}
 				else
 				{
-					using (var bmpItem = prvFont.DrawText( this.list項目リスト[ nItem ].str項目名, Color.White, Color.Black, 30 ))
+					using (var bmpItem = prvFont.DrawText( this.list項目リスト[ nItem ].str項目名, Color.White, Color.Black, null, 30 ))
 					{
 					    listMenu[ nItem ].txMenuItemRight = TJAPlayer3.tテクスチャの生成( bmpItem );
 					    // ctItem.t2D描画( CDTXMania.app.Device, ( x + 0x12 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
@@ -1307,6 +1307,7 @@ namespace TJAPlayer3
 				    using (var bmpStr = prvFont.DrawText(strParam, 
 						Color.Black, 
 						Color.White, 
+						null, 
 						TJAPlayer3.Skin.Config_Selected_Menu_Text_Grad_Color_1, 
 						TJAPlayer3.Skin.Config_Selected_Menu_Text_Grad_Color_2,
 						30))
@@ -1327,7 +1328,7 @@ namespace TJAPlayer3
 						object o = this.list項目リスト[ nItem ].obj現在値();
 						stm.strParam = ( o == null ) ? "" : o.ToString();
 
-						using (var bmpStr = prvFont.DrawText( strParam, Color.White, Color.Black, 30 ))
+						using (var bmpStr = prvFont.DrawText( strParam, Color.White, Color.Black, null, 30 ))
 						{
 						    stm.txParam = TJAPlayer3.tテクスチャの生成( bmpStr, false );
 						}
