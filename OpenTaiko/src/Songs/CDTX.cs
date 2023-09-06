@@ -29,109 +29,6 @@ namespace TJAPlayer3
         private int nNowReadLine;
         // クラス
 
-        public class CAVI : IDisposable
-        {
-            public CAvi avi;
-            private bool bDispose済み;
-            public int n番号;
-            public string strコメント文 = "";
-            public string strファイル名 = "";
-
-            public void OnDeviceCreated()
-            {
-                #region [ strAVIファイル名の作成。]
-                //-----------------
-                string strAVIファイル名;
-                if (!string.IsNullOrEmpty(TJAPlayer3.DTX.PATH_WAV))
-                    strAVIファイル名 = TJAPlayer3.DTX.PATH_WAV + this.strファイル名;
-                else
-                    strAVIファイル名 = TJAPlayer3.DTX.strフォルダ名 + this.strファイル名;
-                //-----------------
-                #endregion
-
-                if (!File.Exists(strAVIファイル名))
-                {
-                    Trace.TraceWarning("ファイルが存在しません。({0})({1})", this.strコメント文, strAVIファイル名);
-                    this.avi = null;
-                    return;
-                }
-
-                // AVI の生成。
-
-                try
-                {
-                    this.avi = new CAvi(strAVIファイル名);
-                    Trace.TraceInformation("動画を生成しました。({0})({1})({2}frames)", this.strコメント文, strAVIファイル名, this.avi.GetMaxFrameCount());
-                }
-                catch (Exception e)
-                {
-                    Trace.TraceError(e.ToString());
-                    Trace.TraceError("動画の生成に失敗しました。({0})({1})", this.strコメント文, strAVIファイル名);
-                    this.avi = null;
-                }
-            }
-            public override string ToString()
-            {
-                return string.Format("CAVI{0}: File:{1}, Comment:{2}", CDTX.tZZ(this.n番号), this.strファイル名, this.strコメント文);
-            }
-
-            #region [ IDisposable 実装 ]
-            //-----------------
-            public void Dispose()
-            {
-                if (this.bDispose済み)
-                    return;
-
-                if (this.avi != null)
-                {
-                    #region [ strAVIファイル名 の作成。 ]
-                    //-----------------
-                    string strAVIファイル名;
-                    if (!string.IsNullOrEmpty(TJAPlayer3.DTX.PATH_WAV))
-                        strAVIファイル名 = TJAPlayer3.DTX.PATH_WAV + this.strファイル名;
-                    else
-                        strAVIファイル名 = TJAPlayer3.DTX.strフォルダ名 + this.strファイル名;
-                    //-----------------
-                    #endregion
-
-                    this.avi.Dispose();
-                    this.avi = null;
-
-                    Trace.TraceInformation("動画を解放しました。({0})({1})", this.strコメント文, strAVIファイル名);
-                }
-
-                this.bDispose済み = true;
-            }
-            //-----------------
-            #endregion
-        }
-        public class CAVIPAN
-        {
-            public int nAVI番号;
-            public int n移動時間ct;
-            public int n番号;
-            public Point pt動画側開始位置 = new Point(0, 0);
-            public Point pt動画側終了位置 = new Point(0, 0);
-            public Point pt表示側開始位置 = new Point(0, 0);
-            public Point pt表示側終了位置 = new Point(0, 0);
-            public Size sz開始サイズ = new Size(0, 0);
-            public Size sz終了サイズ = new Size(0, 0);
-
-            public override string ToString()
-            {
-                return string.Format("CAVIPAN{0}: AVI:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 動画側開始位置:{5}x{6}, 動画側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
-                    CDTX.tZZ(this.n番号),
-                    this.sz開始サイズ.Width, this.sz開始サイズ.Height,
-                    this.sz終了サイズ.Width, this.sz終了サイズ.Height,
-                    this.pt動画側開始位置.X, this.pt動画側開始位置.Y,
-                    this.pt動画側終了位置.X, this.pt動画側終了位置.Y,
-                    this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
-                    this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
-                    this.n移動時間ct,
-                    CDTX.tZZ(this.nAVI番号));
-            }
-        }
-
         public class CBPM
         {
             public double dbBPM値;
@@ -330,8 +227,6 @@ namespace TJAPlayer3
             public int n分岐回数;
             public int n連打音符State;
             public int nLag;                // 2011.2.1 yyagi
-            public CDTX.CAVI rAVI;
-            public CDTX.CAVIPAN rAVIPan;
             public double db発声時刻;
             public double db判定終了時刻;//連打系音符で使用
             public double dbProcess_Time;
@@ -579,12 +474,16 @@ namespace TJAPlayer3
                 }
                 else if (this.nチャンネル番号 == 0x54) // AVI
                 {
-                    if (this.rAVI != null && this.rAVI.avi != null)
-                    {
-                        int dwRate = (int)this.rAVI.avi.dwレート;
-                        int dwScale = (int)this.rAVI.avi.dwスケール;
-                        nDuration = (int)(1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount());
-                    }
+					CVideoDecoder wc;
+					TJAPlayer3.DTX.listVD.TryGetValue(this.n整数値_内部番号, out wc);
+					if (wc == null)
+					{
+						nDuration = 0;
+					}
+					else
+					{
+						nDuration = (int)(wc.Duration * 1000);
+					}
                 }
 
                 double _db再生速度 = (TJAPlayer3.DTXVmode.Enabled) ? TJAPlayer3.DTX.dbDTXVPlaySpeed : TJAPlayer3.DTX.db再生速度;
@@ -1207,8 +1106,7 @@ namespace TJAPlayer3
         public int DANTICK = 0;
         public Color DANTICKCOLOR = Color.White;
         
-        public Dictionary<int, CAVI> listAVI;
-        public Dictionary<int, CAVIPAN> listAVIPAN;
+		public Dictionary<int, CVideoDecoder> listVD;
         public Dictionary<int, CBPM> listBPM;
         public List<CChip> listChip;
         public List<CChip>[] listChip_Branch;
@@ -1541,32 +1439,14 @@ namespace TJAPlayer3
 
         public void tAVIの読み込み()
         {
-            if (this.listAVI != null)
+            if (!this.bヘッダのみ)
             {
-                foreach (CAVI cavi in this.listAVI.Values)
+                if (this.listVD != null)
                 {
-                    cavi.OnDeviceCreated();
-                }
-            }
-            if (!this.bヘッダのみ)//&& this.b動画読み込み )
-            {
-                foreach (CChip chip in this.listChip)
-                {
-                    if (chip.nチャンネル番号 == 0x54 || chip.nチャンネル番号 == 0x5A)
+                    foreach (CVideoDecoder cvd in this.listVD.Values)
                     {
-                        chip.eAVI種別 = EAVI種別.Unknown;
-                        chip.rAVI = null;
-                        chip.rAVIPan = null;
-                        if (this.listAVIPAN.TryGetValue(chip.n整数値, out CAVIPAN cavipan))
-                        {
-                            if (this.listAVI.TryGetValue(cavipan.nAVI番号, out CAVI cavi) && (cavi.avi != null))
-                            {
-                                chip.eAVI種別 = EAVI種別.AVIPAN;
-                                chip.rAVI = cavi;
-                                chip.rAVIPan = cavipan;
-                                continue;
-                            }
-                        }
+                        cvd.InitRead();
+                        cvd.dbPlaySpeed = ((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0;
                     }
                 }
             }
@@ -2646,12 +2526,6 @@ namespace TJAPlayer3
                                             chip.n発声時刻ms += this.nMOVIEOFFSET;
                                         else
                                             chip.n発声時刻ms -= this.nMOVIEOFFSET;
-                                        if (this.listAVIPAN.TryGetValue(chip.n整数値, out CAVIPAN cavipan))
-                                        {
-                                            int num21 = ms + ((int)(((0x271 * (chip.n発声位置 - n発声位置)) * this.dbBarLength) / bpm));
-                                            int num22 = ms + ((int)(((0x271 * ((chip.n発声位置 + cavipan.n移動時間ct) - n発声位置)) * this.dbBarLength) / bpm));
-                                            chip.n総移動時間 = num22 - num21;
-                                        }
                                         continue;
                                     }
                                 case 0x97:
@@ -2915,10 +2789,6 @@ namespace TJAPlayer3
                             foreach (CWAV cwav in this.listWAV.Values)
                             {
                                 Trace.TraceInformation(cwav.ToString());
-                            }
-                            foreach (CAVI cavi in this.listAVI.Values)
-                            {
-                                Trace.TraceInformation(cavi.ToString());
                             }
                             foreach (CBPM cbpm3 in this.listBPM.Values)
                             {
@@ -7668,18 +7538,28 @@ namespace TJAPlayer3
                         CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strファイル名, strCommandParam);
                 }
 
-                var avi = new CAVI()
-                {
-                    n番号 = 1,
-                    strファイル名 = this.strBGVIDEO_PATH,
-                    strコメント文 = "BGMOVIE命令",
-                };
+				string strVideoFilename;
+				if (!string.IsNullOrEmpty(this.PATH_WAV))
+					strVideoFilename = this.PATH_WAV + this.strBGVIDEO_PATH;
+				else
+					strVideoFilename = this.strフォルダ名 + this.strBGVIDEO_PATH;
 
-                if (this.listAVI.ContainsKey(1))	// 既にリスト中に存在しているなら削除。後のものが有効。
-                    this.listAVI.Remove(1);
+				try
+				{
+					CVideoDecoder vd = new CVideoDecoder(strVideoFilename);
 
-                this.listAVI.Add(1, avi);
+					if (this.listVD.ContainsKey(1))
+						this.listVD.Remove(1);
 
+					this.listVD.Add(1, vd);
+				}
+				catch (Exception e)
+				{
+					Trace.TraceWarning(e.ToString()+"\n"+
+						"動画のデコーダー生成で例外が発生しましたが、処理を継続します。");
+					if (this.listVD.ContainsKey(1))
+						this.listVD.Remove(1);
+				}
             }
             else if (strCommandName.Equals("BGIMAGE"))
             {
@@ -8488,8 +8368,7 @@ namespace TJAPlayer3
             this.listJPOSSCROLL = new Dictionary<int, CJPOSSCROLL>();
             this.listDELAY = new Dictionary<int, CDELAY>();
             this.listBRANCH = new Dictionary<int, CBRANCH>();
-            this.listAVI = new Dictionary<int, CAVI>();
-            this.listAVIPAN = new Dictionary<int, CAVIPAN>();
+			this.listVD = new Dictionary<int, CVideoDecoder>();
             this.listChip = new List<CChip>();
             this.listChip_Branch = new List<CChip>[3];
             this.listChip_Branch[0] = new List<CChip>();
@@ -8519,19 +8398,14 @@ namespace TJAPlayer3
                 }
                 this.listWAV = null;
             }
-            if (this.listAVI != null)
-            {
-                foreach (CAVI cavi in this.listAVI.Values)
-                {
-                    cavi.Dispose();
-                }
-                this.listAVI = null;
-            }
-            if (this.listAVIPAN != null)
-            {
-                this.listAVIPAN.Clear();
-                this.listAVIPAN = null;
-            }
+			if (this.listVD != null)
+			{
+				foreach (CVideoDecoder cvd in this.listVD.Values)
+				{
+					cvd.Dispose();
+				}
+				this.listVD = null;
+			}
             if (this.listBPM != null)
             {
                 this.listBPM.Clear();
@@ -8659,12 +8533,13 @@ namespace TJAPlayer3
         {
             if (!base.b活性化してない)
             {
-                if (this.listAVI != null)
+                if (this.listVD != null)
                 {
-                    foreach (CAVI cavi in this.listAVI.Values)
+                    foreach (CVideoDecoder cvd in this.listVD.Values)
                     {
-                        cavi.Dispose();
+                        cvd.Dispose();
                     }
+                    this.listVD = null;
                 }
                 TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
                 base.OnManagedリソースの解放();
@@ -9070,8 +8945,6 @@ namespace TJAPlayer3
 
                     else if (
                         !this.t入力_行解析_WAVPAN_PAN(strコマンド, strパラメータ, strコメント) &&
-                        !this.t入力_行解析_AVIPAN(strコマンド, strパラメータ, strコメント) &&
-                        !this.t入力_行解析_AVI_VIDEO(strコマンド, strパラメータ, strコメント) &&
                         //	!this.t入力_行解析_BPM_BPMzz( strコマンド, strパラメータ, strコメント ) &&	// bヘッダのみ==trueの場合でもチェックするよう変更
                         !this.t入力_行解析_SIZE(strコマンド, strパラメータ, strコメント))
                     {
@@ -9086,296 +8959,6 @@ namespace TJAPlayer3
                 //	this.t入力_行解析_チップ配置( strコマンド, strパラメータ, strコメント );
                 //}
             }
-        }
-        private bool t入力_行解析_AVI_VIDEO(string strコマンド, string strパラメータ, string strコメント)
-        {
-            // (1) コマンドを処理。
-
-            #region [ "AVI" or "VIDEO" で始まらないコマンドは無効。]
-            //-----------------
-            if (strコマンド.StartsWith("AVI", StringComparison.OrdinalIgnoreCase))
-                strコマンド = strコマンド.Substring(3);     // strコマンド から先頭の"AVI"文字を除去。
-
-            else if (strコマンド.StartsWith("VIDEO", StringComparison.OrdinalIgnoreCase))
-                strコマンド = strコマンド.Substring(5);     // strコマンド から先頭の"VIDEO"文字を除去。
-
-            else
-                return false;
-            //-----------------
-            #endregion
-
-            // (2) パラメータを処理。
-
-            if (strコマンド.Length < 2)
-                return false;   // AVI番号 zz がないなら無効。
-
-            #region [ AVI番号 zz を取得する。]
-            //-----------------
-            int zz = C変換.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
-            if (zz < 0 || zz >= 36 * 36)
-            {
-                Trace.TraceError("AVI(VIDEO)番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
-                return false;
-            }
-            //-----------------
-            #endregion
-
-            #region [ AVIリストに {zz, avi} の組を登録する。 ]
-            //-----------------
-            var avi = new CAVI()
-            {
-                n番号 = zz,
-                strファイル名 = strパラメータ,
-                strコメント文 = strコメント,
-            };
-
-            if (this.listAVI.ContainsKey(zz))   // 既にリスト中に存在しているなら削除。後のものが有効。
-                this.listAVI.Remove(zz);
-
-            this.listAVI.Add(zz, avi);
-            //-----------------
-            #endregion
-
-            return true;
-        }
-        private bool t入力_行解析_AVIPAN(string strコマンド, string strパラメータ, string strコメント)
-        {
-            // (1) コマンドを処理。
-
-            #region [ "AVIPAN" で始まらないコマンドは無効。]
-            //-----------------
-            if (!strコマンド.StartsWith("AVIPAN", StringComparison.OrdinalIgnoreCase))
-                return false;
-
-            strコマンド = strコマンド.Substring(6); // strコマンド から先頭の"AVIPAN"文字を除去。
-                                            //-----------------
-            #endregion
-
-            // (2) パラメータを処理。
-
-            if (strコマンド.Length < 2)
-                return false;   // AVIPAN番号 zz がないなら無効。
-
-            #region [ AVIPAN番号 zz を取得する。]
-            //-----------------
-            int zz = C変換.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
-            if (zz < 0 || zz >= 36 * 36)
-            {
-                Trace.TraceError("AVIPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
-                return false;
-            }
-            //-----------------
-            #endregion
-
-            var avipan = new CAVIPAN()
-            {
-                n番号 = zz,
-            };
-
-            // パラメータ引数（14個）を取得し、avipan に登録していく。
-
-            string[] strParams = strパラメータ.Split(new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            #region [ パラメータ引数は全14個ないと無効。]
-            //-----------------
-            if (strParams.Length < 14)
-            {
-                Trace.TraceError("AVIPAN: 引数が足りません。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
-                return false;
-            }
-            //-----------------
-            #endregion
-
-            int i = 0;
-            int n値 = 0;
-
-            #region [ 1. AVI番号 ]
-            //-----------------
-            if (string.IsNullOrEmpty(strParams[i]) || strParams[i].Length > 2)
-            {
-                Trace.TraceError("AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.nAVI番号 = C変換.n36進数2桁の文字列を数値に変換して返す(strParams[i]);
-            if (avipan.nAVI番号 < 1 || avipan.nAVI番号 >= 36 * 36)
-            {
-                Trace.TraceError("AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            i++;
-            //-----------------
-            #endregion
-            #region [ 2. 開始転送サイズ_幅 ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（開始転送サイズ_幅）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.sz開始サイズ.Width = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 3. 転送サイズ_高さ ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（開始転送サイズ_高さ）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.sz開始サイズ.Height = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 4. 終了転送サイズ_幅 ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（終了転送サイズ_幅）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.sz終了サイズ.Width = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 5. 終了転送サイズ_高さ ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（終了転送サイズ_高さ）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.sz終了サイズ.Height = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 6. 動画側開始位置_X ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（動画側開始位置_X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt動画側開始位置.X = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 7. 動画側開始位置_Y ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（動画側開始位置_Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt動画側開始位置.Y = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 8. 動画側終了位置_X ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（動画側終了位置_X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt動画側終了位置.X = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 9. 動画側終了位置_Y ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（動画側終了位置_Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt動画側終了位置.Y = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 10.表示側開始位置_X ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（表示側開始位置_X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt表示側開始位置.X = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 11.表示側開始位置_Y ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（表示側開始位置_Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt表示側開始位置.Y = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 12.表示側終了位置_X ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（表示側終了位置_X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt表示側終了位置.X = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 13.表示側終了位置_Y ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（表示側終了位置_Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-            avipan.pt表示側終了位置.Y = n値;
-            i++;
-            //-----------------
-            #endregion
-            #region [ 14.移動時間 ]
-            //-----------------
-            n値 = 0;
-            if (!int.TryParse(strParams[i], out n値))
-            {
-                Trace.TraceError("AVIPAN: {2}番目の引数（移動時間）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1);
-                return false;
-            }
-
-            if (n値 < 0)
-                n値 = 0;
-
-            avipan.n移動時間ct = n値;
-            i++;
-            //-----------------
-            #endregion
-
-            #region [ AVIPANリストに {zz, avipan} の組を登録する。]
-            //-----------------
-            if (this.listAVIPAN.ContainsKey(zz))    // 既にリスト中に存在しているなら削除。後のものが有効。
-                this.listAVIPAN.Remove(zz);
-
-            this.listAVIPAN.Add(zz, avipan);
-            //-----------------
-            #endregion
-
-            return true;
         }
         private bool t入力_行解析_BPM_BPMzz(string strコマンド, string strパラメータ, string strコメント)
         {

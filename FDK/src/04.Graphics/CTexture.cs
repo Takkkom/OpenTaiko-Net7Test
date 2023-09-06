@@ -124,6 +124,19 @@ namespace FDK
             this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
         }
 
+        public void UpdateTexture(IntPtr texture, int width, int height)
+        {
+            unsafe 
+            {
+                Texture_?.Dispose();
+                void* data = texture.ToPointer();
+                Texture_ = Game.GraphicsDevice.GenTexture(data, width, height);
+            }
+            this.sz画像サイズ = new Size(width, height);
+            this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す(this.sz画像サイズ);
+            this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);
+        }
+
         /// <summary>
         /// <para>指定されたビットマップオブジェクトから Managed テクスチャを作成する。</para>
         /// <para>テクスチャのサイズは、BITMAP画像のサイズ以上、かつ、D3D9デバイスで生成可能な最小のサイズに自動的に調節される。
@@ -207,7 +220,13 @@ namespace FDK
                     bitmap = new SKBitmap(10, 10);
                 }
 
-                Texture_ = Game.GraphicsDevice.GenTexture(bitmap);
+                unsafe 
+                {
+                    fixed(void* data = bitmap.Pixels)
+                    {
+                        Texture_ = Game.GraphicsDevice.GenTexture(data, bitmap.Width, bitmap.Height);
+                    }
+                }
 
                 this.sz画像サイズ = new Size(bitmap.Width, bitmap.Height);
                 this.rc全画像 = new Rectangle(0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height);

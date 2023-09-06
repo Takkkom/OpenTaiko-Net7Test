@@ -800,7 +800,7 @@ namespace FDK
 			{
 				if ( this.bBASSサウンドである )
 				{
-					bool ret = ( BassMixExtensions.ChannelIsPlaying( this.hBassStream ) ) &
+					bool ret = ( !BassMixExtensions.ChannelIsPlaying( this.hBassStream ) ) &
 								( BassMix.ChannelGetPosition( this.hBassStream ) > 0 );
 					return ret;
 				}

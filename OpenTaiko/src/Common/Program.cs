@@ -114,6 +114,7 @@ namespace TJAPlayer3
 								throw new PlatformNotSupportedException($"TJAPlayer3 does not support this Architecture. ({RuntimeInformation.ProcessArchitecture})");
 						}
 
+                		FFmpeg.AutoGen.ffmpeg.RootPath = AppContext.BaseDirectory + @"FFmpeg/" + osplatform + "-" + platform + "/";
 						DirectoryInfo info = new DirectoryInfo(AppContext.BaseDirectory + @"Libs/" + osplatform + "-" + platform + "/");
 
 						//実行ファイルの階層にライブラリをコピー

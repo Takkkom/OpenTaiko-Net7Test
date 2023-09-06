@@ -3743,21 +3743,13 @@ namespace TJAPlayer3
 							pChip.bHit = true;
 							if ( configIni.bAVI有効 )
 							{
-								switch ( pChip.eAVI種別 )
-								{
-									case EAVI種別.AVI:
-										if ( pChip.rAVI != null )
-										{
-											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
-										}
-										break;
-									case EAVI種別.Unknown:
-										if ( pChip.rAVI != null )
-										{
-											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
-										}
-										break;
-								}
+                                if ((dTX.listVD.TryGetValue(pChip.n整数値, out CVideoDecoder vd)))
+                                {
+                                    if (TJAPlayer3.ConfigIni.bAVI有効 && vd != null)
+                                    {
+                                        this.actAVI.Start(pChip.nチャンネル番号, vd);
+                                    }
+                                }
 							}
 						}
 						break;
@@ -5051,7 +5043,7 @@ namespace TJAPlayer3
 
             TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
             this.t数値の初期化( true, true );
-            this.actAVI.tReset();
+			this.actAVI.Stop();
             this.actPanel.t歌詞テクスチャを削除する();
             for (int i = 0; i < 5; i++)
             {
@@ -5270,7 +5262,25 @@ namespace TJAPlayer3
 			}
 #endregion
 #region [ 演奏開始時点で既に表示されているBGAとAVIの、シークと再生 ]
-			this.actAVI.SkipStart( nStartTime );
+			if (dTX.listVD.Count > 0)
+            {
+                for (int i = 0; i < dTX.listChip.Count; i++)
+                {
+                    if (dTX.listChip[i].nチャンネル番号 == 0x54)
+                    {
+                        if (dTX.listChip[i].n発声時刻ms <= nStartTime)
+                        {
+                            this.actAVI.Seek(nStartTime - dTX.listChip[i].n発声時刻ms);
+                            this.actAVI.Start(0x54, this.actAVI.rVD);
+                            break;
+                        }
+                        else
+                        {
+                            this.actAVI.Seek(0);
+                        }  
+                    } 
+                }
+            }
 #endregion
 #region [ PAUSEしていたサウンドを一斉に再生再開する(ただしタイマを止めているので、ここではまだ再生開始しない) ]
 

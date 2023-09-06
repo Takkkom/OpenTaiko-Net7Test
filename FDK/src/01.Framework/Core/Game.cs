@@ -345,7 +345,7 @@ namespace SampleFramework
             }
 
 
-            GraphicsDevice.SetClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+            GraphicsDevice.SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             GraphicsDevice.SetViewPort(0, 0, (uint)Window_.Size.X, (uint)Window_.FramebufferSize.Y);
             GraphicsDevice.SetFrameBuffer((uint)Window_.FramebufferSize.X, (uint)Window_.FramebufferSize.Y);
 

@@ -29,7 +29,7 @@ namespace SampleFramework
 
         IShader GenShader();
 
-        ITexture GenTexture(SKBitmap bitmap);
+        unsafe ITexture GenTexture(void* data, int width, int height);
 
         void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType);
     }

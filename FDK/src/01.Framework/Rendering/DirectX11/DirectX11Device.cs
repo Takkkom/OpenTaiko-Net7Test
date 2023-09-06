@@ -275,7 +275,8 @@ namespace SampleFramework
                 ");
         }
 
-        public ITexture GenTexture(SKBitmap bitmap)
+
+        public unsafe ITexture GenTexture(void* data, int width, int height)
         {
             return null;
         }

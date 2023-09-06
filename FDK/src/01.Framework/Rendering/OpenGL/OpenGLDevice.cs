@@ -97,9 +97,9 @@ namespace SampleFramework
             );
         }
 
-        public ITexture GenTexture(SKBitmap bitmap)
+        public unsafe ITexture GenTexture(void* data, int width, int height)
         {
-            return new OpenGLTexture(bitmap);
+            return new OpenGLTexture(data, width, height);
         }
 
         public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)

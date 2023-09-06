@@ -2510,11 +2510,6 @@ for (int i = 0; i < 3; i++) {
 			}
 			//---------------------
 			#endregion
-			#region [ CAvi の初期化 ]
-			//---------------------
-			CAvi.t初期化();
-			//---------------------
-			#endregion
 			#region [ Random の初期化 ]
 			//---------------------
 			Random = new Random( (int) Timer.nシステム時刻 );
@@ -2748,7 +2743,6 @@ for (int i = 0; i < 3; i++) {
 						Trace.Unindent();
 					}
 				}
-				CAvi.t終了();
                 //---------------------
                 #endregion
                 #region TextureLoaderの処理
