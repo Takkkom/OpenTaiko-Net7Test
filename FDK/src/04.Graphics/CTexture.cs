@@ -469,12 +469,12 @@ namespace FDK
 
             //Rotation--------------------------
 
-            Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f / aspect, 1.0f, 1.0f);
+            Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f * aspect, 1.0f, 1.0f);
             rotationMatrix *= 
             Matrix4X4.CreateRotationX(0.0f) * 
             Matrix4X4.CreateRotationY(0.0f) * 
             Matrix4X4.CreateRotationZ(fZ軸中心回転);
-            rotationMatrix *= Matrix4X4.CreateScale(1.0f * aspect, 1.0f, 1.0f);
+            rotationMatrix *= Matrix4X4.CreateScale(1.0f / aspect, 1.0f, 1.0f);
             
             mvp *= rotationMatrix;
 
