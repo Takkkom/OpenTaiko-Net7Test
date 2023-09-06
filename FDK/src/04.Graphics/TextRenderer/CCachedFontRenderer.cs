@@ -22,10 +22,6 @@ namespace FDK
 		{
 			Initialize( fontpath, pt, CFontRenderer.FontStyle.Regular );
 		}
-		public CCachedFontRenderer()
-		{
-			throw new ArgumentException("CCachedFontRenderer: 引数があるコンストラクタを使用してください。");
-		}
 		#endregion
 		#region [ コンストラクタから呼ばれる初期化処理 ]
 		protected new void Initialize( string fontpath, int pt, CFontRenderer.FontStyle style )

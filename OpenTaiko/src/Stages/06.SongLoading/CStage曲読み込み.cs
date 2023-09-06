@@ -520,8 +520,8 @@ namespace TJAPlayer3
 							#region [dan setup]
 							if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan && TJAPlayer3.DTX.List_DanSongs != null)
                             {
-                                var pfTitle = new CCachedFontRenderer();
-                                var pfSubTitle = new CCachedFontRenderer();
+                                CCachedFontRenderer pfTitle = null;
+                                CCachedFontRenderer pfSubTitle = null;
                                 if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                                 {
                                     pfTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Game_DanC_Title_Size);
