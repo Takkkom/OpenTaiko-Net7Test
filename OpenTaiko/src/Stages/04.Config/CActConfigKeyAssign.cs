@@ -330,7 +330,7 @@ namespace TJAPlayer3
 			{
 				if( device.e入力デバイス種別 == E入力デバイス種別.Joystick )
 				{
-					for (int i = 0; i < 8 + 0x80 + 8; i++)      // +8 for Axis, +8 for HAT
+					for (int i = 0; i < 15; i++)      // +8 for Axis, +8 for HAT
 					{
 						if (device.bキーが押された(i))
 						{
@@ -348,7 +348,7 @@ namespace TJAPlayer3
 		}
 		private bool tキーチェックとアサイン_Keyboard()
 		{
-			for( int i = 0; i < 0x100; i++ )
+			for( int i = 0; i < 144; i++ )
 			{
 				if (i != (int)SlimDXKeys.Key.Escape &&
 					i != (int)SlimDXKeys.Key.Return &&

@@ -3059,9 +3059,10 @@ for (int i = 0; i < 3; i++) {
 
 		private void ChangeResolution(int nWidth, int nHeight)
 		{
-			//currentClientSize = this.Window.ClientSize;
 			GameWindowSize.Width = nWidth;
 			GameWindowSize.Height = nHeight;
+			
+			WindowSize = new Silk.NET.Maths.Vector2D<int>(nWidth, nHeight);
 		}
 
 		public void RefleshSkin()
