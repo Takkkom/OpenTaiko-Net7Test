@@ -171,7 +171,7 @@ namespace FDK
 										continue;
 									}
 
-							lastTexture.UpdateTexture(cdecodedframe.TexPointer, cdecodedframe.TexSize.Width, cdecodedframe.TexSize.Height);
+							lastTexture.UpdateTexture(cdecodedframe.TexPointer, cdecodedframe.TexSize.Width, cdecodedframe.TexSize.Height, SampleFramework.RgbaType.Rgba);
 
 							cdecodedframe.RemoveFrame();
 						}

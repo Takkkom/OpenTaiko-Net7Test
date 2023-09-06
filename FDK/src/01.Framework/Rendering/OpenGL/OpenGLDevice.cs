@@ -97,9 +97,9 @@ namespace SampleFramework
             );
         }
 
-        public unsafe ITexture GenTexture(void* data, int width, int height)
+        public unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType)
         {
-            return new OpenGLTexture(data, width, height);
+            return new OpenGLTexture(data, width, height, rgbaType);
         }
 
         public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)

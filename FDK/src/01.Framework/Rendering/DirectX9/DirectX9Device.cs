@@ -84,7 +84,7 @@ namespace SampleFramework
             return null;
         }
 
-        public unsafe ITexture GenTexture(void* data, int width, int height)
+        public unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType)
         {
             return null;
         }
