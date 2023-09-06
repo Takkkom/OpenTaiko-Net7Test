@@ -53,6 +53,11 @@ namespace SampleFramework
         {
         }
 
+        public unsafe SKBitmap GetScreenPixels()
+        {  
+            return null;
+        }
+
         public void Dispose()
         {
         }

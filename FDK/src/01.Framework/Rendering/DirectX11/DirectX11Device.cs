@@ -301,6 +301,11 @@ namespace SampleFramework
             ImmediateContext.DrawIndexed(polygon.IndiceCount, 0, 0);
         }
 
+        public unsafe SKBitmap GetScreenPixels()
+        {  
+            return null;
+        }
+
         public void Dispose()
         {
             DepthStencilView.Dispose();

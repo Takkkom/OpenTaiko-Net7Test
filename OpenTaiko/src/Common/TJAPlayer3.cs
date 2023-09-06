@@ -559,7 +559,9 @@ namespace TJAPlayer3
 				}
 			}
 
-			return true;
+			using SKBitmap sKBitmap = GetScreenShot();
+			using FileStream stream = File.OpenWrite(strFullPath);
+			return sKBitmap.Encode(stream, SKEncodedImageFormat.Png, 80);
 		}
 		#endregion
 

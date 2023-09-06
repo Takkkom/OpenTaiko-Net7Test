@@ -2,12 +2,18 @@ using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using SkiaSharp;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace SampleFramework
 {
     class OpenGLDevice : IGraphicsDevice
     {
         public static GL Gl;
+
+        private int ViewportWidth;
+
+        private int ViewportHeight;
 
         public OpenGLDevice(IWindow window)
         {
@@ -23,6 +29,8 @@ namespace SampleFramework
 
         public void SetViewPort(int x, int y, uint width, uint height)
         {
+            ViewportWidth = (int)width;
+            ViewportHeight = (int)height;
             Gl.Viewport(x, y, width, height);
         }
 
@@ -141,6 +149,31 @@ namespace SampleFramework
             {
                 Gl.UseProgram(glShader.ShaderProgram);
                 Gl.DrawElements(PrimitiveType.Triangles, glPolygon.IndiceCount, DrawElementsType.UnsignedInt, (void*)0);
+            }
+        }
+
+        public unsafe SKBitmap GetScreenPixels()
+        {  
+            fixed(uint* pixels = new uint[(uint)ViewportWidth * (uint)ViewportHeight])
+            {
+                Gl.ReadPixels(0, 0, (uint)ViewportWidth, (uint)ViewportHeight, GLEnum.Bgra, GLEnum.UnsignedByte, pixels);
+
+                fixed(uint* pixels2 = new uint[(uint)ViewportWidth * (uint)ViewportHeight])
+                {
+                    for(int x = 0; x < ViewportWidth; x++)
+                    {
+                        for(int y = 0; y < ViewportHeight; y++)
+                        {
+                            int pos = x + (y * ViewportWidth);
+                            int pos2 = x + ((ViewportHeight - y) * ViewportWidth);
+                            pixels2[pos] = pixels[pos2];
+                        }
+                    }
+
+                    using SKBitmap sKBitmap = new(ViewportWidth, ViewportHeight);
+                    sKBitmap.SetPixels((IntPtr)pixels2);
+                    return sKBitmap.Copy();
+                }
             }
         }
 

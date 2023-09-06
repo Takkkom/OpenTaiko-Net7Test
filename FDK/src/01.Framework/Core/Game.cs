@@ -25,6 +25,7 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using Silk.NET.Windowing;
 using Silk.NET.Maths;
+using SkiaSharp;
 
 namespace SampleFramework
 {
@@ -175,6 +176,11 @@ namespace SampleFramework
                 default:
                     return GraphicsAPI.None;
             }
+        }
+
+        public unsafe SKBitmap GetScreenShot()
+        {
+            return GraphicsDevice.GetScreenPixels();
         }
 
         public static long TimeMs;

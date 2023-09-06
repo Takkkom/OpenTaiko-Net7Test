@@ -32,5 +32,7 @@ namespace SampleFramework
         unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType);
 
         void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType);
+
+        unsafe SKBitmap GetScreenPixels();
     }
 }
