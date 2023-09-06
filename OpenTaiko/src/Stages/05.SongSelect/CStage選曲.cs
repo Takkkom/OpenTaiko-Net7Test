@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using DiscordRPC;
 
 namespace TJAPlayer3
 {
@@ -353,7 +354,17 @@ namespace TJAPlayer3
 
                 this.actステータスパネル.t選択曲が変更された();	// 最大ランクを更新
                 // Discord Presenceの更新
-                Discord.UpdatePresence("", "SongSelect", TJAPlayer3.StartupTime);
+				TJAPlayer3.DiscordClient?.SetPresence(new RichPresence()
+				{
+					Details = "",
+					State = "SongSelect",
+					Timestamps = new Timestamps(TJAPlayer3.StartupTime),
+					Assets = new Assets()
+					{
+						LargeImageKey = TJAPlayer3.LargeImageKey,
+						LargeImageText = TJAPlayer3.LargeImageText,
+					}
+				});
 
                
 

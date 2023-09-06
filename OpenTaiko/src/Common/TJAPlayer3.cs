@@ -14,10 +14,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
 using SkiaSharp;
+using DiscordRPC;
 
 using Rectangle = System.Drawing.Rectangle;
 using Point = System.Drawing.Point;
 using Color = System.Drawing.Color;
+using System.Runtime.InteropServices;
 
 namespace TJAPlayer3
 {
@@ -498,6 +500,7 @@ namespace TJAPlayer3
 			get;
 			set;
 		}
+		public static DiscordRpcClient DiscordClient;
 
 		// 0 : 1P, 1 : 2P
 		public static int SaveFile = 0;
@@ -531,6 +534,22 @@ namespace TJAPlayer3
 		}
 
 		public static string sEncType = "Shift_JIS";
+
+		public static string LargeImageKey
+		{
+			get
+			{
+				return "opentaiko";
+			}
+		}
+		
+		public static string LargeImageText
+		{
+			get
+			{
+				return "Ver." + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "(" + RuntimeInformation.RuntimeIdentifier + ")";
+			}
+		}
 
 		
 
@@ -2167,7 +2186,7 @@ for (int i = 0; i < 3; i++) {
 			}
 		}
 		private CSound previewSound;
-        public static long StartupTime
+        public static DateTime StartupTime
         {
             get;
             private set;
@@ -2418,16 +2437,18 @@ for (int i = 0; i < 3; i++) {
 			try
 			{
 				ESoundDeviceType soundDeviceType;
-				switch (Environment.Is64BitProcess ? Math.Max(1, TJAPlayer3.ConfigIni.nSoundDeviceType) :
-					TJAPlayer3.ConfigIni.nSoundDeviceType)
+				switch (TJAPlayer3.ConfigIni.nSoundDeviceType)
 				{
 					case 0:
-						soundDeviceType = ESoundDeviceType.ASIO;
+						soundDeviceType = ESoundDeviceType.Bass;
 						break;
 					case 1:
-						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						soundDeviceType = ESoundDeviceType.ASIO;
 						break;
 					case 2:
+						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					case 3:
 						soundDeviceType = ESoundDeviceType.SharedWASAPI;
 						break;
 					default:
@@ -2436,6 +2457,7 @@ for (int i = 0; i < 3; i++) {
 				}
 				Sound管理 = new CSound管理(Window_,
 											soundDeviceType,
+											TJAPlayer3.ConfigIni.nBassBufferSizeMs,
 											TJAPlayer3.ConfigIni.nWASAPIBufferSizeMs,
 					// CDTXMania.ConfigIni.nASIOBufferSizeMs,
 											0,
@@ -2603,9 +2625,20 @@ for (int i = 0; i < 3; i++) {
             #endregion
 
             #region Discordの処理
-			Discord.Initialize("939341030141096007");
-            StartupTime = Discord.GetUnixTime();
-            Discord.UpdatePresence("", "Startup", StartupTime);
+			DiscordClient = new DiscordRpcClient("939341030141096007");
+			DiscordClient?.Initialize();
+			StartupTime = DateTime.UtcNow;
+			DiscordClient?.SetPresence(new RichPresence()
+			{
+				Details = "",
+				State = "Startup",
+				Timestamps = new Timestamps(TJAPlayer3.StartupTime),
+				Assets = new Assets()
+				{
+					LargeImageKey = TJAPlayer3.LargeImageKey,
+					LargeImageText = TJAPlayer3.LargeImageText,
+				}
+			});
             #endregion
 
 
@@ -2717,7 +2750,7 @@ for (int i = 0; i < 3; i++) {
                 //---------------------
                 #endregion
                 #region Discordの処理
-                Discord.Shutdown();
+				DiscordClient?.Dispose();
                 #endregion
                 #region [ 曲リストの終了処理 ]
                 //---------------------

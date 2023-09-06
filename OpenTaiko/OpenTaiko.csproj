@@ -7,6 +7,7 @@
     <PackageReference Include="SevenZip" Version="19.0.0"/>
     <PackageReference Include="NLua" Version="1.6.3"/>
     <PackageReference Include="System.Resources.Extensions" Version="7.0.0"/>
+    <PackageReference Include="DiscordRichPresence" Version="1.143.0"/>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Databases/**" CopyToOutputDirectory="PreserveNewest"/>

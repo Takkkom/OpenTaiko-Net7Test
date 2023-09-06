@@ -5,6 +5,7 @@ using FDK;
 using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
+using DiscordRPC;
 using static TJAPlayer3.CActSelect曲リスト;
 
 namespace TJAPlayer3
@@ -457,12 +458,46 @@ namespace TJAPlayer3
 					#endregion
 				}
 
+				string diffToString(int diff)
+				{
+					string[] diffArr =
+					{
+						" Easy ",
+						" Normal ",
+						" Hard ",
+						" Extreme ",
+						" Extra ",
+						" Tower ",
+						" Dan "
+					};
+					string[] diffArrIcon =
+					{
+						"-",
+						"",
+						"+"
+					};
+
+					int level = TJAPlayer3.stage選曲.r確定された曲.nLevel[diff];
+					CDTX.ELevelIcon levelIcon = TJAPlayer3.stage選曲.r確定された曲.nLevelIcon[diff];
+
+					return (diffArr[Math.Min(diff, 6)] + "Lv." + level + diffArrIcon[(int)levelIcon]);
+				}
+
+				string Details = TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? TJAPlayer3.stage選曲.r確定された曲.strタイトル
+					+ diffToString(TJAPlayer3.stage選曲.n確定された曲の難易度[0]) : "";
+
 				// Discord Presenseの更新
-				Discord.UpdatePresence(TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? TJAPlayer3.stage選曲.r確定された曲.strタイトル
-					+ Discord.DiffToString(TJAPlayer3.stage選曲.n確定された曲の難易度[0])
-					: "",
-					"Result" + (TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0] == true ? " (" + "Auto" + ")" : ""), 
-					TJAPlayer3.StartupTime);
+				TJAPlayer3.DiscordClient?.SetPresence(new RichPresence()
+				{
+					Details = Details.Substring(0, Math.Min(127, Details.Length)),
+					State = "Result" + (TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0] == true ? " (Auto)" : ""),
+					Timestamps = new Timestamps(TJAPlayer3.StartupTime),
+					Assets = new Assets()
+					{
+						LargeImageKey = TJAPlayer3.LargeImageKey,
+						LargeImageText = TJAPlayer3.LargeImageText,
+					}
+				});
 
 
 				#region [Earned medals]

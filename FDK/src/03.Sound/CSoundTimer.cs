@@ -13,7 +13,8 @@ namespace FDK
 		{
 			get
 			{
-				if( this.Device.e出力デバイス == ESoundDeviceType.ExclusiveWASAPI || 
+				if( this.Device.e出力デバイス == ESoundDeviceType.Bass || 
+					this.Device.e出力デバイス == ESoundDeviceType.ExclusiveWASAPI || 
 					this.Device.e出力デバイス == ESoundDeviceType.SharedWASAPI ||
 					this.Device.e出力デバイス == ESoundDeviceType.ASIO )
 				{

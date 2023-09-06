@@ -130,6 +130,14 @@ namespace FDK
 			SoundDelayExclusiveWASAPI = value;
 		}
 		/// <summary>
+		/// <para>WASAPI BASS出力における再生遅延[ms]。ユーザが決定する。</para>
+		/// </summary>
+		private static int SoundDelayBASS = 15;
+		/// <para>BASSバッファの更新間隔。出力間隔ではないので注意。</para>
+		/// <para>SoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
+		/// </summary>
+		private static int SoundUpdatePeriodBASS = 1;
+		/// <summary>
 		/// <para>WASAPI 共有モード出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
 		public static int SoundDelaySharedWASAPI = 100;
@@ -196,12 +204,12 @@ namespace FDK
 		/// <param name="nSoundDelayExclusiveWASAPI"></param>
 		/// <param name="nSoundDelayASIO"></param>
 		/// <param name="nASIODevice"></param>
-		public CSound管理( IWindow window, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice, bool _bUseOSTimer )
+		public CSound管理( IWindow window, ESoundDeviceType soundDeviceType, int nSoundDelayBASS, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice, bool _bUseOSTimer )
 		{
 			Window_ = window;
 			SoundDevice = null;
 			//bUseOSTimer = false;
-			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
+			t初期化( soundDeviceType, nSoundDelayBASS, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
 		}
 		public void Dispose()
 		{
@@ -213,33 +221,35 @@ namespace FDK
 		//    t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
 		//}
 
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
 		{
 			//if ( !bInitialized )
 			{
-				t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice );
+				t初期化( soundDeviceType, _nSoundDelayBASS, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice );
 				//bInitialized = true;
 			}
 		}
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
 		{
-			t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
+			t初期化( soundDeviceType, _nSoundDelayBASS, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
 		}
 
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
 		{
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
 
+			SoundDelayBASS = _nSoundDelayBASS;
 			SoundDelayExclusiveWASAPI = _nSoundDelayExclusiveWASAPI;
 			SoundDelaySharedWASAPI = _nSoundDelayExclusiveWASAPI;
             SoundDelayASIO = _nSoundDelayASIO;
 			ASIODevice = _nASIODevice;
 			bUseOSTimer = _bUseOSTimer;
 
-			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[4]
+			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[5]
 			{
+				ESoundDeviceType.Bass,
 				ESoundDeviceType.ExclusiveWASAPI,
 				ESoundDeviceType.SharedWASAPI,
 				ESoundDeviceType.ASIO,
@@ -249,17 +259,20 @@ namespace FDK
 			int n初期デバイス;
 			switch ( soundDeviceType )
 			{
-				case ESoundDeviceType.ExclusiveWASAPI:
+				case ESoundDeviceType.Bass:
 					n初期デバイス = 0;
 					break;
-				case ESoundDeviceType.SharedWASAPI:
+				case ESoundDeviceType.ExclusiveWASAPI:
 					n初期デバイス = 1;
 					break;
-				case ESoundDeviceType.ASIO:
+				case ESoundDeviceType.SharedWASAPI:
 					n初期デバイス = 2;
 					break;
-				default:
+				case ESoundDeviceType.ASIO:
 					n初期デバイス = 3;
+					break;
+				default:
+					n初期デバイス = 4;
 					break;
 			}
 			for ( SoundDeviceType = ESoundDeviceTypes[ n初期デバイス ]; ; SoundDeviceType = ESoundDeviceTypes[ ++n初期デバイス ] )
@@ -280,7 +293,8 @@ namespace FDK
 					}
 				}
 			}
-			if ( soundDeviceType == ESoundDeviceType.ExclusiveWASAPI
+			if ( soundDeviceType == ESoundDeviceType.Bass
+				|| soundDeviceType == ESoundDeviceType.ExclusiveWASAPI
 				|| soundDeviceType == ESoundDeviceType.SharedWASAPI
 				|| soundDeviceType == ESoundDeviceType.ASIO )
 			{
@@ -332,6 +346,10 @@ namespace FDK
 			//-----------------
 			switch ( SoundDeviceType )
 			{
+				case ESoundDeviceType.Bass:
+					SoundDevice = new CSoundDeviceBASS( SoundDelayBASS, SoundUpdatePeriodBASS );
+					break;
+
 				case ESoundDeviceType.ExclusiveWASAPI:
 					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.排他, SoundDelayExclusiveWASAPI, SoundUpdatePeriodExclusiveWASAPI );
 					break;
@@ -385,6 +403,8 @@ namespace FDK
 		{
 			switch ( SoundDeviceType )
 			{
+				case ESoundDeviceType.Bass:
+					return "Bass";
 				case ESoundDeviceType.ExclusiveWASAPI:
 					return "Exclusive WASAPI";
 				case ESoundDeviceType.SharedWASAPI:
@@ -728,6 +748,16 @@ namespace FDK
 			this._hTempoStream = 0;
 		}
 
+		public void tBASSサウンドを作成する( string strファイル名, int hMixer )
+		{
+		    this.eデバイス種別 = ESoundDeviceType.Bass;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
+			this.tBASSサウンドを作成する( strファイル名, hMixer, BassFlags.Decode );
+		}
+		public void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer )
+		{
+		    this.eデバイス種別 = ESoundDeviceType.Bass;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
+			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BassFlags.Decode );
+		}
 		public void tASIOサウンドを作成する( string strファイル名, int hMixer )
 		{
 		    this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
@@ -1142,6 +1172,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			get
 			{
 				return (
+					this.eデバイス種別 == ESoundDeviceType.Bass ||
 					this.eデバイス種別 == ESoundDeviceType.ASIO ||
 					this.eデバイス種別 == ESoundDeviceType.ExclusiveWASAPI ||
 					this.eデバイス種別 == ESoundDeviceType.SharedWASAPI );
@@ -1160,7 +1191,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private double _db再生速度 = 1.0;
 		private bool bIs1倍速再生 = true;
 
-		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BassFlags flags )
+		public void tBASSサウンドを作成する( string strファイル名, int hMixer, BassFlags flags )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
@@ -1176,7 +1207,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			
 			tBASSサウンドを作成する_ストリーム生成後の共通処理( hMixer );
 		}
-		private void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BassFlags flags )
+		public void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BassFlags flags )
 		{
 			this.e作成方法 = E作成方法.WAVファイルイメージから;
 			this.byArrWAVファイルイメージ = byArrWAVファイルイメージ;

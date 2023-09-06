@@ -208,8 +208,13 @@ namespace TJAPlayer3
 
 			this.iSystemSoundType = new CItemList(CLangManager.LangInstance.GetString(10043), CItemList.Eパネル種別.通常, TJAPlayer3.ConfigIni.nSoundDeviceType,
 				CLangManager.LangInstance.GetString(43),
-				new string[] { "ASIO", "WASAPI Exclusive", "WASAPI Shared" });
+				new string[] { "Bass", "ASIO", "WASAPI Exclusive", "WASAPI Shared" });
 			this.list項目リスト.Add(this.iSystemSoundType);
+
+			// #24820 2013.1.15 yyagi
+			this.iSystemBassBufferSizeMs = new CItemInteger(CLangManager.LangInstance.GetString(9999), 0, 99999, TJAPlayer3.ConfigIni.nBassBufferSizeMs,
+				CLangManager.LangInstance.GetString(9998));
+			this.list項目リスト.Add( this.iSystemBassBufferSizeMs );
 
 			// #24820 2013.1.15 yyagi
 			this.iSystemWASAPIBufferSizeMs = new CItemInteger(CLangManager.LangInstance.GetString(10044), 0, 99999, TJAPlayer3.ConfigIni.nWASAPIBufferSizeMs,
@@ -925,6 +930,7 @@ namespace TJAPlayer3
 			this.ct三角矢印アニメ = new CCounter();
 
 			this.iSystemSoundType_initial			= this.iSystemSoundType.n現在選択されている項目番号;	// CONFIGに入ったときの値を保持しておく
+			this.iSystemBassBufferSizeMs_initial	= this.iSystemBassBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
 			this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
 			// this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
 			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
@@ -953,6 +959,7 @@ namespace TJAPlayer3
 			// #33689 2014.6.17 yyagi CONFIGでSoundTimerTypeの設定を変更した場合も、サウンドデバイスを再構築する。
 			#region [ サウンドデバイス変更 ]
 			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
+				 this.iSystemBassBufferSizeMs_initial != this.iSystemBassBufferSizeMs.n現在の値 ||
 				 this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
 				// this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
 				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 ||
@@ -962,12 +969,15 @@ namespace TJAPlayer3
 				switch (this.iSystemSoundType.n現在選択されている項目番号)
 				{
 					case 0:
-						soundDeviceType = ESoundDeviceType.ASIO;
+						soundDeviceType = ESoundDeviceType.Bass;
 						break;
 					case 1:
-						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						soundDeviceType = ESoundDeviceType.ASIO;
 						break;
 					case 2:
+						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					case 3:
 						soundDeviceType = ESoundDeviceType.SharedWASAPI;
 						break;
 					default:
@@ -975,6 +985,7 @@ namespace TJAPlayer3
 						break;
 				}
 				TJAPlayer3.Sound管理.t初期化( soundDeviceType,
+										this.iSystemBassBufferSizeMs.n現在の値,
 										this.iSystemWASAPIBufferSizeMs.n現在の値,
 										0,
 										// this.iSystemASIOBufferSizeMs.n現在の値,
@@ -1481,11 +1492,13 @@ namespace TJAPlayer3
 		private CItemList iSystemLanguage;
 		private CItemToggle iDanTowerHide;
 		
+		private CItemInteger iSystemBassBufferSizeMs;		// #24820 2013.1.15 yyagi
 		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
 //		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
 		private CItemList	iSystemASIODevice;				// #24820 2013.1.17 yyagi
 
 		private int iSystemSoundType_initial;
+		private int iSystemBassBufferSizeMs_initial;
 		private int iSystemWASAPIBufferSizeMs_initial;
 //		private int iSystemASIOBufferSizeMs_initial;
 		private int iSystemASIODevice_initial;
@@ -1653,6 +1666,7 @@ namespace TJAPlayer3
 			TJAPlayer3.Skin.SetCurrentSkinSubfolderFullName( TJAPlayer3.ConfigIni.strSystemSkinSubfolderFullName, true );
 
 			TJAPlayer3.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
+			TJAPlayer3.ConfigIni.nBassBufferSizeMs = this.iSystemBassBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
 			TJAPlayer3.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
 //			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 			TJAPlayer3.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi

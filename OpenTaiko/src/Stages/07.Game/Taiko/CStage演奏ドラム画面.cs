@@ -8,6 +8,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using FDK;
+using DiscordRPC;
 
 using Rectangle = System.Drawing.Rectangle;
 using Point = System.Drawing.Point;
@@ -243,21 +244,50 @@ namespace TJAPlayer3
             this.ShownLyric2 = 0;
 
 
+			string diffToString(int diff)
+			{
+				string[] diffArr =
+				{
+					" Easy ",
+					" Normal ",
+					" Hard ",
+					" Extreme ",
+					" Extra ",
+					" Tower ",
+					" Dan "
+				};
+				string[] diffArrIcon =
+				{
+					"-",
+					"",
+					"+"
+				};
+
+				int level = TJAPlayer3.stage選曲.r確定された曲.nLevel[diff];
+				CDTX.ELevelIcon levelIcon = TJAPlayer3.stage選曲.r確定された曲.nLevelIcon[diff];
+
+				return (diffArr[Math.Min(diff, 6)] + "Lv." + level + diffArrIcon[(int)levelIcon]);
+			}
+
             // Discord Presence の更新
-            var endTimeStamp = TJAPlayer3.DTX.listChip.Count == 0
-                ? 0
-                : Discord.GetUnixTime() + (long)((TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms / 1000) / (TJAPlayer3.ConfigIni.n演奏速度 / 20f));
+			string Details = TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? TJAPlayer3.stage選曲.r確定された曲.strタイトル
+				+ diffToString(TJAPlayer3.stage選曲.n確定された曲の難易度[0]) : "";
 
             var difficultyName = TJAPlayer3.DifficultyNumberToEnum(TJAPlayer3.stage選曲.n確定された曲の難易度[0]).ToString();
 
-            Discord.UpdatePresence(TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? TJAPlayer3.stage選曲.r確定された曲.strタイトル
-                    + Discord.DiffToString(TJAPlayer3.stage選曲.n確定された曲の難易度[0])
-                    : "",
-                "Playing" + (TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0] == true ? " (" + "Auto" + ")" : ""),
-                0,
-                endTimeStamp,
-                TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? difficultyName.ToLower() : "",
-                TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? String.Format("COURSE:{0} ({1})", difficultyName, TJAPlayer3.stage選曲.n確定された曲の難易度[0]) : "");
+			TJAPlayer3.DiscordClient?.SetPresence(new RichPresence()
+			{
+				Details = Details.Substring(0, Math.Min(127, Details.Length)),
+				State = "Playing" + (TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0] == true ? " (Auto)" : ""),
+				Timestamps = new Timestamps(DateTime.UtcNow, DateTime.UtcNow.AddMilliseconds(TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms / (TJAPlayer3.ConfigIni.n演奏速度 / 20.0))),
+				Assets = new Assets()
+				{
+					SmallImageKey = TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? difficultyName.ToLower() : "",
+					SmallImageText = TJAPlayer3.ConfigIni.SendDiscordPlayingInformation ? String.Format("COURSE:{0} ({1})", difficultyName, TJAPlayer3.stage選曲.n確定された曲の難易度[0]) : "",
+					LargeImageKey = TJAPlayer3.LargeImageKey,
+					LargeImageText = TJAPlayer3.LargeImageText,
+				}
+			});
         }
 		public override void On非活性化()
 		{

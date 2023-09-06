@@ -976,6 +976,7 @@ namespace TJAPlayer3
 		//
 		public enum ESoundDeviceTypeForConfig
 		{
+			Bass,
 			ASIO,
 			WASAPI_Exclusive,
 			WASAPI_Shared,
@@ -1340,6 +1341,7 @@ namespace TJAPlayer3
 		public bool bIsAllowedDoubleClickFullscreen;	// #26752 2011.11.27 yyagi ダブルクリックしてもフルスクリーンに移行しない
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
+		public int nBassBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
 		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
 //		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
@@ -1893,7 +1895,8 @@ namespace TJAPlayer3
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bTight = false;                        // #29500 2012.9.11 kairera0467 TIGHTモード
 			#region [ WASAPI/ASIO ]
-			this.nSoundDeviceType = (int)ESoundDeviceTypeForConfig.WASAPI_Shared;	// #24820 2012.12.23 yyagi 初期値はACM | #31927 2013.8.25 yyagi OSにより初期値変更
+			this.nSoundDeviceType = (int)ESoundDeviceTypeForConfig.Bass;	// #24820 2012.12.23 yyagi 初期値はACM | #31927 2013.8.25 yyagi OSにより初期値変更
+			nBassBufferSizeMs = 10;
 			this.nWASAPIBufferSizeMs = 50;				// #24820 2013.1.15 yyagi 初期値は50(0で自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
@@ -2148,6 +2151,13 @@ namespace TJAPlayer3
 			sw.WriteLine( "; WASAPI can use on Vista or later OSs." );
 			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, ACM is used." );
 			sw.WriteLine( "SoundDeviceType={0}", (int) this.nSoundDeviceType );
+			sw.WriteLine();
+
+			sw.WriteLine( "; Bass使用時のサウンドバッファサイズ" );
+			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
+			sw.WriteLine( "; Bass Sound Buffer Size." );
+			sw.WriteLine( "; (0=Use system default buffer size, 1-9999=specify the buffer size(ms) by yourself)" );
+			sw.WriteLine( "BassBufferSizeMs={0}", (int) this.nBassBufferSizeMs );
 			sw.WriteLine();
 
 			sw.WriteLine( "; WASAPI使用時のサウンドバッファサイズ" );
@@ -2951,7 +2961,11 @@ namespace TJAPlayer3
                                             #region [ WASAPI/ASIO関係 ]
                                             else if ( str3.Equals( "SoundDeviceType" ) )
 											{
-												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, Environment.Is64BitProcess ? 1 : 0, 3, this.nSoundDeviceType );
+												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, Environment.Is64BitProcess ? 1 : 0, 4, this.nSoundDeviceType );
+											}
+											else if ( str3.Equals( "BassBufferSizeMs" ) )
+											{
+											    this.nBassBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nBassBufferSizeMs );
 											}
 											else if ( str3.Equals( "WASAPIBufferSizeMs" ) )
 											{
