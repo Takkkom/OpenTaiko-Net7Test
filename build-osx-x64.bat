@@ -1,1 +1,1 @@
-dotnet build OpenTaiko/OpenTaiko.csproj --configuration Release --no-self-contained --runtime osx-x64
+dotnet publish OpenTaiko/OpenTaiko.csproj --configuration Release --no-self-contained --runtime osx-x64

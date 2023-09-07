@@ -1,1 +1,0 @@
-dotnet build OpenTaiko/OpenTaiko.csproj --configuration Release --no-self-contained --runtime linux-x86
