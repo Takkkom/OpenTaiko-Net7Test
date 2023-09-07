@@ -591,12 +591,12 @@ namespace TJAPlayer3
         {
 			#region [ strEXEのあるフォルダを決定する ]
 			//-----------------
-			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
-			// END #23629 2010.11.13 from
-			//-----------------
-			#endregion
+            strEXEのあるフォルダ = Environment.CurrentDirectory + Path.DirectorySeparatorChar;
+            // END #23629 2010.11.13 from
+            //-----------------
+            #endregion
 
-			GraphicsDeviceType_ = GraphicsDeviceType.OpenGL;
+            GraphicsDeviceType_ = GraphicsDeviceType.OpenGL;
 			
 			ConfigIni = new CConfigIni();
 			

@@ -48,8 +48,8 @@ namespace TJAPlayer3
 
         private string _GetPathTextFile(string parent)
         {
-            string _expected = parent + @"\" + _lang + ".txt";
-            string _default = parent + @"\" + CLangManager.DefaultLanguage.Item1 + ".txt";
+            string _expected = parent + Path.DirectorySeparatorChar + _lang + ".txt";
+            string _default = parent + Path.DirectorySeparatorChar + CLangManager.DefaultLanguage.Item1 + ".txt";
 
             if (File.Exists(_expected))
                 return _expected;

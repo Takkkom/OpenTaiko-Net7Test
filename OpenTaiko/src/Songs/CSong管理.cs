@@ -163,8 +163,8 @@ namespace TJAPlayer3
 		}
 		private void t曲を検索してリストを作成する( string str基点フォルダ, bool b子BOXへ再帰する, List<C曲リストノード> listノードリスト, C曲リストノード node親 )
 		{
-			if( !str基点フォルダ.EndsWith( @"\" ) )
-				str基点フォルダ = str基点フォルダ + @"\";
+			if( !str基点フォルダ.EndsWith( Path.DirectorySeparatorChar ) )
+				str基点フォルダ = str基点フォルダ + Path.DirectorySeparatorChar;
 
 			DirectoryInfo info = new DirectoryInfo( str基点フォルダ );
 
@@ -551,7 +551,7 @@ namespace TJAPlayer3
 					c曲リストノード.strタイトル = boxdef.Title;
 					c曲リストノード.strジャンル = boxdef.Genre;
                     c曲リストノード.strScenePreset = boxdef.ScenePreset;
-                    c曲リストノード.strSelectBGPath = infoDir.FullName + @"\" + boxdef.SelectBG;
+                    c曲リストノード.strSelectBGPath = infoDir.FullName + Path.DirectorySeparatorChar + boxdef.SelectBG;
 					if (!File.Exists(c曲リストノード.strSelectBGPath)) c曲リストノード.strSelectBGPath = null;
 
 					if (boxdef.IsChangedForeColor)
@@ -641,7 +641,7 @@ namespace TJAPlayer3
 
                     c曲リストノード.nスコア数 = 1;
 					c曲リストノード.arスコア[ 0 ] = new Cスコア();
-					c曲リストノード.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = infoDir.FullName + @"\";
+					c曲リストノード.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = infoDir.FullName + Path.DirectorySeparatorChar;
 					c曲リストノード.arスコア[ 0 ].譜面情報.タイトル = boxdef.Title;
 					c曲リストノード.arスコア[ 0 ].譜面情報.ジャンル = boxdef.Genre;
                     if (!String.IsNullOrEmpty(boxdef.DefaultPreimage))
@@ -713,7 +713,7 @@ namespace TJAPlayer3
 					}
 					if( b子BOXへ再帰する )
 					{
-						this.t曲を検索してリストを作成する( infoDir.FullName + @"\", b子BOXへ再帰する, c曲リストノード.list子リスト, c曲リストノード );
+						this.t曲を検索してリストを作成する( infoDir.FullName + Path.DirectorySeparatorChar, b子BOXへ再帰する, c曲リストノード.list子リスト, c曲リストノード );
 					}
 				}
 				//-----------------------------
@@ -723,7 +723,7 @@ namespace TJAPlayer3
 				//-----------------------------
 				else
 				{
-					this.t曲を検索してリストを作成する( infoDir.FullName + @"\", b子BOXへ再帰する, listノードリスト, node親 );
+					this.t曲を検索してリストを作成する( infoDir.FullName + Path.DirectorySeparatorChar, b子BOXへ再帰する, listノードリスト, node親 );
 				}
 				//-----------------------------
 				#endregion
