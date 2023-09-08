@@ -17,6 +17,5 @@ namespace FDK
 
 		CSound tサウンドを作成する( string strファイル名, ESoundGroup soundGroup );
 		void tサウンドを作成する( string strファイル名, CSound sound );
-		void tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound sound );
 	}
 }

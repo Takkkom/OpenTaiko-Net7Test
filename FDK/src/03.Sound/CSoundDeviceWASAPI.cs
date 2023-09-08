@@ -399,10 +399,6 @@ namespace FDK
 		{
 			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.e出力デバイス );
 		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound sound )
-		{
-			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, this.hMixer, this.e出力デバイス );
-		}
 		#endregion
 
 		#region [ Dispose-Finallizeパターン実装 ]

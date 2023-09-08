@@ -12,11 +12,11 @@ namespace SampleFramework
     {
         public struct ConstantBufferStruct
         {
-            public Matrix4X4<float> mvp;
+            public Matrix4X4<float> Projection;
 
-            public Vector4D<float> color;
+            public Vector4D<float> Color;
 
-            public Vector4D<float> textureRect;
+            public Vector4D<float> TextureRect;
         }
 
         internal ComPtr<ID3D10Blob> VertexCode = default;
@@ -145,7 +145,6 @@ namespace SampleFramework
                             SemanticIndex = 0,
                             Format = Format.FormatR32G32B32Float,
                             InputSlot = 0,
-                            AlignedByteOffset = 0,
                             InputSlotClass = InputClassification.PerVertexData,
                             InstanceDataStepRate = 0
                         }
@@ -195,21 +194,23 @@ namespace SampleFramework
             );
         }
 
-        public unsafe void SetMVP(Matrix4X4<float> mvp)
+        public void SetMVP(Matrix4X4<float> mvp)
         {
-            ConstantBufferStruct_.mvp = mvp;
-            DirectX11Device.ImmediateContext.UpdateSubresource(ConstantBuffer, 0, null, ConstantBufferStruct_, 0, 0);
+            ConstantBufferStruct_.Projection = mvp;
         }
 
-        public unsafe void SetColor(Vector4D<float> color)
+        public void SetColor(Vector4D<float> color)
         {
-            ConstantBufferStruct_.color = color;
-            DirectX11Device.ImmediateContext.UpdateSubresource(ConstantBuffer, 0, null, ConstantBufferStruct_, 0, 0);
+            ConstantBufferStruct_.Color = color;
         }
 
-        public unsafe void SetTextureRect(Vector4D<float> rect)
+        public void SetTextureRect(Vector4D<float> rect)
         {
-            ConstantBufferStruct_.textureRect = rect;
+            ConstantBufferStruct_.TextureRect = rect;
+        }
+
+        public unsafe void Update()
+        {
             DirectX11Device.ImmediateContext.UpdateSubresource(ConstantBuffer, 0, null, ConstantBufferStruct_, 0, 0);
         }
 

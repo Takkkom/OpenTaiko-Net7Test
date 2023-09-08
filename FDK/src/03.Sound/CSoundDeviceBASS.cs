@@ -187,10 +187,6 @@ namespace FDK
 		{
 			sound.tBASSサウンドを作成する(strFilename, this.hMixer);
 		}
-		public void tサウンドを作成する(byte[] byArrWAVFileImage, CSound sound)
-		{
-			sound.tBASSサウンドを作成する(byArrWAVFileImage, this.hMixer);
-		}
 		#endregion
 
 

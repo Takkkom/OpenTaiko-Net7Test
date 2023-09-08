@@ -349,10 +349,6 @@ namespace FDK
 		{
 			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
 		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound sound )
-		{
-			sound.tASIOサウンドを作成する( byArrWAVファイルイメージ, this.hMixer );
-		}
 		#endregion
 
 

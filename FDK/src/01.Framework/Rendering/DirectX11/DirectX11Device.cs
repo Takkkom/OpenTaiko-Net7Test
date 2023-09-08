@@ -32,6 +32,8 @@ namespace SampleFramework
 
         internal static IWindow Window_;
 
+        private Viewport Viewport_;
+
 
 
 
@@ -158,18 +160,7 @@ namespace SampleFramework
             CreateRenderTargetView();
             CreateDepthStencilView((uint)window.FramebufferSize.X, (uint)window.FramebufferSize.X);
 
-
-
-
-
-
-
-
-
-
-
-
-
+            SetViewPort(0, 0, (uint)window.Size.X, (uint)window.Size.Y);
         }
 
         public void SetClearColor(float r, float g, float b, float a)
@@ -179,8 +170,7 @@ namespace SampleFramework
 
         public void SetViewPort(int x, int y, uint width, uint height)
         {
-            Viewport viewport = new Viewport(0, 0, width, height, 0.0f, 1.0f);
-            ImmediateContext.RSSetViewports(1, in viewport);
+            Viewport_ = new Viewport(0, 0, width, height, 0.0f, 1.0f);
         }
 
         public void SetFrameBuffer(uint width, uint height)
@@ -202,6 +192,8 @@ namespace SampleFramework
             ImmediateContext.OMSetRenderTargets(1, ref RenderTargetView, DepthStencilView);
             ImmediateContext.ClearRenderTargetView(RenderTargetView, CurrnetClearColor);
             ImmediateContext.ClearDepthStencilView(DepthStencilView, (uint)ClearFlag.Depth | (uint)ClearFlag.Stencil, 1.0f, 0);
+            
+            ImmediateContext.RSSetViewports(1, in Viewport_);
         }
 
         public void SwapBuffer()
@@ -223,6 +215,10 @@ namespace SampleFramework
         {
             return new DirectX11Shader(
                 @"
+
+                Texture2D g_texture : register(t0);
+                SamplerState g_sampler : register(s0);
+
                 struct vs_in {
                     float3 position_local : POS;
                     float2 uvposition_local : UVPOS;
@@ -230,12 +226,12 @@ namespace SampleFramework
 
                 struct vs_out {
                     float4 position_clip : SV_POSITION;
-                    float2 uvposition_clip : UVPOS;
+                    float2 uvposition_clip : TEXCOORD0;
                 };
                 
-                cbuffer ConstantBuffer
+                cbuffer ConstantBufferStruct
                 {
-                    float4x4 Mvp;
+                    float4x4 Projection;
                     float4 Color;
                     float4 TextureRect;
                 }
@@ -244,14 +240,31 @@ namespace SampleFramework
                     vs_out output = (vs_out)0;
 
                     float4 position = float4(input.position_local, 1.0);
+                    /*
+                    position = mul(position, Projection);
+                    */
+
                     output.position_clip = position;
-                    output.uvposition_clip = input.uvposition_local;
+
+                    /*
+                    float2 texcoord = float2(TextureRect.x, TextureRect.y);
+                    texcoord.x += input.uvposition_local.x * TextureRect.z;
+                    texcoord.y += input.uvposition_local.y * TextureRect.w;
+                    */
+                    float2 texcoord = float2(position.x, position.y);
+
+                    output.uvposition_clip = texcoord;
+
                     return output;
                 }
 
                 float4 ps_main(vs_out input) : SV_TARGET {
-                    float2 uv = float2(input.uvposition_clip.x, input.uvposition_clip.y);
-                    float4 totalcolor = float4( uv.x, uv.y, 0.0, 1.0 );
+                    float2 texcoord = float2(input.uvposition_clip.x, input.uvposition_clip.y);
+                    float4 totalcolor = g_texture.Sample(g_sampler, texcoord);
+
+                    /*
+                    totalcolor = mul(totalcolor, Color);
+                    */
 
                     return totalcolor;
                 }
@@ -261,23 +274,30 @@ namespace SampleFramework
 
         public unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType)
         {
-            return null;
+            return new DirectX11Texture(data, width, height, rgbaType);
         }
 
         public unsafe void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
         {
             DirectX11Polygon dx11polygon = (DirectX11Polygon)polygon;
             DirectX11Shader dx11shader = (DirectX11Shader)shader;
-            ImmediateContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
+            DirectX11Texture dx11texture = (DirectX11Texture)texture;
             ImmediateContext.IASetInputLayout(dx11shader.InputLayout);
             ImmediateContext.IASetVertexBuffers(0, 1, dx11polygon.VertexBuffer, in vertexStride, in vertexOffset);
             ImmediateContext.IASetIndexBuffer(dx11polygon.IndexBuffer, Format.FormatR32Uint, 0);
+            ImmediateContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
 
-            ImmediateContext.VSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
+            dx11shader.Update();
 
             // Bind our shaders.
             ImmediateContext.VSSetShader(dx11shader.VertexShader, default(ComPtr<ID3D11ClassInstance>), 0);
+            ImmediateContext.VSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
+
             ImmediateContext.PSSetShader(dx11shader.PixelShader, default(ComPtr<ID3D11ClassInstance>), 0);
+            ImmediateContext.PSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
+
+            ImmediateContext.PSSetShaderResources(0, 1, dx11texture.TextureView);
+            ImmediateContext.PSSetSamplers(0, 1, dx11texture.SamplerState);
 
             // Draw the quad.
             ImmediateContext.DrawIndexed(polygon.IndiceCount, 0, 0);

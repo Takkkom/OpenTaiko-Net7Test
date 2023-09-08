@@ -753,30 +753,15 @@ namespace FDK
 		    this.eデバイス種別 = ESoundDeviceType.Bass;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 			this.tBASSサウンドを作成する( strファイル名, hMixer, BassFlags.Decode );
 		}
-		public void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer )
-		{
-		    this.eデバイス種別 = ESoundDeviceType.Bass;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BassFlags.Decode );
-		}
 		public void tASIOサウンドを作成する( string strファイル名, int hMixer )
 		{
 		    this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 			this.tBASSサウンドを作成する( strファイル名, hMixer, BassFlags.Decode );
 		}
-		public void tASIOサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer )
-		{
-		    this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BassFlags.Decode );
-		}
 		public void tWASAPIサウンドを作成する( string strファイル名, int hMixer, ESoundDeviceType eデバイス種別 )
 		{
 		    this.eデバイス種別 = eデバイス種別;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 			this.tBASSサウンドを作成する( strファイル名, hMixer, BassFlags.Decode | BassFlags.Float );
-		}
-		public void tWASAPIサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, ESoundDeviceType eデバイス種別 )
-		{
-		    this.eデバイス種別 = eデバイス種別;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BassFlags.Decode | BassFlags.Float );
 		}
 
 		#region [ DTXMania用の変換 ]
@@ -1035,16 +1020,6 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 						device.tサウンドを作成する( strファイル名, sounds[ i ] );
 						break;
 					#endregion
-					#region [ WAVファイルイメージから ]
-					case E作成方法.WAVファイルイメージから:
-						if( sounds[ i ].bBASSサウンドである )
-						{
-							byte[] byArrWaveファイルイメージ = sounds[ i ].byArrWAVファイルイメージ;
-							sounds[ i ].Dispose( true, false );
-							device.tサウンドを作成する( byArrWaveファイルイメージ, sounds[ i ] );
-						}
-						break;
-					#endregion
 				}
 			}
 		}
@@ -1088,15 +1063,6 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				//        Debug.WriteLine( "ERR: freeIndex==-1 : Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
 				//    }
 				//}
-
-				if( this.e作成方法 == E作成方法.WAVファイルイメージから)	// DirectSound は hGC 未使用。
-				{
-					if ( this.hGC != null && this.hGC.IsAllocated )
-					{
-						this.hGC.Free();
-						this.hGC = default( GCHandle );
-					}
-				}
 				if ( this.byArrWAVファイルイメージ != null )
 				{
 					this.byArrWAVファイルイメージ = null;
@@ -1132,7 +1098,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 		#region [ protected ]
 		//-----------------
-		protected enum E作成方法 { ファイルから, WAVファイルイメージから, Unknown }
+		protected enum E作成方法 { ファイルから, Unknown }
 		protected E作成方法 e作成方法 = E作成方法.Unknown;
 		protected ESoundDeviceType eデバイス種別 = ESoundDeviceType.Unknown;
 		public string strファイル名 = null;
@@ -1205,23 +1171,6 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			
 			nBytes = Bass.ChannelGetLength( this._hBassStream );
 			
-			tBASSサウンドを作成する_ストリーム生成後の共通処理( hMixer );
-		}
-		public void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BassFlags flags )
-		{
-			this.e作成方法 = E作成方法.WAVファイルイメージから;
-			this.byArrWAVファイルイメージ = byArrWAVファイルイメージ;
-			this.hGC = GCHandle.Alloc( byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
-
-
-			// BASSファイルストリームを作成。
-
-			this._hBassStream = Bass.CreateStream( hGC.AddrOfPinnedObject(), 0, byArrWAVファイルイメージ.Length, flags );
-			if ( this._hBassStream == 0 )
-				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_StreamCreateFile)[{0}]", Bass.LastError.ToString() ) );
-
-			nBytes = Bass.ChannelGetLength( this._hBassStream );
-	
 			tBASSサウンドを作成する_ストリーム生成後の共通処理( hMixer );
 		}
 
