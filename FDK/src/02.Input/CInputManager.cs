@@ -8,16 +8,16 @@ using Silk.NET.Input;
 
 namespace FDK
 {
-	public class CInput管理 : IDisposable
+	public class CInputManager : IDisposable
 	{
 		// 定数
 
-		public static int n通常音量 = 110;
+		public static int DefaultVolume = 110;
 
 
 		// プロパティ
 
-		public List<IInputDevice> list入力デバイス
+		public List<IInputDevice> InputDevices
 		{
 			get;
 			private set;
@@ -30,9 +30,9 @@ namespace FDK
 				{
 					return this._Keyboard;
 				}
-				foreach (IInputDevice device in this.list入力デバイス)
+				foreach (IInputDevice device in this.InputDevices)
 				{
-					if (device.e入力デバイス種別 == E入力デバイス種別.Keyboard)
+					if (device.CurrentType == InputDeviceType.Keyboard)
 					{
 						this._Keyboard = device;
 						return device;
@@ -49,9 +49,9 @@ namespace FDK
 				{
 					return this._Mouse;
 				}
-				foreach (IInputDevice device in this.list入力デバイス)
+				foreach (IInputDevice device in this.InputDevices)
 				{
-					if (device.e入力デバイス種別 == E入力デバイス種別.Mouse)
+					if (device.CurrentType == InputDeviceType.Mouse)
 					{
 						this._Mouse = device;
 						return device;
@@ -63,16 +63,16 @@ namespace FDK
 
 
 		// コンストラクタ
-		public CInput管理(IWindow window, bool bUseMidiIn = true)
+		public CInputManager(IWindow window, bool bUseMidiIn = true)
 		{
-			CInput管理初期化(window, bUseMidiIn);
+			Initialize(window, bUseMidiIn);
 		}
 
-		public void CInput管理初期化(IWindow window, bool bUseMidiIn)
+		public void Initialize(IWindow window, bool bUseMidiIn)
 		{
 			Context = window.CreateInput();
 
-			this.list入力デバイス = new List<IInputDevice>(10);
+			this.InputDevices = new List<IInputDevice>(10);
 			#region [ Enumerate keyboard/mouse: exception is masked if keyboard/mouse is not connected ]
 			CInputKeyboard cinputkeyboard = null;
 			CInputMouse cinputmouse = null;
@@ -87,17 +87,17 @@ namespace FDK
 			}
 			if (cinputkeyboard != null)
 			{
-				this.list入力デバイス.Add(cinputkeyboard);
+				this.InputDevices.Add(cinputkeyboard);
 			}
 			if (cinputmouse != null)
 			{
-				this.list入力デバイス.Add(cinputmouse);
+				this.InputDevices.Add(cinputmouse);
 			}
 			#endregion
 			#region [ Enumerate joypad ]
 			foreach (var joysticks in Context.Joysticks)
 			{
-				this.list入力デバイス.Add(new CInputJoystick(joysticks));
+				this.InputDevices.Add(new CInputJoystick(joysticks));
 			}
 			#endregion
 		}
@@ -107,9 +107,9 @@ namespace FDK
 
 		public IInputDevice Joystick(int ID)
 		{
-			foreach (IInputDevice device in this.list入力デバイス)
+			foreach (IInputDevice device in this.InputDevices)
 			{
-				if ((device.e入力デバイス種別 == E入力デバイス種別.Joystick) && (device.ID == ID))
+				if ((device.CurrentType == InputDeviceType.Joystick) && (device.ID == ID))
 				{
 					return device;
 				}
@@ -118,9 +118,9 @@ namespace FDK
 		}
 		public IInputDevice Joystick(string GUID)
 		{
-			foreach (IInputDevice device in this.list入力デバイス)
+			foreach (IInputDevice device in this.InputDevices)
 			{
-				if ((device.e入力デバイス種別 == E入力デバイス種別.Joystick) && device.GUID.Equals(GUID))
+				if ((device.CurrentType == InputDeviceType.Joystick) && device.GUID.Equals(GUID))
 				{
 					return device;
 				}
@@ -129,30 +129,30 @@ namespace FDK
 		}
 		public IInputDevice MidiIn(int ID)
 		{
-			foreach (IInputDevice device in this.list入力デバイス)
+			foreach (IInputDevice device in this.InputDevices)
 			{
-				if ((device.e入力デバイス種別 == E入力デバイス種別.MidiIn) && (device.ID == ID))
+				if ((device.CurrentType == InputDeviceType.MidiIn) && (device.ID == ID))
 				{
 					return device;
 				}
 			}
 			return null;
 		}
-		public void tポーリング(bool bバッファ入力を使用する)
+		public void Polling(bool useBufferInput)
 		{
 			lock (this.objMidiIn排他用)
 			{
 				//				foreach( IInputDevice device in this.list入力デバイス )
-				for (int i = this.list入力デバイス.Count - 1; i >= 0; i--)    // #24016 2011.1.6 yyagi: change not to use "foreach" to avoid InvalidOperation exception by Remove().
+				for (int i = this.InputDevices.Count - 1; i >= 0; i--)    // #24016 2011.1.6 yyagi: change not to use "foreach" to avoid InvalidOperation exception by Remove().
 				{
-					IInputDevice device = this.list入力デバイス[i];
+					IInputDevice device = this.InputDevices[i];
 					try
 					{
-						device.tポーリング(bバッファ入力を使用する);
+						device.Polling(useBufferInput);
 					}
 					catch (Exception e)                                      // #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
 					{
-						this.list入力デバイス.Remove(device);
+						this.InputDevices.Remove(device);
 						device.Dispose();
 						Trace.TraceError("tポーリング時に対象deviceが抜かれており例外発生。同deviceをポーリング対象からRemoveしました。");
 					}
@@ -172,7 +172,7 @@ namespace FDK
 			{
 				if (disposeManagedObjects)
 				{
-					foreach (IInputDevice device in this.list入力デバイス)
+					foreach (IInputDevice device in this.InputDevices)
 					{
 						CInputMIDI tmidi = device as CInputMIDI;
 						if (tmidi != null)
@@ -180,13 +180,13 @@ namespace FDK
 							Trace.TraceInformation("MIDI In: [{0}] を停止しました。", new object[] { tmidi.ID });
 						}
 					}
-					foreach (IInputDevice device2 in this.list入力デバイス)
+					foreach (IInputDevice device2 in this.InputDevices)
 					{
 						device2.Dispose();
 					}
 					lock (this.objMidiIn排他用)
 					{
-						this.list入力デバイス.Clear();
+						this.InputDevices.Clear();
 					}
 
 					Context.Dispose();
@@ -194,7 +194,7 @@ namespace FDK
 				this.bDisposed済み = true;
 			}
 		}
-		~CInput管理()
+		~CInputManager()
 		{
 			this.Dispose(false);
 			GC.KeepAlive(this);

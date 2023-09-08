@@ -14,9 +14,9 @@ namespace TJAPlayer3
             StartPoint = startPoint;
             EndPoint = endPoint;
             Sa = EndPoint - StartPoint;
-            TimeMs = (int)counter.n終了値;
+            TimeMs = (int)counter.EndValue;
             Type = type;
-            CounterValue = counter.n現在の値;
+            CounterValue = counter.CurrentValue;
 
             switch (Type)
             {
@@ -58,9 +58,9 @@ namespace TJAPlayer3
             StartPoint = startPoint;
             EndPoint = endPoint;
             Sa = EndPoint - StartPoint;
-            TimeMs = (int)counter.n終了値;
+            TimeMs = (int)counter.EndValue;
             Type = type;
-            CounterValue = counter.n現在の値;
+            CounterValue = counter.CurrentValue;
 
             switch (Type)
             {
@@ -107,9 +107,9 @@ namespace TJAPlayer3
             StartPoint = startPoint;
             EndPoint = endPoint;
             Sa = EndPoint - StartPoint;
-            TimeMs = counter.n終了値;
+            TimeMs = counter.EndValue;
             Type = type;
-            CounterValue = counter.n現在の値;
+            CounterValue = counter.CurrentValue;
 
             switch (Type)
             {

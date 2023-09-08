@@ -27,14 +27,14 @@ namespace TJAPlayer3
 
             public void Display(int screenPosition)
             {
-                timeSinceCreation.t進行();
+                timeSinceCreation.Tick();
 
                 // Display stuff here
             }
 
             public bool IsExpired()
             {
-                return timeSinceCreation.b終了値に達した;
+                return timeSinceCreation.IsEnded;
             }
 
             private CCounter timeSinceCreation;

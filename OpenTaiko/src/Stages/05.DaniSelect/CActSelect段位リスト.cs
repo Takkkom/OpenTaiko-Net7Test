@@ -34,13 +34,13 @@ namespace TJAPlayer3
         {
             get
             {
-                return ctDaniMoveAnime.b進行中;
+                return ctDaniMoveAnime.IsTicked;
             }
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
-            if (this.b活性化してる)
+            if (this.IsActivated)
                 return;
 
             DaniInAnime = false;
@@ -72,61 +72,61 @@ namespace TJAPlayer3
             listSongs = TJAPlayer3.Songs管理.list曲ルート_Dan;
             tUpdateSongs();
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             TJAPlayer3.t安全にDisposeする(ref pfDanSong);
             TJAPlayer3.t安全にDisposeする(ref pfExamFont);
             
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             Dani_Bar_Center = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Bar_Center.png"));
             Dani_DanSides = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}DanSides.png"));
             Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
             DanResult_Rank = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANRESULT}Rank.png"));
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
 			TJAPlayer3.t安全にDisposeする(ref Dani_Bar_Center);
 			TJAPlayer3.t安全にDisposeする(ref Dani_DanSides);
             TJAPlayer3.t安全にDisposeする(ref Dani_Difficulty_Cymbol);
 			TJAPlayer3.t安全にDisposeする(ref DanResult_Rank);
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            ctDaniMoveAnime.t進行();
-            ctDaniIn.t進行();
-            ctDanAnimeIn.t進行();
-            ctDanTick.t進行Loop();
+            ctDaniMoveAnime.Tick();
+            ctDaniIn.Tick();
+            ctDanAnimeIn.Tick();
+            ctDanTick.TickLoop();
 
-            ctExamConditionsAnim.t進行Loop();
+            ctExamConditionsAnim.TickLoop();
 
-            if (ctDaniIn.n現在の値 == 6000)
+            if (ctDaniIn.CurrentValue == 6000)
             {
                 if(!DaniInAnime)
                 {
-                    ctDanAnimeIn.t開始(0, 90, 2f, TJAPlayer3.Timer);
+                    ctDanAnimeIn.Start(0, 90, 2f, TJAPlayer3.Timer);
                     DaniInAnime = true;
                 }
             }
 
             #region [ バー表示 ]
 
-            if (stバー情報.Length != 0 && ctDaniIn.n現在の値 == 6000)
+            if (stバー情報.Length != 0 && ctDaniIn.CurrentValue == 6000)
             {
                 TJAPlayer3.Tx.DanC_ExamType.vc拡大縮小倍率.X = 0.81f;
                 TJAPlayer3.Tx.DanC_ExamType.vc拡大縮小倍率.Y = 0.81f;
 
-                float Anime = ctDanAnimeIn.n現在の値 == 90 ? bLeftMove ? (float)Math.Sin(ctDaniMoveAnime.n現在の値 * (Math.PI / 180)) * TJAPlayer3.Skin.Resolution[0] : -((float)Math.Sin(ctDaniMoveAnime.n現在の値 * (Math.PI / 180)) * TJAPlayer3.Skin.Resolution[0]) : TJAPlayer3.Skin.Resolution[0] - (float)Math.Sin(ctDanAnimeIn.n現在の値 * (Math.PI / 180)) * TJAPlayer3.Skin.Resolution[0];
+                float Anime = ctDanAnimeIn.CurrentValue == 90 ? bLeftMove ? (float)Math.Sin(ctDaniMoveAnime.CurrentValue * (Math.PI / 180)) * TJAPlayer3.Skin.Resolution[0] : -((float)Math.Sin(ctDaniMoveAnime.CurrentValue * (Math.PI / 180)) * TJAPlayer3.Skin.Resolution[0]) : TJAPlayer3.Skin.Resolution[0] - (float)Math.Sin(ctDanAnimeIn.CurrentValue * (Math.PI / 180)) * TJAPlayer3.Skin.Resolution[0];
 
                 tDrawDanSelectedLevel(Anime);
 
@@ -140,7 +140,7 @@ namespace TJAPlayer3
 
             #region [ バー移動 ]
 
-            if (ctDaniMoveAnime.n現在の値 == 90)
+            if (ctDaniMoveAnime.CurrentValue == 90)
             {
                 if (bLeftMove)
                 {
@@ -150,14 +150,14 @@ namespace TJAPlayer3
                 {
                     this.n現在の選択行 += n現在の選択行 + 1 < this.stバー情報.Length ? 1 : 0;
                 }
-                ctDaniMoveAnime.t停止();
-                ctDaniMoveAnime.n現在の値 = 0;
+                ctDaniMoveAnime.Stop();
+                ctDaniMoveAnime.CurrentValue = 0;
             }
 
             #endregion
 
             // To do : Display the 27 (max) bars one by one
-            if (ctDaniIn.n現在の値 < 5000)
+            if (ctDaniIn.CurrentValue < 5000)
                 return 0;
 
             #region [Upper plates]
@@ -170,7 +170,7 @@ namespace TJAPlayer3
             for (int idx = -13; idx < 14; idx++)
             {
 
-                if (ctDaniIn.n現在の値 < 5000 + (idx + 13) * 33)
+                if (ctDaniIn.CurrentValue < 5000 + (idx + 13) * 33)
                     break;
 
                 int currentSong = n現在の選択行 + idx;
@@ -211,7 +211,7 @@ namespace TJAPlayer3
 
                 if (idx == 0)
                 {
-                    TJAPlayer3.Tx.Dani_Plate.Opacity = Math.Abs(255 - ctDanTick.n現在の値);
+                    TJAPlayer3.Tx.Dani_Plate.Opacity = Math.Abs(255 - ctDanTick.CurrentValue);
                     TJAPlayer3.Tx.Dani_Plate.t2D拡大率考慮上中央基準描画(xPos, yPos, new Rectangle(tickWidth * 6, 0, tickWidth, tickHeight));
                 }
 
@@ -490,7 +490,7 @@ namespace TJAPlayer3
                         int getOpacity(int index, int sections = 2)
                         {
                             int current_section = index / 3;
-                            int animJauge = ctExamConditionsAnim.n現在の値;
+                            int animJauge = ctExamConditionsAnim.CurrentValue;
                             int split = 4000 / sections;
                             int begin = split * current_section;
                             int end = split * (current_section + 1);
@@ -600,7 +600,7 @@ namespace TJAPlayer3
                             {
                                 int half = (j - 1) / 3;
 
-                                int animJauge = ctExamConditionsAnim.n現在の値;
+                                int animJauge = ctExamConditionsAnim.CurrentValue;
 
                                 if (half == 0)
                                 {
@@ -830,7 +830,7 @@ namespace TJAPlayer3
             {
                 TJAPlayer3.Skin.sound変更音.t再生する();
                 this.bLeftMove = false;
-                this.ctDaniMoveAnime.t開始(0, 90, 2f, TJAPlayer3.Timer);
+                this.ctDaniMoveAnime.Start(0, 90, 2f, TJAPlayer3.Timer);
             }
         }
 
@@ -840,7 +840,7 @@ namespace TJAPlayer3
             {
                 TJAPlayer3.Skin.sound変更音.t再生する();
                 this.bLeftMove = true;
-                this.ctDaniMoveAnime.t開始(0, 90, 2f, TJAPlayer3.Timer);
+                this.ctDaniMoveAnime.Start(0, 90, 2f, TJAPlayer3.Timer);
             }
         }
 

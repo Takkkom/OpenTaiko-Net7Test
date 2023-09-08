@@ -29,7 +29,7 @@ namespace TJAPlayer3
             CCounter[] _ctref = _getReferenceCounter(eca);
 
             if (_ctref[player] != null)
-                return _ctref[player].b進行中;
+                return _ctref[player].IsTicked;
             return false;
         }
 
@@ -38,7 +38,7 @@ namespace TJAPlayer3
             CCounter[] _ctref = _getReferenceCounter(eca);
 
             if (_ctref[player] != null)
-                return _ctref[player].b終了値に達した;
+                return _ctref[player].IsEnded;
             return false;
         }
 
@@ -237,19 +237,19 @@ namespace TJAPlayer3
             CCounter[] _ctref = _getReferenceCounter(eca);
             bool _substitute = _usesSubstituteTexture(player, eca);
 
-            if (_ctref[player] != null && _ref != null && _ctref[player].n現在の値 < _ref.Length)
+            if (_ctref[player] != null && _ref != null && _ctref[player].CurrentValue < _ref.Length)
             {
                 if (eca == ECharacterResult.NORMAL
                     || eca == ECharacterResult.CLEAR
                     || eca == ECharacterResult.FAILED)
-                    _ctref[player].t進行Loop();
+                    _ctref[player].TickLoop();
                 else
-                    _ctref[player].t進行();
+                    _ctref[player].Tick();
 
                 // Quick fix
-                if (_ctref[player].n現在の値 >= _ref.Length) return;
+                if (_ctref[player].CurrentValue >= _ref.Length) return;
 
-                var _tex = _ref[_ctref[player].n現在の値];
+                var _tex = _ref[_ctref[player].CurrentValue];
 
                 _tex.Opacity = opacity;
 

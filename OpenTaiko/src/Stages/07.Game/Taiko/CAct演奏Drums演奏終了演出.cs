@@ -20,7 +20,7 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏Drums演奏終了演出()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
         public void Start()
@@ -139,23 +139,23 @@ namespace TJAPlayer3
             }
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             this.bリザルトボイス再生済み = false;
             this.Mode = new EndMode[5];
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             this.ct進行メイン = null;
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             this.b再生済み = false;
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 var origindir = CSkin.Path($"{TextureLoader.BASE}{TextureLoader.GAME}{TextureLoader.END}");
 
@@ -253,13 +253,13 @@ namespace TJAPlayer3
                     }
                 }
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
                 {
@@ -319,7 +319,7 @@ namespace TJAPlayer3
                     }
                 }
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 
@@ -572,15 +572,15 @@ namespace TJAPlayer3
         // ------------------------------------
         #endregion
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (base.b初めての進行描画)
+            if (base.IsFirstDraw)
             {
-                base.b初めての進行描画 = false;
+                base.IsFirstDraw = false;
             }
             if (this.ct進行メイン != null && (TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_演奏終了演出 || TJAPlayer3.stage演奏ドラム画面.eフェーズID == CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト))
             {
-                this.ct進行メイン.t進行();
+                this.ct進行メイン.Tick();
 
                 //CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, this.ct進行メイン.n現在の値.ToString() );
                 //仮置き
@@ -595,100 +595,100 @@ namespace TJAPlayer3
                         {
                             case EndMode.StageFailed:
                                 FailedScript.PlayEndAnime(i);
-                                this.soundFailed[i]?.t再生を開始する();
+                                this.soundFailed[i]?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFailed[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.StageCleared:
                                 ClearScript.PlayEndAnime(i);
-                                this.soundClear[i]?.t再生を開始する();
+                                this.soundClear[i]?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearClear[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.StageFullCombo:
                                 FullComboScript.PlayEndAnime(i);
-                                this.soundFullCombo[i]?.t再生を開始する();
+                                this.soundFullCombo[i]?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFullCombo[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.StageDondaFullCombo:
                                 DondaFullComboScript.PlayEndAnime(i);
-                                this.soundDondaFullCombo[i]?.t再生を開始する();
+                                this.soundDondaFullCombo[i]?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearAllPerfect[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
 
                             case EndMode.AI_Lose:
                                 AILoseScript.PlayEndAnime(i);
-                                this.soundAILose?.t再生を開始する();
+                                this.soundAILose?.PlayStart();
                                 TJAPlayer3.Skin.voiceAILose[TJAPlayer3.GetActualPlayer(1)]?.t再生する();
                                 break;
                             case EndMode.AI_Win:
                                 AIWinScript.PlayEndAnime(i);
-                                this.soundAIWin?.t再生を開始する();
+                                this.soundAIWin?.PlayStart();
                                 TJAPlayer3.Skin.voiceAIWin[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.AI_Win_FullCombo:
                                 AIWin_FullComboScript.PlayEndAnime(i);
-                                this.soundAIWinFullCombo?.t再生を開始する();
+                                this.soundAIWinFullCombo?.PlayStart();
                                 TJAPlayer3.Skin.voiceAIWin[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.AI_Win_Perfect:
                                 AIWin_PerfectScript.PlayEndAnime(i);
-                                this.soundAIWinDondaFullCombo?.t再生を開始する();
+                                this.soundAIWinDondaFullCombo?.PlayStart();
                                 TJAPlayer3.Skin.voiceAIWin[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
 
                             case EndMode.Tower_Dropout:
                                 Tower_DropoutScript.PlayEndAnime(i);
-                                this.soundTowerDropout?.t再生を開始する();
+                                this.soundTowerDropout?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFailed[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Tower_TopReached_Pass:
                                 Tower_TopReached_PassScript.PlayEndAnime(i);
-                                this.soundTowerTopPass?.t再生を開始する();
+                                this.soundTowerTopPass?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearClear[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Tower_TopReached_FullCombo:
                                 Tower_TopReached_FullComboScript.PlayEndAnime(i);
-                                this.soundTowerTopFC?.t再生を開始する();
+                                this.soundTowerTopFC?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFullCombo[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Tower_TopReached_Perfect:
                                 Tower_TopReached_PerfectScript.PlayEndAnime(i);
-                                this.soundTowerTopPerfect?.t再生を開始する();
+                                this.soundTowerTopPerfect?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearAllPerfect[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
 
                             case EndMode.Dan_Fail:
                                 Dan_FailScript.PlayEndAnime(i);
-                                this.soundDanFailed?.t再生を開始する();
+                                this.soundDanFailed?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFailed[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Dan_Red_Pass:
                                 Dan_Red_PassScript.PlayEndAnime(i);
-                                this.soundDanRedClear?.t再生を開始する();
+                                this.soundDanRedClear?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearClear[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Dan_Red_FullCombo:
                                 Dan_Red_FullComboScript.PlayEndAnime(i);
-                                this.soundDanRedFC?.t再生を開始する();
+                                this.soundDanRedFC?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFullCombo[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Dan_Red_Perfect:
                                 Dan_Red_PerfectScript.PlayEndAnime(i);
-                                this.soundDanRedPerfect?.t再生を開始する();
+                                this.soundDanRedPerfect?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearAllPerfect[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Dan_Gold_Pass:
                                 Dan_Gold_PassScript.PlayEndAnime(i);
-                                this.soundDanGoldClear?.t再生を開始する();
+                                this.soundDanGoldClear?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearClear[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Dan_Gold_FullCombo:
                                 Dan_Gold_FullComboScript.PlayEndAnime(i);
-                                this.soundDanGoldFC?.t再生を開始する();
+                                this.soundDanGoldFC?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearFullCombo[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
                             case EndMode.Dan_Gold_Perfect:
                                 Dan_Gold_PerfectScript.PlayEndAnime(i);
-                                this.soundDanGoldPerfect?.t再生を開始する();
+                                this.soundDanGoldPerfect?.PlayStart();
                                 TJAPlayer3.Skin.voiceClearAllPerfect[TJAPlayer3.GetActualPlayer(i)]?.t再生する();
                                 break;
 
@@ -782,7 +782,7 @@ namespace TJAPlayer3
 
 
 
-                if (this.ct進行メイン.b終了値に達した)
+                if (this.ct進行メイン.IsEnded)
                 {
                     return 1;
                 }

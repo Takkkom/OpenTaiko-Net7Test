@@ -9,7 +9,7 @@ namespace FDK
 {
 	public class CSoundTimer : CTimerBase
 	{
-		public override long nシステム時刻ms
+		public override long SystemTimeMs
 		{
 			get
 			{
@@ -25,7 +25,7 @@ namespace FDK
 					// 動作がおかしくなる。(具体的には、ここで返すタイマー値の逆行が発生し、スクロールが巻き戻る)
 					// この場合の対策は、ASIOのバッファ量を増やして、ASIOの音声合成処理の負荷を下げること。
 
-					if ( this.Device.n経過時間を更新したシステム時刻ms == CTimer.n未使用 )	// #33890 2014.5.27 yyagi
+					if ( this.Device.UpdateSystemTimeMs == CTimer.UnusedNum )	// #33890 2014.5.27 yyagi
 					{
 						// 環境によっては、ASIOベースの演奏タイマーが動作する前(つまりASIOのサウンド転送が始まる前)に
 						// DTXデータの演奏が始まる場合がある。
@@ -38,23 +38,23 @@ namespace FDK
 						// そこで、演奏タイマが動作を始める前(this.Device.n経過時間を更新したシステム時刻ms == CTimer.n未使用)は、
 						// 補正部分をゼロにして、n経過時間msだけを返すようにする。
 						// こうすることで、演奏タイマが動作を始めても、破綻しなくなる。
-						return this.Device.n経過時間ms;
+						return this.Device.ElapsedTimeMs;
 					}
 					else
 					{
-						if ( FDK.CSound管理.bUseOSTimer )
+						if ( FDK.SoundManager.bUseOSTimer )
 						//if ( true )
 						{
-							return ctDInputTimer.nシステム時刻ms;				// 仮にCSoundTimerをCTimer相当の動作にしてみた
+							return ctDInputTimer.SystemTimeMs;				// 仮にCSoundTimerをCTimer相当の動作にしてみた
 						}
 						else
 						{
-							return this.Device.n経過時間ms
-								+ ( this.Device.tmシステムタイマ.nシステム時刻ms - this.Device.n経過時間を更新したシステム時刻ms );
+							return this.Device.ElapsedTimeMs
+								+ ( this.Device.SystemTimer.SystemTimeMs - this.Device.UpdateSystemTimeMs );
 						}
 					}
 				}
-				return CTimerBase.n未使用;
+				return CTimerBase.UnusedNum;
 			}
 		}
 
@@ -64,15 +64,15 @@ namespace FDK
 
 			TimerCallback timerDelegate = new TimerCallback(SnapTimers);    // CSoundTimerをシステム時刻に変換するために、
 			timer = new Timer(timerDelegate, null, 0, 1000);                // CSoundTimerとCTimerを両方とも走らせておき、
-			ctDInputTimer = new CTimer(CTimer.E種別.MultiMedia);          // 1秒に1回時差を測定するようにしておく
+			ctDInputTimer = new CTimer(CTimer.TimerType.MultiMedia);          // 1秒に1回時差を測定するようにしておく
 		}
 	
 		private void SnapTimers(object o)   // 1秒に1回呼び出され、2つのタイマー間の現在値をそれぞれ保持する。
 		{
 			try
 			{
-				this.nDInputTimerCounter = this.ctDInputTimer.nシステム時刻ms;
-				this.nSoundTimerCounter = this.nシステム時刻ms;
+				this.nDInputTimerCounter = this.ctDInputTimer.SystemTimeMs;
+				this.nSoundTimerCounter = this.SystemTimeMs;
 				//Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
 			}
 			catch (Exception e)
@@ -105,7 +105,7 @@ namespace FDK
 			}
 			if ( ct != null )
 			{
-				ct.t一時停止();
+				ct.Pause();
 				ct.Dispose();
 				ct = null;
 			}

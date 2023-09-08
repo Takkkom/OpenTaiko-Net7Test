@@ -10,25 +10,25 @@ namespace TJAPlayer3
 	{
 		// CActivity 実装
 
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.txオプションパネル );
-				base.On非活性化();
+				base.DeActivate();
 			}
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				this.txオプションパネル = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ), false );
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				CConfigIni configIni = TJAPlayer3.ConfigIni;
 				/*

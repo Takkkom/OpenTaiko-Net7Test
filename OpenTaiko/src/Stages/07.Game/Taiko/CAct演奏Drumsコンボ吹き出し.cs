@@ -22,7 +22,7 @@ namespace TJAPlayer3
                 this.st小文字位置[i].ch = i.ToString().ToCharArray()[0];
                 this.st小文字位置[i].pt = new Point(i * 53, 0);
             }
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 		
 		
@@ -36,7 +36,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             for( int i = 0; i < 2; i++ )
             {
@@ -44,33 +44,33 @@ namespace TJAPlayer3
                 this.ct進行[ i ] = new CCounter();
             }
 
-            base.On活性化();
+            base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
             for( int i = 0; i < 2; i++ )
             {
                 this.ct進行[ i ] = null;
             }
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
                 if (TJAPlayer3.ConfigIni.nPlayerCount > 2) return 0;
                 for( int i = 0; i < 2; i++ )
@@ -81,56 +81,56 @@ namespace TJAPlayer3
                     if (TJAPlayer3.PlayerSide == 1 && TJAPlayer3.ConfigIni.nPlayerCount == 1)
                         j = 1;
 
-                    if ( !this.ct進行[ i ].b停止中 )
+                    if ( !this.ct進行[ i ].IsStoped )
                     {
-                        this.ct進行[ i ].t進行();
-                        if( this.ct進行[ i ].b終了値に達した )
+                        this.ct進行[ i ].Tick();
+                        if( this.ct進行[ i ].IsEnded )
                         {
-                            this.ct進行[ i ].t停止();
+                            this.ct進行[ i ].Stop();
                         }
                     }
 
                     if( TJAPlayer3.Tx.Balloon_Combo[ j ] != null && TJAPlayer3.Tx.Balloon_Number_Combo != null)
                     {
                         //半透明4f
-                        if( this.ct進行[ i ].n現在の値 == 1 || this.ct進行[ i ].n現在の値 == 42 )
+                        if( this.ct進行[ i ].CurrentValue == 1 || this.ct進行[ i ].CurrentValue == 42 )
                         {
                             TJAPlayer3.Tx.Balloon_Number_Combo.Opacity = 0;
                             TJAPlayer3.Tx.Balloon_Combo[j].Opacity = 64;
                             NowDrawBalloon = 0;
                         }
-                        else if( this.ct進行[ i ].n現在の値 == 2 || this.ct進行[ i ].n現在の値 == 41 )
+                        else if( this.ct進行[ i ].CurrentValue == 2 || this.ct進行[ i ].CurrentValue == 41 )
                         {
                             TJAPlayer3.Tx.Balloon_Number_Combo.Opacity = 0;
                             TJAPlayer3.Tx.Balloon_Combo[j].Opacity = 128;
                             NowDrawBalloon = 0;
                         }
-                        else if( this.ct進行[ i ].n現在の値 == 3 || this.ct進行[ i ].n現在の値 == 40 )
+                        else if( this.ct進行[ i ].CurrentValue == 3 || this.ct進行[ i ].CurrentValue == 40 )
                         {
                             NowDrawBalloon = 1;
                             TJAPlayer3.Tx.Balloon_Combo[j].Opacity = 255;
                             TJAPlayer3.Tx.Balloon_Number_Combo.Opacity = 128;
                         }
-                        else if( this.ct進行[ i ].n現在の値 == 4 || this.ct進行[ i ].n現在の値 == 39 )
+                        else if( this.ct進行[ i ].CurrentValue == 4 || this.ct進行[ i ].CurrentValue == 39 )
                         {
                             NowDrawBalloon = 2;
                             TJAPlayer3.Tx.Balloon_Combo[j].Opacity = 255;
                             TJAPlayer3.Tx.Balloon_Number_Combo.Opacity = 255;
                         }
-                        else if( this.ct進行[ i ].n現在の値 == 5 || this.ct進行[ i ].n現在の値 == 38 )
+                        else if( this.ct進行[ i ].CurrentValue == 5 || this.ct進行[ i ].CurrentValue == 38 )
                         {
                             NowDrawBalloon = 2;
                             TJAPlayer3.Tx.Balloon_Combo[j].Opacity = 255;
                             TJAPlayer3.Tx.Balloon_Number_Combo.Opacity = 255;
                         }
-                        else if( this.ct進行[ i ].n現在の値 >= 6 || this.ct進行[ i ].n現在の値 <= 37 )
+                        else if( this.ct進行[ i ].CurrentValue >= 6 || this.ct進行[ i ].CurrentValue <= 37 )
                         {
                             NowDrawBalloon = 2;
                             TJAPlayer3.Tx.Balloon_Combo[j].Opacity = 255;
                             TJAPlayer3.Tx.Balloon_Number_Combo.Opacity = 255;
                         }
 
-                        if( this.ct進行[ i ].b進行中 )
+                        if( this.ct進行[ i ].IsTicked )
                         {
                             int plate_width = TJAPlayer3.Tx.Balloon_Combo[j].szテクスチャサイズ.Width / 3;
                             int plate_height = TJAPlayer3.Tx.Balloon_Combo[j].szテクスチャサイズ.Height;

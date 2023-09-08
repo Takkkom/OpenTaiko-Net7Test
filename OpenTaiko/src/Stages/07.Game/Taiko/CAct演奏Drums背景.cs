@@ -22,7 +22,7 @@ namespace TJAPlayer3
 
         public static void damage()
         {
-            if (CFloorManagement.InvincibilityFrames != null && CFloorManagement.InvincibilityFrames.n現在の値 < CFloorManagement.InvincibilityDuration)
+            if (CFloorManagement.InvincibilityFrames != null && CFloorManagement.InvincibilityFrames.CurrentValue < CFloorManagement.InvincibilityDuration)
                 return;
 
             if (CFloorManagement.CurrentNumberOfLives > 0)
@@ -36,10 +36,10 @@ namespace TJAPlayer3
 
         public static bool isBlinking()
         {
-            if (CFloorManagement.InvincibilityFrames == null || CFloorManagement.InvincibilityFrames.n現在の値 >= CFloorManagement.InvincibilityDuration)
+            if (CFloorManagement.InvincibilityFrames == null || CFloorManagement.InvincibilityFrames.CurrentValue >= CFloorManagement.InvincibilityDuration)
                 return false;
 
-            if (CFloorManagement.InvincibilityFrames.n現在の値 % 200 > 100)
+            if (CFloorManagement.InvincibilityFrames.CurrentValue % 200 > 100)
                 return false;
 
             return true;
@@ -48,7 +48,7 @@ namespace TJAPlayer3
         public static void loopFrames()
         {
             if (CFloorManagement.InvincibilityFrames != null)
-                CFloorManagement.InvincibilityFrames.t進行();
+                CFloorManagement.InvincibilityFrames.Tick();
         }
 
         public static int LastRegisteredFloor = 1;
@@ -68,7 +68,7 @@ namespace TJAPlayer3
         //
         public CAct演奏Drums背景()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
         public void tFadeIn(int player)
@@ -99,9 +99,9 @@ namespace TJAPlayer3
             DownScript?.ClearOut(player);
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
-            if (!this.b活性化してない)
+            if (!this.IsDeActivated)
                 return;
 
             var bgOrigindir = CSkin.Path($"{TextureLoader.BASE}{TextureLoader.GAME}{TextureLoader.BACKGROUND}");
@@ -212,12 +212,12 @@ namespace TJAPlayer3
 
             this.ct炎 = new CCounter(0, 6, 50, TJAPlayer3.Timer);
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            if (this.b活性化してない)
+            if (this.IsDeActivated)
                 return;
 
             TJAPlayer3.t安全にDisposeする(ref UpScript);
@@ -225,30 +225,30 @@ namespace TJAPlayer3
 
             TJAPlayer3.t安全にDisposeする(ref pfTowerText);
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 this.ctSlideAnimation = new CCounter();
                 this.ctClimbAnimation = new CCounter();
                 this.ctDonAnimation = new CCounter(0, 1000, 24000f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
-                base.OnManagedリソースの解放();
+            if (!base.IsDeActivated)
+                base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (base.b活性化してない)
+            if (base.IsDeActivated)
                 return 0;
 
 
@@ -289,7 +289,7 @@ namespace TJAPlayer3
                         TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkTouTatsuKaiSuu).t2D描画(TJAPlayer3.Skin.Game_Tower_Font_TouTatsuKaiSuu[0], TJAPlayer3.Skin.Game_Tower_Font_TouTatsuKaiSuu[1]);
                         TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkKai).t2D描画(TJAPlayer3.Skin.Game_Tower_Font_Kai[0], TJAPlayer3.Skin.Game_Tower_Font_Kai[1]);
 
-                        this.ct炎.t進行Loop();
+                        this.ct炎.TickLoop();
                         CFloorManagement.loopFrames();
 
                         #region [Floor number]
@@ -326,7 +326,7 @@ namespace TJAPlayer3
 
                         int soul_height = TJAPlayer3.Tx.Gauge_Soul.szテクスチャサイズ.Height / 2;
 
-                        TJAPlayer3.Tx.Gauge_Soul_Fire?.t2D描画(TJAPlayer3.Skin.Gauge_Soul_Fire_X_Tower, TJAPlayer3.Skin.Gauge_Soul_Fire_Y_Tower, new Rectangle(soulfire_width * (this.ct炎.n現在の値), 0, soulfire_width, soulfire_height));
+                        TJAPlayer3.Tx.Gauge_Soul_Fire?.t2D描画(TJAPlayer3.Skin.Gauge_Soul_Fire_X_Tower, TJAPlayer3.Skin.Gauge_Soul_Fire_Y_Tower, new Rectangle(soulfire_width * (this.ct炎.CurrentValue), 0, soulfire_width, soulfire_height));
                         TJAPlayer3.Tx.Gauge_Soul?.t2D描画(TJAPlayer3.Skin.Gauge_Soul_X_Tower, TJAPlayer3.Skin.Gauge_Soul_Y_Tower, new Rectangle(0, soul_height, TJAPlayer3.Tx.Gauge_Soul.szテクスチャサイズ.Width, soul_height));
 
                         #endregion
@@ -397,9 +397,9 @@ namespace TJAPlayer3
                 float nextPositionMax140 = Math.Min((TJAPlayer3.stage演奏ドラム画面.actPlayInfo.NowMeasure[0] + 1) / (float)nightTime, 1f);
 
                 if (bFloorChanged == true)
-                    ctSlideAnimation.t開始(0, 1000, 120f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
+                    ctSlideAnimation.Start(0, 1000, 120f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
 
-                float progressFactor = (nextPositionMax140 - currentFloorPositionMax140) * (ctSlideAnimation.n現在の値 / 1000f);
+                float progressFactor = (nextPositionMax140 - currentFloorPositionMax140) * (ctSlideAnimation.CurrentValue / 1000f);
 
 
 
@@ -415,7 +415,7 @@ namespace TJAPlayer3
 
                 #region [Tower body]
 
-                progressFactor = ctSlideAnimation.n現在の値 / 1000f;
+                progressFactor = ctSlideAnimation.CurrentValue / 1000f;
 
                 int currentTower = currentTowerType;
 
@@ -482,28 +482,28 @@ namespace TJAPlayer3
 
                 if (bFloorChanged == true)
                 {
-                    ctClimbAnimation.t開始(0, 1500, 120f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
-                    ctDonAnimation.t開始(0, 1000, 24000f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
+                    ctClimbAnimation.Start(0, 1500, 120f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
+                    ctDonAnimation.Start(0, 1000, 24000f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
                 }
 
 
-                if (ctClimbAnimation.n現在の値 == 0 || ctClimbAnimation.n現在の値 == 1500)
+                if (ctClimbAnimation.CurrentValue == 0 || ctClimbAnimation.CurrentValue == 1500)
                 {
-                    int animDon = ctDonAnimation.n現在の値 % TJAPlayer3.Skin.Game_Tower_Ptn_Don_Standing[currentDon];
+                    int animDon = ctDonAnimation.CurrentValue % TJAPlayer3.Skin.Game_Tower_Ptn_Don_Standing[currentDon];
                     TJAPlayer3.Tx.Tower_Don_Standing[currentDon][animDon]?.t2D下中央基準描画(TJAPlayer3.Skin.Game_Tower_Don[0], TJAPlayer3.Skin.Game_Tower_Don[1]); // Center X - 50
                 }
-                else if (ctClimbAnimation.n現在の値 <= 1000)
+                else if (ctClimbAnimation.CurrentValue <= 1000)
                 {
-                    int animDon = ctDonAnimation.n現在の値 % TJAPlayer3.Skin.Game_Tower_Ptn_Don_Climbing[currentDon];
-                    int distDonX = (int)(ctClimbAnimation.n現在の値 * (TJAPlayer3.Skin.Game_Tower_Don_Move[0] / 1000f));
-                    int distDonY = (int)(ctClimbAnimation.n現在の値 * (TJAPlayer3.Skin.Game_Tower_Don_Move[1] / 1000f));
+                    int animDon = ctDonAnimation.CurrentValue % TJAPlayer3.Skin.Game_Tower_Ptn_Don_Climbing[currentDon];
+                    int distDonX = (int)(ctClimbAnimation.CurrentValue * (TJAPlayer3.Skin.Game_Tower_Don_Move[0] / 1000f));
+                    int distDonY = (int)(ctClimbAnimation.CurrentValue * (TJAPlayer3.Skin.Game_Tower_Don_Move[1] / 1000f));
                     TJAPlayer3.Tx.Tower_Don_Climbing[currentDon][animDon]?.t2D下中央基準描画(TJAPlayer3.Skin.Game_Tower_Don[0] + distDonX, TJAPlayer3.Skin.Game_Tower_Don[1] + distDonY);
                 }
                 else
                 {
-                    int animDon = ctDonAnimation.n現在の値 % TJAPlayer3.Skin.Game_Tower_Ptn_Don_Running[currentDon];
-                    int distDonX = (int)((1500 - ctClimbAnimation.n現在の値) * (TJAPlayer3.Skin.Game_Tower_Don_Move[0] / 500f));
-                    int distDonY = (int)((1500 - ctClimbAnimation.n現在の値) * (TJAPlayer3.Skin.Game_Tower_Don_Move[1] / 500f));
+                    int animDon = ctDonAnimation.CurrentValue % TJAPlayer3.Skin.Game_Tower_Ptn_Don_Running[currentDon];
+                    int distDonX = (int)((1500 - ctClimbAnimation.CurrentValue) * (TJAPlayer3.Skin.Game_Tower_Don_Move[0] / 500f));
+                    int distDonY = (int)((1500 - ctClimbAnimation.CurrentValue) * (TJAPlayer3.Skin.Game_Tower_Don_Move[1] / 500f));
                     TJAPlayer3.Tx.Tower_Don_Running[currentDon][animDon]?.t2D下中央基準描画(TJAPlayer3.Skin.Game_Tower_Don[0] + distDonX, TJAPlayer3.Skin.Game_Tower_Don[1] + distDonY);
                 }
 
@@ -511,18 +511,18 @@ namespace TJAPlayer3
 
                 #region [Miss icon]
 
-                if (CFloorManagement.InvincibilityFrames != null && CFloorManagement.InvincibilityFrames.n現在の値 < CFloorManagement.InvincibilityDuration)
+                if (CFloorManagement.InvincibilityFrames != null && CFloorManagement.InvincibilityFrames.CurrentValue < CFloorManagement.InvincibilityDuration)
                 {
                     if (TJAPlayer3.Tx.Tower_Miss != null)
-                        TJAPlayer3.Tx.Tower_Miss.Opacity = Math.Min(255, 1000 - CFloorManagement.InvincibilityFrames.n現在の値);
+                        TJAPlayer3.Tx.Tower_Miss.Opacity = Math.Min(255, 1000 - CFloorManagement.InvincibilityFrames.CurrentValue);
                     TJAPlayer3.Tx.Tower_Miss?.t2D下中央基準描画(TJAPlayer3.Skin.Game_Tower_Miss[0], TJAPlayer3.Skin.Game_Tower_Miss[1]);
                 }
 
                 #endregion
 
-                ctSlideAnimation?.t進行();
-                ctClimbAnimation?.t進行();
-                ctDonAnimation?.t進行Loop();
+                ctSlideAnimation?.Tick();
+                ctClimbAnimation?.Tick();
+                ctDonAnimation?.TickLoop();
 
                 #endregion
             }
@@ -538,7 +538,7 @@ namespace TJAPlayer3
 
             #endregion
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         #region[ private ]

@@ -19,7 +19,7 @@ namespace TJAPlayer3
 
 		public CActSelectPreimageパネル()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		public void t選択曲が変更された()
 		{
@@ -29,24 +29,24 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			this.n本体X = 8;
 			this.n本体Y = 0x39;
 			this.r表示するプレビュー画像 = this.txプレビュー画像がないときの画像;
 			this.str現在のファイル名 = "";
 			this.b新しいプレビューファイルを読み込んだ = false;
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			this.ct登場アニメ用 = null;
 			this.ct遅延表示 = null;
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				this.txパネル本体 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_preimage panel.png" ), false );
 				this.txセンサ = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor.png" ), false );
@@ -57,47 +57,47 @@ namespace TJAPlayer3
 				this.b動画フレームを作成した = false;
 				this.pAVIBmp = IntPtr.Zero;
 				this.tプレビュー画像_動画の変更();
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
 				TJAPlayer3.tテクスチャの解放( ref this.txセンサ );
 				TJAPlayer3.tテクスチャの解放( ref this.txセンサ光 );
 				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
 				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( base.b初めての進行描画 )
+				if( base.IsFirstDraw )
 				{
 					this.ct登場アニメ用 = new CCounter( 0, 100, 5, TJAPlayer3.Timer );
 					this.ctセンサ光 = new CCounter( 0, 100, 30, TJAPlayer3.Timer );
-					this.ctセンサ光.n現在の値 = 70;
-					base.b初めての進行描画 = false;
+					this.ctセンサ光.CurrentValue = 70;
+					base.IsFirstDraw = false;
 				}
-				this.ct登場アニメ用.t進行();
-				this.ctセンサ光.t進行Loop();
-				if( ( !TJAPlayer3.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.b進行中 )
+				this.ct登場アニメ用.Tick();
+				this.ctセンサ光.TickLoop();
+				if( ( !TJAPlayer3.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.IsTicked )
 				{
-					this.ct遅延表示.t進行();
-					if ( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
+					this.ct遅延表示.Tick();
+					if ( ( this.ct遅延表示.CurrentValue >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
 					{
 						this.tプレビュー画像_動画の変更();
-						TJAPlayer3.Timer.t更新();
-						this.ct遅延表示.n現在の経過時間ms = TJAPlayer3.Timer.n現在時刻;
+						TJAPlayer3.Timer.Update();
+						this.ct遅延表示.NowTime = TJAPlayer3.Timer.NowTime;
 						this.b新しいプレビューファイルを読み込んだ = true;
 					}
-					else if ( this.ct遅延表示.b終了値に達した && this.ct遅延表示.b進行中 )
+					else if ( this.ct遅延表示.IsEnded && this.ct遅延表示.IsTicked )
 					{
-						this.ct遅延表示.t停止();
+						this.ct遅延表示.Stop();
 					}
 				}
 				this.t描画処理_パネル本体();
@@ -259,7 +259,7 @@ namespace TJAPlayer3
 		}
 		private void t描画処理_センサ光()
 		{
-			int num = (int)this.ctセンサ光.n現在の値;
+			int num = (int)this.ctセンサ光.CurrentValue;
 			if( num < 12 )
 			{
 				int x = this.n本体X + 0xcc;
@@ -301,14 +301,14 @@ namespace TJAPlayer3
 		}
 		private void t描画処理_パネル本体()
 		{
-			if( this.ct登場アニメ用.b終了値に達した || ( this.txパネル本体 != null ) )
+			if( this.ct登場アニメ用.IsEnded || ( this.txパネル本体 != null ) )
 			{
 				this.n本体X = 16;
 				this.n本体Y = 86;
 			}
 			else
 			{
-				double num = ( (double) this.ct登場アニメ用.n現在の値 ) / 100.0;
+				double num = ( (double) this.ct登場アニメ用.CurrentValue ) / 100.0;
 				double num2 = Math.Cos( ( 1.5 + ( 0.5 * num ) ) * Math.PI );
 				this.n本体X = 8;
 				if (this.txパネル本体 != null)
@@ -323,11 +323,11 @@ namespace TJAPlayer3
 		}
 		private unsafe void t描画処理_プレビュー画像()
 		{
-			if( !TJAPlayer3.stage選曲.bスクロール中 && ( ( ( this.ct遅延表示 != null ) && ( this.ct遅延表示.n現在の値 > 0 ) ) && !this.b新しいプレビューファイルをまだ読み込んでいない ) )
+			if( !TJAPlayer3.stage選曲.bスクロール中 && ( ( ( this.ct遅延表示 != null ) && ( this.ct遅延表示.CurrentValue > 0 ) ) && !this.b新しいプレビューファイルをまだ読み込んでいない ) )
 			{
 				int x = this.n本体X + 0x12;
 				int y = this.n本体Y + 0x10;
-				float num3 = ( (float) this.ct遅延表示.n現在の値 ) / 100f;
+				float num3 = ( (float) this.ct遅延表示.CurrentValue ) / 100f;
 				float num4 = 0.9f + ( 0.1f * num3 );
 				if( this.r表示するプレビュー画像 != null )
 				{

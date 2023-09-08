@@ -11,26 +11,26 @@ namespace TJAPlayer3
 	internal class CAct演奏Drumsステータスパネル : CAct演奏ステータスパネル共通
 	{
 		// コンストラクタ
-        public override void On活性化()
+        public override void Activate()
         {
 
-            base.On活性化();
+            base.Activate();
         }
 
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-            if( !base.b活性化してない )
+            if( !base.IsDeActivated )
             {
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
             
 

@@ -8,7 +8,7 @@ namespace FDK
 	{
 		// プロパティ
 
-		public int n現在のFPS
+		public int NowFPS
 		{
 			get;
 			private set;
@@ -18,7 +18,7 @@ namespace FDK
 			get;
 			private set;
 		}
-		public bool bFPSの値が変化した
+		public bool ChangedFPS
 		{
 			get;
 			private set;
@@ -29,33 +29,33 @@ namespace FDK
 
 		public CFPS()
 		{
-			this.n現在のFPS = 0;
+			this.NowFPS = 0;
 			this.DeltaTime = 0;
-			this.timer = new CTimer( CTimer.E種別.MultiMedia );
-			this.基点時刻ms = this.timer.n現在時刻;
-			this.内部FPS = 0;
-			this.bFPSの値が変化した = false;
+			this.FPSTimer = new CTimer( CTimer.TimerType.MultiMedia );
+			this.BeginTime = this.FPSTimer.NowTime;
+			this.CoreFPS = 0;
+			this.ChangedFPS = false;
 		}
 
 
 		// メソッド
 
-		public void tカウンタ更新()
+		public void Update()
 		{
-			this.timer.t更新();
-			this.bFPSの値が変化した = false;
+			this.FPSTimer.Update();
+			this.ChangedFPS = false;
 
 			const long INTERVAL = 1000;
-			this.DeltaTime = (this.timer.n現在時刻 - this.PrevFrameTime) / 1000.0;
-			PrevFrameTime = this.timer.n現在時刻;
-			while ( ( this.timer.n現在時刻 - this.基点時刻ms ) >= INTERVAL )
+			this.DeltaTime = (this.FPSTimer.NowTime - this.PrevFrameTime) / 1000.0;
+			PrevFrameTime = this.FPSTimer.NowTime;
+			while ( ( this.FPSTimer.NowTime - this.BeginTime ) >= INTERVAL )
 			{
-				this.n現在のFPS = this.内部FPS;
-				this.内部FPS = 0;
-				this.bFPSの値が変化した = true;
-				this.基点時刻ms += INTERVAL;
+				this.NowFPS = this.CoreFPS;
+				this.CoreFPS = 0;
+				this.ChangedFPS = true;
+				this.BeginTime += INTERVAL;
 			}
-			this.内部FPS++;
+			this.CoreFPS++;
 		}
 
 
@@ -63,10 +63,10 @@ namespace FDK
 
 		#region [ private ]
 		//-----------------
-		private CTimer	timer;
-		private long 基点時刻ms;
+		private CTimer	FPSTimer;
+		private long BeginTime;
 		private long PrevFrameTime;
-		private int		内部FPS;
+		private int		CoreFPS;
 		//-----------------
 		#endregion
 	}

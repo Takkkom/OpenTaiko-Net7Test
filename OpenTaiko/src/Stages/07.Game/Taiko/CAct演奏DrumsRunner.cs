@@ -15,7 +15,7 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏DrumsRunner()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
         public void Start(int Player, bool IsMiss, CDTX.CChip pChip)
@@ -55,7 +55,7 @@ namespace TJAPlayer3
             }
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < 128; i++)
             {
@@ -65,19 +65,19 @@ namespace TJAPlayer3
             }
 
             // フィールド上で代入してたためこちらへ移動。
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < 128; i++)
             {
                 stRunners[i].ct進行 = null;
             }
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             Random random = new Random();
 
@@ -93,29 +93,29 @@ namespace TJAPlayer3
                     Runner = TJAPlayer3.tテクスチャの生成($@"{path}{Path.DirectorySeparatorChar}Runner.png");
                 }
             }
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             TJAPlayer3.t安全にDisposeする(ref Runner);
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             for (int i = 0; i < 128; i++)
             {
                 if (stRunners[i].b使用中)
                 {
-                    stRunners[i].nOldValue = stRunners[i].ct進行.n現在の値;
-                    stRunners[i].ct進行.t進行();
-                    if (stRunners[i].ct進行.b終了値に達した || stRunners[i].fX > TJAPlayer3.Skin.Resolution[0])
+                    stRunners[i].nOldValue = stRunners[i].ct進行.CurrentValue;
+                    stRunners[i].ct進行.Tick();
+                    if (stRunners[i].ct進行.IsEnded || stRunners[i].fX > TJAPlayer3.Skin.Resolution[0])
                     {
-                        stRunners[i].ct進行.t停止();
+                        stRunners[i].ct進行.Stop();
                         stRunners[i].b使用中 = false;
                     }
-                    for (int n = stRunners[i].nOldValue; n < stRunners[i].ct進行.n現在の値; n++)
+                    for (int n = stRunners[i].nOldValue; n < stRunners[i].ct進行.CurrentValue; n++)
                     {
                         stRunners[i].fX += (float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[stRunners[i].nPlayer] / 18;
                         int Width = TJAPlayer3.Skin.Resolution[0] / Ptn;
@@ -134,7 +134,7 @@ namespace TJAPlayer3
                     }
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
         #region[ private ]

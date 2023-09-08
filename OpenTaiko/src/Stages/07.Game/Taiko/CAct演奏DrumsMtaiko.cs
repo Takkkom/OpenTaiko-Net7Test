@@ -17,10 +17,10 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏DrumsMtaiko()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
 			for( int i = 0; i < 25; i++ )
 			{
@@ -28,15 +28,15 @@ namespace TJAPlayer3
 				stパッド状態.n明るさ = 0;
 				this.stパッド状態[ i ] = stパッド状態;
 			}
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
              this.ctレベルアップダウン = new CCounter[ 5 ];
             ctSymbolFlash = new CCounter[5];
@@ -49,25 +49,25 @@ namespace TJAPlayer3
             }
 
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             this.ctレベルアップダウン = null;
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if( base.b初めての進行描画 )
+            if( base.IsFirstDraw )
 			{
-                this.nフラッシュ制御タイマ = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
-                base.b初めての進行描画 = false;
+                this.nフラッシュ制御タイマ = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                base.IsFirstDraw = false;
             }
 
-            long num = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+            long num = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
             if ( num < this.nフラッシュ制御タイマ )
 			{
 				this.nフラッシュ制御タイマ = num;
@@ -276,14 +276,14 @@ namespace TJAPlayer3
             {
                 if (TJAPlayer3.ConfigIni.nPlayerCount > 2) break;
 
-                if ( !this.ctレベルアップダウン[ i ].b停止中 )
+                if ( !this.ctレベルアップダウン[ i ].IsStoped )
                 {
-                    this.ctレベルアップダウン[ i ].t進行();
-                    if( this.ctレベルアップダウン[ i ].b終了値に達した ) {
-                        this.ctレベルアップダウン[ i ].t停止();
+                    this.ctレベルアップダウン[ i ].Tick();
+                    if( this.ctレベルアップダウン[ i ].IsEnded ) {
+                        this.ctレベルアップダウン[ i ].Stop();
                     }
                 }
-                if( ( this.ctレベルアップダウン[ i ].b進行中 && ( TJAPlayer3.Tx.Taiko_LevelUp != null && TJAPlayer3.Tx.Taiko_LevelDown != null ) ) && !TJAPlayer3.ConfigIni.bNoInfo )
+                if( ( this.ctレベルアップダウン[ i ].IsTicked && ( TJAPlayer3.Tx.Taiko_LevelUp != null && TJAPlayer3.Tx.Taiko_LevelDown != null ) ) && !TJAPlayer3.ConfigIni.bNoInfo )
                 {
                     //this.ctレベルアップダウン[ i ].n現在の値 = 110;
 
@@ -291,32 +291,32 @@ namespace TJAPlayer3
                     float fScale = 1.0f;
                     int nAlpha = 255;
                     float[] fY = new float[] { 206, -206, 0, 0 };
-                    if( this.ctレベルアップダウン[ i ].n現在の値 >= 0 && this.ctレベルアップダウン[ i ].n現在の値 <= 20 )
+                    if( this.ctレベルアップダウン[ i ].CurrentValue >= 0 && this.ctレベルアップダウン[ i ].CurrentValue <= 20 )
                     {
                         nAlpha = 60;
                         fScale = 1.14f;
                     }
-                    else if( this.ctレベルアップダウン[ i ].n現在の値 >= 21 && this.ctレベルアップダウン[ i ].n現在の値 <= 40 )
+                    else if( this.ctレベルアップダウン[ i ].CurrentValue >= 21 && this.ctレベルアップダウン[ i ].CurrentValue <= 40 )
                     {
                         nAlpha = 60;
                         fScale = 1.19f;
                     }
-                    else if( this.ctレベルアップダウン[ i ].n現在の値 >= 41 && this.ctレベルアップダウン[ i ].n現在の値 <= 60 )
+                    else if( this.ctレベルアップダウン[ i ].CurrentValue >= 41 && this.ctレベルアップダウン[ i ].CurrentValue <= 60 )
                     {
                         nAlpha = 220;
                         fScale = 1.23f;
                     }
-                    else if( this.ctレベルアップダウン[ i ].n現在の値 >= 61 && this.ctレベルアップダウン[ i ].n現在の値 <= 80 )
+                    else if( this.ctレベルアップダウン[ i ].CurrentValue >= 61 && this.ctレベルアップダウン[ i ].CurrentValue <= 80 )
                     {
                         nAlpha = 230;
                         fScale = 1.19f;
                     }
-                    else if( this.ctレベルアップダウン[ i ].n現在の値 >= 81 && this.ctレベルアップダウン[ i ].n現在の値 <= 100 )
+                    else if( this.ctレベルアップダウン[ i ].CurrentValue >= 81 && this.ctレベルアップダウン[ i ].CurrentValue <= 100 )
                     {
                         nAlpha = 240;
                         fScale = 1.14f;
                     }
-                    else if( this.ctレベルアップダウン[ i ].n現在の値 >= 101 && this.ctレベルアップダウン[ i ].n現在の値 <= 120 )
+                    else if( this.ctレベルアップダウン[ i ].CurrentValue >= 101 && this.ctレベルアップダウン[ i ].CurrentValue <= 120 )
                     {
                         nAlpha = 255;
                         fScale = 1.04f;
@@ -448,7 +448,7 @@ namespace TJAPlayer3
                     TJAPlayer3.Tx.Taiko_PlayerNumber[i].t2D描画(playerNumber_x, playerNumber_y);
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public void tMtaikoEvent( int nChannel, int nHand, int nPlayer )
@@ -580,7 +580,7 @@ namespace TJAPlayer3
         {
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
-                ctSymbolFlash[i].t進行();
+                ctSymbolFlash[i].Tick();
 
                 int couse_symbol_x;
                 int couse_symbol_y;
@@ -651,7 +651,7 @@ namespace TJAPlayer3
                         height = TJAPlayer3.Skin.Game_CourseSymbol_Back_Rect_4P[3];
                     }
 
-                    TJAPlayer3.Tx.Couse_Symbol_Back_Flash[TJAPlayer3.stage選曲.n確定された曲の難易度[i]].Opacity = 255 - (int)((ctSymbolFlash[i].n現在の値 / 1000.0) * 255);
+                    TJAPlayer3.Tx.Couse_Symbol_Back_Flash[TJAPlayer3.stage選曲.n確定された曲の難易度[i]].Opacity = 255 - (int)((ctSymbolFlash[i].CurrentValue / 1000.0) * 255);
                     TJAPlayer3.Tx.Couse_Symbol_Back_Flash[TJAPlayer3.stage選曲.n確定された曲の難易度[i]].t2D描画(
                         couse_symbol_x,
                         couse_symbol_y, 

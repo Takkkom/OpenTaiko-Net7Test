@@ -14,33 +14,33 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏DrumsMob()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             RandomMob = TJAPlayer3.Random.Next(TJAPlayer3.Skin.Game_Mob_Ptn);
             nMobBeat = TJAPlayer3.Skin.Game_Mob_Beat;
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             if(!TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
             {
@@ -74,7 +74,7 @@ namespace TJAPlayer3
 
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
         #region[ private ]
         //-----------------

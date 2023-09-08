@@ -9,7 +9,7 @@ namespace TJAPlayer3
 {
     class CAct演奏Drumsスコアランク : CActivity
     {
-        public override void On活性化()
+        public override void Activate()
         {
             double RollTimems = 0;
 
@@ -33,27 +33,27 @@ namespace TJAPlayer3
                     this.counter[player][i] = new CCounter();
                 }
             }
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
 			TowerResult_ScoreRankEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERRESULT}ScoreRankEffect.png"));
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
 
 			TJAPlayer3.t安全にDisposeする(ref TowerResult_ScoreRankEffect);
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
         private void displayScoreRank(int i, int player, float x, float y, int mode = 0)
@@ -67,27 +67,27 @@ namespace TJAPlayer3
             if (tex == null)
                 return;
 
-            if (!cct.b進行中)
+            if (!cct.IsTicked)
             {
-                cct.t開始(0, 3000, 1, TJAPlayer3.Timer);
+                cct.Start(0, 3000, 1, TJAPlayer3.Timer);
             }
-            if (cct.n現在の値 <= 255)
+            if (cct.CurrentValue <= 255)
             {
-                tex.Opacity = cct.n現在の値;
-                x = ((cct.n現在の値 / 255.0f) - 1.0f) * (player == 0 ? -TJAPlayer3.Skin.Game_Judge_Move[0] : TJAPlayer3.Skin.Game_Judge_Move[0]);
-                y = ((cct.n現在の値 / 255.0f) - 1.0f) * (player == 0 ? -TJAPlayer3.Skin.Game_Judge_Move[1] : TJAPlayer3.Skin.Game_Judge_Move[1]);
+                tex.Opacity = cct.CurrentValue;
+                x = ((cct.CurrentValue / 255.0f) - 1.0f) * (player == 0 ? -TJAPlayer3.Skin.Game_Judge_Move[0] : TJAPlayer3.Skin.Game_Judge_Move[0]);
+                y = ((cct.CurrentValue / 255.0f) - 1.0f) * (player == 0 ? -TJAPlayer3.Skin.Game_Judge_Move[1] : TJAPlayer3.Skin.Game_Judge_Move[1]);
             }
-            if (cct.n現在の値 > 255 && cct.n現在の値 <= 255 + 180)
+            if (cct.CurrentValue > 255 && cct.CurrentValue <= 255 + 180)
             {
                 tex.Opacity = 255;
 
-                float newSize = 1.0f + (float)Math.Sin((cct.n現在の値 - 255) * (Math.PI / 180)) * 0.2f;
+                float newSize = 1.0f + (float)Math.Sin((cct.CurrentValue - 255) * (Math.PI / 180)) * 0.2f;
                 tex.vc拡大縮小倍率.X = newSize;
                 tex.vc拡大縮小倍率.Y = newSize;
                 x = 0;
                 y = 0;
             }
-            if (cct.n現在の値 > 255 + 180 && cct.n現在の値 <= 2745)
+            if (cct.CurrentValue > 255 + 180 && cct.CurrentValue <= 2745)
             {
                 tex.Opacity = 255;
                 tex.vc拡大縮小倍率.X = 1.0f;
@@ -95,11 +95,11 @@ namespace TJAPlayer3
                 x = 0;
                 y = 0;
             }
-            if (cct.n現在の値 >= 2745 && cct.n現在の値 <= 3000)
+            if (cct.CurrentValue >= 2745 && cct.CurrentValue <= 3000)
             {
-                tex.Opacity = 255 - ((cct.n現在の値 - 2745));
-                x = ((cct.n現在の値 - 2745) / 255.0f) * (player == 0 || TJAPlayer3.ConfigIni.nPlayerCount >= 2 ? -TJAPlayer3.Skin.Game_Judge_Move[0] : TJAPlayer3.Skin.Game_Judge_Move[0]);
-                y = ((cct.n現在の値 - 2745) / 255.0f) * (player == 0 || TJAPlayer3.ConfigIni.nPlayerCount >= 2 ? -TJAPlayer3.Skin.Game_Judge_Move[1] : TJAPlayer3.Skin.Game_Judge_Move[1]);
+                tex.Opacity = 255 - ((cct.CurrentValue - 2745));
+                x = ((cct.CurrentValue - 2745) / 255.0f) * (player == 0 || TJAPlayer3.ConfigIni.nPlayerCount >= 2 ? -TJAPlayer3.Skin.Game_Judge_Move[0] : TJAPlayer3.Skin.Game_Judge_Move[0]);
+                y = ((cct.CurrentValue - 2745) / 255.0f) * (player == 0 || TJAPlayer3.ConfigIni.nPlayerCount >= 2 ? -TJAPlayer3.Skin.Game_Judge_Move[1] : TJAPlayer3.Skin.Game_Judge_Move[1]);
             }
 
             var xpos = 0;
@@ -143,7 +143,7 @@ namespace TJAPlayer3
                 tex.t2D拡大率考慮中央基準描画(xpos, ypos, new System.Drawing.Rectangle(width * i, 0, width, height));
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Dan)
             {
@@ -159,7 +159,7 @@ namespace TJAPlayer3
                         {
                             #region [Ensou score ranks]
 
-                            counter[player][i].t進行();
+                            counter[player][i].Tick();
                             if (TJAPlayer3.stage演奏ドラム画面.actScore.GetScore(player) >= ScoreRank[player][i])
                             {
                                 displayScoreRank(i, player, x, y);
@@ -223,7 +223,7 @@ namespace TJAPlayer3
                             TJAPlayer3.stage演奏ドラム画面.CChartScore[0].nGood == 0
                         };
 
-                        counter[0][i].t進行();
+                        counter[0][i].Tick();
 
                         bool satisfied = true;
                         for (int j = 0; j <= i; j++)
@@ -249,7 +249,7 @@ namespace TJAPlayer3
             //TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, ScoreRank[6].ToString());
             //TJAPlayer3.act文字コンソール.tPrint(0, 10, C文字コンソール.Eフォント種別.白, ScoreRank2P[6].ToString());
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         private CTexture TowerResult_ScoreRankEffect;

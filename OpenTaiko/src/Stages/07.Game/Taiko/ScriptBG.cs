@@ -191,7 +191,7 @@ namespace TJAPlayer3
             {
                 LuaSetConstValues.Call(TJAPlayer3.ConfigIni.nPlayerCount, TJAPlayer3.P1IsBlue());
                 LuaUpdateValues.Call(TJAPlayer3.FPS.DeltaTime,
-                    TJAPlayer3.FPS.n現在のFPS,
+                    TJAPlayer3.FPS.NowFPS,
                     TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared,
                     0,
                     TJAPlayer3.stage演奏ドラム画面.AIBattleState,
@@ -223,7 +223,7 @@ namespace TJAPlayer3
                 }
 
                 LuaUpdateValues.Call(TJAPlayer3.FPS.DeltaTime, 
-                    TJAPlayer3.FPS.n現在のFPS, 
+                    TJAPlayer3.FPS.NowFPS, 
                     TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared, 
                     (double)currentFloorPositionMax140, 
                     TJAPlayer3.stage演奏ドラム画面.AIBattleState,

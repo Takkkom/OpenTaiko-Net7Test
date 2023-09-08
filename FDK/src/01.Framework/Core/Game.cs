@@ -247,7 +247,7 @@ namespace SampleFramework
             Window_.Close();
         }
 
-        protected void t全画面_ウィンドウモード切り替え()
+        protected void ToggleWindowMode()
         {
             /*
 			DeviceSettings settings = base.GraphicsDeviceManager.CurrentSettings.Clone();

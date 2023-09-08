@@ -18,7 +18,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public long n実出力遅延ms
+		public long OutputDelay
 		{
 			get;
 			protected set;
@@ -31,17 +31,17 @@ namespace FDK
 
 		// CSoundTimer 用に公開しているプロパティ
 
-		public long n経過時間ms
+		public long ElapsedTimeMs
 		{
 			get;
 			protected set;
 		}
-		public long n経過時間を更新したシステム時刻ms
+		public long UpdateSystemTimeMs
 		{
 			get;
 			protected set;
 		}
-		public CTimer tmシステムタイマ
+		public CTimer SystemTimer
 		{
 			get;
 			protected set;
@@ -55,7 +55,7 @@ namespace FDK
 			get
 			{
 				float fVolume = 0.0f;
-				bool b = Bass.ChannelGetAttribute(this.hMixer, ChannelAttribute.Volume, out fVolume);
+				bool b = Bass.ChannelGetAttribute(this.MixerHandle, ChannelAttribute.Volume, out fVolume);
 				if (!b)
 				{
 					Errors be = Bass.LastError;
@@ -65,7 +65,7 @@ namespace FDK
 			}
 			set
 			{
-				bool b = Bass.ChannelSetAttribute(this.hMixer, ChannelAttribute.Volume, (float)(value / 100.0));
+				bool b = Bass.ChannelSetAttribute(this.MixerHandle, ChannelAttribute.Volume, (float)(value / 100.0));
 				if (!b)
 				{
 					Errors be = Bass.LastError;
@@ -74,25 +74,25 @@ namespace FDK
 			}
 		}
 
-		public CSoundDeviceBASS(int UpdatePeriod, int BufferSizems)
+		public CSoundDeviceBASS(int updatePeriod, int bufferSize)
 		{
 			Trace.TraceInformation("Start initialization of BASS");
 			this.SoundDeviceType = ESoundDeviceType.Unknown;
-			this.n実出力遅延ms = 0;
-			this.n経過時間ms = 0;
-			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
-			this.tmシステムタイマ = new CTimer(CTimer.E種別.MultiMedia);
+			this.OutputDelay = 0;
+			this.ElapsedTimeMs = 0;
+			this.UpdateSystemTimeMs = CTimer.UnusedNum;
+			this.SystemTimer = new CTimer(CTimer.TimerType.MultiMedia);
 
-			this.bIsBASSSoundFree = true;
+			this.IsBASSSoundFree = true;
 
 			// BASS の初期化。
 
-			int nFreq = 44100;
+			int freq = 44100;
 			
-			if (!Bass.Init(-1, nFreq, DeviceInitFlags.Default))
+			if (!Bass.Init(-1, freq, DeviceInitFlags.Default))
 				throw new Exception(string.Format("BASS の初期化に失敗しました。(BASS_Init)[{0}]", Bass.LastError.ToString()));
 			
-			if (!Bass.Configure(Configuration.UpdatePeriod, UpdatePeriod))
+			if (!Bass.Configure(Configuration.UpdatePeriod, updatePeriod))
 			{
 				Trace.TraceWarning($"BASS_SetConfig({nameof(Configuration.UpdatePeriod)}) に失敗しました。[{Bass.LastError}]");
 			}
@@ -101,52 +101,52 @@ namespace FDK
 				Trace.TraceWarning($"BASS_SetConfig({nameof(Configuration.UpdateThreads)}) に失敗しました。[{Bass.LastError}]");
 			}
 			
-			Bass.Configure(Configuration.PlaybackBufferLength, BufferSizems);
+			Bass.Configure(Configuration.PlaybackBufferLength, bufferSize);
 			Bass.Configure(Configuration.LogarithmicVolumeCurve, true);
 
-			this.tSTREAMPROC = new StreamProcedure(StreamProc);
-			this.hMainStream = Bass.CreateStream(nFreq, 2, BassFlags.Default, this.tSTREAMPROC, IntPtr.Zero);
+			this.STREAMPROC = new StreamProcedure(StreamProc);
+			this.MainStreamHandle = Bass.CreateStream(freq, 2, BassFlags.Default, this.STREAMPROC, IntPtr.Zero);
 
 			var flag = BassFlags.MixerNonStop| BassFlags.Decode;   // デコードのみ＝発声しない。
-			this.hMixer = BassMix.CreateMixerStream(nFreq, 2, flag);
+			this.MixerHandle = BassMix.CreateMixerStream(freq, 2, flag);
 
-			if (this.hMixer == 0)
+			if (this.MixerHandle == 0)
 			{
 				Errors err = Bass.LastError;
 				Bass.Free();
-				this.bIsBASSSoundFree = true;
+				this.IsBASSSoundFree = true;
 				throw new Exception(string.Format("BASSミキサ(mixing)の作成に失敗しました。[{0}]", err));
 			}
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
 
-			this.bIsBASSSoundFree = false;
+			this.IsBASSSoundFree = false;
 
-			var mixerInfo = Bass.ChannelGetInfo(this.hMixer);
-			int nBytesPerSample = 2;
-			long nMixer_BlockAlign = mixerInfo.Channels * nBytesPerSample;
-			this.nMixer_BytesPerSec = nMixer_BlockAlign * mixerInfo.Frequency;
+			var mixerInfo = Bass.ChannelGetInfo(this.MixerHandle);
+			int bytesPerSample = 2;
+			long mixer_BlockAlign = mixerInfo.Channels * bytesPerSample;
+			this.Mixer_BytesPerSec = mixer_BlockAlign * mixerInfo.Frequency;
 
 			// 単純に、hMixerの音量をMasterVolumeとして制御しても、
 			// ChannelGetData()の内容には反映されない。
 			// そのため、もう一段mixerを噛ませて、一段先のmixerからChannelGetData()することで、
 			// hMixerの音量制御を反映させる。
-			this.hMixer_DeviceOut = BassMix.CreateMixerStream(
-				nFreq, 2, flag);
-			if (this.hMixer_DeviceOut == 0)
+			Mixer_DeviceOut = BassMix.CreateMixerStream(
+				freq, 2, flag);
+			if (this.Mixer_DeviceOut == 0)
 			{
 				Errors errcode = Bass.LastError;
 				Bass.Free();
-				this.bIsBASSSoundFree = true;
+				this.IsBASSSoundFree = true;
 				throw new Exception(string.Format("BASSミキサ(最終段)の作成に失敗しました。[{0}]", errcode));
 			}
 			{
-				bool b1 = BassMix.MixerAddChannel(this.hMixer_DeviceOut, this.hMixer, BassFlags.Default);
+				bool b1 = BassMix.MixerAddChannel(this.Mixer_DeviceOut, this.MixerHandle, BassFlags.Default);
 				if (!b1)
 				{
 					Errors errcode = Bass.LastError;
 					Bass.Free();
-					this.bIsBASSSoundFree = true;
+					this.IsBASSSoundFree = true;
 					throw new Exception(string.Format("BASSミキサ(最終段とmixing)の接続に失敗しました。[{0}]", errcode));
 				};
 			}
@@ -159,19 +159,19 @@ namespace FDK
 			{
 				Errors err = Bass.LastError;
 				Bass.Free();
-				this.bIsBASSSoundFree = true;
+				this.IsBASSSoundFree = true;
 				throw new Exception("BASS デバイス出力開始に失敗しました。" + err.ToString());
 			}
 			else
 			{
 				Bass.GetInfo(out var info);
 
-				this.BufferSize = this.n実出力遅延ms = info.Latency + BufferSizems;//求め方があっているのだろうか…
+				this.BufferSize = this.OutputDelay = info.Latency + bufferSize;//求め方があっているのだろうか…
 
-				Trace.TraceInformation("BASS デバイス出力開始:[{0}ms]", this.n実出力遅延ms);
+				Trace.TraceInformation("BASS デバイス出力開始:[{0}ms]", this.OutputDelay);
 			}
 
-			Bass.ChannelPlay(this.hMainStream, false);
+			Bass.ChannelPlay(this.MainStreamHandle, false);
 
 		}
 
@@ -179,13 +179,13 @@ namespace FDK
 		public CSound tCreateSound(string strFilename, ESoundGroup soundGroup)
 		{
 			var sound = new CSound(soundGroup);
-			sound.tBASSサウンドを作成する(strFilename, this.hMixer);
+			sound.CreateBassSound(strFilename, this.MixerHandle);
 			return sound;
 		}
 
 		public void tCreateSound(string strFilename, CSound sound)
 		{
-			sound.tBASSサウンドを作成する(strFilename, this.hMixer);
+			sound.CreateBassSound(strFilename, this.MixerHandle);
 		}
 		#endregion
 
@@ -200,15 +200,15 @@ namespace FDK
 		protected void Dispose(bool bManagedDispose)
 		{
 			this.SoundDeviceType = ESoundDeviceType.Unknown;      // まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
-			if (hMainStream != -1)
+			if (MainStreamHandle != -1)
 			{
-				Bass.StreamFree(this.hMainStream);
+				Bass.StreamFree(this.MainStreamHandle);
 			}
-			if (hMixer != -1)
+			if (MixerHandle != -1)
 			{
-				Bass.StreamFree(this.hMixer);
+				Bass.StreamFree(this.MixerHandle);
 			}
-			if (!this.bIsBASSSoundFree)
+			if (!this.IsBASSSoundFree)
 			{
 				Bass.Stop();
 				Bass.Free();// システムタイマより先に呼び出すこと。（Stream処理() の中でシステムタイマを参照してるため）
@@ -216,8 +216,8 @@ namespace FDK
 
 			if (bManagedDispose)
 			{
-				tmシステムタイマ.Dispose();
-				this.tmシステムタイマ = null;
+				SystemTimer.Dispose();
+				this.SystemTimer = null;
 			}
 		}
 		~CSoundDeviceBASS()
@@ -231,30 +231,30 @@ namespace FDK
 		{
 			// BASSミキサからの出力データをそのまま ASIO buffer へ丸投げ。
 
-			int num = Bass.ChannelGetData(this.hMixer_DeviceOut, buffer, length);      // num = 実際に転送した長さ
+			int num = Bass.ChannelGetData(this.Mixer_DeviceOut, buffer, length);      // num = 実際に転送した長さ
 
 			if (num == -1) num = 0;
 
 			// 経過時間を更新。
 			// データの転送差分ではなく累積転送バイト数から算出する。
 
-			this.n経過時間ms = (this.nTotalByteCount * 1000 / this.nMixer_BytesPerSec) - this.n実出力遅延ms;
-			this.n経過時間を更新したシステム時刻ms = this.tmシステムタイマ.nシステム時刻ms;
+			this.ElapsedTimeMs = (this.TotalByteCount * 1000 / this.Mixer_BytesPerSec) - this.OutputDelay;
+			this.UpdateSystemTimeMs = this.SystemTimer.SystemTimeMs;
 
 
 			// 経過時間を更新後に、今回分の累積転送バイト数を反映。
 
-			this.nTotalByteCount += num;
+			this.TotalByteCount += num;
 			return num;
 		}
-		private long nMixer_BytesPerSec = 0;
-		private long nTotalByteCount = 0;
+		private long Mixer_BytesPerSec = 0;
+		private long TotalByteCount = 0;
 
-		protected int hMainStream = -1;
-		protected int hMixer = -1;
-		protected int hMixer_DeviceOut = -1;
-		protected StreamProcedure tSTREAMPROC = null;
-		private bool bIsBASSSoundFree = true;
+		protected int MainStreamHandle = -1;
+		protected int MixerHandle = -1;
+		protected int Mixer_DeviceOut = -1;
+		protected StreamProcedure STREAMPROC = null;
+		private bool IsBASSSoundFree = true;
 
 		//WASAPIとASIOはLinuxでは使えないので、ここだけで良し
 	}

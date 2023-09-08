@@ -25,7 +25,7 @@ namespace TJAPlayer3
 
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             for(int i = 0; i < 5; i++)
             {
@@ -79,10 +79,10 @@ namespace TJAPlayer3
                 if (balloonMissPtn > 1) CharaAction_Balloon_FadeOut_StartMs[i][1] /= balloonMissPtn - 1; // - 1はタイマー用
             }
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < 5; i++)
             {
@@ -109,10 +109,10 @@ namespace TJAPlayer3
                 CharaAction_Balloon_FadeOut[i] = null;
             }
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             for (int i = 0; i < 5; i++)
             {
@@ -128,17 +128,17 @@ namespace TJAPlayer3
                 //if (arゴーゴーモーション番号[i] == null) this.arゴーゴーモーション番号[i] = C変換.ar配列形式のstringをint配列に変換して返す("0,0");
                 //if (arクリアモーション番号[i] == null) this.arクリアモーション番号[i] = C変換.ar配列形式のstringをint配列に変換して返す("0,0");
 
-                if (CharaAction_Balloon_Delay[i] != null) CharaAction_Balloon_Delay[i].n現在の値 = (int)CharaAction_Balloon_Delay[i].n終了値;
+                if (CharaAction_Balloon_Delay[i] != null) CharaAction_Balloon_Delay[i].CurrentValue = (int)CharaAction_Balloon_Delay[i].EndValue;
             }
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
@@ -447,7 +447,7 @@ namespace TJAPlayer3
                     nowChara.vc拡大縮小倍率.Y = 1.0f;
                 }
 
-                if ((this.b風船連打中[i] != true && CharaAction_Balloon_Delay[i].b終了値に達した) || TJAPlayer3.ConfigIni.nPlayerCount > 2)
+                if ((this.b風船連打中[i] != true && CharaAction_Balloon_Delay[i].IsEnded) || TJAPlayer3.ConfigIni.nPlayerCount > 2)
                 {
                     if (TJAPlayer3.ConfigIni.nPlayerCount <= 2)
                     {
@@ -463,7 +463,7 @@ namespace TJAPlayer3
                     }
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public void OnDraw_Balloon()
@@ -472,13 +472,13 @@ namespace TJAPlayer3
             {
                 //if (TJAPlayer3.Skin.Characters_Balloon_Breaking_Ptn[iCurrentCharacter[i]] != 0) CharaAction_Balloon_Breaking[i]?.t進行();
                 //if (TJAPlayer3.Skin.Characters_Balloon_Broke_Ptn[iCurrentCharacter[i]] != 0) CharaAction_Balloon_Broke[i]?.t進行();
-                CharaAction_Balloon_Delay[i]?.t進行();
+                CharaAction_Balloon_Delay[i]?.Tick();
                 //if (TJAPlayer3.Skin.Characters_Balloon_Miss_Ptn[iCurrentCharacter[i]] != 0) CharaAction_Balloon_Miss[i]?.t進行();
                 CharaAction_Balloon_FadeOut[i].Tick();
 
                 {
                     bool endAnime = nNowCharaFrame[i] >= nCharaFrameCount[i];
-                    var nowOpacity = CharaAction_Balloon_FadeOut[i].Counter.b進行中 ? (int)CharaAction_Balloon_FadeOut[i].GetAnimation() : 255;
+                    var nowOpacity = CharaAction_Balloon_FadeOut[i].Counter.IsTicked ? (int)CharaAction_Balloon_FadeOut[i].GetAnimation() : 255;
 
                     float resolutionScaleX = TJAPlayer3.Skin.Resolution[0] / (float)TJAPlayer3.Skin.Characters_Resolution[this.iCurrentCharacter[i]][0];
                     float resolutionScaleY = TJAPlayer3.Skin.Resolution[1] / (float)TJAPlayer3.Skin.Characters_Resolution[this.iCurrentCharacter[i]][1];
@@ -513,7 +513,7 @@ namespace TJAPlayer3
 
                     if (eNowAnime[i] == Anime.Balloon_Broke && TJAPlayer3.Skin.Characters_Balloon_Broke_Ptn[this.iCurrentCharacter[i]] != 0)
                     {
-                        if (CharaAction_Balloon_FadeOut[i].Counter.b停止中 && nNowCharaFrame[i] > CharaAction_Balloon_FadeOut_StartMs[i][0])
+                        if (CharaAction_Balloon_FadeOut[i].Counter.IsStoped && nNowCharaFrame[i] > CharaAction_Balloon_FadeOut_StartMs[i][0])
                         {
                             CharaAction_Balloon_FadeOut[i].Start();
                         }
@@ -540,7 +540,7 @@ namespace TJAPlayer3
                     }
                     else if (eNowAnime[i] == Anime.Balloon_Miss && TJAPlayer3.Skin.Characters_Balloon_Miss_Ptn[this.iCurrentCharacter[i]] != 0)
                     {
-                        if (CharaAction_Balloon_FadeOut[i].Counter.b停止中 && nNowCharaFrame[i] > CharaAction_Balloon_FadeOut_StartMs[i][1])
+                        if (CharaAction_Balloon_FadeOut[i].Counter.IsStoped && nNowCharaFrame[i] > CharaAction_Balloon_FadeOut_StartMs[i][1])
                         {
                             CharaAction_Balloon_FadeOut[i].Start();
                         }

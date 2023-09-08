@@ -12,7 +12,7 @@ namespace FDK
 
 		public CInputKeyboard(IReadOnlyList<IKeyboard> keyboards)
 		{
-			this.e入力デバイス種別 = E入力デバイス種別.Keyboard;
+			this.CurrentType = InputDeviceType.Keyboard;
 			this.GUID = "";
 			this.ID = 0;
 
@@ -24,7 +24,7 @@ namespace FDK
 			}
 
 			//this.timer = new CTimer( CTimer.E種別.MultiMedia );
-			this.list入力イベント = new List<STInputEvent>(32);
+			this.InputEvents = new List<STInputEvent>(32);
 			// this.ct = new CTimer( CTimer.E種別.PerformanceCounter );
 		}
 
@@ -33,15 +33,15 @@ namespace FDK
 
 		#region [ IInputDevice 実装 ]
 		//-----------------
-		public E入力デバイス種別 e入力デバイス種別 { get; private set; }
+		public InputDeviceType CurrentType { get; private set; }
 		public string GUID { get; private set; }
 		public int ID { get; private set; }
-		public List<STInputEvent> list入力イベント { get; private set; }
+		public List<STInputEvent> InputEvents { get; private set; }
 		public string strDeviceName { get; set; }
 
-		public void tポーリング(bool bバッファ入力を使用する)
+		public void Polling(bool useBufferInput)
 		{
-			list入力イベント.Clear();
+			InputEvents.Clear();
 			
 			for (int i = 0; i < KeyStates.Length; i++)
 			{
@@ -54,12 +54,12 @@ namespace FDK
 					else
 					{
 						KeyStates[i].Item2 = 1;
-						list入力イベント.Add(
+						InputEvents.Add(
 							new STInputEvent()
 							{
 								nKey = i,
-								b押された = true,
-								b離された = false,
+								Pressed = true,
+								Released = false,
 								nTimeStamp = SampleFramework.Game.TimeMs,
 								nVelocity = 0,
 							}
@@ -75,12 +75,12 @@ namespace FDK
 					else
 					{
 						KeyStates[i].Item2 = -1;
-						list入力イベント.Add(
+						InputEvents.Add(
 							new STInputEvent()
 							{
 								nKey = i,
-								b押された = false,
-								b離された = true,
+								Pressed = false,
+								Released = true,
 								nTimeStamp = SampleFramework.Game.TimeMs,
 								nVelocity = 0,
 							}
@@ -92,28 +92,28 @@ namespace FDK
 		/// <param name="nKey">
 		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
 		/// </param>
-		public bool bキーが押された(int nKey)
+		public bool KeyPressed(int nKey)
 		{
 			return KeyStates[nKey].Item2 == 1;
 		}
 		/// <param name="nKey">
 		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
 		/// </param>
-		public bool bキーが押されている(int nKey)
+		public bool KeyPressing(int nKey)
 		{
 			return KeyStates[nKey].Item2 >= 1;
 		}
 		/// <param name="nKey">
 		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
 		/// </param>
-		public bool bキーが離された(int nKey)
+		public bool KeyReleased(int nKey)
 		{
 			return KeyStates[nKey].Item2 == -1;
 		}
 		/// <param name="nKey">
 		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
 		/// </param>
-		public bool bキーが離されている(int nKey)
+		public bool KeyReleasing(int nKey)
 		{
 			return KeyStates[nKey].Item2 <= -1;
 		}
@@ -124,13 +124,13 @@ namespace FDK
 		//-----------------
 		public void Dispose()
 		{
-			if(!this.bDispose完了済み)
+			if(!this.IsDisposed)
 			{
-				if (this.list入力イベント != null)
+				if (this.InputEvents != null)
 				{
-					this.list入力イベント = null;
+					this.InputEvents = null;
 				}
-				this.bDispose完了済み = true;
+				this.IsDisposed = true;
 			}
 		}
 		//-----------------
@@ -142,7 +142,7 @@ namespace FDK
 		#region [ private ]
 		//-----------------
 		private (bool, int)[] KeyStates = new (bool, int)[144];
-		private bool bDispose完了済み;
+		private bool IsDisposed;
 		//private CTimer timer;
 		//private CTimer ct;
 

@@ -17,7 +17,7 @@ namespace TJAPlayer3
 
 		public CAct演奏AVI()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
@@ -44,7 +44,7 @@ namespace TJAPlayer3
 
 		public unsafe int t進行描画( int x, int y )
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				if (this.rVD == null)
 					return 0;
@@ -78,30 +78,30 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
-			base.On活性化();
+			base.Activate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				if ( this.tx描画用 != null )
 				{
 					this.tx描画用.Dispose();
 					this.tx描画用 = null;
 				}
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			throw new InvalidOperationException( "t進行描画(int,int)のほうを使用してください。" );
 		}

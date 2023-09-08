@@ -13,7 +13,7 @@ namespace TJAPlayer3
 
 		public CActResultSongBar()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
@@ -21,13 +21,13 @@ namespace TJAPlayer3
 
 		public void tアニメを完了させる()
 		{
-			this.ct登場用.n現在の値 = (int)this.ct登場用.n終了値;
+			this.ct登場用.CurrentValue = (int)this.ct登場用.EndValue;
 		}
 
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName) )
             {
@@ -54,45 +54,45 @@ namespace TJAPlayer3
 		        txMusicName.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref txMusicName);
 		    }
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			if( this.ct登場用 != null )
 			{
 				this.ct登場用 = null;
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
                 TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
                 TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( base.b活性化してない )
+			if( base.IsDeActivated )
 			{
 				return 0;
 			}
-			if( base.b初めての進行描画 )
+			if( base.IsFirstDraw )
 			{
 				this.ct登場用 = new CCounter( 0, 270, 4, TJAPlayer3.Timer );
-				base.b初めての進行描画 = false;
+				base.IsFirstDraw = false;
 			}
-			this.ct登場用.t進行();
+			this.ct登場用.Tick();
 
             if (TJAPlayer3.Skin.Result_MusicName_ReferencePoint == CSkin.ReferencePoint.Center)
             {
@@ -107,7 +107,7 @@ namespace TJAPlayer3
                 this.txMusicName.t2D描画(TJAPlayer3.Skin.Result_MusicName_X - this.txMusicName.szテクスチャサイズ.Width * txMusicName.vc拡大縮小倍率.X, TJAPlayer3.Skin.Result_MusicName_Y);
             }
 
-			if( !this.ct登場用.b終了値に達した )
+			if( !this.ct登場用.IsEnded )
 			{
 				return 0;
 			}

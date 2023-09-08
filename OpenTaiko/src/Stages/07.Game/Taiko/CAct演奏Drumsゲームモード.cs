@@ -20,7 +20,7 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏Drumsゲームモード()
         {
-            this.b活性化してない = true;
+            this.IsDeActivated = true;
         }
         
         //叩ききりまショー!
@@ -374,27 +374,27 @@ namespace TJAPlayer3
             }
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             //this.tx残り時間数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_combo taiko.png" ) );
             //this.tx加算時間数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_Score_number_1P.png" ) );
             //this.txタイマー枠 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_TimerPanel.png" ) );
             //this.txタイマー針 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_TimerTick.png" ) );
             //this.tx背景黒 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile black 64x64.png" ) );
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             //CDTXMania.tテクスチャの解放( ref this.tx残り時間数字 );
             //CDTXMania.tテクスチャの解放( ref this.tx加算時間数字 );
             //CDTXMania.tテクスチャの解放( ref this.txタイマー枠 );
             //CDTXMania.tテクスチャの解放( ref this.txタイマー針 );
             //CDTXMania.tテクスチャの解放( ref this.tx背景黒 );
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             if( TJAPlayer3.ConfigIni.eGameMode == EGame.完走叩ききりまショー || TJAPlayer3.ConfigIni.eGameMode == EGame.完走叩ききりまショー激辛 )
             {
@@ -410,41 +410,41 @@ namespace TJAPlayer3
                 //if( !this.st叩ききりまショー.ct残り時間.b停止中 )
                 if( this.st叩ききりまショー.bタイマー使用中 )
                 {
-				    if( !this.st叩ききりまショー.ct残り時間.b停止中 || this.st叩ききりまショー.b加算アニメ中 == true )
+				    if( !this.st叩ききりまショー.ct残り時間.IsStoped || this.st叩ききりまショー.b加算アニメ中 == true )
 				    {
-                        this.st叩ききりまショー.ct残り時間.t進行();
-                        if (!TJAPlayer3.stage演奏ドラム画面.r検索範囲内にチップがあるか調べる((long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 0, 5000, 0) || this.st叩ききりまショー.b加算アニメ中 == true)
+                        this.st叩ききりまショー.ct残り時間.Tick();
+                        if (!TJAPlayer3.stage演奏ドラム画面.r検索範囲内にチップがあるか調べる((long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), 0, 5000, 0) || this.st叩ききりまショー.b加算アニメ中 == true)
                         {
                             this.st叩ききりまショー.bタイマー使用中 = false;
-						    this.st叩ききりまショー.ct残り時間.t停止();
+						    this.st叩ききりまショー.ct残り時間.Stop();
 					    }
                     }
                 }
 
                 if( !this.st叩ききりまショー.bタイマー使用中 && this.st叩ききりまショー.b加算アニメ中 == false )
                 {
-                    if ((this.st叩ききりまショー.b最初のチップが叩かれた == true && ( TJAPlayer3.stage演奏ドラム画面.r検索範囲内にチップがあるか調べる(CSound管理.PlayTimer.n現在時刻ms, 0, 2000, 0 ) ) ) )
+                    if ((this.st叩ききりまショー.b最初のチップが叩かれた == true && ( TJAPlayer3.stage演奏ドラム画面.r検索範囲内にチップがあるか調べる(SoundManager.PlayTimer.NowTimeMs, 0, 2000, 0 ) ) ) )
                     {
                         this.st叩ききりまショー.bタイマー使用中 = true;
-                        int nCount = this.st叩ききりまショー.ct残り時間.n現在の値;
+                        int nCount = this.st叩ききりまショー.ct残り時間.CurrentValue;
                         this.st叩ききりまショー.ct残り時間 = new CCounter( 0, 25000, 1, TJAPlayer3.Timer );
                         this.st叩ききりまショー.ct針アニメ = new CCounter( 0, 1000, 1, TJAPlayer3.Timer );
-                        this.st叩ききりまショー.ct残り時間.n現在の値 = nCount;
+                        this.st叩ききりまショー.ct残り時間.CurrentValue = nCount;
                     }
 
                 }
 
 
-                if( ( this.st叩ききりまショー.ct残り時間.n現在の値 >= 20000 ) && this.st叩ききりまショー.ct残り時間.n現在の値 != 25000 )
+                if( ( this.st叩ききりまショー.ct残り時間.CurrentValue >= 20000 ) && this.st叩ききりまショー.ct残り時間.CurrentValue != 25000 )
                     this.t叩ききりまショー_評価をして残り時間を延長する();
 
                 if( TJAPlayer3.Tx.Tile_Black != null )
                 {
-                    if( this.st叩ききりまショー.ct残り時間.n現在の値 >= 22000 && this.st叩ききりまショー.ct残り時間.n現在の値 < 23000 )
+                    if( this.st叩ききりまショー.ct残り時間.CurrentValue >= 22000 && this.st叩ききりまショー.ct残り時間.CurrentValue < 23000 )
                         TJAPlayer3.Tx.Tile_Black.Opacity = 64;
-                    else if( this.st叩ききりまショー.ct残り時間.n現在の値 >= 23000 && this.st叩ききりまショー.ct残り時間.n現在の値 < 24000 )
+                    else if( this.st叩ききりまショー.ct残り時間.CurrentValue >= 23000 && this.st叩ききりまショー.ct残り時間.CurrentValue < 24000 )
                         TJAPlayer3.Tx.Tile_Black.Opacity = 128;
-                    else if( this.st叩ききりまショー.ct残り時間.n現在の値 >= 24000 )
+                    else if( this.st叩ききりまショー.ct残り時間.CurrentValue >= 24000 )
                         TJAPlayer3.Tx.Tile_Black.Opacity = 192;
                     else
                         TJAPlayer3.Tx.Tile_Black.Opacity = 0;
@@ -473,13 +473,13 @@ namespace TJAPlayer3
                 {
                     if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
                         TJAPlayer3.Tx.GameMode_Timer_Frame.t2D描画( 230, 84 );
-                    this.st叩ききりまショー.ct針アニメ.t進行Loop();
+                    this.st叩ききりまショー.ct針アニメ.TickLoop();
 
                     int nCenterX = 230;
                     int nCerterY = 84;
-                    float fRotate = -CConversion.DegreeToRadian( 360.0f * ( this.st叩ききりまショー.ct針アニメ.n現在の値 / 1000.0f ) );
+                    float fRotate = -CConversion.DegreeToRadian( 360.0f * ( this.st叩ききりまショー.ct針アニメ.CurrentValue / 1000.0f ) );
                     if( this.st叩ききりまショー.b加算アニメ中 == true )
-                        fRotate = CConversion.DegreeToRadian( 360.0f * ( this.st叩ききりまショー.ct針アニメ.n現在の値 / (float)this.st叩ききりまショー.n延長アニメ速度 ) );
+                        fRotate = CConversion.DegreeToRadian( 360.0f * ( this.st叩ききりまショー.ct針アニメ.CurrentValue / (float)this.st叩ききりまショー.n延長アニメ速度 ) );
 
                     /*
                     Matrix mat = Matrix.Identity;
@@ -496,33 +496,33 @@ namespace TJAPlayer3
                     TJAPlayer3.Tx.GameMode_Timer_Tick?.t3D描画( mat );
                     */
 
-                    string str表示する残り時間 = ( this.st叩ききりまショー.ct残り時間.n現在の値 < 1000 ) ? "25" : ( ( 26000 - this.st叩ききりまショー.ct残り時間.n現在の値 ) / 1000 ).ToString();
+                    string str表示する残り時間 = ( this.st叩ききりまショー.ct残り時間.CurrentValue < 1000 ) ? "25" : ( ( 26000 - this.st叩ききりまショー.ct残り時間.CurrentValue ) / 1000 ).ToString();
                     
                     if (TJAPlayer3.Tx.GameMode_Timer_Frame != null)
                         this.t小文字表示( 230 + (str表示する残り時間.Length * TJAPlayer3.Skin.Game_Taiko_Combo_Size[0] / 4 ), 84 + TJAPlayer3.Tx.GameMode_Timer_Frame.szテクスチャサイズ.Height / 2 , string.Format("{0,2:#0}", str表示する残り時間 ));
                 }
 
-                if( !this.st叩ききりまショー.ct加算審査中.b停止中 )
+                if( !this.st叩ききりまショー.ct加算審査中.IsStoped )
                 {
-				    if( !this.st叩ききりまショー.ct加算審査中.b停止中 )
+				    if( !this.st叩ききりまショー.ct加算審査中.IsStoped )
 				    {
-                        this.st叩ききりまショー.ct加算審査中.t進行();
-					    if( this.st叩ききりまショー.ct加算審査中.b終了値に達した )
+                        this.st叩ききりまショー.ct加算審査中.Tick();
+					    if( this.st叩ききりまショー.ct加算審査中.IsEnded )
 					    {
-						    this.st叩ききりまショー.ct加算審査中.t停止();
+						    this.st叩ききりまショー.ct加算審査中.Stop();
                             this.st叩ききりまショー.b加算アニメ中 = false;
                             this.t加算時間描画_Start();
 					    }
                     }
                 }
-                if( !this.st叩ききりまショー.ct加算時間表示.b停止中 )
+                if( !this.st叩ききりまショー.ct加算時間表示.IsStoped )
                 {
-				    if( !this.st叩ききりまショー.ct加算時間表示.b停止中 )
+				    if( !this.st叩ききりまショー.ct加算時間表示.IsStoped )
 				    {
-                        this.st叩ききりまショー.ct加算時間表示.t進行();
-					    if( this.st叩ききりまショー.ct加算時間表示.b終了値に達した )
+                        this.st叩ききりまショー.ct加算時間表示.Tick();
+					    if( this.st叩ききりまショー.ct加算時間表示.IsEnded )
 					    {
-						    this.st叩ききりまショー.ct加算時間表示.t停止();
+						    this.st叩ききりまショー.ct加算時間表示.Stop();
 					    }
                     }
                     this.t加算時間描画( this.n前回の延長時間 );
@@ -537,7 +537,7 @@ namespace TJAPlayer3
             double n延長する時間 = 0;
 
             //最後に延長した時刻から11秒経過していなければ延長を行わない。
-            if (this.n最後に時間延長した時刻 + 11000 <= (CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)))
+            if (this.n最後に時間延長した時刻 + 11000 <= (SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)))
             {
                 //1項目につき5秒
                 //-精度
@@ -655,7 +655,7 @@ namespace TJAPlayer3
                 #endregion
 
 
-                this.n最後に時間延長した時刻 = (int)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                this.n最後に時間延長した時刻 = (int)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                 if ( n延長する時間 < 0 )
                     n延長する時間 = 0;
                 if( this.st叩ききりまショー.n区間ノート数 == 0 )
@@ -680,9 +680,9 @@ namespace TJAPlayer3
                     if ( this.st叩ききりまショー.b加算アニメ中 == false )
                         this.t加算時間描画_Start();
                 }
-                this.st叩ききりまショー.ct残り時間.n現在の値 -= (int)n延長する時間;
+                this.st叩ききりまショー.ct残り時間.CurrentValue -= (int)n延長する時間;
             }
-            else if( this.st叩ききりまショー.ct残り時間.n現在の値 >= 24000 )
+            else if( this.st叩ききりまショー.ct残り時間.CurrentValue >= 24000 )
             {
                 if( this.st叩ききりまショー.nおまけ加算が発生した回数 > 3 )
                     return;
@@ -726,7 +726,7 @@ namespace TJAPlayer3
                 }
 
 
-                this.n最後に時間延長した時刻 = (int)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                this.n最後に時間延長した時刻 = (int)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                 if ( n延長する時間 < 0 )
                     n延長する時間 = 0;
 
@@ -750,7 +750,7 @@ namespace TJAPlayer3
                         this.t加算時間描画_Start();
                 }
                 if( n延長する時間 > 5000 )
-                    this.st叩ききりまショー.ct残り時間.n現在の値 -= (int)n延長する時間;
+                    this.st叩ききりまショー.ct残り時間.CurrentValue -= (int)n延長する時間;
             }
 
             if (n延長する時間 >= 12000)

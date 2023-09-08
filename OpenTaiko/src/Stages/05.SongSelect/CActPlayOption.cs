@@ -10,12 +10,12 @@ namespace TJAPlayer3
     {
         public CActPlayOption()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
-            if (this.b活性化してる)
+            if (this.IsActivated)
                 return;
 
             ctOpen = new CCounter();
@@ -123,7 +123,7 @@ namespace TJAPlayer3
             for (int i = 0; i < OptionType.Length; i++)
                 OptionType[i].vc拡大縮小倍率.X = 0.96f;
 
-            base.On活性化();
+            base.Activate();
         }
 
         public void tFetchMults(int player)
@@ -134,58 +134,58 @@ namespace TJAPlayer3
             txModMults[1] = OptionTypeTx(CLangManager.LangInstance.GetString(511) + coinMult.ToString("n2"), Color.White, Color.Black);
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (this.b活性化してない)
+            if (this.IsDeActivated)
                 return;
                 
             Difficulty_Option = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select/Difficulty_Option.png"));
             Difficulty_Option_Select = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select/Difficulty_Option_Select.png"));
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (this.b活性化してない)
+            if (this.IsDeActivated)
                 return;
 
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Option);
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Option_Select);
             
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
         
 
         public int On進行描画(int player)
         {
-            if (this.b活性化してない)
+            if (this.IsDeActivated)
                 return 0;
 
-            if (ctOpen.n現在の値 == 0)
+            if (ctOpen.CurrentValue == 0)
                 Init(player);
 
-            ctOpen.t進行();
-            ctClose.t進行();
+            ctOpen.Tick();
+            ctClose.Tick();
 
-            if (!ctOpen.b進行中) ctOpen.t開始(0, 50, 6, TJAPlayer3.Timer);
+            if (!ctOpen.IsTicked) ctOpen.Start(0, 50, 6, TJAPlayer3.Timer);
 
             var act難易度 = TJAPlayer3.stage選曲.act難易度選択画面;
             var danAct = TJAPlayer3.stage段位選択.段位挑戦選択画面;
 
             #region [ Open & Close ]
 
-            float oy1 = ctOpen.n現在の値 * 18;
-            float oy2 = (ctOpen.n現在の値 - 30) * 4;
-            float oy3 = ctOpen.n現在の値 < 30 ? 410 - oy1 : -80 + oy2;
+            float oy1 = ctOpen.CurrentValue * 18;
+            float oy2 = (ctOpen.CurrentValue - 30) * 4;
+            float oy3 = ctOpen.CurrentValue < 30 ? 410 - oy1 : -80 + oy2;
 
-            float cy1 = ctClose.n現在の値 * 3;
-            float cy2 = (ctClose.n現在の値 - 20) * 16;
-            float cy3 = ctClose.n現在の値 < 20 ? 0 - cy1 : 20 + cy2;
+            float cy1 = ctClose.CurrentValue * 3;
+            float cy2 = (ctClose.CurrentValue - 20) * 16;
+            float cy3 = ctClose.CurrentValue < 20 ? 0 - cy1 : 20 + cy2;
 
             float y = oy3 + cy3;
 
@@ -233,14 +233,14 @@ namespace TJAPlayer3
                     TJAPlayer3.Skin.SongSelect_Option_Value_Y[pos] + y + i * TJAPlayer3.Skin.SongSelect_Option_Interval[1]);
             }
 
-            if (ctClose.n現在の値 >= 50)
+            if (ctClose.CurrentValue >= 50)
             {
                 Decision(player);
                 NowCount = 0;
-                ctOpen.t停止();
-                ctOpen.n現在の値 = 0;
-                ctClose.t停止();
-                ctClose.n現在の値 = 0;
+                ctOpen.Stop();
+                ctOpen.CurrentValue = 0;
+                ctClose.Stop();
+                ctClose.CurrentValue = 0;
                 bEnd = false;
                 act難易度.bOption[player] = false;
                 danAct.bOption = false;
@@ -248,7 +248,7 @@ namespace TJAPlayer3
 
             #region [ Inputs ]
 
-            if (!ctClose.b進行中)
+            if (!ctClose.IsTicked)
             {
                 bool _leftDrum = false;
 
@@ -261,11 +261,11 @@ namespace TJAPlayer3
                 switch (player)
                 {
                     case 0:
-                        _rightDrum = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow));
-                        _leftDrum = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow));
+                        _rightDrum = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow));
+                        _leftDrum = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow));
                         _centerDrum = (TJAPlayer3.Pad.b押されたDGB(Eパッド.Decide) ||
-                            (TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return)));
-                        _cancel = (TJAPlayer3.Pad.b押されたDGB(Eパッド.Cancel) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape));
+                            (TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return)));
+                        _cancel = (TJAPlayer3.Pad.b押されたDGB(Eパッド.Cancel) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape));
                         break;
                     case 1:
                         _rightDrum = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RBlue2P));
@@ -290,21 +290,21 @@ namespace TJAPlayer3
                 }
 
 
-                if (_leftDrum || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow))
+                if (_leftDrum || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow))
                 { 
                     OptionSelect(true);
                     tFetchMults(player);
                     TJAPlayer3.Skin.sound変更音.t再生する(); 
                 }
 
-                if (_rightDrum || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow))
+                if (_rightDrum || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow))
                 { 
                     OptionSelect(false);
                     tFetchMults(player);
                     TJAPlayer3.Skin.sound変更音.t再生する(); 
                 }
 
-                if (_centerDrum && ctOpen.n現在の値 >= ctOpen.n終了値)
+                if (_centerDrum && ctOpen.CurrentValue >= ctOpen.EndValue)
                 {
                     TJAPlayer3.Skin.sound決定音.t再生する();
                     if (NowCount < nOptionCount)
@@ -314,27 +314,27 @@ namespace TJAPlayer3
                     else if (NowCount >= nOptionCount && !bEnd)
                     {
                         bEnd = true;
-                        ctClose.t開始(0, 50, 6, TJAPlayer3.Timer);
+                        ctClose.Start(0, 50, 6, TJAPlayer3.Timer);
                     }
                 }
 
                 int cp1 = nOptionCount + 1;
 
-                if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.UpArrow)) {
+                if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.UpArrow)) {
                     TJAPlayer3.Skin.sound変更音.t再生する();
                     NowCount = (NowCount + cp1 - 1) % cp1;
                 }
 
-                if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.DownArrow)) {
+                if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.DownArrow)) {
                     TJAPlayer3.Skin.sound変更音.t再生する();
                     NowCount = (NowCount + 1) % cp1;
                 }
 
-                if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape))
+                if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape))
                 {
                     TJAPlayer3.Skin.sound決定音.t再生する();
                     bEnd = true;
-                    ctClose.t開始(0, 50, 6, TJAPlayer3.Timer);
+                    ctClose.Start(0, 50, 6, TJAPlayer3.Timer);
                 }
             }
 

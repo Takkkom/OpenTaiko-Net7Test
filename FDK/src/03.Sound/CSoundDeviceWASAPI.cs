@@ -17,7 +17,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public long n実出力遅延ms
+		public long OutputDelay
 		{
 			get;
 			protected set;
@@ -30,17 +30,17 @@ namespace FDK
 
 		// CSoundTimer 用に公開しているプロパティ
 
-		public long n経過時間ms
+		public long ElapsedTimeMs
 		{
 			get;
 			protected set;
 		}
-		public long n経過時間を更新したシステム時刻ms
+		public long UpdateSystemTimeMs
 		{
 			get;
 			protected set;
 		}
-		public CTimer tmシステムタイマ
+		public CTimer SystemTimer
 		{
 			get;
 			protected set;
@@ -52,11 +52,11 @@ namespace FDK
 		{
 			get
 			{
-				float f音量 = 0.0f;
+				float volume = 0.0f;
 				//if ( BassMix.BASS_Mixer_ChannelGetEnvelopePos( this.hMixer, BASSMIXEnvelope.BASS_MIXER_ENV_VOL, ref f音量 ) == -1 )
 				//    return 100;
 				//bool b = Bass.BASS_ChannelGetAttribute( this.hMixer, BASSAttribute.BASS_ATTRIB_VOL, ref f音量 );
-				bool b = Bass.ChannelGetAttribute( this.hMixer, ChannelAttribute.Volume, out f音量 );
+				bool b = Bass.ChannelGetAttribute( this.hMixer, ChannelAttribute.Volume, out volume );
 				if ( !b )
 				{
 					Errors be = Bass.LastError;
@@ -64,10 +64,10 @@ namespace FDK
 				}
 				else
 				{
-					Trace.TraceInformation( "WASAPI Master Volume Get Success: " + (f音量 * 100) );
+					Trace.TraceInformation( "WASAPI Master Volume Get Success: " + (volume * 100) );
 
 				}
-				return (int) ( f音量 * 100 );
+				return (int) ( volume * 100 );
 			}
 			set
 			{
@@ -107,19 +107,19 @@ namespace FDK
 		/// WASAPIの初期化
 		/// </summary>
 		/// <param name="mode"></param>
-		/// <param name="n希望バッファサイズms">(未使用; 本メソッド内で自動設定する)</param>
-		/// <param name="n更新間隔ms">(未使用; 本メソッド内で自動設定する)</param>
-		public CSoundDeviceWASAPI( EWASAPIMode mode, long n希望バッファサイズms, long n更新間隔ms )
+		/// <param name="bufferSize">(未使用; 本メソッド内で自動設定する)</param>
+		/// <param name="interval">(未使用; 本メソッド内で自動設定する)</param>
+		public CSoundDeviceWASAPI( EWASAPIMode mode, long bufferSize, long interval )
 		{
 			// 初期化。
 
 			Trace.TraceInformation( "BASS (WASAPI) の初期化を開始します。" );
 
 			this.SoundDeviceType = ESoundDeviceType.Unknown;
-			this.n実出力遅延ms = 0;
-			this.n経過時間ms = 0;
-			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
-			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
+			this.OutputDelay = 0;
+			this.ElapsedTimeMs = 0;
+			this.UpdateSystemTimeMs = CTimer.UnusedNum;
+			this.SystemTimer = new CTimer( CTimer.TimerType.MultiMedia );
 			this.b最初の実出力遅延算出 = true;
 
 			// BASS の設定。
@@ -235,7 +235,7 @@ namespace FDK
 			var flags = ( mode == EWASAPIMode.Exclusion ) ? WasapiInitFlags.AutoFormat | WasapiInitFlags.Exclusive : WasapiInitFlags.Shared | WasapiInitFlags.AutoFormat;
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 			
-			if ( BassWasapi.Init( nデバイス, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
+			if ( BassWasapi.Init( nデバイス, n周波数, nチャンネル数, flags, ( bufferSize / 1000.0f ), ( interval / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
 				if( mode == EWASAPIMode.Exclusion )
 				{
@@ -258,7 +258,7 @@ namespace FDK
 					}
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.Frequency;
 					this.BufferSize = (long) ( wasapiInfo.BufferLength * 1000.0f / n1秒のバイト数 );
-					this.n実出力遅延ms = 0;	// 初期値はゼロ
+					this.OutputDelay = 0;	// 初期値はゼロ
 					Trace.TraceInformation( "使用デバイス: #" + nDevNo + " : " + deviceInfo.Name );
 					Trace.TraceInformation( "BASS を初期化しました。(WASAPI排他モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms)",
 						wasapiInfo.Frequency,
@@ -266,8 +266,8 @@ namespace FDK
 						wasapiInfo.Format.ToString(),
 						wasapiInfo.BufferLength,
 						BufferSize.ToString(),
-						n希望バッファサイズms.ToString(),
-						n更新間隔ms.ToString() );
+						bufferSize.ToString(),
+						interval.ToString() );
 					Trace.TraceInformation( "デバイスの最小更新時間={0}ms, 既定の更新時間={1}ms", deviceInfo.MinimumUpdatePeriod * 1000, deviceInfo.DefaultUpdatePeriod * 1000 );
 					this.bIsBASSFree = false;
 					//-----------------
@@ -294,9 +294,9 @@ namespace FDK
                     int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.Frequency;
                     this.BufferSize = (long)(wasapiInfo.BufferLength * 1000.0f / n1秒のバイト数);
 
-                    this.n実出力遅延ms = 0;	// 初期値はゼロ
+                    this.OutputDelay = 0;	// 初期値はゼロ
 					
-					Trace.TraceInformation( "BASS を初期化しました。(WASAPI共有モード, {0}ms, 更新間隔{1}ms)", n希望バッファサイズms, devInfo.DefaultUpdatePeriod * 1000.0f );
+					Trace.TraceInformation( "BASS を初期化しました。(WASAPI共有モード, {0}ms, 更新間隔{1}ms)", bufferSize, devInfo.DefaultUpdatePeriod * 1000.0f );
 					this.bIsBASSFree = false;
 					//-----------------
 					#endregion
@@ -391,13 +391,13 @@ namespace FDK
 		public CSound tCreateSound( string strファイル名, ESoundGroup soundGroup )
 		{
 			var sound = new CSound(soundGroup);
-			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.SoundDeviceType );
+			sound.CreateWASAPISound( strファイル名, this.hMixer, this.SoundDeviceType );
 			return sound;
 		}
 
 		public void tCreateSound( string strファイル名, CSound sound )
 		{
-			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.SoundDeviceType );
+			sound.CreateWASAPISound( strファイル名, this.hMixer, this.SoundDeviceType );
 		}
 		#endregion
 
@@ -422,8 +422,8 @@ namespace FDK
 			}
 			if( bManagedDispose )
 			{
-				tmシステムタイマ.Dispose();
-				tmシステムタイマ = null;
+				SystemTimer.Dispose();
+				SystemTimer = null;
 			}
 		}
 		~CSoundDeviceWASAPI()
@@ -449,14 +449,14 @@ namespace FDK
 			// データの転送差分ではなく累積転送バイト数から算出する。
 
 			int n未再生バイト数 = BassWasapi.GetData( null, (int) DataFlags.Available );	// 誤差削減のため、必要となるギリギリ直前に取得する。
-			this.n経過時間ms = ( this.n累積転送バイト数 - n未再生バイト数 ) * 1000 / this.nミキサーの1秒あたりのバイト数;
-			this.n経過時間を更新したシステム時刻ms = this.tmシステムタイマ.nシステム時刻ms;
+			this.ElapsedTimeMs = ( this.n累積転送バイト数 - n未再生バイト数 ) * 1000 / this.nミキサーの1秒あたりのバイト数;
+			this.UpdateSystemTimeMs = this.SystemTimer.SystemTimeMs;
 
 			// 実出力遅延を更新。
 			// 未再生バイト数の平均値。
 
 			long n今回の遅延ms = n未再生バイト数 * 1000 / this.nミキサーの1秒あたりのバイト数;
-			this.n実出力遅延ms = ( this.b最初の実出力遅延算出 ) ? n今回の遅延ms : ( this.n実出力遅延ms + n今回の遅延ms ) / 2;
+			this.OutputDelay = ( this.b最初の実出力遅延算出 ) ? n今回の遅延ms : ( this.OutputDelay + n今回の遅延ms ) / 2;
 			this.b最初の実出力遅延算出 = false;
 
 			

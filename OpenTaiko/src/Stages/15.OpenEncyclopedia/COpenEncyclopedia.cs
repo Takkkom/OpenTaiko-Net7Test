@@ -19,15 +19,15 @@ namespace TJAPlayer3
             // Load CActivity objects here
             // base.list子Activities.Add(this.act = new CAct());
 
-            base.list子Activities.Add(this.actFOtoTitle = new CActFIFOBlack());
+            base.ChildActivities.Add(this.actFOtoTitle = new CActFIFOBlack());
 
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             // On activation
 
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
             base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
@@ -37,21 +37,21 @@ namespace TJAPlayer3
 
             _controler = new CEncyclopediaControler();
             
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             // On de-activation
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             // Ressource allocation
 
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Script.lua"));
                 Background.Init();
@@ -60,15 +60,15 @@ namespace TJAPlayer3
                 OpenEncyclopedia_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Side_Menu.png"));
                 OpenEncyclopedia_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Return_Box.png"));
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             // Ressource freeing
 
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 TJAPlayer3.t安全にDisposeする(ref Background);
 
@@ -76,11 +76,11 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Side_Menu);
                 TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Return_Box);
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             #region [Fetch variables]
 
@@ -149,28 +149,28 @@ namespace TJAPlayer3
 
             #region [Inputs]
 
-            if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow) ||
+            if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange))
             {
                 _controler.tHandleRight();
                 TJAPlayer3.Skin.sound変更音.t再生する();
             }
 
-            else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow) ||
+            else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange))
             {
                 _controler.tHandleLeft();
                 TJAPlayer3.Skin.sound変更音.t再生する();
             }
 
-            else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape) ||
+            else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
             {
                 _backToMain = _controler.tHandleBack();
                 TJAPlayer3.Skin.sound取消音.t再生する();
             }
 
-            else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return) ||
+            else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide))
             {
                 var (_b1, _b2) = _controler.tHandleEnter();
@@ -203,7 +203,7 @@ namespace TJAPlayer3
             switch (base.eフェーズID)
             {
                 case CStage.Eフェーズ.共通_フェードアウト:
-                    if (this.actFOtoTitle.On進行描画() == 0)
+                    if (this.actFOtoTitle.Draw() == 0)
                     {
                         break;
                     }

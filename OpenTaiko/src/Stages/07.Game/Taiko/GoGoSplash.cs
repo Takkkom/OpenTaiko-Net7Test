@@ -11,18 +11,18 @@ namespace TJAPlayer3
     {
         public GoGoSplash()
         {
-            this.b活性化してない = true;
+            this.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             Splash = new CCounter();
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
         /// <summary>
@@ -30,16 +30,16 @@ namespace TJAPlayer3
         /// SkinCofigで本数を変更することができます。
         /// </summary>
         /// <returns></returns>
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (Splash == null) return base.On進行描画();
-            Splash.t進行();
-            if (Splash.b終了値に達した)
+            if (Splash == null) return base.Draw();
+            Splash.Tick();
+            if (Splash.IsEnded)
             {
-                Splash.n現在の値 = 0;
-                Splash.t停止();
+                Splash.CurrentValue = 0;
+                Splash.Stop();
             }
-            if (Splash.b進行中)
+            if (Splash.IsTicked)
             {
                 for (int i = 0; i < TJAPlayer3.Skin.Game_Effect_GoGoSplash_X.Length; i++)
                 {
@@ -69,10 +69,10 @@ namespace TJAPlayer3
                             TJAPlayer3.Tx.Effects_GoGoSplash.fZ軸中心回転 = 0.0f;
                         }
                     }
-                    TJAPlayer3.Tx.Effects_GoGoSplash?.t2D拡大率考慮下中心基準描画(TJAPlayer3.Skin.Game_Effect_GoGoSplash_X[i], TJAPlayer3.Skin.Game_Effect_GoGoSplash_Y[i], new Rectangle(TJAPlayer3.Skin.Game_Effect_GoGoSplash[0] * Splash.n現在の値, 0, TJAPlayer3.Skin.Game_Effect_GoGoSplash[0], TJAPlayer3.Skin.Game_Effect_GoGoSplash[1]));
+                    TJAPlayer3.Tx.Effects_GoGoSplash?.t2D拡大率考慮下中心基準描画(TJAPlayer3.Skin.Game_Effect_GoGoSplash_X[i], TJAPlayer3.Skin.Game_Effect_GoGoSplash_Y[i], new Rectangle(TJAPlayer3.Skin.Game_Effect_GoGoSplash[0] * Splash.CurrentValue, 0, TJAPlayer3.Skin.Game_Effect_GoGoSplash[0], TJAPlayer3.Skin.Game_Effect_GoGoSplash[1]));
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public void StartSplash()

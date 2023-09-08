@@ -17,7 +17,7 @@ namespace TJAPlayer3
 		/// <para>DirectSound の管理クラス。</para>
 		/// <para>WAV, XA, OGG, MP3 のサウンドファイルから CSound オブジェクトを生成できます。</para>
 		/// </summary>
-		FDK.CSound管理 Sound管理 { get; }
+		FDK.SoundManager Sound管理 { get; }
 
 		/// <summary>
 		/// 描画エリアのサイズを返します（ピクセル単位）。

@@ -20,88 +20,88 @@ namespace FDK
     /// </remarks>
     public class CCounter
     {
-        public bool b開始した
+        public bool IsStarted
         {
             get;
             set;
         }
         // 値プロパティ
-        public double n開始値
+        public double BeginValue
         {
             get;
             private set;
         }
-        public double n終了値
+        public double EndValue
         {
             get;
             set;
         }
-        public int n現在の値
+        public int CurrentValue
         {
             get;
             set;
         }
 
-        public double _n間隔
+        public double _Interval
         {
             get
             {
-                return this.n間隔;
+                return this.Interval;
             }
             set
             {
-                this.n間隔 = value >= 0 ? value : value * -1;
+                this.Interval = value >= 0 ? value : value * -1;
             }
         }
 
-        public double n現在の経過時間ms
+        public double NowTime
         {
             get;
             set;
         }
         // 状態プロパティ
 
-        public bool b進行中
+        public bool IsTicked
         {
-            get { return (this.n現在の経過時間ms != -1); }
+            get { return (this.NowTime != -1); }
         }
-        public bool b停止中
+        public bool IsStoped
         {
-            get { return !this.b進行中; }
+            get { return !this.IsTicked; }
         }
-        public bool b終了値に達した
+        public bool IsEnded
         {
-            get { return (this.n現在の値 >= this.n終了値); }
+            get { return (this.CurrentValue >= this.EndValue); }
         }
-        public bool b終了値に達してない
+        public bool IsUnEnded
         {
-            get { return !this.b終了値に達した; }
+            get { return !this.IsEnded; }
         }
 
         // コンストラクタ
 
         public CCounter()
         {
-            this.timer = null;
-            this.n開始値 = 0;
-            this.n終了値 = 0;
-            this.n現在の値 = 0;
-            this.n現在の値 = 0;
-            this.n現在の経過時間ms = CSoundTimer.n未使用;
+            this.NormalTimer = null;
+            this.BeginValue = 0;
+            this.EndValue = 0;
+            this.CurrentValue = 0;
+            this.CurrentValue = 0;
+            this.NowTime = CSoundTimer.UnusedNum;
         }
 
         /// <summary>生成と同時に開始する。</summary>
-        public CCounter(double n開始値, double n終了値, double n間隔ms, CTimer timer)
+        public CCounter(double begin, double end, double interval, CTimer timer)
             : this()
         {
-            this.t開始(n開始値, n終了値, n間隔ms, timer);
+            this.Start(begin, end, interval, timer);
         }
 
         /// <summary>生成と同時に開始する。(double版)</summary>
-        public CCounter(double db開始値, double db終了値, double db間隔, CSoundTimer timer)
+        public CCounter(double begin, double end, double interval, CSoundTimer timer)
             : this()
         {
-            this.t開始(db開始値, db終了値, db間隔 * 1000.0f, timer);
+            this.Start(begin, end, interval * 1000.0f, timer);
         }
 
 
@@ -110,57 +110,57 @@ namespace FDK
         /// <summary>
         /// カウントを開始する。
         /// </summary>
-        /// <param name="n開始値">最初のカウント値。</param>
-        /// <param name="n終了値">最後のカウント値。</param>
-        /// <param name="n間隔ms">カウント値を１増加させるのにかける時間（ミリ秒単位）。</param>
+        /// <param name="begin">最初のカウント値。</param>
+        /// <param name="end">最後のカウント値。</param>
+        /// <param name="interval">カウント値を１増加させるのにかける時間（ミリ秒単位）。</param>
         /// <param name="timer">カウントに使用するタイマ。</param>
-        public void t開始(double n開始値, double n終了値, double n間隔ms, CTimer timer)
+        public void Start(double begin, double end, double interval, CTimer timer)
         {
-            this.n開始値 = n開始値;
-            this.n終了値 = n終了値;
-            this._n間隔 = n間隔ms;
-            this.timer = timer;
-            this.n現在の経過時間ms = this.timer.n現在時刻;
-            this.n現在の値 = (int)n開始値;
-            this.b開始した = true;
+            this.BeginValue = begin;
+            this.EndValue = end;
+            this._Interval = interval;
+            this.NormalTimer = timer;
+            this.NowTime = this.NormalTimer.NowTime;
+            this.CurrentValue = (int)begin;
+            this.IsStarted = true;
         }
 
         /// <summary>
         /// カウントを開始する。(double版)
         /// </summary>
-        /// <param name="db開始値">最初のカウント値。</param>
-        /// <param name="db終了値">最後のカウント値。</param>
-        /// <param name="db間隔">カウント値を１増加させるのにかける時間（秒単位）。</param>
+        /// <param name="begin">最初のカウント値。</param>
+        /// <param name="end">最後のカウント値。</param>
+        /// <param name="interval">カウント値を１増加させるのにかける時間（秒単位）。</param>
         /// <param name="timer">カウントに使用するタイマ。</param>
-        public void t開始(double db開始値, double db終了値, double db間隔, CSoundTimer timer)
+        public void Start(double begin, double end, double interval, CSoundTimer timer)
         {
-            this.n開始値 = db開始値;
-            this.n終了値 = db終了値;
-            this._n間隔 = db間隔;
-            this.timerdb = timer;
-            this.n現在の経過時間ms = this.timerdb.dbシステム時刻;
-            this.n現在の値 = (int)db開始値;
-            this.b開始した = true;
+            this.BeginValue = begin;
+            this.EndValue = end;
+            this._Interval = interval;
+            this.TimerDB = timer;
+            this.NowTime = this.TimerDB.SystemTime_Double;
+            this.CurrentValue = (int)begin;
+            this.IsStarted = true;
         }
 
         /// <summary>
         /// 前回の t進行() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
         /// カウント値が終了値に達している場合は、それ以上増加しない（終了値を維持する）。
         /// </summary>
-        public void t進行()
+        public void Tick()
         {
-            if ((this.timer != null) && (this.n現在の経過時間ms != CTimer.n未使用))
+            if ((this.NormalTimer != null) && (this.NowTime != CTimer.UnusedNum))
             {
-                long num = this.timer.n現在時刻;
-                if (num < this.n現在の経過時間ms)
-                    this.n現在の経過時間ms = num;
+                long num = this.NormalTimer.NowTime;
+                if (num < this.NowTime)
+                    this.NowTime = num;
 
-                while ((num - this.n現在の経過時間ms) >= this.n間隔)
+                while ((num - this.NowTime) >= this.Interval)
                 {
-                    if (++this.n現在の値 > this.n終了値)
-                        this.n現在の値 = (int)this.n終了値;
+                    if (++this.CurrentValue > this.EndValue)
+                        this.CurrentValue = (int)this.EndValue;
 
-                    this.n現在の経過時間ms += this.n間隔;
+                    this.NowTime += this.Interval;
                 }
             }
         }
@@ -169,20 +169,20 @@ namespace FDK
         /// 前回の t進行() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
         /// カウント値が終了値に達している場合は、それ以上増加しない（終了値を維持する）。
         /// </summary>
-        public void t進行db()
+        public void TickDB()
         {
-            if ((this.timerdb != null) && (this.n現在の経過時間ms != CSoundTimer.n未使用))
+            if ((this.TimerDB != null) && (this.NowTime != CSoundTimer.UnusedNum))
             {
-                double num = this.timerdb.n現在時刻;
-                if (num < this.n現在の経過時間ms)
-                    this.n現在の経過時間ms = num;
+                double num = this.TimerDB.NowTime;
+                if (num < this.NowTime)
+                    this.NowTime = num;
 
-                while ((num - this.n現在の経過時間ms) >= this.n間隔)
+                while ((num - this.NowTime) >= this.Interval)
                 {
-                    if (++this.n現在の値 > this.n終了値)
-                        this.n現在の値 = (int)this.n終了値;
+                    if (++this.CurrentValue > this.EndValue)
+                        this.CurrentValue = (int)this.EndValue;
 
-                    this.n現在の経過時間ms += this.n間隔;
+                    this.NowTime += this.Interval;
                 }
             }
         }
@@ -191,20 +191,20 @@ namespace FDK
         /// 前回の t進行Loop() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
         /// カウント値が終了値に達している場合は、次の増加タイミングで開始値に戻る（値がループする）。
         /// </summary>
-        public void t進行Loop()
+        public void TickLoop()
         {
-            if ((this.timer != null) && (this.n現在の経過時間ms != CTimer.n未使用))
+            if ((this.NormalTimer != null) && (this.NowTime != CTimer.UnusedNum))
             {
-                long num = this.timer.n現在時刻;
-                if (num < this.n現在の経過時間ms)
-                    this.n現在の経過時間ms = num;
+                long num = this.NormalTimer.NowTime;
+                if (num < this.NowTime)
+                    this.NowTime = num;
 
-                while ((num - this.n現在の経過時間ms) >= this.n間隔)
+                while ((num - this.NowTime) >= this.Interval)
                 {
-                    if (++this.n現在の値 > this.n終了値)
-                        this.n現在の値 = (int)this.n開始値;
+                    if (++this.CurrentValue > this.EndValue)
+                        this.CurrentValue = (int)this.BeginValue;
 
-                    this.n現在の経過時間ms += this.n間隔;
+                    this.NowTime += this.Interval;
                 }
             }
         }
@@ -213,20 +213,20 @@ namespace FDK
         /// 前回の t進行Loop() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
         /// カウント値が終了値に達している場合は、次の増加タイミングで開始値に戻る（値がループする）。
         /// </summary>
-        public void t進行LoopDb()
+        public void TickLoopDB()
         {
-            if ((this.timerdb != null) && (this.n現在の経過時間ms != CSoundTimer.n未使用))
+            if ((this.TimerDB != null) && (this.NowTime != CSoundTimer.UnusedNum))
             {
-                double num = this.timerdb.n現在時刻;
-                if (num < this.n現在の経過時間ms)
-                    this.n現在の経過時間ms = num;
+                double num = this.TimerDB.NowTime;
+                if (num < this.NowTime)
+                    this.NowTime = num;
 
-                while ((num - this.n現在の経過時間ms) >= this.n間隔)
+                while ((num - this.NowTime) >= this.Interval)
                 {
-                    if (++this.n現在の値 > this.n終了値)
-                        this.n現在の値 = (int)this.n開始値;
+                    if (++this.CurrentValue > this.EndValue)
+                        this.CurrentValue = (int)this.BeginValue;
 
-                    this.n現在の経過時間ms += this.n間隔;
+                    this.NowTime += this.Interval;
                 }
             }
         }
@@ -235,14 +235,14 @@ namespace FDK
         /// カウントを停止する。
         /// これ以降に t進行() や t進行Loop() を呼び出しても何も処理されない。
         /// </summary>
-        public void t停止()
+        public void Stop()
         {
-            this.n現在の経過時間ms = CTimer.n未使用;
+            this.NowTime = CTimer.UnusedNum;
         }
 
-        public void t間隔値変更(double Value)
+        public void ChangeInterval(double Value)
         {
-            this._n間隔 = Value;
+            this._Interval = Value;
         }
 
         // その他
@@ -255,60 +255,60 @@ namespace FDK
         /// <para>ただし、2回目の呼び出しは1回目から 200ms の間を開けてから行い、3回目以降の呼び出しはそれぞれ 30ms の間隔で呼び出す。</para>
         /// <para>「bキー押下」が false の場合は何もせず、呼び出し回数を 0 にリセットする。</para>
         /// </summary>
-        /// <param name="bキー押下">キーが押下されている場合は true。</param>
-        /// <param name="tキー処理">キーが押下されている場合に実行する処理。</param>
-        public void tキー反復(bool bキー押下, DGキー処理 tキー処理)
+        /// <param name="pressFlag">キーが押下されている場合は true。</param>
+        /// <param name="keyProcess">キーが押下されている場合に実行する処理。</param>
+        public void KeyIntervalFunc(bool pressFlag, KeyProcess keyProcess)
         {
-            const int n1回目 = 0;
-            const int n2回目 = 1;
-            const int n3回目以降 = 2;
+            const int first = 0;
+            const int second = 1;
+            const int later = 2;
 
-            if (bキー押下)
+            if (pressFlag)
             {
-                switch (this.n現在の値)
+                switch (this.CurrentValue)
                 {
-                    case n1回目:
+                    case first:
 
-                        tキー処理();
-                        this.n現在の値 = n2回目;
-                        this.n現在の経過時間ms = this.timer.n現在時刻;
+                        keyProcess();
+                        this.CurrentValue = second;
+                        this.NowTime = this.NormalTimer.NowTime;
                         return;
 
-                    case n2回目:
+                    case second:
 
-                        if ((this.timer.n現在時刻 - this.n現在の経過時間ms) > 200)
+                        if ((this.NormalTimer.NowTime - this.NowTime) > 200)
                         {
-                            tキー処理();
-                            this.n現在の経過時間ms = this.timer.n現在時刻;
-                            this.n現在の値 = n3回目以降;
+                            keyProcess();
+                            this.NowTime = this.NormalTimer.NowTime;
+                            this.CurrentValue = later;
                         }
                         return;
 
-                    case n3回目以降:
+                    case later:
 
-                        if ((this.timer.n現在時刻 - this.n現在の経過時間ms) > 30)
+                        if ((this.NormalTimer.NowTime - this.NowTime) > 30)
                         {
-                            tキー処理();
-                            this.n現在の経過時間ms = this.timer.n現在時刻;
+                            keyProcess();
+                            this.NowTime = this.NormalTimer.NowTime;
                         }
                         return;
                 }
             }
             else
             {
-                this.n現在の値 = n1回目;
+                this.CurrentValue = first;
             }
         }
-        public delegate void DGキー処理();
+        public delegate void KeyProcess();
 
         //-----------------
         #endregion
 
         #region [ private ]
         //-----------------
-        private CTimer timer;
-        private CSoundTimer timerdb;
-        private double n間隔;
+        private CTimer NormalTimer;
+        private CSoundTimer TimerDB;
+        private double Interval;
         //-----------------
         #endregion
     }

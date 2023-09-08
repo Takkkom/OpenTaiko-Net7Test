@@ -31,22 +31,22 @@ namespace TJAPlayer3
 		//    this.ct透明度用 = null;
 		//    base.On非活性化();
 		//}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.txDANGER );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
 		}

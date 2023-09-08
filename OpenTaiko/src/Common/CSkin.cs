@@ -70,7 +70,7 @@ namespace TJAPlayer3
                     if (this.rSound[1 - this.n次に鳴るサウンド番号] == null)
                         return false;
 
-                    return this.rSound[1 - this.n次に鳴るサウンド番号].b再生中;
+                    return this.rSound[1 - this.n次に鳴るサウンド番号].IsPlaying;
                 }
             }
             public int n位置_現在のサウンド
@@ -81,13 +81,13 @@ namespace TJAPlayer3
                     if (sound == null)
                         return 0;
 
-                    return sound.n位置;
+                    return sound.SoundPosition;
                 }
                 set
                 {
                     CSound sound = this.rSound[1 - this.n次に鳴るサウンド番号];
                     if (sound != null)
-                        sound.n位置 = value;
+                        sound.SoundPosition = value;
                 }
             }
             public int n位置_次に鳴るサウンド
@@ -98,13 +98,13 @@ namespace TJAPlayer3
                     if (sound == null)
                         return 0;
 
-                    return sound.n位置;
+                    return sound.SoundPosition;
                 }
                 set
                 {
                     CSound sound = this.rSound[this.n次に鳴るサウンド番号];
                     if (sound != null)
-                        sound.n位置 = value;
+                        sound.SoundPosition = value;
                 }
             }
             public int nAutomationLevel_現在のサウンド
@@ -246,7 +246,7 @@ namespace TJAPlayer3
                 }
                 CSound sound = this.rSound[this.n次に鳴るサウンド番号];
                 if (sound != null)
-                    sound.t再生を開始する(this.bループ);
+                    sound.PlayStart(this.bループ);
 
                 this.bPlayed = true;
                 this.n次に鳴るサウンド番号 = 1 - this.n次に鳴るサウンド番号;
@@ -255,10 +255,10 @@ namespace TJAPlayer3
             {
                 this.bPlayed = false;
                 if (this.rSound[0] != null)
-                    this.rSound[0].t再生を停止する();
+                    this.rSound[0].Stop();
 
                 if (this.rSound[1] != null)
-                    this.rSound[1].t再生を停止する();
+                    this.rSound[1].Stop();
 
                 if (r最後に再生した排他システムサウンド == this)
                     r最後に再生した排他システムサウンド = null;
@@ -1124,27 +1124,27 @@ namespace TJAPlayer3
                             //-----------------------------
                             else if (strCommand == "ScrollFieldP1Y")
                             {
-                                this.nScrollFieldY[0] = CConversion.n値を文字列から取得して返す(strParam, 192);
+                                this.nScrollFieldY[0] = CConversion.StringToInt(strParam, 192);
                             }
                             else if (strCommand == "ScrollFieldP2Y")
                             {
-                                this.nScrollFieldY[1] = CConversion.n値を文字列から取得して返す(strParam, 192);
+                                this.nScrollFieldY[1] = CConversion.StringToInt(strParam, 192);
                             }
                             else if (strCommand == "SENotesP1Y")
                             {
-                                this.nSENotesY[0] = CConversion.n値を文字列から取得して返す(strParam, this.nSENotesY[0]);
+                                this.nSENotesY[0] = CConversion.StringToInt(strParam, this.nSENotesY[0]);
                             }
                             else if (strCommand == "SENotesP2Y")
                             {
-                                this.nSENotesY[1] = CConversion.n値を文字列から取得して返す(strParam, this.nSENotesY[1]);
+                                this.nSENotesY[1] = CConversion.StringToInt(strParam, this.nSENotesY[1]);
                             }
                             else if (strCommand == "JudgePointP1Y")
                             {
-                                this.nJudgePointY[0] = CConversion.n値を文字列から取得して返す(strParam, this.nJudgePointY[0]);
+                                this.nJudgePointY[0] = CConversion.StringToInt(strParam, this.nJudgePointY[0]);
                             }
                             else if (strCommand == "JudgePointP2Y")
                             {
-                                this.nJudgePointY[1] = CConversion.n値を文字列から取得して返す(strParam, this.nJudgePointY[1]);
+                                this.nJudgePointY[1] = CConversion.StringToInt(strParam, this.nJudgePointY[1]);
                             }
 
                             else if (strCommand == "DiffDispMode")
@@ -1163,27 +1163,27 @@ namespace TJAPlayer3
                             //-----------------------------
                             else if (strCommand == "ResultPanelP1X")
                             {
-                                this.nResultPanelP1X = CConversion.n値を文字列から取得して返す(strParam, 515);
+                                this.nResultPanelP1X = CConversion.StringToInt(strParam, 515);
                             }
                             else if (strCommand == "ResultPanelP1Y")
                             {
-                                this.nResultPanelP1Y = CConversion.n値を文字列から取得して返す(strParam, 75);
+                                this.nResultPanelP1Y = CConversion.StringToInt(strParam, 75);
                             }
                             else if (strCommand == "ResultPanelP2X")
                             {
-                                this.nResultPanelP2X = CConversion.n値を文字列から取得して返す(strParam, 515);
+                                this.nResultPanelP2X = CConversion.StringToInt(strParam, 515);
                             }
                             else if (strCommand == "ResultPanelP2Y")
                             {
-                                this.nResultPanelP2Y = CConversion.n値を文字列から取得して返す(strParam, 75);
+                                this.nResultPanelP2Y = CConversion.StringToInt(strParam, 75);
                             }
                             else if (strCommand == "ResultScoreP1X")
                             {
-                                this.nResultScoreP1X = CConversion.n値を文字列から取得して返す(strParam, 582);
+                                this.nResultScoreP1X = CConversion.StringToInt(strParam, 582);
                             }
                             else if (strCommand == "ResultScoreP1Y")
                             {
-                                this.nResultScoreP1Y = CConversion.n値を文字列から取得して返す(strParam, 252);
+                                this.nResultScoreP1Y = CConversion.StringToInt(strParam, 252);
                             }
                             //-----------------------------
                             #endregion

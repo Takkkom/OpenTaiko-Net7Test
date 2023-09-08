@@ -59,11 +59,11 @@ namespace TJAPlayer3
 
             this.st文字位置 = st文字位置Array;
 
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
 
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             this.ct風船終了 = new CCounter();
             this.ct風船ふきだしアニメ = new CCounter();
@@ -72,30 +72,30 @@ namespace TJAPlayer3
             {
                 this.ct風船アニメ[i] = new CCounter();
             }
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             this.ct風船終了 = null;
             this.ct風船ふきだしアニメ = null;
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             this.ct風船ふきだしアニメ = new CCounter(0, 1, 100, TJAPlayer3.Timer);
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public enum EBalloonType
@@ -107,8 +107,8 @@ namespace TJAPlayer3
 
         public int On進行描画(int n連打ノルマ, int n連打数, int player, EBalloonType btype)
         {
-            this.ct風船ふきだしアニメ.t進行Loop();
-            this.ct風船アニメ[player].t進行();
+            this.ct風船ふきだしアニメ.TickLoop();
+            this.ct風船アニメ[player].Tick();
 
             //CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.赤, this.ct風船終了.n現在の値.ToString() );
             int[] n残り打数 = new int[] { 0, 0, 0, 0, 0 };
@@ -173,7 +173,7 @@ namespace TJAPlayer3
                     if (n残り打数[j] < n連打数 && btype == EBalloonType.BALLOON)
                     {
                         if (TJAPlayer3.Tx.Balloon_Breaking[j] != null)
-                            TJAPlayer3.Tx.Balloon_Breaking[j].t2D描画(x + (this.ct風船ふきだしアニメ.n現在の値 == 1 ? 3 : 0), y);
+                            TJAPlayer3.Tx.Balloon_Breaking[j].t2D描画(x + (this.ct風船ふきだしアニメ.CurrentValue == 1 ? 3 : 0), y);
                         break;
                     }
                 }
@@ -212,7 +212,7 @@ namespace TJAPlayer3
 
 
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
 
@@ -292,7 +292,7 @@ namespace TJAPlayer3
         {
             if (TJAPlayer3.Tx.Fuse_Number == null) return;
             TJAPlayer3.Tx.Fuse_Number.vc拡大縮小倍率.X = TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Scale;
-            TJAPlayer3.Tx.Fuse_Number.vc拡大縮小倍率.Y = TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Scale + RollScale[this.ct風船アニメ[nPlayer].n現在の値];
+            TJAPlayer3.Tx.Fuse_Number.vc拡大縮小倍率.Y = TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Scale + RollScale[this.ct風船アニメ[nPlayer].CurrentValue];
 
             _nbDisplay(TJAPlayer3.Tx.Fuse_Number, num, x, y);
         }
@@ -301,14 +301,14 @@ namespace TJAPlayer3
         {
             if (TJAPlayer3.Tx.Balloon_Number_Roll == null) return;
             TJAPlayer3.Tx.Balloon_Number_Roll.vc拡大縮小倍率.X = TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Scale;
-            TJAPlayer3.Tx.Balloon_Number_Roll.vc拡大縮小倍率.Y = TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Scale + RollScale[this.ct風船アニメ[nPlayer].n現在の値];
+            TJAPlayer3.Tx.Balloon_Number_Roll.vc拡大縮小倍率.Y = TJAPlayer3.Skin.Game_Balloon_Balloon_Number_Scale + RollScale[this.ct風船アニメ[nPlayer].CurrentValue];
 
             _nbDisplay(TJAPlayer3.Tx.Balloon_Number_Roll, num, x, y);
         }
 
         public void tEnd()
         {
-            this.ct風船終了 = new CCounter(0, 80, 10, CSound管理.PlayTimer);
+            this.ct風船終了 = new CCounter(0, 80, 10, SoundManager.PlayTimer);
         }
     }
 }

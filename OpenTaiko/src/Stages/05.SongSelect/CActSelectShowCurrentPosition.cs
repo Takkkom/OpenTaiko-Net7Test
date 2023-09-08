@@ -14,25 +14,25 @@ namespace TJAPlayer3
 
 		public CActSelectShowCurrentPosition()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
-			if ( this.b活性化してる )
+			if ( this.IsActivated )
 				return;
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				string pathScrollBar = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_scrollbar.png" );
 				string pathScrollPosition = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_scrollbar.png" );
@@ -44,20 +44,20 @@ namespace TJAPlayer3
 				{
 					this.txScrollPosition = TJAPlayer3.tテクスチャの生成( pathScrollPosition, false );
 				}
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				TJAPlayer3.t安全にDisposeする( ref this.txScrollBar );
 				TJAPlayer3.t安全にDisposeする( ref this.txScrollPosition );
 
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			if ( this.txScrollBar != null )
 			{

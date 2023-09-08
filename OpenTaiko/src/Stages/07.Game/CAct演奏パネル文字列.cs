@@ -22,7 +22,7 @@ namespace TJAPlayer3
         // コンストラクタ
         public CAct演奏パネル文字列()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 			this.Start();
 		}
 
@@ -65,7 +65,7 @@ namespace TJAPlayer3
         /// <param name="stageText">曲数</param>
         public void SetPanelString(string songName, string genreName, string stageText = null, C曲リストノード songNode = null)
 		{
-			if( base.b活性化してる )
+			if( base.IsActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.txPanel );
 				if( (songName != null ) && (songName.Length > 0 ) )
@@ -205,7 +205,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName ) )
             {
@@ -217,23 +217,23 @@ namespace TJAPlayer3
 			this.ct進行用 = new CCounter();
 			this.Start();
             this.bFirst = true;
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			this.ct進行用 = null;
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.t安全にDisposeする( ref this.txPanel );
 				TJAPlayer3.t安全にDisposeする( ref this.txMusicName );
@@ -243,19 +243,19 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする(ref this.tx歌詞テクスチャ);
                 TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
                 TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			throw new InvalidOperationException( "t進行描画(x,y)のほうを使用してください。" );
 		}
 		public int t進行描画( int x, int y )
 		{
             if (TJAPlayer3.stage演奏ドラム画面.actDan.IsAnimating || TJAPlayer3.ConfigIni.nPlayerCount > 2) return 0;
-			if( !base.b活性化してない && !this.bMute )
+			if( !base.IsDeActivated && !this.bMute )
 			{
-				this.ct進行用.t進行Loop();
+				this.ct進行用.TickLoop();
 
                 if( this.txGENRE != null )
                 {
@@ -285,33 +285,33 @@ namespace TJAPlayer3
                 {
                     #region[ 透明度制御 ]
 
-                    if( this.ct進行用.n現在の値 < 745 )
+                    if( this.ct進行用.CurrentValue < 745 )
                     {
                         if( this.txStage != null )
                             this.txStage.Opacity = 0;
                     }
-                    else if( this.ct進行用.n現在の値 >= 745 && this.ct進行用.n現在の値 < 1000 )
+                    else if( this.ct進行用.CurrentValue >= 745 && this.ct進行用.CurrentValue < 1000 )
                     {
                         if( this.txStage != null )
-                            this.txStage.Opacity = ( this.ct進行用.n現在の値 - 745 );
+                            this.txStage.Opacity = ( this.ct進行用.CurrentValue - 745 );
                     }
-                    else if( this.ct進行用.n現在の値 >= 1000 && this.ct進行用.n現在の値 <= 1745 )
+                    else if( this.ct進行用.CurrentValue >= 1000 && this.ct進行用.CurrentValue <= 1745 )
                     {
                         if( this.txStage != null )
                             this.txStage.Opacity = 255;
                     }
-                    else if( this.ct進行用.n現在の値 >= 1745 )
+                    else if( this.ct進行用.CurrentValue >= 1745 )
                     {
                         if( this.txStage != null )
-                            this.txStage.Opacity = 255 - (this.ct進行用.n現在の値 - 1745);
+                            this.txStage.Opacity = 255 - (this.ct進行用.CurrentValue - 1745);
                     }
                     #endregion
 
                     if( this.txMusicName != null )
                     {
-                        if(this.b初めての進行描画)
+                        if(this.IsFirstDraw)
                         {
-                            b初めての進行描画 = false;
+                            IsFirstDraw = false;
                         }
                         if (this.txMusicName != null)
                         {

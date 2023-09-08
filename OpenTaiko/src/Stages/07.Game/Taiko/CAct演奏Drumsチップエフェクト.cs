@@ -41,7 +41,7 @@ namespace TJAPlayer3
 
         // CActivity 実装
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < 128; i++)
             {
@@ -52,9 +52,9 @@ namespace TJAPlayer3
                     ctChipEffect = new CCounter()
                 };
             }
-            base.On活性化();
+            base.Activate();
         }
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < 128; i++)
             {
@@ -62,28 +62,28 @@ namespace TJAPlayer3
                 st[i].ctChipEffect = null;
                 st[i].b使用中 = false;
             }
-            base.On非活性化();
+            base.DeActivate();
         }
-        public override int On進行描画()
+        public override int Draw()
         {
             for (int i = 0; i < 128; i++)
             {
                 if (st[i].b使用中)
                 {
-                    st[i].ct進行.t進行();
-                    st[i].ctChipEffect.t進行();
-                    if (st[i].ct進行.b終了値に達した)
+                    st[i].ct進行.Tick();
+                    st[i].ctChipEffect.Tick();
+                    if (st[i].ct進行.IsEnded)
                     {
-                        st[i].ct進行.t停止();
+                        st[i].ct進行.Stop();
                         st[i].b使用中 = false;
                     }
 
                     switch (st[i].nプレイヤー)
                     {
                         case 0:
-                            TJAPlayer3.Tx.Gauge_Soul_Explosion[TJAPlayer3.P1IsBlue() ? 1 : 0]?.t2D中心基準描画(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[0], TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[0], new Rectangle(st[i].ct進行.n現在の値 * TJAPlayer3.Skin.Game_Effect_NotesFlash[0], 0, TJAPlayer3.Skin.Game_Effect_NotesFlash[0], TJAPlayer3.Skin.Game_Effect_NotesFlash[1]));
+                            TJAPlayer3.Tx.Gauge_Soul_Explosion[TJAPlayer3.P1IsBlue() ? 1 : 0]?.t2D中心基準描画(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[0], TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[0], new Rectangle(st[i].ct進行.CurrentValue * TJAPlayer3.Skin.Game_Effect_NotesFlash[0], 0, TJAPlayer3.Skin.Game_Effect_NotesFlash[0], TJAPlayer3.Skin.Game_Effect_NotesFlash[1]));
                             
-                            if (this.st[i].ctChipEffect.n現在の値 < 13)
+                            if (this.st[i].ctChipEffect.CurrentValue < 13)
                                 NotesManager.DisplayNote(
                                     st[i].nプレイヤー,
                                     TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[0],
@@ -92,8 +92,8 @@ namespace TJAPlayer3
                             break;
 
                         case 1:
-                            TJAPlayer3.Tx.Gauge_Soul_Explosion[1]?.t2D中心基準描画(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[1], TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[1], new Rectangle(st[i].ct進行.n現在の値 * TJAPlayer3.Skin.Game_Effect_NotesFlash[0], 0, TJAPlayer3.Skin.Game_Effect_NotesFlash[0], TJAPlayer3.Skin.Game_Effect_NotesFlash[1]));
-                            if (this.st[i].ctChipEffect.n現在の値 < 13)
+                            TJAPlayer3.Tx.Gauge_Soul_Explosion[1]?.t2D中心基準描画(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[1], TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[1], new Rectangle(st[i].ct進行.CurrentValue * TJAPlayer3.Skin.Game_Effect_NotesFlash[0], 0, TJAPlayer3.Skin.Game_Effect_NotesFlash[0], TJAPlayer3.Skin.Game_Effect_NotesFlash[1]));
+                            if (this.st[i].ctChipEffect.CurrentValue < 13)
                                 NotesManager.DisplayNote(
                                     st[i].nプレイヤー,
                                     TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[1],
@@ -104,16 +104,16 @@ namespace TJAPlayer3
 
                     if (TJAPlayer3.Tx.ChipEffect != null)
                     {
-                        if (this.st[i].ctChipEffect.n現在の値 < 12)
+                        if (this.st[i].ctChipEffect.CurrentValue < 12)
                         {
                             TJAPlayer3.Tx.ChipEffect.color4 = new Color4(1.0f, 1.0f, 0.0f, 1.0f);
-                            TJAPlayer3.Tx.ChipEffect.Opacity = (int)(this.st[i].ctChipEffect.n現在の値 * (float)(225 / 11));
+                            TJAPlayer3.Tx.ChipEffect.Opacity = (int)(this.st[i].ctChipEffect.CurrentValue * (float)(225 / 11));
                             TJAPlayer3.Tx.ChipEffect.t2D中心基準描画(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[st[i].nプレイヤー], TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[st[i].nプレイヤー], new Rectangle(st[i].Lane * TJAPlayer3.Skin.Game_Notes_Size[0], 0, TJAPlayer3.Skin.Game_Notes_Size[0], TJAPlayer3.Skin.Game_Notes_Size[1]));
                         }
-                        if (this.st[i].ctChipEffect.n現在の値 > 12 && this.st[i].ctChipEffect.n現在の値 < 24)
+                        if (this.st[i].ctChipEffect.CurrentValue > 12 && this.st[i].ctChipEffect.CurrentValue < 24)
                         {
                             TJAPlayer3.Tx.ChipEffect.color4 = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
-                            TJAPlayer3.Tx.ChipEffect.Opacity = 255 - (int)((this.st[i].ctChipEffect.n現在の値 - 10) * (float)(255 / 14));
+                            TJAPlayer3.Tx.ChipEffect.Opacity = 255 - (int)((this.st[i].ctChipEffect.CurrentValue - 10) * (float)(255 / 14));
                             TJAPlayer3.Tx.ChipEffect.t2D中心基準描画(TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_X[st[i].nプレイヤー], TJAPlayer3.Skin.Game_Effect_FlyingNotes_EndPoint_Y[st[i].nプレイヤー], new Rectangle(st[i].Lane * TJAPlayer3.Skin.Game_Notes_Size[0], 0, TJAPlayer3.Skin.Game_Notes_Size[0], TJAPlayer3.Skin.Game_Notes_Size[1]));
                         }
                     }

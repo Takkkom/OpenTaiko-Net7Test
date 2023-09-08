@@ -12,13 +12,13 @@ namespace TJAPlayer3
 
 		public CActSelectPresound()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		public void tサウンド停止()
 		{
 			if( this.sound != null )
 			{
-				this.sound.t再生を停止する();
+				this.sound.Stop();
 				TJAPlayer3.Sound管理.tDisposeSound( this.sound );
 				this.sound = null;
 			}
@@ -27,7 +27,7 @@ namespace TJAPlayer3
 		{
 			Cスコア cスコア = TJAPlayer3.stage選曲.r現在選択中のスコア;
 			
-            if( ( cスコア != null ) && ( ( !( cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.strBGMファイル名 ).Equals( this.str現在のファイル名 ) || ( this.sound == null ) ) || !this.sound.b再生中 ) )
+            if( ( cスコア != null ) && ( ( !( cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.strBGMファイル名 ).Equals( this.str現在のファイル名 ) || ( this.sound == null ) ) || !this.sound.IsPlaying ) )
 			{
 				this.tサウンド停止();
 				this.tBGMフェードイン開始();
@@ -59,7 +59,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			this.sound = null;
 			this.str現在のファイル名 = "";
@@ -68,36 +68,36 @@ namespace TJAPlayer3
 			this.ctBGMフェードイン用 = null;
             this.long再生位置 = -1;
             this.long再生開始時のシステム時刻 = -1;
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			this.tサウンド停止();
 			this.ct再生待ちウェイト = null;
 			this.ctBGMフェードイン用 = null;
 			this.ctBGMフェードアウト用 = null;
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( ( this.ctBGMフェードイン用 != null ) && this.ctBGMフェードイン用.b進行中 )
+				if( ( this.ctBGMフェードイン用 != null ) && this.ctBGMフェードイン用.IsTicked )
 				{
-					this.ctBGMフェードイン用.t進行();
-					TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド = this.ctBGMフェードイン用.n現在の値;
-					if( this.ctBGMフェードイン用.b終了値に達した )
+					this.ctBGMフェードイン用.Tick();
+					TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド = this.ctBGMフェードイン用.CurrentValue;
+					if( this.ctBGMフェードイン用.IsEnded )
 					{
-						this.ctBGMフェードイン用.t停止();
+						this.ctBGMフェードイン用.Stop();
 					}
 				}
-				if( ( this.ctBGMフェードアウト用 != null ) && this.ctBGMフェードアウト用.b進行中 )
+				if( ( this.ctBGMフェードアウト用 != null ) && this.ctBGMフェードアウト用.IsTicked )
 				{
-					this.ctBGMフェードアウト用.t進行();
-					TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド = CSound.MaximumAutomationLevel - this.ctBGMフェードアウト用.n現在の値;
-					if( this.ctBGMフェードアウト用.b終了値に達した )
+					this.ctBGMフェードアウト用.Tick();
+					TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド = CSound.MaximumAutomationLevel - this.ctBGMフェードアウト用.CurrentValue;
+					if( this.ctBGMフェードアウト用.IsEnded )
 					{
-						this.ctBGMフェードアウト用.t停止();
+						this.ctBGMフェードアウト用.Stop();
 					}
 				}
 				this.t進行処理_プレビューサウンド();
@@ -107,7 +107,7 @@ namespace TJAPlayer3
                     Cスコア cスコア = TJAPlayer3.stage選曲.r現在選択中のスコア;
                     if (long再生位置 == -1)
                     {
-                        this.long再生開始時のシステム時刻 = CSound管理.PlayTimer.nシステム時刻ms;
+                        this.long再生開始時のシステム時刻 = SoundManager.PlayTimer.SystemTimeMs;
                         this.long再生位置 = cスコア.譜面情報.nデモBGMオフセット;
                         
                         this.sound.tSetPositonToBegin(cスコア.譜面情報.nデモBGMオフセット);
@@ -115,7 +115,7 @@ namespace TJAPlayer3
                     }
                     else
                     {
-						this.long再生位置 = CSound管理.PlayTimer.nシステム時刻ms - this.long再生開始時のシステム時刻;
+						this.long再生位置 = SoundManager.PlayTimer.SystemTimeMs - this.long再生開始時のシステム時刻;
 						if (this.long再生位置 >= this.sound.TotalPlayTime - cスコア.譜面情報.nデモBGMオフセット) //2020.04.18 Mr-Ojii #DEMOSTARTから何度も再生するために追加
 							this.long再生位置 = -1;
 					}
@@ -146,19 +146,19 @@ namespace TJAPlayer3
 		{
 			if( this.ctBGMフェードイン用 != null )
 			{
-				this.ctBGMフェードイン用.t停止();
+				this.ctBGMフェードイン用.Stop();
 			}
 			this.ctBGMフェードアウト用 = new CCounter( 0, 100, 10, TJAPlayer3.Timer );
-			this.ctBGMフェードアウト用.n現在の値 = 100 - TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド;
+			this.ctBGMフェードアウト用.CurrentValue = 100 - TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド;
 		}
 		private void tBGMフェードイン開始()
 		{
 			if( this.ctBGMフェードアウト用 != null )
 			{
-				this.ctBGMフェードアウト用.t停止();
+				this.ctBGMフェードアウト用.Stop();
 			}
 			this.ctBGMフェードイン用 = new CCounter( 0, 100, 20, TJAPlayer3.Timer );
-			this.ctBGMフェードイン用.n現在の値 = TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド;
+			this.ctBGMフェードイン用.CurrentValue = TJAPlayer3.Skin.bgm選曲画面.nAutomationLevel_現在のサウンド;
 		}
 		private void tプレビューサウンドの作成()
 		{
@@ -185,14 +185,14 @@ namespace TJAPlayer3
 					// Disable song if playing while playing the preview song
 					CSongSelectSongManager.disable();
 
-					this.sound.t再生を開始する( true );
+					this.sound.PlayStart( true );
 
                     if( long再生位置 == -1 )
                     {
-                        this.long再生開始時のシステム時刻 = CSound管理.PlayTimer.nシステム時刻ms;
+                        this.long再生開始時のシステム時刻 = SoundManager.PlayTimer.SystemTimeMs;
                         this.long再生位置 = cスコア.譜面情報.nデモBGMオフセット;
                         this.sound.tSetPositonToBegin(cスコア.譜面情報.nデモBGMオフセット);
-                        this.long再生位置 = CSound管理.PlayTimer.nシステム時刻ms - this.long再生開始時のシステム時刻;
+                        this.long再生位置 = SoundManager.PlayTimer.SystemTimeMs - this.long再生開始時のシステム時刻;
                     }
                     //if( long再生位置 == this.sound.n総演奏時間ms - 10 )
                     //    this.long再生位置 = -1;
@@ -216,12 +216,12 @@ namespace TJAPlayer3
 		}
 		private void t進行処理_プレビューサウンド()
 		{
-			if( ( this.ct再生待ちウェイト != null ) && !this.ct再生待ちウェイト.b停止中 )
+			if( ( this.ct再生待ちウェイト != null ) && !this.ct再生待ちウェイト.IsStoped )
 			{
-				this.ct再生待ちウェイト.t進行();
-				if( !this.ct再生待ちウェイト.b終了値に達してない )
+				this.ct再生待ちウェイト.Tick();
+				if( !this.ct再生待ちウェイト.IsUnEnded )
 				{
-					this.ct再生待ちウェイト.t停止();
+					this.ct再生待ちウェイト.Stop();
 					if( !TJAPlayer3.stage選曲.bスクロール中 )
 					{
                         this.tプレビューサウンドの作成();

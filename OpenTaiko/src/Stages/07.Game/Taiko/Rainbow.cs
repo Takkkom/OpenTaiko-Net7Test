@@ -13,7 +13,7 @@ namespace TJAPlayer3
 
 		public Rainbow()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		
         public virtual void Start( int player )
@@ -43,51 +43,51 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             for( int i = 0; i < 2; i++ )
 			{
 				this.Rainbow1P[ i ].Counter = new CCounter();
 				this.Rainbow2P[ i ].Counter = new CCounter();
 			}
-            base.On活性化();
+            base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
             for( int i = 0; i < 2; i++ )
 			{
 				this.Rainbow1P[ i ].Counter = null;
 				this.Rainbow2P[ i ].Counter = null;
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-                if (TJAPlayer3.ConfigIni.nPlayerCount > 2) return base.On進行描画();
+                if (TJAPlayer3.ConfigIni.nPlayerCount > 2) return base.Draw();
                 for (int f = 0; f < 2; f++)
                 {
                     if (this.Rainbow1P[f].IsUsing)
                     {
-                        this.Rainbow1P[f].Counter.t進行();
-                        if (this.Rainbow1P[f].Counter.b終了値に達した)
+                        this.Rainbow1P[f].Counter.Tick();
+                        if (this.Rainbow1P[f].Counter.IsEnded)
                         {
-                            this.Rainbow1P[f].Counter.t停止();
+                            this.Rainbow1P[f].Counter.Stop();
                             this.Rainbow1P[f].IsUsing = false;
                         }
 
@@ -95,15 +95,15 @@ namespace TJAPlayer3
                         {
                             //this.st虹[f].ct進行.n現在の値 = 164;
 
-                            if (this.Rainbow1P[f].Counter.n現在の値 < 82)
+                            if (this.Rainbow1P[f].Counter.CurrentValue < 82)
                             {
-                                int nRectX = ((this.Rainbow1P[f].Counter.n現在の値 * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
+                                int nRectX = ((this.Rainbow1P[f].Counter.CurrentValue * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
                                 TJAPlayer3.Tx.Effects_Rainbow.t2D描画(TJAPlayer3.Skin.Game_Effect_Rainbow_X[0], TJAPlayer3.Skin.Game_Effect_Rainbow_Y[0], 
                                     new Rectangle(0, 0, nRectX, TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Height));
                             }
-                            else if (this.Rainbow1P[f].Counter.n現在の値 >= 82)
+                            else if (this.Rainbow1P[f].Counter.CurrentValue >= 82)
                             {
-                                int nRectX = (((this.Rainbow1P[f].Counter.n現在の値 - 82) * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
+                                int nRectX = (((this.Rainbow1P[f].Counter.CurrentValue - 82) * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
                                 TJAPlayer3.Tx.Effects_Rainbow.t2D描画(TJAPlayer3.Skin.Game_Effect_Rainbow_X[0] + nRectX, TJAPlayer3.Skin.Game_Effect_Rainbow_Y[0],
                                     new Rectangle(nRectX, 0, TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width - nRectX, TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Height));
                             }
@@ -116,10 +116,10 @@ namespace TJAPlayer3
                 {
                     if (this.Rainbow2P[f].IsUsing)
                     {
-                        this.Rainbow2P[f].Counter.t進行();
-                        if (this.Rainbow2P[f].Counter.b終了値に達した)
+                        this.Rainbow2P[f].Counter.Tick();
+                        if (this.Rainbow2P[f].Counter.IsEnded)
                         {
-                            this.Rainbow2P[f].Counter.t停止();
+                            this.Rainbow2P[f].Counter.Stop();
                             this.Rainbow2P[f].IsUsing = false;
                         }
 
@@ -127,15 +127,15 @@ namespace TJAPlayer3
                         {
                             //this.st虹[f].ct進行.n現在の値 = 164;
 
-                            if (this.Rainbow2P[f].Counter.n現在の値 < 82)
+                            if (this.Rainbow2P[f].Counter.CurrentValue < 82)
                             {
-                                int nRectX = ((this.Rainbow2P[f].Counter.n現在の値 * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
+                                int nRectX = ((this.Rainbow2P[f].Counter.CurrentValue * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
                                 TJAPlayer3.Tx.Effects_Rainbow.t2D上下反転描画(TJAPlayer3.Skin.Game_Effect_Rainbow_X[0], TJAPlayer3.Skin.Game_Effect_Rainbow_Y[1], 
                                     new Rectangle(0, 0, nRectX, TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Height));
                             }
-                            else if (this.Rainbow2P[f].Counter.n現在の値 >= 82)
+                            else if (this.Rainbow2P[f].Counter.CurrentValue >= 82)
                             {
-                                int nRectX = (((this.Rainbow2P[f].Counter.n現在の値 - 82) * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
+                                int nRectX = (((this.Rainbow2P[f].Counter.CurrentValue - 82) * TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width) / 85);
                                 TJAPlayer3.Tx.Effects_Rainbow.t2D上下反転描画(TJAPlayer3.Skin.Game_Effect_Rainbow_X[0] + nRectX, TJAPlayer3.Skin.Game_Effect_Rainbow_Y[1], 
                                     new Rectangle(nRectX, 0, TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Width - nRectX, TJAPlayer3.Tx.Effects_Rainbow.szテクスチャサイズ.Height));
                             }
@@ -145,7 +145,7 @@ namespace TJAPlayer3
                     }
                 }
 			}
-            return base.On進行描画();
+            return base.Draw();
         }
 		
 

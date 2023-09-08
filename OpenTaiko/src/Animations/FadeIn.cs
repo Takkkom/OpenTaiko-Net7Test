@@ -25,7 +25,7 @@ namespace TJAPlayer3.Animations
         /// <returns>不透明度。</returns>
         public override object GetAnimation()
         {
-            var opacity = base.Counter.n現在の値 * 255 / TimeMs;
+            var opacity = base.Counter.CurrentValue * 255 / TimeMs;
             return opacity;
         }
 

@@ -14,7 +14,7 @@ namespace FDK
 	{
 		// プロパティ
 
-		public string strファイル名 
+		public string FileName 
 		{
 			get;
 			private set;
@@ -26,8 +26,8 @@ namespace FDK
 		}
 		public class CSection
 		{
-			public string strセクション名 = "";
-			public List<KeyValuePair<string,string>> listパラメータリスト = new List<KeyValuePair<string, string>>();
+			public string SectionName = "";
+			public List<KeyValuePair<string,string>> Parameters = new List<KeyValuePair<string, string>>();
 		}
 
 
@@ -35,27 +35,27 @@ namespace FDK
 
 		public CIniFile()
 		{
-			this.strファイル名 = "";
+			this.FileName = "";
 			this.Sections = new List<CSection>();
 		}
-		public CIniFile( string strファイル名 )
+		public CIniFile( string fileName )
 			:this()
 		{
-			this.t読み込み( strファイル名 );
+			this.tRead( fileName );
 		}
 
 
 		// メソッド
 
-		public void t読み込み( string strファイル名 )
+		public void tRead( string fileName )
 		{
-			this.strファイル名 = strファイル名;
+			this.FileName = fileName;
 
 			StreamReader sr = null;
 			CSection section = null;
 			try
 			{
-				sr = new StreamReader( this.strファイル名, Encoding.GetEncoding("Shift_JIS") );	// ファイルが存在しない場合は例外発生。
+				sr = new StreamReader( this.FileName, Encoding.GetEncoding("Shift_JIS") );	// ファイルが存在しない場合は例外発生。
 
 				string line;
 				while( ( line = sr.ReadLine() ) != null )
@@ -78,7 +78,7 @@ namespace FDK
 							this.Sections.Add( section );
 
 						section = new CSection();
-						section.strセクション名 = builder.ToString();
+						section.SectionName = builder.ToString();
 						//-----------------------------
 						#endregion
 
@@ -93,7 +93,7 @@ namespace FDK
 					string value = strArray[ 1 ].Trim();
 
 					if( section != null && !string.IsNullOrEmpty( key ) && !string.IsNullOrEmpty( value ) )
-						section.listパラメータリスト.Add( new KeyValuePair<string, string>( key, value ) );
+						section.Parameters.Add( new KeyValuePair<string, string>( key, value ) );
 				}
 
 				if( section != null )
@@ -105,23 +105,23 @@ namespace FDK
 					sr.Close();
 			}
 		}
-		public void t書き出し( string strファイル名 )
+		public void tWrite( string fileName )
 		{
-			this.strファイル名 = strファイル名;
-			this.t書き出し();
+			this.FileName = fileName;
+			this.tWrite();
 		}
-		public void t書き出し()
+		public void tWrite()
 		{
 			StreamWriter sw = null;
 			try
 			{
-				sw = new StreamWriter( this.strファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );	// オープン失敗の場合は例外発生。
+				sw = new StreamWriter( this.FileName, false, Encoding.GetEncoding( "Shift_JIS" ) );	// オープン失敗の場合は例外発生。
 
 				foreach( CSection section in this.Sections )
 				{
-					sw.WriteLine( "[{0}]", section.strセクション名 );
+					sw.WriteLine( "[{0}]", section.SectionName );
 
-					foreach( KeyValuePair<string,string> kvp in section.listパラメータリスト )
+					foreach( KeyValuePair<string,string> kvp in section.Parameters )
 						sw.WriteLine( "{0}={1}", kvp.Key, kvp.Value );
 				}
 			}

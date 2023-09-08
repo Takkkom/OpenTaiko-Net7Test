@@ -17,7 +17,7 @@ namespace TJAPlayer3
 
 		public CAct演奏DrumsチップファイアD()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		
 		
@@ -181,7 +181,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             for( int i = 0; i < 3 * 4; i++ )
 			{
@@ -195,9 +195,9 @@ namespace TJAPlayer3
 				this.st紙吹雪[ i ].b使用中 = false;
 				this.st紙吹雪[ i ].ct進行 = new CCounter();
 			}
-            base.On活性化();
+            base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
             for( int i = 0; i < 3 * 4; i++ )
 			{
@@ -208,11 +208,11 @@ namespace TJAPlayer3
 			{
 				this.st紙吹雪[ i ].ct進行 = null;
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
     //            this.txアタックエフェクトUpper = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\7_explosion_upper.png" ) );
     //            this.txアタックエフェクトUpper_big = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_explosion_upper_big.png" ) );
@@ -225,24 +225,24 @@ namespace TJAPlayer3
     //            this.tx大音符花火[1] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\7_explosion_bignotes_blue.png" ) );
     //            this.tx大音符花火[1].b加算合成 = true;
                 //this.tx紙吹雪 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_particle paper.png" ) );
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				//CDTXMania.tテクスチャの解放( ref this.txアタックエフェクトUpper );
 				//CDTXMania.tテクスチャの解放( ref this.txアタックエフェクトUpper_big );
     //            CDTXMania.tテクスチャの解放( ref this.tx大音符花火[ 0 ] );
     //            CDTXMania.tテクスチャの解放( ref this.tx大音符花火[ 1 ] );
                 //CDTXMania.tテクスチャの解放( ref this.tx紙吹雪 );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
             {
                 int nWidth = (TJAPlayer3.Tx.Effects_Hit_Explosion.szテクスチャサイズ.Width / 7);
                 int nHeight = (TJAPlayer3.Tx.Effects_Hit_Explosion.szテクスチャサイズ.Height / 4);
@@ -252,12 +252,12 @@ namespace TJAPlayer3
 			    {
                     if( this.st状態[ i ].b使用中 )
                     {
-				        if( !this.st状態[ i ].ct進行.b停止中 )
+				        if( !this.st状態[ i ].ct進行.IsStoped )
 				        {
-                            this.st状態[ i ].ct進行.t進行();
-					        if( this.st状態[ i ].ct進行.b終了値に達した )
+                            this.st状態[ i ].ct進行.Tick();
+					        if( this.st状態[ i ].ct進行.IsEnded )
 					        {
-						        this.st状態[ i ].ct進行.t停止();
+						        this.st状態[ i ].ct進行.Stop();
                                 this.st状態[ i ].b使用中 = false;
 					        }
 
@@ -293,19 +293,19 @@ namespace TJAPlayer3
                                     case E判定.Perfect:
                                     case E判定.Great:
                                     case E判定.Auto:
-                                        if (!this.st状態_大[i].ct進行.b停止中 && TJAPlayer3.Tx.Effects_Hit_Explosion_Big != null && this.st状態_大[i].nIsBig == 1)  
-                                                TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.n現在の値 * nWidth, n + nHeight, nWidth, nHeight));
+                                        if (!this.st状態_大[i].ct進行.IsStoped && TJAPlayer3.Tx.Effects_Hit_Explosion_Big != null && this.st状態_大[i].nIsBig == 1)  
+                                                TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.CurrentValue * nWidth, n + nHeight, nWidth, nHeight));
                                         else
-                                            TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.n現在の値 * nWidth, n, nWidth, nHeight));
+                                            TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.CurrentValue * nWidth, n, nWidth, nHeight));
                                         break;                                    
                                     case E判定.Good:
-                                        if (!this.st状態_大[i].ct進行.b停止中 && TJAPlayer3.Tx.Effects_Hit_Explosion_Big != null && this.st状態_大[i].nIsBig == 1)
-                                            TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画( nX, nY, new Rectangle( this.st状態[ i ].ct進行.n現在の値 * nWidth, n + (n * nHeight), nWidth, nHeight) );
+                                        if (!this.st状態_大[i].ct進行.IsStoped && TJAPlayer3.Tx.Effects_Hit_Explosion_Big != null && this.st状態_大[i].nIsBig == 1)
+                                            TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画( nX, nY, new Rectangle( this.st状態[ i ].ct進行.CurrentValue * nWidth, n + (n * nHeight), nWidth, nHeight) );
                                         else
-                                            TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.n現在の値 * nWidth, n + nHeight, nWidth, nHeight));
+                                            TJAPlayer3.Tx.Effects_Hit_Explosion.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.CurrentValue * nWidth, n + nHeight, nWidth, nHeight));
                                         break;
                                     case E判定.Mine:
-                                        TJAPlayer3.Tx.Effects_Hit_Bomb?.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.n現在の値 * nBombWidth, 0, nBombWidth, nBombHeight));
+                                        TJAPlayer3.Tx.Effects_Hit_Bomb?.t2D描画(nX, nY, new Rectangle(this.st状態[i].ct進行.CurrentValue * nBombWidth, 0, nBombWidth, nBombHeight));
                                         break;
                                     case E判定.Miss:
                                     case E判定.Bad:
@@ -318,12 +318,12 @@ namespace TJAPlayer3
 
                 for( int i = 0; i < 3 * 4; i++ )
 			    {
-				    if( !this.st状態_大[ i ].ct進行.b停止中 )
+				    if( !this.st状態_大[ i ].ct進行.IsStoped )
 				    {
-                        this.st状態_大[ i ].ct進行.t進行();
-					    if( this.st状態_大[ i ].ct進行.b終了値に達した )
+                        this.st状態_大[ i ].ct進行.Tick();
+					    if( this.st状態_大[ i ].ct進行.IsEnded )
 					    {
-						    this.st状態_大[ i ].ct進行.t停止();
+						    this.st状態_大[ i ].ct進行.Stop();
 					    }
 					    if(TJAPlayer3.Tx.Effects_Hit_Explosion_Big != null && this.st状態_大[ i ].nIsBig == 1 )
 					    {
@@ -340,7 +340,7 @@ namespace TJAPlayer3
                                         //float fY = 257 - ((this.txアタックエフェクトUpper_big.sz画像サイズ.Height * this.txアタックエフェクトUpper_big.vc拡大縮小倍率.Y ) / 2.0f);
 
                                         ////7
-                                        float f倍率 = 0.5f + ( (this.st状態_大[ i ].ct進行.n現在の値 * 0.5f) / 10.0f);
+                                        float f倍率 = 0.5f + ( (this.st状態_大[ i ].ct進行.CurrentValue * 0.5f) / 10.0f);
                                         //this.txアタックエフェクトUpper_big.vc拡大縮小倍率.X = f倍率;
                                         //this.txアタックエフェクトUpper_big.vc拡大縮小倍率.Y = f倍率;
                                         //this.txアタックエフェクトUpper_big.n透明度 = (int)(255 * f倍率);
@@ -406,11 +406,11 @@ namespace TJAPlayer3
 
                     if (this.st大音符花火[i].b使用中)
                     {
-                        this.st大音符花火[i].n前回のValue = this.st大音符花火[i].ct進行.n現在の値;
-                        this.st大音符花火[i].ct進行.t進行();
-                        if (this.st大音符花火[i].ct進行.b終了値に達した)
+                        this.st大音符花火[i].n前回のValue = this.st大音符花火[i].ct進行.CurrentValue;
+                        this.st大音符花火[i].ct進行.Tick();
+                        if (this.st大音符花火[i].ct進行.IsEnded)
                         {
-                            this.st大音符花火[i].ct進行.t停止();
+                            this.st大音符花火[i].ct進行.Stop();
                             this.st大音符花火[i].b使用中 = false;
                         }
                         /*
@@ -446,19 +446,19 @@ namespace TJAPlayer3
                 {
                     if (this.st紙吹雪[i].b使用中)
                     {
-                        this.st紙吹雪[i].n前回のValue = this.st紙吹雪[i].ct進行.n現在の値;
-                        this.st紙吹雪[i].ct進行.t進行();
-                        if (this.st紙吹雪[i].ct進行.b終了値に達した)
+                        this.st紙吹雪[i].n前回のValue = this.st紙吹雪[i].ct進行.CurrentValue;
+                        this.st紙吹雪[i].ct進行.Tick();
+                        if (this.st紙吹雪[i].ct進行.IsEnded)
                         {
-                            this.st紙吹雪[i].ct進行.t停止();
+                            this.st紙吹雪[i].ct進行.Stop();
                             this.st紙吹雪[i].b使用中 = false;
                         }
                         else if( this.st紙吹雪[ i ].fX > 1300 || this.st紙吹雪[ i ].fX < -20 )
                         {
-                            this.st紙吹雪[i].ct進行.t停止();
+                            this.st紙吹雪[i].ct進行.Stop();
                             this.st紙吹雪[i].b使用中 = false;
                         }
-                        for (int n = this.st紙吹雪[i].n前回のValue; n < this.st紙吹雪[i].ct進行.n現在の値; n++)
+                        for (int n = this.st紙吹雪[i].n前回のValue; n < this.st紙吹雪[i].ct進行.CurrentValue; n++)
                         {
                             this.st紙吹雪[i].fX -= this.st紙吹雪[i].f加速度X;
                             this.st紙吹雪[i].fY -= this.st紙吹雪[i].f加速度Y;

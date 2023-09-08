@@ -55,7 +55,7 @@ namespace TJAPlayer3
 		}
 		public void t文字列描画( int x, int y, string str, bool b強調, float fScale )
 		{
-			if( !base.b活性化してない && !string.IsNullOrEmpty( str ) )
+			if( !base.IsDeActivated && !string.IsNullOrEmpty( str ) )
 			{
 				CTexture texture = b強調 ? TJAPlayer3.Tx.Config_Font_Bold : TJAPlayer3.Tx.Config_Font;
 				if( texture != null )
@@ -80,9 +80,9 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				//this.tx通常文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp.png" ), false );
 				//this.tx強調文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp em.png" ), false );
@@ -571,10 +571,10 @@ namespace TJAPlayer3
 				}
 
 				this.st文字領域 = st文字領域Array;
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
 			//if( !base.b活性化してない )
 			//{
@@ -588,7 +588,7 @@ namespace TJAPlayer3
 			//		this.tx通常文字.Dispose();
 			//		this.tx通常文字 = null;
 			//	}
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			//}
 		}
 		

@@ -20,13 +20,13 @@ namespace TJAPlayer3
 
 		public CAct演奏演奏情報()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 				
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             for (int i = 0; i < 5; i++)
             {
@@ -38,28 +38,28 @@ namespace TJAPlayer3
 			_chipCounts[0] = TJAPlayer3.DTX.listChip.Where(num => NotesManager.IsMissableNote(num)).Count();
 			_chipCounts[1] = TJAPlayer3.DTX.listChip_Branch[2].Where(num => NotesManager.IsMissableNote(num)).Count();
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			throw new InvalidOperationException( "t進行描画(int x, int y) のほうを使用してください。" );
 		}
 		public void t進行描画( int x, int y )
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				y += 0x153;
 				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Song/G. Offset:{0:####0}/{1:####0} ms", TJAPlayer3.DTX.nBGMAdjust, TJAPlayer3.ConfigIni.nGlobalOffsetMs ) );
 				y -= 0x10;
 				int num = ( TJAPlayer3.DTX.listChip.Count > 0 ) ? TJAPlayer3.DTX.listChip[ TJAPlayer3.DTX.listChip.Count - 1 ].n発声時刻ms : 0;
-				string str = "Time:          " + ((((double)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))) / 1000.0)).ToString("####0.00") + " / " + ((((double)num) / 1000.0)).ToString("####0.00");
+				string str = "Time:          " + ((((double)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))) / 1000.0)).ToString("####0.00") + " / " + ((((double)num) / 1000.0)).ToString("####0.00");
 				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, str );
 				y -= 0x10;
 				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Part:          {0:####0}/{1:####0}", NowMeasure[0], NowMeasure[1] ) );
 				y -= 0x10;
 				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "BPM:           {0:####0.0000}", this.dbBPM[0] ) );
 				y -= 0x10;
-				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Frame:         {0:####0} fps", TJAPlayer3.FPS.n現在のFPS ) );
+				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Frame:         {0:####0} fps", TJAPlayer3.FPS.NowFPS ) );
 				y -= 0x10;
 				TJAPlayer3.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "NoteN:         {0:####0}", TJAPlayer3.DTX.nノーツ数_Branch[0] ) );
 				y -= 0x10;

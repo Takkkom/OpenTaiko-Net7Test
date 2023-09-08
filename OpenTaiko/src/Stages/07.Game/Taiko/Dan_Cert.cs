@@ -31,7 +31,7 @@ namespace TJAPlayer3
         /// </summary>
         public Dan_Cert()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
         //
@@ -94,11 +94,11 @@ namespace TJAPlayer3
                 CLangManager.LangInstance.GetString(101), 
                 1 + NowShowingNumber + "曲目");
             
-            if (number == 0) Sound_Section_First?.t再生を開始する();
-            else Sound_Section?.t再生を開始する();
+            if (number == 0) Sound_Section_First?.PlayStart();
+            else Sound_Section?.PlayStart();
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < CExamInfo.cMaxExam; i++)
             {
@@ -149,7 +149,7 @@ namespace TJAPlayer3
             IsEnded = new bool[TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count];
 
             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan) IsAnimating = true;
-            base.On活性化();
+            base.Activate();
         }
 
         public void Update()
@@ -223,10 +223,10 @@ namespace TJAPlayer3
                 // 値が変更されていたらアニメーションを行う。
                 if (isChangedAmount)
                 {
-                    if(Status[i].Timer_Amount != null && Status[i].Timer_Amount.b終了値に達してない)
+                    if(Status[i].Timer_Amount != null && Status[i].Timer_Amount.IsUnEnded)
                     {
                         Status[i].Timer_Amount = new CCounter(0, 11, 12, TJAPlayer3.Timer);
-                        Status[i].Timer_Amount.n現在の値 = 1;
+                        Status[i].Timer_Amount.CurrentValue = 1;
                     }
                     else
                     {
@@ -307,8 +307,8 @@ namespace TJAPlayer3
                     if (TJAPlayer3.DTX.listChip.Count > 0)
                     {
                         if (ExamChange[i]
-                            ? TJAPlayer3.DTX.pDan_LastChip[NowShowingNumber].n発声時刻ms <= CSound管理.PlayTimer.n現在時刻//TJAPlayer3.Timer.n現在時刻 
-                            : TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms <= CSound管理.PlayTimer.n現在時刻)//TJAPlayer3.Timer.n現在時刻)
+                            ? TJAPlayer3.DTX.pDan_LastChip[NowShowingNumber].n発声時刻ms <= SoundManager.PlayTimer.NowTime//TJAPlayer3.Timer.n現在時刻 
+                            : TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms <= SoundManager.PlayTimer.NowTime)//TJAPlayer3.Timer.n現在時刻)
                         {
                             switch (Challenge[i].GetExamType())
                             {
@@ -342,12 +342,12 @@ namespace TJAPlayer3
                 }
                 if (oldReached == false && Challenge[i].GetReached() == true)
                 {
-                    Sound_Failed?.t再生を開始する();
+                    Sound_Failed?.PlayStart();
                 }
             }
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < CExamInfo.cMaxExam; i++)
             {
@@ -365,40 +365,40 @@ namespace TJAPlayer3
 
             TJAPlayer3.t安全にDisposeする(ref this.pfExamFont);
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
             Sound_Section = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section.ogg"), ESoundGroup.SoundEffect);
             Sound_Section_First = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section_First.wav"), ESoundGroup.SoundEffect);
             Sound_Failed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             Dan_Plate?.Dispose();
             Sound_Section_First?.Dispose();
             Sound_Section?.tDispose();
             Sound_Failed?.tDispose();
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Dan) return base.On進行描画();
-            Counter_In?.t進行();
-            Counter_Wait?.t進行();
-            Counter_Out?.t進行();
-            Counter_Text?.t進行();
+            if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Dan) return base.Draw();
+            Counter_In?.Tick();
+            Counter_Wait?.Tick();
+            Counter_Out?.Tick();
+            Counter_Text?.Tick();
 
             if (Counter_Text != null)
             {
-                if (Counter_Text.n現在の値 >= 2000)
+                if (Counter_Text.CurrentValue >= 2000)
                 {
-                    for (int i = Counter_Text_Old; i < Counter_Text.n現在の値; i++)
+                    for (int i = Counter_Text_Old; i < Counter_Text.CurrentValue; i++)
                     {
                         if (i % 2 == 0)
                         {
@@ -424,12 +424,12 @@ namespace TJAPlayer3
                         TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex.Opacity = 255;
                     }
                 }
-                Counter_Text_Old = Counter_Text.n現在の値;
+                Counter_Text_Old = Counter_Text.CurrentValue;
             }
 
             for (int i = 0; i < CExamInfo.cMaxExam; i++)
             {
-                Status[i].Timer_Amount?.t進行();
+                Status[i].Timer_Amount?.Tick();
             }
 
             // 背景を描画する。
@@ -441,19 +441,19 @@ namespace TJAPlayer3
             // 幕のアニメーション
             if (Counter_In != null)
             {
-                if (Counter_In.b終了値に達してない)
+                if (Counter_In.IsUnEnded)
                 {
-                    for (int i = Counter_In_Old; i < Counter_In.n現在の値; i++)
+                    for (int i = Counter_In_Old; i < Counter_In.CurrentValue; i++)
                     {
                         ScreenPoint[0] += (TJAPlayer3.Skin.Game_Lane_X[0] - ScreenPoint[0]) / 180.0;
                         ScreenPoint[1] += ((TJAPlayer3.Skin.Resolution[0] / 2 + TJAPlayer3.Skin.Game_Lane_X[0] / 2) - ScreenPoint[1]) / 180.0;
                     }
-                    Counter_In_Old = Counter_In.n現在の値;
+                    Counter_In_Old = Counter_In.CurrentValue;
                     TJAPlayer3.Tx.DanC_Screen?.t2D描画((int)ScreenPoint[0], TJAPlayer3.Skin.Game_Lane_Y[0], new Rectangle(0, 0, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Height));
                     TJAPlayer3.Tx.DanC_Screen?.t2D描画((int)ScreenPoint[1], TJAPlayer3.Skin.Game_Lane_Y[0], new Rectangle(TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, 0, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Height));
                     //CDTXMania.act文字コンソール.tPrint(0, 420, C文字コンソール.Eフォント種別.白, String.Format("{0} : {1}", ScreenPoint[0], ScreenPoint[1]));
                 }
-                if (Counter_In.b終了値に達した)
+                if (Counter_In.IsEnded)
                 {
                     Counter_In = null;
                     Counter_Wait = new CCounter(0, 2299, 1, TJAPlayer3.Timer);
@@ -462,13 +462,13 @@ namespace TJAPlayer3
 
             if (Counter_Wait != null)
             {
-                if (Counter_Wait.b終了値に達してない)
+                if (Counter_Wait.IsUnEnded)
                 {
                     TJAPlayer3.Tx.DanC_Screen?.t2D描画(TJAPlayer3.Skin.Game_Lane_X[0], TJAPlayer3.Skin.Game_Lane_Y[0]);
 
                     if (NowShowingNumber != 0)
                     {
-                        if (Counter_Wait.n現在の値 >= 800)
+                        if (Counter_Wait.CurrentValue >= 800)
                         {
                             if (!bExamChangeCheck)
                             {
@@ -492,7 +492,7 @@ namespace TJAPlayer3
                         }
                     }
                 }
-                if (Counter_Wait.b終了値に達した)
+                if (Counter_Wait.IsEnded)
                 {
                     Counter_Wait = null;
                     Counter_Out = new CCounter(0, 90, 3, TJAPlayer3.Timer);
@@ -501,7 +501,7 @@ namespace TJAPlayer3
             }
             if (Counter_Text != null)
             {
-                if (Counter_Text.b終了値に達してない)
+                if (Counter_Text.IsUnEnded)
                 {
                     var title = TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].TitleTex;
                     var subTitle = TJAPlayer3.DTX.List_DanSongs[NowShowingNumber].SubTitleTex;
@@ -513,7 +513,7 @@ namespace TJAPlayer3
                         subTitle?.t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.Game_DanC_SubTitle[0], TJAPlayer3.Skin.Game_DanC_SubTitle[1]);
                     }
                 }
-                if (Counter_Text.b終了値に達した)
+                if (Counter_Text.IsEnded)
                 {
                     Counter_Text = null;
                     IsAnimating = false;
@@ -521,15 +521,15 @@ namespace TJAPlayer3
             }
             if (Counter_Out != null)
             {
-                if (Counter_Out.b終了値に達してない)
+                if (Counter_Out.IsUnEnded)
                 {
-                    ScreenPoint[0] = TJAPlayer3.Skin.Game_Lane_X[0] - Math.Sin(Counter_Out.n現在の値 * (Math.PI / 180)) * 500;
-                    ScreenPoint[1] = TJAPlayer3.Skin.Game_Lane_X[0] + TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2 + Math.Sin(Counter_Out.n現在の値 * (Math.PI / 180)) * 500;
+                    ScreenPoint[0] = TJAPlayer3.Skin.Game_Lane_X[0] - Math.Sin(Counter_Out.CurrentValue * (Math.PI / 180)) * 500;
+                    ScreenPoint[1] = TJAPlayer3.Skin.Game_Lane_X[0] + TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2 + Math.Sin(Counter_Out.CurrentValue * (Math.PI / 180)) * 500;
                     TJAPlayer3.Tx.DanC_Screen?.t2D描画((int)ScreenPoint[0], TJAPlayer3.Skin.Game_Lane_Y[0], new Rectangle(0, 0, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Height));
                     TJAPlayer3.Tx.DanC_Screen?.t2D描画((int)ScreenPoint[1], TJAPlayer3.Skin.Game_Lane_Y[0], new Rectangle(TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, 0, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Width / 2, TJAPlayer3.Tx.DanC_Screen.szテクスチャサイズ.Height));
                     //CDTXMania.act文字コンソール.tPrint(0, 420, C文字コンソール.Eフォント種別.白, String.Format("{0} : {1}", ScreenPoint[0], ScreenPoint[1]));
                 }
-                if (Counter_Out.b終了値に達した)
+                if (Counter_Out.IsEnded)
                 {
                     Counter_Out = null;
                 }
@@ -554,7 +554,7 @@ namespace TJAPlayer3
 
             // Challenges that are judged when the song stops
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         // Regular ingame exams draw
@@ -629,8 +629,8 @@ namespace TJAPlayer3
 
                     #region [Counter wait variables]
 
-                    int counter800 = (Counter_Wait != null ? Counter_Wait.n現在の値 - 800 : 0);
-                    int counter255M255 = (Counter_Wait != null ? 255 - (Counter_Wait.n現在の値 - (800 - 255)) : 0);
+                    int counter800 = (Counter_Wait != null ? Counter_Wait.CurrentValue - 800 : 0);
+                    int counter255M255 = (Counter_Wait != null ? 255 - (Counter_Wait.CurrentValue - (800 - 255)) : 0);
 
                     #endregion
 
@@ -683,7 +683,7 @@ namespace TJAPlayer3
                             // Currently showing song parameters
                             if (NowShowingNumber == j)
                             {
-                                if (Counter_Wait != null && Counter_Wait.n現在の値 >= 800)
+                                if (Counter_Wait != null && Counter_Wait.CurrentValue >= 800)
                                 {
                                     #region [counter800 opacity]
 
@@ -699,7 +699,7 @@ namespace TJAPlayer3
 
                                     #endregion
                                 }
-                                else if (Counter_In != null || (Counter_Wait != null && Counter_Wait.n現在の値 < 800))
+                                else if (Counter_In != null || (Counter_Wait != null && Counter_Wait.CurrentValue < 800))
                                 {
                                     #region [0 opacity]
 
@@ -783,9 +783,9 @@ namespace TJAPlayer3
                     {
                         if (Counter_Wait != null)
                         {
-                            if (Counter_Wait.n現在の値 >= 800)
+                            if (Counter_Wait.CurrentValue >= 800)
                                 TJAPlayer3.Tx.DanC_ExamCymbol.Opacity = counter800;
-                            else if (Counter_Wait.n現在の値 >= 800 - 255)
+                            else if (Counter_Wait.CurrentValue >= 800 - 255)
                                 TJAPlayer3.Tx.DanC_ExamCymbol.Opacity = counter255M255;
                         }
                     }
@@ -830,13 +830,13 @@ namespace TJAPlayer3
                     int rainbowBase = 0;
                     if (LrainbowBetterSuccess)
                     {
-                        this.ct虹アニメ.t進行Loop();
-                        this.ct虹透明度.t進行Loop();
+                        this.ct虹アニメ.TickLoop();
+                        this.ct虹透明度.TickLoop();
 
-                        rainbowIndex = this.ct虹アニメ.n現在の値;
+                        rainbowIndex = this.ct虹アニメ.CurrentValue;
 
                         rainbowBase = rainbowIndex;
-                        if (rainbowBase == ct虹アニメ.n終了値) rainbowBase = 0;
+                        if (rainbowBase == ct虹アニメ.EndValue) rainbowBase = 0;
                     }
 
                     #endregion
@@ -857,7 +857,7 @@ namespace TJAPlayer3
 
                     if (ExamChange[i] && NowShowingNumber != 0 && Counter_Wait != null)
                     {
-                        if (Counter_Wait.n現在の値 >= 800)
+                        if (Counter_Wait.CurrentValue >= 800)
                         {
                             #region [counter800 opacity]
 
@@ -873,7 +873,7 @@ namespace TJAPlayer3
 
                             #endregion
                         }
-                        else if (Counter_Wait.n現在の値 >= 800 - 255)
+                        else if (Counter_Wait.CurrentValue >= 800 - 255)
                         {
                             #region [counter255M255 opacity]
 
@@ -908,7 +908,7 @@ namespace TJAPlayer3
                         TJAPlayer3.Tx.Gauge_Dan_Rainbow[0].vc拡大縮小倍率.X = xExtend;
                         TJAPlayer3.Tx.Gauge_Dan_Rainbow[0].vc拡大縮小倍率.Y = 1.0f;
 
-                        if (Counter_Wait != null && !(Counter_Wait.n現在の値 <= 1055 && Counter_Wait.n現在の値 >= 800 - 255))
+                        if (Counter_Wait != null && !(Counter_Wait.CurrentValue <= 1055 && Counter_Wait.CurrentValue >= 800 - 255))
                         {
                             TJAPlayer3.Tx.Gauge_Dan_Rainbow[rainbowIndex].Opacity = 255;
                         }
@@ -917,9 +917,9 @@ namespace TJAPlayer3
                             barXOffset + TJAPlayer3.Skin.Game_DanC_Offset[0], lowerBarYOffset - TJAPlayer3.Skin.Game_DanC_Offset[1],
                             new Rectangle(0, 0, (int)(dan_C[i].GetAmountToPercent() * (TJAPlayer3.Tx.Gauge_Dan_Rainbow[rainbowIndex].szテクスチャサイズ.Width / 100.0)), TJAPlayer3.Tx.Gauge_Dan_Rainbow[rainbowIndex].szテクスチャサイズ.Height));
 
-                        if (Counter_Wait != null && !(Counter_Wait.n現在の値 <= 1055 && Counter_Wait.n現在の値 >= 800 - 255))
+                        if (Counter_Wait != null && !(Counter_Wait.CurrentValue <= 1055 && Counter_Wait.CurrentValue >= 800 - 255))
                         {
-                            TJAPlayer3.Tx.Gauge_Dan_Rainbow[rainbowBase].Opacity = (ct虹透明度.n現在の値 * 255 / (int)ct虹透明度.n終了値) / 1;
+                            TJAPlayer3.Tx.Gauge_Dan_Rainbow[rainbowBase].Opacity = (ct虹透明度.CurrentValue * 255 / (int)ct虹透明度.EndValue) / 1;
                         }
 
                         TJAPlayer3.Tx.Gauge_Dan_Rainbow[rainbowBase]?.t2D拡大率考慮下基準描画(
@@ -967,7 +967,7 @@ namespace TJAPlayer3
                         dan_C[i], 
                         numberXScale, 
                         numberYScale, 
-                        (Status[i].Timer_Amount != null ? ScoreScale[Status[i].Timer_Amount.n現在の値] : 0f));
+                        (Status[i].Timer_Amount != null ? ScoreScale[Status[i].Timer_Amount.CurrentValue] : 0f));
 
                     #endregion
 

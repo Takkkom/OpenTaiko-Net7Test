@@ -16,13 +16,13 @@ namespace TJAPlayer3
 
 		public CAct演奏スクロール速度()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			for( int i = 0; i < 5; i++ )
 			{
@@ -32,24 +32,24 @@ namespace TJAPlayer3
 
 		
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override unsafe int On進行描画()
+		public override unsafe int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( base.b初めての進行描画 )
+				if( base.IsFirstDraw )
 				{
 					//this.n速度変更制御タイマ.Drums = this.n速度変更制御タイマ.Guitar = this.n速度変更制御タイマ.Bass = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 					for (int i = 0; i < 5; i++)
                     {
-						this.n速度変更制御タイマ[i] = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+						this.n速度変更制御タイマ[i] = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 
 					}
 					
-					base.b初めての進行描画 = false;
+					base.IsFirstDraw = false;
 				}
-				long n現在時刻 = CSound管理.PlayTimer.n現在時刻;
+				long n現在時刻 = SoundManager.PlayTimer.NowTime;
 				for( int i = 0; i < 5; i++ )
 				{
 					double db譜面スクロールスピード = (double) TJAPlayer3.ConfigIni.nScrollSpeed[ TJAPlayer3.GetActualPlayer(i) ];

@@ -40,7 +40,7 @@ namespace TJAPlayer3
         /// </summary>
 		public CAct演奏Drumsゲージ()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
         public override void Start(int nLane, E判定 judge, int player)
@@ -79,7 +79,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             this.ct炎 = new CCounter( 0, 6, 50, TJAPlayer3.Timer );
 
@@ -90,9 +90,9 @@ namespace TJAPlayer3
                     this.st花火状態[player][i].ct進行 = new CCounter();
                 }
             }
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
         {
             for (int player = 0; player < 5; player++)
             {
@@ -103,9 +103,9 @@ namespace TJAPlayer3
             }
             this.ct炎 = null;
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				
                 if(TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer <= 1)
@@ -116,32 +116,32 @@ namespace TJAPlayer3
                 this.ct虹透明度 = new CCounter(0, TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer-1, 1, TJAPlayer3.Timer);
                 this.ctGaugeFlash = new CCounter(0, 532, 1, TJAPlayer3.Timer);
                 //this.tx音符 = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\7_taiko_notes.png"));
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
                 this.ct虹アニメ = null;
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
                 //CDTXMania.act文字コンソール.tPrint( 20, 150, C文字コンソール.Eフォント種別.白, this.db現在のゲージ値.Taiko.ToString() );
 
                 #region [ 初めての進行描画 ]
-				if ( base.b初めての進行描画 )
+				if ( base.IsFirstDraw )
 				{
-					base.b初めての進行描画 = false;
+					base.IsFirstDraw = false;
                 }
                 #endregion
 
-                this.ctGaugeFlash.t進行Loop();
+                this.ctGaugeFlash.TickLoop();
 
                 int nWidth = (TJAPlayer3.Skin.Game_Gauge_Rect[2] / 50);
                 int[] nRectX = new int[] {
@@ -151,8 +151,8 @@ namespace TJAPlayer3
                     (int)( this.db現在のゲージ値[ 3 ] / 2 ) * nWidth,
                     (int)( this.db現在のゲージ値[ 4 ] / 2 ) * nWidth
                 };
-                int 虹ベース = ct虹アニメ.n現在の値 + 1;
-                if (虹ベース == ct虹アニメ.n終了値+1) 虹ベース = 0;
+                int 虹ベース = ct虹アニメ.CurrentValue + 1;
+                if (虹ベース == ct虹アニメ.EndValue+1) 虹ベース = 0;
                 /*
 
                 新虹ゲージの仕様  2018/08/10 ろみゅ～？
@@ -177,18 +177,18 @@ namespace TJAPlayer3
 
                     // Flash opacity
                     int Opacity = 0;
-                    if (this.ctGaugeFlash.n現在の値 <= 365) Opacity = 0;
-                    else if (this.ctGaugeFlash.n現在の値 <= 448) Opacity = (int)((this.ctGaugeFlash.n現在の値 - 365) / 83f * 255f);
-                    else if (this.ctGaugeFlash.n現在の値 <= 531) Opacity = 255 - (int)((this.ctGaugeFlash.n現在の値 - 448) / 83f * 255f);
+                    if (this.ctGaugeFlash.CurrentValue <= 365) Opacity = 0;
+                    else if (this.ctGaugeFlash.CurrentValue <= 448) Opacity = (int)((this.ctGaugeFlash.CurrentValue - 365) / 83f * 255f);
+                    else if (this.ctGaugeFlash.CurrentValue <= 531) Opacity = 255 - (int)((this.ctGaugeFlash.CurrentValue - 448) / 83f * 255f);
 
                     // Rainbow gauge
-                    this.ct虹アニメ.t進行Loop();
-                    this.ct虹透明度.t進行Loop();
-                    int rainbowFrame = this.ct虹アニメ.n現在の値;
+                    this.ct虹アニメ.TickLoop();
+                    this.ct虹透明度.TickLoop();
+                    int rainbowFrame = this.ct虹アニメ.CurrentValue;
 
                     // Soul fire frame
-                    this.ct炎.t進行Loop();
-                    int soulFireFrame = this.ct炎.n現在の値;
+                    this.ct炎.TickLoop();
+                    int soulFireFrame = this.ct炎.CurrentValue;
 
                     for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                     {
@@ -293,9 +293,9 @@ namespace TJAPlayer3
                                     TJAPlayer3.Tx.Gauge_Dan[3]?.t2D描画(x + (TJAPlayer3.DTX.Dan_C[i].GetValue(false) / 2 * nWidth), y, new Rectangle(TJAPlayer3.DTX.Dan_C[i].GetValue(false) / 2 * nWidth, 0, nRectX[0] - (TJAPlayer3.DTX.Dan_C[i].GetValue(false) / 2 * nWidth), TJAPlayer3.Skin.Game_Gauge_Rect[3]));
 
                                     int Opacity = 0;
-                                    if (this.ctGaugeFlash.n現在の値 <= 365) Opacity = 0;
-                                    else if (this.ctGaugeFlash.n現在の値 <= 448) Opacity = (int)((this.ctGaugeFlash.n現在の値 - 365) / 83f * 255f);
-                                    else if (this.ctGaugeFlash.n現在の値 <= 531) Opacity = 255 - (int)((this.ctGaugeFlash.n現在の値 - 448) / 83f * 255f);
+                                    if (this.ctGaugeFlash.CurrentValue <= 365) Opacity = 0;
+                                    else if (this.ctGaugeFlash.CurrentValue <= 448) Opacity = (int)((this.ctGaugeFlash.CurrentValue - 365) / 83f * 255f);
+                                    else if (this.ctGaugeFlash.CurrentValue <= 531) Opacity = 255 - (int)((this.ctGaugeFlash.CurrentValue - 448) / 83f * 255f);
                                     TJAPlayer3.Tx.Gauge_Dan[3].Opacity = Opacity;
                                     TJAPlayer3.Tx.Gauge_Dan[3]?.t2D描画(x, y, new Rectangle(0, 0, TJAPlayer3.DTX.Dan_C[i].GetValue(false) / 2 * nWidth, TJAPlayer3.Skin.Game_Gauge_Rect[3]));
 
@@ -312,12 +312,12 @@ namespace TJAPlayer3
 
                             if (this.db現在のゲージ値[0] >= 100.0)
                             {
-                                this.ct虹アニメ.t進行Loop();
-                                this.ct虹透明度.t進行Loop();
-                                if (TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値] != null)
+                                this.ct虹アニメ.TickLoop();
+                                this.ct虹透明度.TickLoop();
+                                if (TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue] != null)
                                 {
-                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].vc拡大縮小倍率.X = scale;
-                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].vc拡大縮小倍率.Y = scale;
+                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].vc拡大縮小倍率.X = scale;
+                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].vc拡大縮小倍率.Y = scale;
 
                                     TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].vc拡大縮小倍率.X = scale;
                                     TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].vc拡大縮小倍率.Y = scale;
@@ -325,15 +325,15 @@ namespace TJAPlayer3
                                     bool smart = TJAPlayer3.ConfigIni.nPlayerCount > 2 || TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan;
 
 
-                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].Opacity = 255;
-                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].t2D描画(x, y + (smart ? (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : 0),
+                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].Opacity = 255;
+                                    TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].t2D描画(x, y + (smart ? (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : 0),
                                         new RectangleF(0,
                                         smart ? (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : 0,
-                                        TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].szテクスチャサイズ.Width,
-                                        smart ? TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].szテクスチャサイズ.Height - (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.n現在の値].szテクスチャサイズ.Height));
+                                        TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].szテクスチャサイズ.Width,
+                                        smart ? TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].szテクスチャサイズ.Height - (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : TJAPlayer3.Tx.Gauge_Rainbow[this.ct虹アニメ.CurrentValue].szテクスチャサイズ.Height));
 
 
-                                    TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].Opacity = (ct虹透明度.n現在の値 * 255 / (int)ct虹透明度.n終了値) / 1;
+                                    TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].Opacity = (ct虹透明度.CurrentValue * 255 / (int)ct虹透明度.EndValue) / 1;
                                     TJAPlayer3.Tx.Gauge_Rainbow[虹ベース].t2D描画(x, y + (smart ? (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : 0),
                                         new RectangleF(0,
                                         smart ? (TJAPlayer3.Skin.Game_Gauge_Rect[3] / 2) : 0,
@@ -393,12 +393,12 @@ namespace TJAPlayer3
 
                             if (this.db現在のゲージ値[i] >= 100.0)
                             {
-                                this.ct炎.t進行Loop();
+                                this.ct炎.TickLoop();
 
                                 TJAPlayer3.Tx.Gauge_Soul_Fire.vc拡大縮小倍率.X = scale;
                                 TJAPlayer3.Tx.Gauge_Soul_Fire.vc拡大縮小倍率.Y = scale;
 
-                                TJAPlayer3.Tx.Gauge_Soul_Fire.t2D描画(x, y, new Rectangle(soulfire_width * (this.ct炎.n現在の値), 0, soulfire_width, soulfire_height));
+                                TJAPlayer3.Tx.Gauge_Soul_Fire.t2D描画(x, y, new Rectangle(soulfire_width * (this.ct炎.CurrentValue), 0, soulfire_width, soulfire_height));
                             }
                         }
                     }
@@ -464,10 +464,10 @@ namespace TJAPlayer3
                     {
                         if (this.st花火状態[i][d].b使用中)
                         {
-                            this.st花火状態[i][d].ct進行.t進行();
-                            if (this.st花火状態[i][d].ct進行.b終了値に達した)
+                            this.st花火状態[i][d].ct進行.Tick();
+                            if (this.st花火状態[i][d].ct進行.IsEnded)
                             {
-                                this.st花火状態[i][d].ct進行.t停止();
+                                this.st花火状態[i][d].ct進行.Stop();
                                 this.st花火状態[i][d].b使用中 = false;
                             }
 

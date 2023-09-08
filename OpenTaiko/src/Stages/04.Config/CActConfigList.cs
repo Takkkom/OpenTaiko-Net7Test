@@ -666,13 +666,13 @@ namespace TJAPlayer3
 					{
 						// Debug.WriteLine( "バックグラウンドでEnumeratingSongs中だったので、一旦中断します。" );
 						TJAPlayer3.EnumSongs.Abort();
-						TJAPlayer3.actEnumSongs.On非活性化();
+						TJAPlayer3.actEnumSongs.DeActivate();
 					}
 
 					TJAPlayer3.EnumSongs.StartEnumFromDisk();
 					TJAPlayer3.EnumSongs.ChangeEnumeratePriority( ThreadPriority.Normal );
 					TJAPlayer3.actEnumSongs.bコマンドでの曲データ取得 = true;
-					TJAPlayer3.actEnumSongs.On活性化();
+					TJAPlayer3.actEnumSongs.Activate();
 					// TJAPlayer3.stage選曲.Refresh(TJAPlayer3.EnumSongs.Songs管理, true);
 
 					TJAPlayer3.stage選曲.act曲リスト.ResetSongIndex();
@@ -883,9 +883,9 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
-			if( this.b活性化してる )
+			if( this.IsActivated )
 				return;
 
 			this.list項目リスト = new List<CItemBase>();
@@ -935,11 +935,11 @@ namespace TJAPlayer3
 			// this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
 			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
 			this.iSystemSoundTimerType_initial      = this.iSystemSoundTimerType.GetIndex();				//
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			this.tConfigIniへ記録する();
@@ -947,7 +947,7 @@ namespace TJAPlayer3
 			this.ct三角矢印アニメ = null;
             
 			prvFont.Dispose();
-			base.On非活性化();
+			base.DeActivate();
 			#region [ Skin変更 ]
 			if ( TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
 			{
@@ -996,12 +996,12 @@ namespace TJAPlayer3
 			}
 			#endregion
 			#region [ サウンドのタイムストレッチモード変更 ]
-			FDK.CSound管理.bIsTimeStretch = this.iSystemTimeStretch.bON;
+			FDK.SoundManager.bIsTimeStretch = this.iSystemTimeStretch.bON;
 			#endregion
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			//this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_itembox.png" ), false );
@@ -1010,11 +1010,11 @@ namespace TJAPlayer3
 			Config_ItemBox = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}ItemBox.png"));
 			Config_Arrow = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Arrow.png"));
 			this.txSkinSample1 = null;		// スキン選択時に動的に設定するため、ここでは初期化しない
-			base.OnManagedリソースの作成();
+			base.CreateManagedResource();
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			TJAPlayer3.t安全にDisposeする(ref Config_ItemBox);
@@ -1024,7 +1024,7 @@ namespace TJAPlayer3
 			//CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
 			//CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );
 		
-			base.OnManagedリソースの解放();
+			base.ReleaseManagedResource();
 		}
 		private void OnListMenuの初期化()
 		{
@@ -1053,25 +1053,25 @@ namespace TJAPlayer3
 				this.listMenu = null;
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
 		}
 		public int t進行描画( bool b項目リスト側にフォーカスがある )
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return 0;
 
 			// 進行
 
 			#region [ 初めての進行描画 ]
 			//-----------------
-			if( base.b初めての進行描画 )
+			if( base.IsFirstDraw )
 			{
-				this.nスクロール用タイマ値 = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
-				this.ct三角矢印アニメ.t開始( 0, 9, 50, TJAPlayer3.Timer );
+				this.nスクロール用タイマ値 = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+				this.ct三角矢印アニメ.Start( 0, 9, 50, TJAPlayer3.Timer );
 			
-				base.b初めての進行描画 = false;
+				base.IsFirstDraw = false;
 			}
 			//-----------------
 			#endregion
@@ -1080,7 +1080,7 @@ namespace TJAPlayer3
 
 			#region [ 項目スクロールの進行 ]
 			//-----------------
-			long n現在時刻 = TJAPlayer3.Timer.n現在時刻;
+			long n現在時刻 = TJAPlayer3.Timer.NowTime;
 			if( n現在時刻 < this.nスクロール用タイマ値 ) this.nスクロール用タイマ値 = n現在時刻;
 
 			const int INTERVAL = 2;	// [ms]
@@ -1164,7 +1164,7 @@ namespace TJAPlayer3
 			#region [ ▲印アニメの進行 ]
 			//-----------------
 			if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
-				this.ct三角矢印アニメ.t進行Loop();
+				this.ct三角矢印アニメ.TickLoop();
 			//-----------------
 			#endregion
 
@@ -1371,15 +1371,15 @@ namespace TJAPlayer3
 				{
 					x_upper = TJAPlayer3.Skin.Config_Arrow_Focus_X[0];  // 要素値の上下あたり。
 					x_lower = TJAPlayer3.Skin.Config_Arrow_Focus_X[1];  // 要素値の上下あたり。
-					y_upper = TJAPlayer3.Skin.Config_Arrow_Focus_Y[0] - this.ct三角矢印アニメ.n現在の値;
-					y_lower = TJAPlayer3.Skin.Config_Arrow_Focus_Y[1] + this.ct三角矢印アニメ.n現在の値;
+					y_upper = TJAPlayer3.Skin.Config_Arrow_Focus_Y[0] - this.ct三角矢印アニメ.CurrentValue;
+					y_lower = TJAPlayer3.Skin.Config_Arrow_Focus_Y[1] + this.ct三角矢印アニメ.CurrentValue;
 				}
 				else
 				{
 					x_upper = TJAPlayer3.Skin.Config_Arrow_X[0];  // 要素値の上下あたり。
 					x_lower = TJAPlayer3.Skin.Config_Arrow_X[1];  // 要素値の上下あたり。
-					y_upper = TJAPlayer3.Skin.Config_Arrow_Y[0] - this.ct三角矢印アニメ.n現在の値;
-					y_lower = TJAPlayer3.Skin.Config_Arrow_Y[1] + this.ct三角矢印アニメ.n現在の値;
+					y_upper = TJAPlayer3.Skin.Config_Arrow_Y[0] - this.ct三角矢印アニメ.CurrentValue;
+					y_lower = TJAPlayer3.Skin.Config_Arrow_Y[1] + this.ct三角矢印アニメ.CurrentValue;
 				}
 
 				// 描画。

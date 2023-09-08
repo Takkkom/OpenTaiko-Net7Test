@@ -17,18 +17,18 @@ namespace TJAPlayer3
             base.eステージID = Eステージ.段位選択;
             base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 
-            base.list子Activities.Add(this.段位リスト = new CActSelect段位リスト());
+            base.ChildActivities.Add(this.段位リスト = new CActSelect段位リスト());
 
-            base.list子Activities.Add(this.actFOtoNowLoading = new CActFIFOStart());
-            base.list子Activities.Add(this.段位挑戦選択画面 = new CActSelect段位挑戦選択画面());
-            base.list子Activities.Add(this.actFOtoTitle = new CActFIFOBlack());
-            base.list子Activities.Add(this.actPlayOption = new CActPlayOption());
-            base.list子Activities.Add(this.PuchiChara = new PuchiChara());
+            base.ChildActivities.Add(this.actFOtoNowLoading = new CActFIFOStart());
+            base.ChildActivities.Add(this.段位挑戦選択画面 = new CActSelect段位挑戦選択画面());
+            base.ChildActivities.Add(this.actFOtoTitle = new CActFIFOBlack());
+            base.ChildActivities.Add(this.actPlayOption = new CActPlayOption());
+            base.ChildActivities.Add(this.PuchiChara = new PuchiChara());
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
             this.b選択した = false;
@@ -47,42 +47,42 @@ namespace TJAPlayer3
             
             this.PuchiChara.IdleAnimation();
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Script.lua"));
                 Background.Init();
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 TJAPlayer3.t安全にDisposeする(ref Background);
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             // ctDonchan_Normal.t進行Loop();
-            ctDonchan_In.t進行();
-            ct待機.t進行();
+            ctDonchan_In.Tick();
+            ct待機.Tick();
 
-            int stamp = this.段位リスト.ctDaniIn.n現在の値;
+            int stamp = this.段位リスト.ctDaniIn.CurrentValue;
 
             float zoom = Math.Min(1.14f, Math.Max(1f, (float)Math.Pow(stamp / 3834f, 0.5f)));
 
@@ -93,7 +93,7 @@ namespace TJAPlayer3
             //TJAPlayer3.Tx.Dani_Background.vc拡大縮小倍率.Y = zoom;
             //TJAPlayer3.Tx.Dani_Background.t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.Resolution[0] / 2, TJAPlayer3.Skin.Resolution[1] / 2);
 
-            this.段位リスト.On進行描画();
+            this.段位リスト.Draw();
 
             if (stamp < 6000)
             {
@@ -164,12 +164,12 @@ namespace TJAPlayer3
             }
             else if (stamp == 6000)
             {
-                if (!ctDonchan_In.b開始した)
+                if (!ctDonchan_In.IsStarted)
                 {
                     //TJAPlayer3.Skin.soundDanSelectStart.t再生する();
                     TJAPlayer3.Skin.voiceMenuDanSelectStart[TJAPlayer3.SaveFile]?.t再生する();
                     TJAPlayer3.Skin.soundDanSelectBGM.t再生する();
-                    ctDonchan_In.t開始(0, 180, 1.25f, TJAPlayer3.Timer);
+                    ctDonchan_In.Start(0, 180, 1.25f, TJAPlayer3.Timer);
                 }
 
                 TJAPlayer3.NamePlate.tNamePlateDraw(TJAPlayer3.Skin.SongSelect_NamePlate_X[0], TJAPlayer3.Skin.SongSelect_NamePlate_Y[0], 0);
@@ -189,19 +189,19 @@ namespace TJAPlayer3
                         return 0;
                     }
 
-                    if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.RightArrow) ||
+                    if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.RightArrow) ||
                         TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange))
                     {
                         this.段位リスト.t右に移動();
                     }
 
-                    if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.LeftArrow) ||
+                    if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.LeftArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange))
                     {
                         this.段位リスト.t左に移動();
                     }
 
-                    if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return) ||
+                    if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return) ||
                         TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide))
                     {
                         switch(段位リスト.currentBar.eノード種別)
@@ -213,7 +213,7 @@ namespace TJAPlayer3
                                     //TJAPlayer3.Skin.soundDanSongSelectCheck.t再生する();
                                     TJAPlayer3.Skin.voiceMenuDanSelectPrompt[TJAPlayer3.SaveFile]?.t再生する();
                                     this.bDifficultyIn = true;
-                                    this.段位挑戦選択画面.ctBarIn.t開始(0, 255, 1, TJAPlayer3.Timer);
+                                    this.段位挑戦選択画面.ctBarIn.Start(0, 255, 1, TJAPlayer3.Timer);
                                 }
                                 break;
                             case C曲リストノード.Eノード種別.BOX:
@@ -238,7 +238,7 @@ namespace TJAPlayer3
                         }
                     }
 
-                    if(TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape) ||
+                    if(TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape) ||
                         TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
                     {
                         return returnTitle();
@@ -249,12 +249,12 @@ namespace TJAPlayer3
 
                 #region [ どんちゃん関連 ]
 
-                if(ctDonchan_In.n現在の値 != 90)
+                if(ctDonchan_In.CurrentValue != 90)
                 {
                     float DonchanX = 0f, DonchanY = 0f;
 
-                    DonchanX = (float)Math.Sin(ctDonchan_In.n現在の値 / 2 * (Math.PI / 180)) * 200f;
-                    DonchanY = ((float)Math.Sin((90 + (ctDonchan_In.n現在の値 / 2)) * (Math.PI / 180)) * 150f);
+                    DonchanX = (float)Math.Sin(ctDonchan_In.CurrentValue / 2 * (Math.PI / 180)) * 200f;
+                    DonchanY = ((float)Math.Sin((90 + (ctDonchan_In.CurrentValue / 2)) * (Math.PI / 180)) * 150f);
 
                     // TJAPlayer3.Tx.SongSelect_Donchan_Normal[ctDonchan_Normal.n現在の値].Opacity = ctDonchan_In.n現在の値 * 2;
                     // TJAPlayer3.Tx.SongSelect_Donchan_Normal[ctDonchan_Normal.n現在の値].t2D描画(-200 + DonchanX, 336 - DonchanY);
@@ -283,12 +283,12 @@ namespace TJAPlayer3
 
                 #endregion
 
-                this.段位挑戦選択画面.On進行描画();
+                this.段位挑戦選択画面.Draw();
             }
 
             if (段位挑戦選択画面.bOption) actPlayOption.On進行描画(0);
 
-            if (ct待機.n現在の値 >= 3000)
+            if (ct待機.CurrentValue >= 3000)
             {
                 if (段位リスト.currentBar.eノード種別 == C曲リストノード.Eノード種別.RANDOM)
                 {
@@ -303,21 +303,21 @@ namespace TJAPlayer3
                 {
                     TJAPlayer3.stage段位選択.t段位を選択する();
                 }
-                ct待機.n現在の値 = 0;
-                ct待機.t停止();
+                ct待機.CurrentValue = 0;
+                ct待機.Stop();
             }
 
             switch (base.eフェーズID)
             {
                 case CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト:
-                    if (this.actFOtoNowLoading.On進行描画() == 0)
+                    if (this.actFOtoNowLoading.Draw() == 0)
                     {
                         break;
                     }
                     return (int)this.eフェードアウト完了時の戻り値;
 
                 case CStage.Eフェーズ.共通_フェードアウト:
-                    if (this.actFOtoTitle.On進行描画() == 0)
+                    if (this.actFOtoTitle.Draw() == 0)
                     {
                         break;
                     }

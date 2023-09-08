@@ -9,17 +9,17 @@ namespace FDK
 	{
 		// プロパティ
 
-		public IntPtr hMidiIn;
-		public List<STInputEvent> listEventBuffer;
+		public IntPtr MidiInPtr;
+		public List<STInputEvent> EventBuffers;
 
 		// コンストラクタ
 
 		public CInputMIDI(uint nID)
 		{
-			this.hMidiIn = IntPtr.Zero;
-			this.listEventBuffer = new List<STInputEvent>(32);
-			this.list入力イベント = new List<STInputEvent>(32);
-			this.e入力デバイス種別 = E入力デバイス種別.MidiIn;
+			this.MidiInPtr = IntPtr.Zero;
+			this.EventBuffers = new List<STInputEvent>(32);
+			this.InputEvents = new List<STInputEvent>(32);
+			this.CurrentType = InputDeviceType.MidiIn;
 			this.GUID = "";
 			this.ID = (int)nID;
 			this.strDeviceName = "";    // CInput管理で初期化する
@@ -65,42 +65,42 @@ namespace FDK
 
 		#region [ IInputDevice 実装 ]
 		//-----------------
-		public E入力デバイス種別 e入力デバイス種別 { get; private set; }
+		public InputDeviceType CurrentType { get; private set; }
 		public string GUID { get; private set; }
 		public int ID { get; private set; }
-		public List<STInputEvent> list入力イベント { get; private set; }
+		public List<STInputEvent> InputEvents { get; private set; }
 		public string strDeviceName { get; set; }
 
-		public void tポーリング(bool bWindowがアクティブ中)
+		public void Polling(bool bWindowがアクティブ中)
 		{
 			// this.list入力イベント = new List<STInputEvent>( 32 );
-			this.list入力イベント.Clear();                                // #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
+			this.InputEvents.Clear();                                // #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
 
-			for (int i = 0; i < this.listEventBuffer.Count; i++)
-				this.list入力イベント.Add(this.listEventBuffer[i]);
+			for (int i = 0; i < this.EventBuffers.Count; i++)
+				this.InputEvents.Add(this.EventBuffers[i]);
 
-			this.listEventBuffer.Clear();
+			this.EventBuffers.Clear();
 		}
-		public bool bキーが押された(int nKey)
+		public bool KeyPressed(int nKey)
 		{
-			foreach (STInputEvent event2 in this.list入力イベント)
+			foreach (STInputEvent event2 in this.InputEvents)
 			{
-				if ((event2.nKey == nKey) && event2.b押された)
+				if ((event2.nKey == nKey) && event2.Pressed)
 				{
 					return true;
 				}
 			}
 			return false;
 		}
-		public bool bキーが押されている(int nKey)
+		public bool KeyPressing(int nKey)
 		{
 			return false;
 		}
-		public bool bキーが離された(int nKey)
+		public bool KeyReleased(int nKey)
 		{
 			return false;
 		}
-		public bool bキーが離されている(int nKey)
+		public bool KeyReleasing(int nKey)
 		{
 			return false;
 		}
@@ -111,13 +111,13 @@ namespace FDK
 		//-----------------
 		public void Dispose()
 		{
-			if (this.listEventBuffer != null)
+			if (this.EventBuffers != null)
 			{
-				this.listEventBuffer = null;
+				this.EventBuffers = null;
 			}
-			if (this.list入力イベント != null)
+			if (this.InputEvents != null)
 			{
-				this.list入力イベント = null;
+				this.InputEvents = null;
 			}
 		}
 		//-----------------

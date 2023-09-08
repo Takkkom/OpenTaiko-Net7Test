@@ -13,52 +13,52 @@ namespace TJAPlayer3
     {
         public AIBattle()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             // On activation
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             // On de-activation
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             // Ressource allocation
 
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
-                BarFlashCounter = new CCounter(0, 1000.0, 0.00035, CSound管理.PlayTimer);
+                BarFlashCounter = new CCounter(0, 1000.0, 0.00035, SoundManager.PlayTimer);
 
-                BatchAnimeCounter = new CCounter(0, 10000.0, 1.0 / 1000.0, CSound管理.PlayTimer);
+                BatchAnimeCounter = new CCounter(0, 10000.0, 1.0 / 1000.0, SoundManager.PlayTimer);
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             // Ressource freeing
 
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            BarFlashCounter.t進行LoopDb();
-            BatchAnimeCounter.t進行db();
+            BarFlashCounter.TickLoopDB();
+            BatchAnimeCounter.TickDB();
 
             TJAPlayer3.Tx.AIBattle_SectionTime_Panel?.t2D描画(TJAPlayer3.Skin.Game_AIBattle_SectionTime_Panel[0], TJAPlayer3.Skin.Game_AIBattle_SectionTime_Panel[1]);
 
@@ -82,7 +82,7 @@ namespace TJAPlayer3
             }
             else
             {
-                TJAPlayer3.Tx.AIBattle_SectionTime_Bar_Finish.Opacity = (int)(Math.Sin((BarFlashCounter.n現在の値 / 1000.0) * Math.PI) * 255);
+                TJAPlayer3.Tx.AIBattle_SectionTime_Bar_Finish.Opacity = (int)(Math.Sin((BarFlashCounter.CurrentValue / 1000.0) * Math.PI) * 255);
                 drawBar(TJAPlayer3.Tx.AIBattle_SectionTime_Bar_Finish, nowLength);
             }
 
@@ -136,19 +136,19 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    if (BatchAnimeCounter.n現在の値 < 100)
+                    if (BatchAnimeCounter.CurrentValue < 100)
                     {
-                        inScale = 1.0f - (BatchAnimeCounter.n現在の値 / 100.0f);
+                        inScale = 1.0f - (BatchAnimeCounter.CurrentValue / 100.0f);
                     }
-                    else if (BatchAnimeCounter.n現在の値 >= 700 && BatchAnimeCounter.n現在の値 < 1000)
+                    else if (BatchAnimeCounter.CurrentValue >= 700 && BatchAnimeCounter.CurrentValue < 1000)
                     {
-                        drawFrame = (int)(((BatchAnimeCounter.n現在の値 - 700) / 300.0) * 4.0);
+                        drawFrame = (int)(((BatchAnimeCounter.CurrentValue - 700) / 300.0) * 4.0);
                     }
-                    else if (BatchAnimeCounter.n現在の値 >= 1400 && BatchAnimeCounter.n現在の値 <= 1500)
+                    else if (BatchAnimeCounter.CurrentValue >= 1400 && BatchAnimeCounter.CurrentValue <= 1500)
                     {
-                        value = Math.Min((BatchAnimeCounter.n現在の値 - 1400) / 100.0f, 1.0f);
+                        value = Math.Min((BatchAnimeCounter.CurrentValue - 1400) / 100.0f, 1.0f);
                     }
-                    else if (BatchAnimeCounter.n現在の値 >= 1500)
+                    else if (BatchAnimeCounter.CurrentValue >= 1500)
                     {
                         value = 1.0f;
                         section.IsAnimated = true;

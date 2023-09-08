@@ -99,7 +99,7 @@ namespace TJAPlayer3
             this.stFont = st文字位置Array;
 
             this.stScore = new STスコア[ 256 ];
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
@@ -285,7 +285,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             this.n現在表示中のスコア = new STDGBVALUE<long>[ 5 ];
             this.n現在の本当のスコア = new STDGBVALUE<double>[ 5 ];
@@ -322,24 +322,24 @@ namespace TJAPlayer3
             {
                 this.ctボーナス加算タイマ[i] = new CCounter();
             }
-            base.On活性化();
+            base.Activate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				//this.txScore = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_Score_number.png" ) );
     //            this.txScore_1P = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\7_Score_number_1P.png"));
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				//CDTXMania.tテクスチャの解放( ref this.txScore );
     //            CDTXMania.tテクスチャの解放(ref this.txScore_1P);
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
 
@@ -359,7 +359,7 @@ namespace TJAPlayer3
                                 {
                                     //this.txScore.color4 = new SlimDX.Color4( 1.0f, 1.0f, 1.0f );
                                     TJAPlayer3.Tx.Taiko_Score[0].Opacity = alpha;
-                                    TJAPlayer3.Tx.Taiko_Score[0].vc拡大縮小倍率.Y = ScoreScale[this.ct点数アニメタイマ[player].n現在の値];
+                                    TJAPlayer3.Tx.Taiko_Score[0].vc拡大縮小倍率.Y = ScoreScale[this.ct点数アニメタイマ[player].CurrentValue];
                                     TJAPlayer3.Tx.Taiko_Score[0].t2D拡大率考慮下基準描画( x , y, rectangle );
                                     
                                 }

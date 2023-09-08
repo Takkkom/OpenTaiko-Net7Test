@@ -12,11 +12,11 @@ namespace FDK
 
 		public CInputJoystick(IJoystick joystick)
 		{
-			this.e入力デバイス種別 = E入力デバイス種別.Joystick;
+			this.CurrentType = InputDeviceType.Joystick;
 			this.GUID = joystick.Index.ToString();
 			this.ID = joystick.Index;
 
-			this.list入力イベント = new List<STInputEvent>(32);
+			this.InputEvents = new List<STInputEvent>(32);
 
 			joystick.ButtonDown += Joystick_ButtonDown;
 			joystick.ButtonUp += Joystick_ButtonUp;
@@ -34,7 +34,7 @@ namespace FDK
 
 		#region [ IInputDevice 実装 ]
 		//-----------------
-		public E入力デバイス種別 e入力デバイス種別
+		public InputDeviceType CurrentType
 		{ 
 			get;
 			private set;
@@ -49,7 +49,7 @@ namespace FDK
 			get; 
 			private set;
 		}
-		public List<STInputEvent> list入力イベント 
+		public List<STInputEvent> InputEvents 
 		{
 			get;
 			private set;
@@ -60,9 +60,9 @@ namespace FDK
 			set;
 		}
 
-		public void tポーリング(bool bバッファ入力を使用する)
+		public void Polling(bool useBufferInput)
 		{
-			list入力イベント.Clear();
+			InputEvents.Clear();
 			
 			for (int i = 0; i < ButtonStates.Length; i++)
 			{
@@ -76,12 +76,12 @@ namespace FDK
 					{
 						ButtonStates[i].Item2 = 1;
 
-						list入力イベント.Add(
+						InputEvents.Add(
 							new STInputEvent()
 							{
 								nKey = i,
-								b押された = true,
-								b離された = false,
+								Pressed = true,
+								Released = false,
 								nTimeStamp = SampleFramework.Game.TimeMs,
 								nVelocity = 0,
 							}
@@ -98,12 +98,12 @@ namespace FDK
 					{
 						ButtonStates[i].Item2 = -1;
 
-						list入力イベント.Add(
+						InputEvents.Add(
 							new STInputEvent()
 							{
 								nKey = i,
-								b押された = false,
-								b離された = true,
+								Pressed = false,
+								Released = true,
 								nTimeStamp = SampleFramework.Game.TimeMs,
 								nVelocity = 0,
 							}
@@ -113,19 +113,19 @@ namespace FDK
 			}
 		}
 
-		public bool bキーが押された(int nButton)
+		public bool KeyPressed(int nButton)
 		{
 			return ButtonStates[nButton].Item2 == 1;
 		}
-		public bool bキーが押されている(int nButton)
+		public bool KeyPressing(int nButton)
 		{
 			return ButtonStates[nButton].Item2 >= 1;
 		}
-		public bool bキーが離された(int nButton)
+		public bool KeyReleased(int nButton)
 		{
 			return ButtonStates[nButton].Item2 == -1;
 		}
-		public bool bキーが離されている(int nButton)
+		public bool KeyReleasing(int nButton)
 		{
 			return ButtonStates[nButton].Item2 <= -1;
 		}
@@ -136,13 +136,13 @@ namespace FDK
 		//-----------------
 		public void Dispose()
 		{
-			if(!this.bDispose完了済み)
+			if(!this.IsDisposed)
 			{
-				if (this.list入力イベント != null)
+				if (this.InputEvents != null)
 				{
-					this.list入力イベント = null;
+					this.InputEvents = null;
 				}
-				this.bDispose完了済み = true;
+				this.IsDisposed = true;
 			}
 		}
 		//-----------------
@@ -154,7 +154,7 @@ namespace FDK
 		#region [ private ]
 		//-----------------
 		private (bool, int)[] ButtonStates = new (bool, int)[15];
-		private bool bDispose完了済み;
+		private bool IsDisposed;
 
 		private void Joystick_ButtonDown(IJoystick joystick, Button button)
 		{

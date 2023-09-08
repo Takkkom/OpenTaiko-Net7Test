@@ -8,21 +8,21 @@ namespace FDK
 {
 	public class CTimer : CTimerBase
 	{
-		public enum E種別
+		public enum TimerType
 		{
 			Unknown = -1,
 			PerformanceCounter = 0,
 			MultiMedia = 1,
 			GetTickCount = 2,
 		}
-		public E種別 eタイマ種別
+		public TimerType CurrentTimerType
 		{
 			get;
 			protected set;
 		}
 
 
-		public override long nシステム時刻ms
+		public override long SystemTimeMs
 		{
 			get
 			{
@@ -52,10 +52,10 @@ namespace FDK
 			}
 		}
 
-		public CTimer( E種別 eタイマ種別 )
+		public CTimer( TimerType timerType )
 			:base()
 		{
-			this.eタイマ種別 = eタイマ種別;
+			this.CurrentTimerType = timerType;
 
 			/*
 			if( n参照カウント[ (int) this.eタイマ種別 ] == 0 )
@@ -82,21 +82,21 @@ namespace FDK
 			}
 			*/
 	
-			base.tリセット();
+			base.Reset();
 
-			n参照カウント[ (int) this.eタイマ種別 ]++;
+			ReferenceCount[ (int) this.CurrentTimerType ]++;
 		}
 		
 		public override void Dispose()
 		{
-			if( this.eタイマ種別 == E種別.Unknown )
+			if( this.CurrentTimerType == TimerType.Unknown )
 				return;
 
-			int type = (int) this.eタイマ種別;
+			int type = (int) this.CurrentTimerType;
 
-			n参照カウント[ type ] = Math.Max( n参照カウント[ type ] - 1, 0 );
+			ReferenceCount[ type ] = Math.Max( ReferenceCount[ type ] - 1, 0 );
 
-			if( n参照カウント[ type ] == 0 )
+			if( ReferenceCount[ type ] == 0 )
 			{
 				/*
 				if( this.eタイマ種別 == E種別.MultiMedia )
@@ -104,18 +104,18 @@ namespace FDK
 				*/
 			}
 
-			this.eタイマ種別 = E種別.Unknown;
+			this.CurrentTimerType = TimerType.Unknown;
 		}
 
 		#region [ protected ]
 		//-----------------
-		protected long n現在の周波数;
-		protected static int[] n参照カウント = new int[ 3 ];
+		protected long CurrentFrequency;
+		protected static int[] ReferenceCount = new int[ 3 ];
 		//protected TimeCaps timeCaps;
 
-		protected bool b確認と設定_GetTickCount()
+		protected bool GetSetTickCount()
 		{
-			this.eタイマ種別 = E種別.GetTickCount;
+			this.CurrentTimerType = TimerType.GetTickCount;
 			return true;
 		}
 		/*

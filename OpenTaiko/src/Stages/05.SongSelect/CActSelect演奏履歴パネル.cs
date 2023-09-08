@@ -64,7 +64,7 @@ namespace TJAPlayer3
             st文字位置Array[9] = st文字位置10;
             this.st小文字位置 = st文字位置Array;
 
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		public void t選択曲が変更された()
 		{
@@ -99,14 +99,14 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			this.n本体X = 810;
 			this.n本体Y = 558;
 			this.ft表示用フォント = new CCachedFontRenderer( "Arial", 30, CFontRenderer.FontStyle.Bold);
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			if( this.ft表示用フォント != null )
 			{
@@ -114,11 +114,11 @@ namespace TJAPlayer3
 				this.ft表示用フォント = null;
 			}
 			this.ct登場アニメ用 = null;
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-            if (base.b活性化してない)
+            if (base.IsDeActivated)
                 return;
 			//this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_play history panel.png" ) );
             //this.txスコアボード[0] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_0.png" ) );
@@ -134,11 +134,11 @@ namespace TJAPlayer3
                 SongSelect_ScoreWindow[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}ScoreWindow_" + i.ToString() + ".png"));
             }
 			this.t選択曲が変更された();
-			base.OnManagedリソースの作成();
+			base.CreateManagedResource();
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-            if (base.b活性化してない)
+            if (base.IsDeActivated)
                 return;
 
             TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow_Text);
@@ -154,21 +154,21 @@ namespace TJAPlayer3
     //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[2] );
     //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[3] );
     //            CDTXMania.tテクスチャの解放( ref this.tx文字 );
-			base.OnManagedリソースの解放();
+			base.ReleaseManagedResource();
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( base.b初めての進行描画 )
+				if( base.IsFirstDraw )
 				{
 					this.ct登場アニメ用 = new CCounter( 0, 3000, 1, TJAPlayer3.Timer );
-					base.b初めての進行描画 = false;
+					base.IsFirstDraw = false;
 				}
-				this.ct登場アニメ用.t進行();
+				this.ct登場アニメ用.Tick();
                 int x = 980;
                 int y = 350;
-                if (TJAPlayer3.stage選曲.r現在選択中のスコア != null && this.ct登場アニメ用.n現在の値 >= 2000 && TJAPlayer3.stage選曲.r現在選択中の曲.eノード種別 == C曲リストノード.Eノード種別.SCORE)
+                if (TJAPlayer3.stage選曲.r現在選択中のスコア != null && this.ct登場アニメ用.CurrentValue >= 2000 && TJAPlayer3.stage選曲.r現在選択中の曲.eノード種別 == C曲リストノード.Eノード種別.SCORE)
                 {
                     //CDTXMania.Tx.SongSelect_ScoreWindow_Text.n透明度 = ct登場アニメ用.n現在の値 - 1745;
                     if (SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度] != null)

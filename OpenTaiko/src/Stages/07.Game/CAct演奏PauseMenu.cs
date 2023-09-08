@@ -84,8 +84,8 @@ namespace TJAPlayer3
 				case (int) EOrder.Continue:
                     TJAPlayer3.stage演奏ドラム画面.bPAUSE = false;
 
-                    CSound管理.PlayTimer.t再開();
-					TJAPlayer3.Timer.t再開();
+                    SoundManager.PlayTimer.Resume();
+					TJAPlayer3.Timer.Resume();
 					TJAPlayer3.DTX.t全チップの再生再開();
                     TJAPlayer3.stage演奏ドラム画面.actAVI.tPauseControl();
 					CActSelectPopupMenu.b選択した = true;
@@ -100,8 +100,8 @@ namespace TJAPlayer3
 					}
                     else
 					{
-						CSound管理.PlayTimer.t再開();
-						TJAPlayer3.Timer.t再開();
+						SoundManager.PlayTimer.Resume();
+						TJAPlayer3.Timer.Resume();
 						TJAPlayer3.stage演奏ドラム画面.t演奏中止();
 						CActSelectPopupMenu.b選択した = true;
 						this.tDeativatePopupMenu();
@@ -109,8 +109,8 @@ namespace TJAPlayer3
 					break;
 
 				case (int) EOrder.Return:
-                    CSound管理.PlayTimer.t再開();
-					TJAPlayer3.Timer.t再開();
+                    SoundManager.PlayTimer.Resume();
+					TJAPlayer3.Timer.Resume();
                     TJAPlayer3.stage演奏ドラム画面.t演奏中止();
 					CActSelectPopupMenu.b選択した = true;
 					this.tDeativatePopupMenu();
@@ -126,19 +126,19 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
-			base.On活性化();
+			base.Activate();
 			this.bGotoDetailConfig = false;
             this.sw = new Stopwatch();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				string pathパネル本体 = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}ScreenSelect popup auto settings.png" );
 				if ( File.Exists( pathパネル本体 ) )
@@ -146,16 +146,16 @@ namespace TJAPlayer3
 					this.txパネル本体 = TJAPlayer3.tテクスチャの生成( pathパネル本体, true );
 				}
 
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
 				TJAPlayer3.tテクスチャの解放( ref this.tx文字列パネル );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
 

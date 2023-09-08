@@ -21,7 +21,7 @@ namespace TJAPlayer3
 		{
 			base.eステージID = CStage.Eステージ.曲読み込み;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 			//base.list子Activities.Add( this.actFI = new CActFIFOBlack() );	// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
 			//base.list子Activities.Add( this.actFO = new CActFIFOBlack() );
 		}
@@ -29,7 +29,7 @@ namespace TJAPlayer3
 
 		// CStage 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			Trace.TraceInformation( "曲読み込みステージを活性化します。" );
 			Trace.Indent();
@@ -67,7 +67,7 @@ namespace TJAPlayer3
 			        this.str曲タイトル = cdtx.TITLE;
 			        this.strサブタイトル = cdtx.SUBTITLE;
 
-			        cdtx.On非活性化();
+			        cdtx.DeActivate();
 			    }
 			    else
 			    {
@@ -82,7 +82,7 @@ namespace TJAPlayer3
 			            this.str曲タイトル = cdtx.TITLE;
 			            this.strサブタイトル = cdtx.SUBTITLE;
 
-			            cdtx.On非活性化();
+			            cdtx.DeActivate();
 			        }
 			        else
 			        {
@@ -104,7 +104,7 @@ namespace TJAPlayer3
 
 				this.strSTAGEFILE = CSkin.Path(@$"Graphics{Path.DirectorySeparatorChar}4_SongLoading{Path.DirectorySeparatorChar}Background.png");
 
-				base.On活性化();
+				base.Activate();
 			}
 			finally
 			{
@@ -112,7 +112,7 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			Trace.TraceInformation( "曲読み込みステージを非活性化します。" );
 			Trace.Indent();
@@ -120,7 +120,7 @@ namespace TJAPlayer3
 			{
                 TJAPlayer3.t安全にDisposeする(ref this.pfTITLE);
                 TJAPlayer3.t安全にDisposeする(ref this.pfSUBTITLE);
-                base.On非活性化();
+                base.DeActivate();
 			}
 			finally
 			{
@@ -128,9 +128,9 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
 				//this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}6_SongnamePlate.png" ) );
@@ -192,30 +192,30 @@ namespace TJAPlayer3
                     this.txサブタイトル = null;
                     this.tx背景 = null;
 				}
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
 				TJAPlayer3.tテクスチャの解放( ref this.txタイトル );
 				//CDTXMania.tテクスチャの解放( ref this.txSongnamePlate );
                 TJAPlayer3.tテクスチャの解放( ref this.txサブタイトル );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			string str;
 
-			if( base.b活性化してない )
+			if( base.IsDeActivated )
 				return 0;
 
 			#region [ 初めての進行描画 ]
 			//-----------------------------
-			if( base.b初めての進行描画 )
+			if( base.IsFirstDraw )
 			{
 				Cスコア cスコア1 = TJAPlayer3.stage選曲.r確定されたスコア;
 				if( this.sd読み込み音 != null )
@@ -224,25 +224,25 @@ namespace TJAPlayer3
 					{
 						CSkin.Cシステムサウンド.r最後に再生した排他システムサウンド.t停止する();
 					}
-					this.sd読み込み音.t再生を開始する();
-					this.nBGM再生開始時刻 = CSound管理.PlayTimer.n現在時刻;
+					this.sd読み込み音.PlayStart();
+					this.nBGM再生開始時刻 = SoundManager.PlayTimer.NowTime;
 					this.nBGMの総再生時間ms = this.sd読み込み音.TotalPlayTime;
 				}
 				else
 				{
 					TJAPlayer3.Skin.sound曲読込開始音.t再生する();
-					this.nBGM再生開始時刻 = CSound管理.PlayTimer.n現在時刻;
+					this.nBGM再生開始時刻 = SoundManager.PlayTimer.NowTime;
 					this.nBGMの総再生時間ms = TJAPlayer3.Skin.sound曲読込開始音.n長さ_現在のサウンド;
 				}
 				//this.actFI.tフェードイン開始();							// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
 				base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
-				base.b初めての進行描画 = false;
+				base.IsFirstDraw = false;
 
 				nWAVcount = 1;
 			}
 			//-----------------------------
 			#endregion
-            this.ct待機.t進行();
+            this.ct待機.Tick();
 
 			#region [ Cancel loading with esc ]
 			if ( tキー入力() )
@@ -378,7 +378,7 @@ namespace TJAPlayer3
 
 				#region [ Loading screen (except dan) ]
 				//-----------------------------
-				this.ct曲名表示.t進行();
+				this.ct曲名表示.Tick();
 
 				if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
 				{
@@ -401,7 +401,7 @@ namespace TJAPlayer3
 						}
 
 						float pos = (TJAPlayer3.Tx.TowerResult_Background.szテクスチャサイズ.Height - TJAPlayer3.Skin.Resolution[1]) -
-							((ct待機.n現在の値 <= 1200 ? ct待機.n現在の値 / 10f : 120) / 120f * (TJAPlayer3.Tx.TowerResult_Background.szテクスチャサイズ.Height - TJAPlayer3.Skin.Resolution[1]));
+							((ct待機.CurrentValue <= 1200 ? ct待機.CurrentValue / 10f : 120) / 120f * (TJAPlayer3.Tx.TowerResult_Background.szテクスチャサイズ.Height - TJAPlayer3.Skin.Resolution[1]));
 
 						TJAPlayer3.Tx.TowerResult_Background?.t2D描画(0, -1 * pos);
 						TJAPlayer3.Tx.TowerResult_Tower[currentTowerType]?.t2D描画(xFactor, -1 * yFactor * pos);
@@ -436,7 +436,7 @@ namespace TJAPlayer3
             {
 				#region [ Dan Loading screen　]
 
-				TJAPlayer3.Tx.SongLoading_Bg_Dan.t2D描画(0, 0 - (ct待機.n現在の値 <= 600 ? ct待機.n現在の値 / 10f : 60));
+				TJAPlayer3.Tx.SongLoading_Bg_Dan.t2D描画(0, 0 - (ct待機.CurrentValue <= 600 ? ct待機.CurrentValue / 10f : 60));
 
 				CTexture dp = (TJAPlayer3.stage段位選択.段位リスト.stバー情報 != null)
 					? TJAPlayer3.stage段位選択.段位リスト.stバー情報[TJAPlayer3.stage段位選択.段位リスト.n現在の選択行].txDanPlate
@@ -449,7 +449,7 @@ namespace TJAPlayer3
 
 				if (TJAPlayer3.Tx.Tile_Black != null)
 				{
-					TJAPlayer3.Tx.Tile_Black.Opacity = (int)(ct待機.n現在の値 <= 51 ? (255 - ct待機.n現在の値 / 0.2f) : (this.ct待機.n現在の値 - 949) / 0.2);
+					TJAPlayer3.Tx.Tile_Black.Opacity = (int)(ct待機.CurrentValue <= 51 ? (255 - ct待機.CurrentValue / 0.2f) : (this.ct待機.CurrentValue - 949) / 0.2);
 					for (int i = 0; i <= (SampleFramework.GameWindowSize.Width / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width); i++)      // #23510 2010.10.31 yyagi: change "clientSize.Width" to "640" to fix FIFO drawing size
 					{
 						for (int j = 0; j <= (SampleFramework.GameWindowSize.Height / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height); j++) // #23510 2010.10.31 yyagi: change "clientSize.Height" to "480" to fix FIFO drawing size
@@ -484,8 +484,8 @@ namespace TJAPlayer3
 						CScoreIni ini = new CScoreIni( str + ".score.ini" );
 						ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
 
-						if( ( TJAPlayer3.DTX != null ) && TJAPlayer3.DTX.b活性化してる )
-							TJAPlayer3.DTX.On非活性化();
+						if( ( TJAPlayer3.DTX != null ) && TJAPlayer3.DTX.IsActivated )
+							TJAPlayer3.DTX.DeActivate();
 
                         //if( CDTXMania.DTX == null )
                         {
@@ -573,7 +573,7 @@ namespace TJAPlayer3
 
                 case CStage.Eフェーズ.NOWLOADING_WAV読み込み待機:
                     {
-                        if( this.ct待機.n現在の値 > 260 )
+                        if( this.ct待機.CurrentValue > 260 )
                         {
 						    base.eフェーズID = CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む;
                         }
@@ -612,7 +612,7 @@ namespace TJAPlayer3
 							}
 							CDTX.tManageKusudama(_dtx);
 
-							TJAPlayer3.stage演奏ドラム画面.On活性化();
+							TJAPlayer3.stage演奏ドラム画面.Activate();
 
 							span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
 
@@ -641,7 +641,7 @@ namespace TJAPlayer3
                         }
 
 
-						TJAPlayer3.Timer.t更新();
+						TJAPlayer3.Timer.Update();
                         //CSound管理.rc演奏用タイマ.t更新();
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;
 						return (int) E曲読込画面の戻り値.継続;
@@ -649,7 +649,7 @@ namespace TJAPlayer3
 
 				case CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ:
 					{
-						long nCurrentTime = TJAPlayer3.Timer.n現在時刻;
+						long nCurrentTime = TJAPlayer3.Timer.NowTime;
 						if( nCurrentTime < this.nBGM再生開始時刻 )
 							this.nBGM再生開始時刻 = nCurrentTime;
 
@@ -662,7 +662,7 @@ namespace TJAPlayer3
 					}
 
 				case CStage.Eフェーズ.共通_フェードアウト:
-					if ( this.ct待機.b終了値に達してない )		// DTXVモード時は、フェードアウト省略
+					if ( this.ct待機.IsUnEnded )		// DTXVモード時は、フェードアウト省略
 						return (int)E曲読込画面の戻り値.継続;
 
 					if ( this.sd読み込み音 != null )
@@ -681,7 +681,7 @@ namespace TJAPlayer3
 		protected bool tキー入力()
 		{
 			IInputDevice keyboard = TJAPlayer3.Input管理.Keyboard;
-			if 	( keyboard.bキーが押された( (int)SlimDXKeys.Key.Escape ) )		// escape (exit)
+			if 	( keyboard.KeyPressed( (int)SlimDXKeys.Key.Escape ) )		// escape (exit)
 			{
 				return true;
 			}

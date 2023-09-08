@@ -48,41 +48,41 @@ namespace TJAPlayer3
 		}
 		public void tフェードイン完了()     // #25406 2011.6.9 yyagi
 		{
-			this.counter.n現在の値 = (int)this.counter.n終了値;
+			this.counter.CurrentValue = (int)this.counter.EndValue;
 		}
 
 		// CActivity 実装
 
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				//CDTXMania.tテクスチャの解放( ref this.tx幕 );
-				base.On非活性化();
+				base.DeActivate();
 			}
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				//this.tx幕 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_FO.png" ) );
 				//	this.tx幕2 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_FI.png" ) );
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if (base.b活性化してない || (this.counter == null))
+			if (base.IsDeActivated || (this.counter == null))
 			{
 				return 0;
 			}
-			this.counter.t進行();
+			this.counter.Tick();
 
 			if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] >= (int)Difficulty.Tower)
 			{
 				if (TJAPlayer3.Tx.Tile_Black != null)
 				{
-					TJAPlayer3.Tx.Tile_Black.Opacity = this.mode == EFIFOモード.フェードアウト ? -1000 + counter.n現在の値 : 255 - counter.n現在の値;
+					TJAPlayer3.Tx.Tile_Black.Opacity = this.mode == EFIFOモード.フェードアウト ? -1000 + counter.CurrentValue : 255 - counter.CurrentValue;
 					for (int i = 0; i <= (SampleFramework.GameWindowSize.Width / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width); i++)      // #23510 2010.10.31 yyagi: change "clientSize.Width" to "640" to fix FIFO drawing size
 					{
 						for (int j = 0; j <= (SampleFramework.GameWindowSize.Height / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height); j++) // #23510 2010.10.31 yyagi: change "clientSize.Height" to "480" to fix FIFO drawing size
@@ -96,7 +96,7 @@ namespace TJAPlayer3
 			{
 				if (this.mode == EFIFOモード.フェードアウト)
 				{
-					var preTime = (this.counter.n現在の値 >= 2000 ? this.counter.n現在の値 - 2000 : 0) * 2;
+					var preTime = (this.counter.CurrentValue >= 2000 ? this.counter.CurrentValue - 2000 : 0) * 2;
 
 					TJAPlayer3.Tx.SongLoading_Fade_AI.Opacity = preTime;
 					TJAPlayer3.Tx.SongLoading_Fade_AI.t2D描画(0, 0);
@@ -134,7 +134,7 @@ namespace TJAPlayer3
 						}
 					}
 
-					var time = this.counter.n現在の値 >= 5000 ? this.counter.n現在の値 - 5000 : 0;
+					var time = this.counter.CurrentValue >= 5000 ? this.counter.CurrentValue - 5000 : 0;
 
 					TJAPlayer3.Tx.SongLoading_Bg_AI.Opacity = time;
 					TJAPlayer3.Tx.SongLoading_Bg_AI.t2D描画(0, 0);
@@ -158,7 +158,7 @@ namespace TJAPlayer3
 				}
                 else
 				{
-					TJAPlayer3.Tx.SongLoading_Bg_AI.Opacity = 255 - counter.n現在の値;
+					TJAPlayer3.Tx.SongLoading_Bg_AI.Opacity = 255 - counter.CurrentValue;
 					TJAPlayer3.Tx.SongLoading_Bg_AI.t2D描画(0, 0);
 				}
 			}
@@ -170,7 +170,7 @@ namespace TJAPlayer3
 					{
 						// 曲開始幕アニメ。
 						// 地味に横の拡大率が変動しているのが一番厄介...
-						var time = this.counter.n現在の値 >= 2580 ? this.counter.n現在の値 - 2580 : 0;
+						var time = this.counter.CurrentValue >= 2580 ? this.counter.CurrentValue - 2580 : 0;
 						var FadeValue = (time - 670f) / 330.0f;
 						if (FadeValue >= 1.0) FadeValue = 1.0f; else if (FadeValue <= 0.0) FadeValue = 0.0f;
 
@@ -187,7 +187,7 @@ namespace TJAPlayer3
 					{
 						// 曲開始幕アニメ。
 						// 地味に横の拡大率が変動しているのが一番厄介...
-						var time = this.counter.n現在の値;
+						var time = this.counter.CurrentValue;
 						var FadeValue = time / 140f;
 						if (FadeValue >= 1.0) FadeValue = 1.0f; else if (FadeValue <= 0.0) FadeValue = 0.0f;
 
@@ -201,14 +201,14 @@ namespace TJAPlayer3
 
 			if (this.mode == EFIFOモード.フェードアウト)
 			{
-				if (this.counter.n現在の値 != this.counter.n終了値)
+				if (this.counter.CurrentValue != this.counter.EndValue)
 				{
 					return 0;
 				}
 			}
 			else if (this.mode == EFIFOモード.フェードイン)
 			{
-				if (this.counter.n現在の値 != this.counter.n終了値)
+				if (this.counter.CurrentValue != this.counter.EndValue)
 				{
 					return 0;
 				}

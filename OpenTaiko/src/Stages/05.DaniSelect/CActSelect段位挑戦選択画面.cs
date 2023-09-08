@@ -11,46 +11,46 @@ namespace TJAPlayer3
 {
     class CActSelect段位挑戦選択画面 : CActivity
     {
-        public override void On活性化()
+        public override void Activate()
         {
             ctBarIn = new CCounter();
             ctBarOut = new CCounter();
-            ctBarOut.n現在の値 = 255;
+            ctBarOut.CurrentValue = 255;
             TJAPlayer3.stage段位選択.bDifficultyIn = false;
             bOption = false;
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             for (int i = 0; i < Challenge_Select.Length; i++)
                 Challenge_Select[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Challenge_Select_" + i.ToString() + ".png"));
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             for (int i = 0; i < Challenge_Select.Length; i++)
 				TJAPlayer3.t安全にDisposeする(ref Challenge_Select[i]);
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if(TJAPlayer3.stage段位選択.bDifficultyIn || ctBarOut.n現在の値 < ctBarOut.n終了値)
+            if(TJAPlayer3.stage段位選択.bDifficultyIn || ctBarOut.CurrentValue < ctBarOut.EndValue)
             {
-                ctBarIn.t進行();
-                ctBarOut.t進行();
+                ctBarIn.Tick();
+                ctBarOut.Tick();
 
-                Challenge_Select[0].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
-                Challenge_Select[1].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
-                Challenge_Select[2].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.n現在の値 : 255 - ctBarOut.n現在の値;
+                Challenge_Select[0].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.CurrentValue : 255 - ctBarOut.CurrentValue;
+                Challenge_Select[1].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.CurrentValue : 255 - ctBarOut.CurrentValue;
+                Challenge_Select[2].Opacity = TJAPlayer3.stage段位選択.bDifficultyIn ? ctBarIn.CurrentValue : 255 - ctBarOut.CurrentValue;
 
                 Challenge_Select[0].t2D描画(0, 0);
 
@@ -63,14 +63,14 @@ namespace TJAPlayer3
                 Challenge_Select[1].t2D描画(0, 0);
 
 
-                if (TJAPlayer3.stage段位選択.ct待機.b開始した)
-                    return base.On進行描画();
+                if (TJAPlayer3.stage段位選択.ct待機.IsStarted)
+                    return base.Draw();
 
                 #region [Key bindings]
 
-                if (ctBarIn.b終了値に達した && !TJAPlayer3.stage段位選択.b選択した && bOption == false)
+                if (ctBarIn.IsEnded && !TJAPlayer3.stage段位選択.b選択した && bOption == false)
                 {
-                    if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow) ||
+                    if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow) ||
                         TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RBlue))
                     {
                         if (n現在の選択行 - 1 >= 0)
@@ -80,7 +80,7 @@ namespace TJAPlayer3
                         }
                     }
 
-                    if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow) ||
+                    if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LBlue))
                     {
                         if (n現在の選択行 + 1 <= 2)
@@ -90,13 +90,13 @@ namespace TJAPlayer3
                         }
                     }
 
-                    if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return) ||
+                    if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return) ||
                         TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LRed) ||
                         TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RRed))
                     {
                         if (n現在の選択行 == 0)
                         {
-                            this.ctBarOut.t開始(0, 255, 0.5f, TJAPlayer3.Timer);
+                            this.ctBarOut.Start(0, 255, 0.5f, TJAPlayer3.Timer);
                             TJAPlayer3.Skin.sound取消音.t再生する();
                             TJAPlayer3.stage段位選択.bDifficultyIn = false;
                         }
@@ -105,7 +105,7 @@ namespace TJAPlayer3
                             //TJAPlayer3.Skin.soundDanSongSelect.t再生する();
                             TJAPlayer3.Skin.sound決定音.t再生する();
                             TJAPlayer3.Skin.voiceMenuDanSelectConfirm[TJAPlayer3.SaveFile]?.t再生する();
-                            TJAPlayer3.stage段位選択.ct待機.t開始(0, 3000, 1, TJAPlayer3.Timer);
+                            TJAPlayer3.stage段位選択.ct待機.Start(0, 3000, 1, TJAPlayer3.Timer);
                         }
                         else if (n現在の選択行 == 2)
                         {
@@ -117,7 +117,7 @@ namespace TJAPlayer3
                 #endregion
             }
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         private CTexture[] Challenge_Select = new CTexture[3];

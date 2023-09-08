@@ -114,8 +114,8 @@ namespace TJAPlayer3
 
             tNamePlateRefreshTitles(player);
 
-            ctNamePlateEffect.t進行Loop();
-            ctAnimatedNamePlateTitle.t進行Loop();
+            ctNamePlateEffect.TickLoop();
+            ctAnimatedNamePlateTitle.TickLoop();
 
             this.txName[player].Opacity = Opacity;
             this.txTitle[player].Opacity = Opacity;
@@ -136,7 +136,7 @@ namespace TJAPlayer3
                 int tt = TJAPlayer3.SaveFileInstances[player].data.TitleType;
                 if (tt >= 0 && tt < TJAPlayer3.Skin.Config_NamePlate_Ptn_Title)
                 {
-                    var _tex = TJAPlayer3.Tx.NamePlate_Title[tt][ctAnimatedNamePlateTitle.n現在の値 % TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[tt]];
+                    var _tex = TJAPlayer3.Tx.NamePlate_Title[tt][ctAnimatedNamePlateTitle.CurrentValue % TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[tt]];
 
                     if (_tex != null)
                     {
@@ -233,130 +233,130 @@ namespace TJAPlayer3
             if(TJAPlayer3.SaveFileInstances[player].data.TitleType != 0)
             {
                 int Type = TJAPlayer3.SaveFileInstances[player].data.TitleType - 1;
-                if (this.ctNamePlateEffect.n現在の値 <= 10)
+                if (this.ctNamePlateEffect.CurrentValue <= 10)
                 {
-                    tNamePlateStarDraw(player, 1.0f - (ctNamePlateEffect.n現在の値 / 10f * 1.0f), x + 63, y + 25);
+                    tNamePlateStarDraw(player, 1.0f - (ctNamePlateEffect.CurrentValue / 10f * 1.0f), x + 63, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 3 && this.ctNamePlateEffect.n現在の値 <= 10)
+                if (this.ctNamePlateEffect.CurrentValue >= 3 && this.ctNamePlateEffect.CurrentValue <= 10)
                 {
-                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.n現在の値 - 3) / 7f * 1.0f), x + 38, y + 7);
+                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.CurrentValue - 3) / 7f * 1.0f), x + 38, y + 7);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 6 && this.ctNamePlateEffect.n現在の値 <= 10)
+                if (this.ctNamePlateEffect.CurrentValue >= 6 && this.ctNamePlateEffect.CurrentValue <= 10)
                 {
-                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.n現在の値 - 6) / 4f * 1.0f), x + 51, y + 5);
+                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.CurrentValue - 6) / 4f * 1.0f), x + 51, y + 5);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 8 && this.ctNamePlateEffect.n現在の値 <= 10)
+                if (this.ctNamePlateEffect.CurrentValue >= 8 && this.ctNamePlateEffect.CurrentValue <= 10)
                 {
-                    tNamePlateStarDraw(player, 0.3f - ((ctNamePlateEffect.n現在の値 - 8) / 2f * 0.3f), x + 110, y + 25);
+                    tNamePlateStarDraw(player, 0.3f - ((ctNamePlateEffect.CurrentValue - 8) / 2f * 0.3f), x + 110, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 11 && this.ctNamePlateEffect.n現在の値 <= 13)
+                if (this.ctNamePlateEffect.CurrentValue >= 11 && this.ctNamePlateEffect.CurrentValue <= 13)
                 {
-                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.n現在の値 - 11) / 2f * 1.0f), x + 38, y + 7);
+                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.CurrentValue - 11) / 2f * 1.0f), x + 38, y + 7);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 11 && this.ctNamePlateEffect.n現在の値 <= 15)
+                if (this.ctNamePlateEffect.CurrentValue >= 11 && this.ctNamePlateEffect.CurrentValue <= 15)
                 {
                     tNamePlateStarDraw(player, 1.0f, x + 51, y + 5);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 11 && this.ctNamePlateEffect.n現在の値 <= 17)
+                if (this.ctNamePlateEffect.CurrentValue >= 11 && this.ctNamePlateEffect.CurrentValue <= 17)
                 {
-                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.n現在の値 - 11) / 7f * 1.0f), x + 110, y + 25);
+                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.CurrentValue - 11) / 7f * 1.0f), x + 110, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 16 && this.ctNamePlateEffect.n現在の値 <= 20)
+                if (this.ctNamePlateEffect.CurrentValue >= 16 && this.ctNamePlateEffect.CurrentValue <= 20)
                 {
-                    tNamePlateStarDraw(player, 0.2f - ((ctNamePlateEffect.n現在の値 - 16) / 4f * 0.2f), x + 63, y + 25);
+                    tNamePlateStarDraw(player, 0.2f - ((ctNamePlateEffect.CurrentValue - 16) / 4f * 0.2f), x + 63, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 17 && this.ctNamePlateEffect.n現在の値 <= 20)
+                if (this.ctNamePlateEffect.CurrentValue >= 17 && this.ctNamePlateEffect.CurrentValue <= 20)
                 {
-                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.n現在の値 - 17) / 3f * 1.0f), x + 99, y + 1);
+                    tNamePlateStarDraw(player, 1.0f - ((ctNamePlateEffect.CurrentValue - 17) / 3f * 1.0f), x + 99, y + 1);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 20 && this.ctNamePlateEffect.n現在の値 <= 24)
+                if (this.ctNamePlateEffect.CurrentValue >= 20 && this.ctNamePlateEffect.CurrentValue <= 24)
                 {
                     tNamePlateStarDraw(player, 0.4f, x + 63, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 20 && this.ctNamePlateEffect.n現在の値 <= 25)
+                if (this.ctNamePlateEffect.CurrentValue >= 20 && this.ctNamePlateEffect.CurrentValue <= 25)
                 {
                     tNamePlateStarDraw(player, 1.0f, x + 99, y + 1);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 20 && this.ctNamePlateEffect.n現在の値 <= 30)
+                if (this.ctNamePlateEffect.CurrentValue >= 20 && this.ctNamePlateEffect.CurrentValue <= 30)
                 {
-                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.n現在の値 - 20) / 10f * 0.5f), x + 152, y + 7);
+                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.CurrentValue - 20) / 10f * 0.5f), x + 152, y + 7);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 31 && this.ctNamePlateEffect.n現在の値 <= 37)
+                if (this.ctNamePlateEffect.CurrentValue >= 31 && this.ctNamePlateEffect.CurrentValue <= 37)
                 {
-                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.n現在の値 - 31) / 6f * 0.5f), x + 176, y + 8);
-                    tNamePlateStarDraw(player, 1.0f - ((this.ctNamePlateEffect.n現在の値 - 31) / 6f * 1.0f), x + 175, y + 25);
+                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.CurrentValue - 31) / 6f * 0.5f), x + 176, y + 8);
+                    tNamePlateStarDraw(player, 1.0f - ((this.ctNamePlateEffect.CurrentValue - 31) / 6f * 1.0f), x + 175, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 31 && this.ctNamePlateEffect.n現在の値 <= 40)
+                if (this.ctNamePlateEffect.CurrentValue >= 31 && this.ctNamePlateEffect.CurrentValue <= 40)
                 {
-                    tNamePlateStarDraw(player, 0.9f - ((this.ctNamePlateEffect.n現在の値 - 31) / 9f * 0.9f), x + 136, y + 24);
+                    tNamePlateStarDraw(player, 0.9f - ((this.ctNamePlateEffect.CurrentValue - 31) / 9f * 0.9f), x + 136, y + 24);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 34 && this.ctNamePlateEffect.n現在の値 <= 40)
+                if (this.ctNamePlateEffect.CurrentValue >= 34 && this.ctNamePlateEffect.CurrentValue <= 40)
                 {
-                    tNamePlateStarDraw(player, 0.7f - ((this.ctNamePlateEffect.n現在の値 - 34) / 6f * 0.7f), x + 159, y + 25);
+                    tNamePlateStarDraw(player, 0.7f - ((this.ctNamePlateEffect.CurrentValue - 34) / 6f * 0.7f), x + 159, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 41 && this.ctNamePlateEffect.n現在の値 <= 42)
+                if (this.ctNamePlateEffect.CurrentValue >= 41 && this.ctNamePlateEffect.CurrentValue <= 42)
                 {
                     tNamePlateStarDraw(player, 0.7f, x + 159, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 43 && this.ctNamePlateEffect.n現在の値 <= 50)
+                if (this.ctNamePlateEffect.CurrentValue >= 43 && this.ctNamePlateEffect.CurrentValue <= 50)
                 {
-                    tNamePlateStarDraw(player, 0.8f - ((this.ctNamePlateEffect.n現在の値 - 43) / 7f * 0.8f), x + 196, y + 23);
+                    tNamePlateStarDraw(player, 0.8f - ((this.ctNamePlateEffect.CurrentValue - 43) / 7f * 0.8f), x + 196, y + 23);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 51 && this.ctNamePlateEffect.n現在の値 <= 57)
+                if (this.ctNamePlateEffect.CurrentValue >= 51 && this.ctNamePlateEffect.CurrentValue <= 57)
                 {
-                    tNamePlateStarDraw(player, 0.8f - ((this.ctNamePlateEffect.n現在の値 - 51) / 6f * 0.8f), x + 51, y + 5);
+                    tNamePlateStarDraw(player, 0.8f - ((this.ctNamePlateEffect.CurrentValue - 51) / 6f * 0.8f), x + 51, y + 5);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 51 && this.ctNamePlateEffect.n現在の値 <= 52)
+                if (this.ctNamePlateEffect.CurrentValue >= 51 && this.ctNamePlateEffect.CurrentValue <= 52)
                 {
                     tNamePlateStarDraw(player, 0.2f, x + 166, y + 22);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 51 && this.ctNamePlateEffect.n現在の値 <= 53)
+                if (this.ctNamePlateEffect.CurrentValue >= 51 && this.ctNamePlateEffect.CurrentValue <= 53)
                 {
                     tNamePlateStarDraw(player, 0.8f, x + 136, y + 24);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 51 && this.ctNamePlateEffect.n現在の値 <= 55)
+                if (this.ctNamePlateEffect.CurrentValue >= 51 && this.ctNamePlateEffect.CurrentValue <= 55)
                 {
                     tNamePlateStarDraw(player, 1.0f, x + 176, y + 8);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 51 && this.ctNamePlateEffect.n現在の値 <= 55)
+                if (this.ctNamePlateEffect.CurrentValue >= 51 && this.ctNamePlateEffect.CurrentValue <= 55)
                 {
                     tNamePlateStarDraw(player, 1.0f, x + 176, y + 8);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 61 && this.ctNamePlateEffect.n現在の値 <= 70)
+                if (this.ctNamePlateEffect.CurrentValue >= 61 && this.ctNamePlateEffect.CurrentValue <= 70)
                 {
-                    tNamePlateStarDraw(player, 1.0f - ((this.ctNamePlateEffect.n現在の値 - 61) / 9f * 1.0f), x + 196, y + 23);
+                    tNamePlateStarDraw(player, 1.0f - ((this.ctNamePlateEffect.CurrentValue - 61) / 9f * 1.0f), x + 196, y + 23);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 61 && this.ctNamePlateEffect.n現在の値 <= 67)
+                if (this.ctNamePlateEffect.CurrentValue >= 61 && this.ctNamePlateEffect.CurrentValue <= 67)
                 {
-                    tNamePlateStarDraw(player, 0.7f - ((this.ctNamePlateEffect.n現在の値 - 61) / 6f * 0.7f), x + 214, y + 14);
+                    tNamePlateStarDraw(player, 0.7f - ((this.ctNamePlateEffect.CurrentValue - 61) / 6f * 0.7f), x + 214, y + 14);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 63 && this.ctNamePlateEffect.n現在の値 <= 70)
+                if (this.ctNamePlateEffect.CurrentValue >= 63 && this.ctNamePlateEffect.CurrentValue <= 70)
                 {
-                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.n現在の値 - 63) / 7f * 0.5f), x + 129, y + 24);
+                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.CurrentValue - 63) / 7f * 0.5f), x + 129, y + 24);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 63 && this.ctNamePlateEffect.n現在の値 <= 70)
+                if (this.ctNamePlateEffect.CurrentValue >= 63 && this.ctNamePlateEffect.CurrentValue <= 70)
                 {
-                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.n現在の値 - 63) / 7f * 0.5f), x + 129, y + 24);
+                    tNamePlateStarDraw(player, 0.5f - ((this.ctNamePlateEffect.CurrentValue - 63) / 7f * 0.5f), x + 129, y + 24);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 65 && this.ctNamePlateEffect.n現在の値 <= 70)
+                if (this.ctNamePlateEffect.CurrentValue >= 65 && this.ctNamePlateEffect.CurrentValue <= 70)
                 {
-                    tNamePlateStarDraw(player, 0.8f - ((this.ctNamePlateEffect.n現在の値 - 65) / 5f * 0.8f), x + 117, y + 7);
+                    tNamePlateStarDraw(player, 0.8f - ((this.ctNamePlateEffect.CurrentValue - 65) / 5f * 0.8f), x + 117, y + 7);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 71 && this.ctNamePlateEffect.n現在の値 <= 72)
+                if (this.ctNamePlateEffect.CurrentValue >= 71 && this.ctNamePlateEffect.CurrentValue <= 72)
                 {
                     tNamePlateStarDraw(player, 0.8f, x + 151, y + 25);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 71 && this.ctNamePlateEffect.n現在の値 <= 74)
+                if (this.ctNamePlateEffect.CurrentValue >= 71 && this.ctNamePlateEffect.CurrentValue <= 74)
                 {
                     tNamePlateStarDraw(player, 0.8f, x + 117, y + 7);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 85 && this.ctNamePlateEffect.n現在の値 <= 112)
+                if (this.ctNamePlateEffect.CurrentValue >= 85 && this.ctNamePlateEffect.CurrentValue <= 112)
                 {
-                    TJAPlayer3.Tx.NamePlate_Effect[4].Opacity = (int)(1400 - (this.ctNamePlateEffect.n現在の値 - 85) * 50f);
+                    TJAPlayer3.Tx.NamePlate_Effect[4].Opacity = (int)(1400 - (this.ctNamePlateEffect.CurrentValue - 85) * 50f);
 
-                    TJAPlayer3.Tx.NamePlate_Effect[4].t2D描画(x + ((this.ctNamePlateEffect.n現在の値 - 85) * (150f / 27f)), y + 7);
+                    TJAPlayer3.Tx.NamePlate_Effect[4].t2D描画(x + ((this.ctNamePlateEffect.CurrentValue - 85) * (150f / 27f)), y + 7);
                 }
-                if (this.ctNamePlateEffect.n現在の値 >= 105 && this.ctNamePlateEffect.n現在の値 <= 120)
+                if (this.ctNamePlateEffect.CurrentValue >= 105 && this.ctNamePlateEffect.CurrentValue <= 120)
                 {
                     /*
                     TJAPlayer3.Tx.NamePlate_Effect[TJAPlayer3.NamePlateConfig.data.TitleType[player] + 1].Opacity = this.ctNamePlateEffect.n現在の値 >= 112 ? (int)(255 - (this.ctNamePlateEffect.n現在の値 - 112) * 31.875f) : 255;
@@ -367,9 +367,9 @@ namespace TJAPlayer3
 
                     int tt = TJAPlayer3.SaveFileInstances[player].data.TitleType;
                     if (tt >= 0 && tt < TJAPlayer3.Skin.Config_NamePlate_Ptn_Title && TJAPlayer3.Tx.NamePlate_Title_Big[tt] != null) {
-                        TJAPlayer3.Tx.NamePlate_Title_Big[tt].Opacity = this.ctNamePlateEffect.n現在の値 >= 112 ? (int)(255 - (this.ctNamePlateEffect.n現在の値 - 112) * 31.875f) : 255;
-                        TJAPlayer3.Tx.NamePlate_Title_Big[tt].vc拡大縮小倍率.X = this.ctNamePlateEffect.n現在の値 >= 112 ? 1.0f : (this.ctNamePlateEffect.n現在の値 - 105) / 8f;
-                        TJAPlayer3.Tx.NamePlate_Title_Big[tt].vc拡大縮小倍率.Y = this.ctNamePlateEffect.n現在の値 >= 112 ? 1.0f : (this.ctNamePlateEffect.n現在の値 - 105) / 8f;
+                        TJAPlayer3.Tx.NamePlate_Title_Big[tt].Opacity = this.ctNamePlateEffect.CurrentValue >= 112 ? (int)(255 - (this.ctNamePlateEffect.CurrentValue - 112) * 31.875f) : 255;
+                        TJAPlayer3.Tx.NamePlate_Title_Big[tt].vc拡大縮小倍率.X = this.ctNamePlateEffect.CurrentValue >= 112 ? 1.0f : (this.ctNamePlateEffect.CurrentValue - 105) / 8f;
+                        TJAPlayer3.Tx.NamePlate_Title_Big[tt].vc拡大縮小倍率.Y = this.ctNamePlateEffect.CurrentValue >= 112 ? 1.0f : (this.ctNamePlateEffect.CurrentValue - 105) / 8f;
                         TJAPlayer3.Tx.NamePlate_Title_Big[tt].t2D拡大率考慮中央基準描画(x + 193, y + 6);
                     }
 

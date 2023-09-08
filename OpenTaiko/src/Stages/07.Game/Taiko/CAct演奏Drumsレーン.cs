@@ -10,21 +10,21 @@ namespace TJAPlayer3
     {
         public CAct演奏Drumsレーン()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             TJAPlayer3.t安全にDisposeする( ref this.ct分岐アニメ進行 );
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
 
             this.ct分岐アニメ進行 = new CCounter[ 5 ];
@@ -40,27 +40,27 @@ namespace TJAPlayer3
             if (TJAPlayer3.Tx.Lane_Base[0] != null)
                 TJAPlayer3.Tx.Lane_Base[0].Opacity = 255;
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
 
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             for( int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++ )
             {
-                if( !this.ct分岐アニメ進行[ i ].b停止中 )
+                if( !this.ct分岐アニメ進行[ i ].IsStoped )
                 {
-                    this.ct分岐アニメ進行[ i ].t進行();
-                    if( this.ct分岐アニメ進行[ i ].b終了値に達した )
+                    this.ct分岐アニメ進行[ i ].Tick();
+                    if( this.ct分岐アニメ進行[ i ].IsEnded )
                     {
                         this.bState[ i ] = false;
-                        this.ct分岐アニメ進行[ i ].t停止();
+                        this.ct分岐アニメ進行[ i ].Stop();
                     }
                 }
             }
@@ -108,13 +108,13 @@ namespace TJAPlayer3
 
                     #endregion
 
-                    if( this.ct分岐アニメ進行[ i ].b進行中 && !_laneNull)
+                    if( this.ct分岐アニメ進行[ i ].IsTicked && !_laneNull)
                     {
                         #region[ 普通譜面_レベルアップ ]
                         //普通→玄人
                         if (nBefore[i] == 0 && nAfter[i] == CDTX.ECourse.eNormal)
                         {
-                            TJAPlayer3.Tx.Lane_Base[1].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].n現在の値 * 0xff ) / 100 );
+                            TJAPlayer3.Tx.Lane_Base[1].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].CurrentValue * 0xff ) / 100 );
                             TJAPlayer3.Tx.Lane_Base[0].t2D描画( x[ i ], y[ i ] );
                             TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
                         }
@@ -122,20 +122,20 @@ namespace TJAPlayer3
                         if (nBefore[i] == 0 && nAfter[i] == CDTX.ECourse.eMaster)
                         {
                             TJAPlayer3.Tx.Lane_Base[0].t2D描画( x[ i ], y[ i ] );
-                            if( this.ct分岐アニメ進行[ i ].n現在の値 < 100 )
+                            if( this.ct分岐アニメ進行[ i ].CurrentValue < 100 )
                             {
-                                TJAPlayer3.Tx.Lane_Base[1].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].n現在の値 * 0xff ) / 100 );
+                                TJAPlayer3.Tx.Lane_Base[1].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].CurrentValue * 0xff ) / 100 );
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
                             }
-                            else if( this.ct分岐アニメ進行[ i ].n現在の値 >= 100 && this.ct分岐アニメ進行[ i ].n現在の値 < 150 )
+                            else if( this.ct分岐アニメ進行[ i ].CurrentValue >= 100 && this.ct分岐アニメ進行[ i ].CurrentValue < 150 )
                             {
                                 TJAPlayer3.Tx.Lane_Base[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
                             }
-                            else if( this.ct分岐アニメ進行[ i ].n現在の値 >= 150 )
+                            else if( this.ct分岐アニメ進行[ i ].CurrentValue >= 150 )
                             {
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
-                                TJAPlayer3.Tx.Lane_Base[2].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 250 ? 255 : ( ( (this.ct分岐アニメ進行[ i ].n現在の値 - 150) * 0xff ) / 100 );
+                                TJAPlayer3.Tx.Lane_Base[2].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 250 ? 255 : ( ( (this.ct分岐アニメ進行[ i ].CurrentValue - 150) * 0xff ) / 100 );
                                 TJAPlayer3.Tx.Lane_Base[2].t2D描画( x[ i ], y[ i ] );
                             }
                         }
@@ -145,7 +145,7 @@ namespace TJAPlayer3
                         if (nBefore[i] == CDTX.ECourse.eExpert && nAfter[i] == CDTX.ECourse.eMaster)
                         {
                             TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
-                            TJAPlayer3.Tx.Lane_Base[2].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].n現在の値 * 0xff ) / 100 );
+                            TJAPlayer3.Tx.Lane_Base[2].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].CurrentValue * 0xff ) / 100 );
                             TJAPlayer3.Tx.Lane_Base[2].t2D描画( x[ i ], y[ i ] );
                         }
                         #endregion
@@ -154,7 +154,7 @@ namespace TJAPlayer3
                         if (nBefore[i] == CDTX.ECourse.eExpert && nAfter[i] == CDTX.ECourse.eNormal)
                         {
                             TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
-                            TJAPlayer3.Tx.Lane_Base[0].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].n現在の値 * 0xff ) / 100 );
+                            TJAPlayer3.Tx.Lane_Base[0].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].CurrentValue * 0xff ) / 100 );
                             TJAPlayer3.Tx.Lane_Base[0].t2D描画( x[ i ], y[ i ] );
                         }
                         #endregion
@@ -163,34 +163,34 @@ namespace TJAPlayer3
                         if (nBefore[i] == CDTX.ECourse.eMaster && nAfter[i] == CDTX.ECourse.eNormal)
                         {
                             TJAPlayer3.Tx.Lane_Base[2].t2D描画( x[ i ], y[ i ] );
-                            if( this.ct分岐アニメ進行[ i ].n現在の値 < 100 )
+                            if( this.ct分岐アニメ進行[ i ].CurrentValue < 100 )
                             {
-                                TJAPlayer3.Tx.Lane_Base[1].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].n現在の値 * 0xff ) / 100 );
+                                TJAPlayer3.Tx.Lane_Base[1].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].CurrentValue * 0xff ) / 100 );
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
                             }
-                            else if( this.ct分岐アニメ進行[ i ].n現在の値 >= 100 && this.ct分岐アニメ進行[ i ].n現在の値 < 150 )
+                            else if( this.ct分岐アニメ進行[ i ].CurrentValue >= 100 && this.ct分岐アニメ進行[ i ].CurrentValue < 150 )
                             {
                                 TJAPlayer3.Tx.Lane_Base[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
                             }
-                            else if( this.ct分岐アニメ進行[ i ].n現在の値 >= 150 )
+                            else if( this.ct分岐アニメ進行[ i ].CurrentValue >= 150 )
                             {
                                 TJAPlayer3.Tx.Lane_Base[1].t2D描画( x[ i ], y[ i ] );
-                                TJAPlayer3.Tx.Lane_Base[0].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 250 ? 255 : ( ( ( this.ct分岐アニメ進行[ i ].n現在の値 - 150 ) * 0xff ) / 100 );
+                                TJAPlayer3.Tx.Lane_Base[0].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 250 ? 255 : ( ( ( this.ct分岐アニメ進行[ i ].CurrentValue - 150 ) * 0xff ) / 100 );
                                 TJAPlayer3.Tx.Lane_Base[0].t2D描画( x[ i ], y[ i ] );
                             }
                         }
                         if (nBefore[i] == CDTX.ECourse.eMaster && nAfter[i] == CDTX.ECourse.eExpert)
                         {
                             TJAPlayer3.Tx.Lane_Base[2].t2D描画( x[ i ], y[ i ] );
-                            TJAPlayer3.Tx.Lane_Base[2].Opacity = this.ct分岐アニメ進行[ i ].n現在の値 > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].n現在の値 * 0xff ) / 100 );
+                            TJAPlayer3.Tx.Lane_Base[2].Opacity = this.ct分岐アニメ進行[ i ].CurrentValue > 100 ? 255 : ( ( this.ct分岐アニメ進行[ i ].CurrentValue * 0xff ) / 100 );
                             TJAPlayer3.Tx.Lane_Base[2].t2D描画( x[ i ], y[ i ] );
                         }
                         #endregion
                     }
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public virtual void t分岐レイヤー_コース変化(CDTX.ECourse n現在, CDTX.ECourse n次回, int player)

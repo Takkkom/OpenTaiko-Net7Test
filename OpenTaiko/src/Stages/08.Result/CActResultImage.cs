@@ -17,7 +17,7 @@ namespace TJAPlayer3
         /// </summary>
 		public CActResultImage()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
@@ -25,55 +25,55 @@ namespace TJAPlayer3
 
 		public void tアニメを完了させる()
 		{
-			this.ct登場用.n現在の値 = (int)this.ct登場用.n終了値;
+			this.ct登場用.CurrentValue = (int)this.ct登場用.EndValue;
 		}
 
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			if( this.ct登場用 != null )
 			{
 				this.ct登場用 = null;
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override unsafe int On進行描画()
+		public override unsafe int Draw()
 		{
-			if( base.b活性化してない )
+			if( base.IsDeActivated )
 			{
 				return 0;
 			}
-			if( base.b初めての進行描画 )
+			if( base.IsFirstDraw )
 			{
 				this.ct登場用 = new CCounter( 0, 100, 5, TJAPlayer3.Timer );
-				base.b初めての進行描画 = false;
+				base.IsFirstDraw = false;
 			}
-			this.ct登場用.t進行();
+			this.ct登場用.Tick();
 
-			if( !this.ct登場用.b終了値に達した )
+			if( !this.ct登場用.IsEnded )
 			{
 				return 0;
 			}

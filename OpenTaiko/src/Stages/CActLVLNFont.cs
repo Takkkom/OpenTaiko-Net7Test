@@ -43,7 +43,7 @@ namespace TJAPlayer3
 		}
 		public void t文字列描画(int x, int y, string str, EFontColor efc, EFontAlign efa)
 		{
-			if (!base.b活性化してない && !string.IsNullOrEmpty(str))
+			if (!base.IsDeActivated && !string.IsNullOrEmpty(str))
 			{
 				if (this.tx数値 != null)
 				{
@@ -72,24 +72,24 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				this.tx数値 = TJAPlayer3.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect level numbers.png"));
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				if ( this.tx数値 != null )
 				{
 					this.tx数値.Dispose();
 					this.tx数値 = null;
 				}
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
 

@@ -1582,69 +1582,69 @@ namespace TJAPlayer3
                                     // パターン数の設定はTextureLoader.csで反映されます。
                                     case "Game_Chara_Motion_Normal":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_Normal[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_Normal[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_10Combo":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_10Combo[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_10Combo[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_10Combo_Max":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_10ComboMax[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_10ComboMax[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_Miss":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_Miss[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_Miss[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_MissDown":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_MissDown[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_MissDown[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_ClearIn":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_ClearIn[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_ClearIn[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_Clear":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_Clear[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_Clear[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_GoGoStart":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_GoGoStart[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_GoGoStart[i] = CConversion.StringToIntArray(strParam);
                                         TJAPlayer3.Skin.Characters_Motion_GoGoStartMax[i] = TJAPlayer3.Skin.Characters_Motion_GoGoStart[i];
                                         break;
                                     }
                                     case "Game_Chara_Motion_GoGoStart_Max":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_GoGoStartMax[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_GoGoStartMax[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_GoGo":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_GoGo[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_GoGo[i] = CConversion.StringToIntArray(strParam);
                                         TJAPlayer3.Skin.Characters_Motion_GoGoMax[i] = TJAPlayer3.Skin.Characters_Motion_GoGo[i];
                                         break;
                                     }
                                     case "Game_Chara_Motion_GoGo_Max":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_GoGoMax[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_GoGoMax[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_SoulIn":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_SoulIn[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_SoulIn[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Motion_Return":
                                     {
-                                        TJAPlayer3.Skin.Characters_Motion_Return[i] = CConversion.ar配列形式のstringをint配列に変換して返す(strParam);
+                                        TJAPlayer3.Skin.Characters_Motion_Return[i] = CConversion.StringToIntArray(strParam);
                                         break;
                                     }
                                     case "Game_Chara_Beat_Normal":

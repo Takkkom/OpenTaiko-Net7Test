@@ -20,16 +20,16 @@ namespace TJAPlayer3
             // Load CActivity objects here
             // base.list子Activities.Add(this.act = new CAct());
 
-            base.list子Activities.Add(this.actFOtoNowLoading = new CActFIFOStart());
-            base.list子Activities.Add(this.actFOtoTitle = new CActFIFOBlack());
+            base.ChildActivities.Add(this.actFOtoNowLoading = new CActFIFOStart());
+            base.ChildActivities.Add(this.actFOtoTitle = new CActFIFOBlack());
 
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             // On activation
 
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
             base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
@@ -39,17 +39,17 @@ namespace TJAPlayer3
                 listSongs = TJAPlayer3.Songs管理.list曲ルート_Tower;
 
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             // On de-activation
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             // Ressource allocation
 
@@ -69,10 +69,10 @@ namespace TJAPlayer3
                 pfSubTitleFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerSelect_SubTitle_Size);
             tUpdateBarInfos();
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             // Ressource freeing
 
@@ -83,10 +83,10 @@ namespace TJAPlayer3
             pfTitleFont.Dispose();
             pfSubTitleFont.Dispose();
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             Background.Update();
             Background.Draw();
@@ -115,7 +115,7 @@ namespace TJAPlayer3
                     return 0;
                 }
 
-                if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow) ||
+                if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange))
                 {
                     TJAPlayer3.Skin.sound変更音.t再生する();
@@ -126,7 +126,7 @@ namespace TJAPlayer3
                     }
                 }
 
-                else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow) ||
+                else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange))
                 {
                     TJAPlayer3.Skin.sound変更音.t再生する();
@@ -137,7 +137,7 @@ namespace TJAPlayer3
                     }
                 }
 
-                else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape) ||
+                else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape) ||
                 TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
                 {
 
@@ -149,7 +149,7 @@ namespace TJAPlayer3
                     #endregion
                 }
 
-                else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return) ||
+                else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide))
                 {
                     #region [Decide]
@@ -193,13 +193,13 @@ namespace TJAPlayer3
             switch (base.eフェーズID)
             {
                 case CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト:
-                    if (this.actFOtoNowLoading.On進行描画() == 0)
+                    if (this.actFOtoNowLoading.Draw() == 0)
                     {
                         break;
                     }
                     return (int)this.eフェードアウト完了時の戻り値;
                 case CStage.Eフェーズ.共通_フェードアウト:
-                    if (this.actFOtoTitle.On進行描画() == 0)
+                    if (this.actFOtoTitle.Draw() == 0)
                     {
                         break;
                     }

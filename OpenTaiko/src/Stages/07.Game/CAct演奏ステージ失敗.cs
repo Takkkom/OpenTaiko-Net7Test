@@ -61,7 +61,7 @@ namespace TJAPlayer3
 			st文字位置11.pt = new Point( 558 + 62, 0 );
 			st文字位置Array[ 10 ] = st文字位置11;
 			this.st文字位置 = st文字位置Array;
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
@@ -69,7 +69,7 @@ namespace TJAPlayer3
 
 		public void Start()
 		{
-            this.dbFailedTime = TJAPlayer3.Timer.n現在時刻;
+            this.dbFailedTime = TJAPlayer3.Timer.NowTime;
 			this.ct進行 = new CCounter( 0, 300, 22, TJAPlayer3.Timer );
 			this.ctEnd_ClearFailed = new CCounter(0, 69, 30, TJAPlayer3.Timer);
 			if ( TJAPlayer3.ConfigIni.eGameMode != EGame.OFF )
@@ -81,14 +81,14 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			this.sd効果音 = null;
 			this.b効果音再生済み = false;
 			this.ct進行 = new CCounter();
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			this.ct進行 = null;
 			if( this.sd効果音 != null )
@@ -96,24 +96,24 @@ namespace TJAPlayer3
 				TJAPlayer3.Sound管理.tDisposeSound( this.sd効果音 );
 				this.sd効果音 = null;
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
 			this.failedSongPlayed = false;
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				//            this.txBlack = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile black 64x64.png" ) );
 				//this.txStageFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_stage_failed.jpg" ) );
 				//this.txGameFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_GameFailed.png" ) );
 				//            this.tx数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_RollNumber.png" ) );
 				this.soundFailed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				//CDTXMania.tテクスチャの解放( ref this.txStageFailed );
 				//CDTXMania.tテクスチャの解放( ref this.txGameFailed );
@@ -121,7 +121,7 @@ namespace TJAPlayer3
 				//            CDTXMania.tテクスチャの解放( ref this.tx数字 );
 				if (this.soundFailed != null)
 					this.soundFailed.tDispose();
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
 
@@ -131,20 +131,20 @@ namespace TJAPlayer3
 		{
 			int[] y = new int[] { 0, 176 };
 
-			this.ctEnd_ClearFailed.t進行();
-			if (this.ctEnd_ClearFailed.n現在の値 <= 20 || TJAPlayer3.Tx.ClearFailed == null)
+			this.ctEnd_ClearFailed.Tick();
+			if (this.ctEnd_ClearFailed.CurrentValue <= 20 || TJAPlayer3.Tx.ClearFailed == null)
 			{
-				TJAPlayer3.Tx.End_ClearFailed[Math.Min(this.ctEnd_ClearFailed.n現在の値, TJAPlayer3.Tx.End_ClearFailed.Length - 1)]?.t2D描画(505, y[i] + 145);
+				TJAPlayer3.Tx.End_ClearFailed[Math.Min(this.ctEnd_ClearFailed.CurrentValue, TJAPlayer3.Tx.End_ClearFailed.Length - 1)]?.t2D描画(505, y[i] + 145);
 			}
-			else if(this.ctEnd_ClearFailed.n現在の値 >= 20 && this.ctEnd_ClearFailed.n現在の値 <= 67)
+			else if(this.ctEnd_ClearFailed.CurrentValue >= 20 && this.ctEnd_ClearFailed.CurrentValue <= 67)
 			{
 				TJAPlayer3.Tx.ClearFailed?.t2D描画(502, y[i] + 192);
 			}
-			else if (this.ctEnd_ClearFailed.n現在の値 == 68)
+			else if (this.ctEnd_ClearFailed.CurrentValue == 68)
 			{
 				TJAPlayer3.Tx.ClearFailed1?.t2D描画(502, y[i] + 192);
 			}
-			else if (this.ctEnd_ClearFailed.n現在の値 >= 69)
+			else if (this.ctEnd_ClearFailed.CurrentValue >= 69)
 			{
 				TJAPlayer3.Tx.ClearFailed2?.t2D描画(502, y[i] + 192);
 			}
@@ -152,23 +152,23 @@ namespace TJAPlayer3
 
 		#endregion
 
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( base.b活性化してない )
+			if( base.IsDeActivated )
 			{
 				return 0;
 			}
-			if( ( this.ct進行 == null ) || this.ct進行.b停止中 )
+			if( ( this.ct進行 == null ) || this.ct進行.IsStoped )
 			{
 				return 0;
 			}
-			this.ct進行.t進行();
+			this.ct進行.Tick();
 
 			#region [Failed screen]
 
 			if (this.soundFailed != null && !this.failedSongPlayed)
 			{
-				this.soundFailed.t再生を開始する();
+				this.soundFailed.PlayStart();
 				this.failedSongPlayed = true;
 			}
 			this.showEndEffect_Failed(0);
@@ -239,7 +239,7 @@ namespace TJAPlayer3
 
 			*/
 
-			if( !this.ct進行.b終了値に達した )
+			if( !this.ct進行.IsEnded )
 			{
 				return 0;
 			}

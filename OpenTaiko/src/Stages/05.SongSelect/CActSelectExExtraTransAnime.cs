@@ -25,9 +25,9 @@ namespace TJAPlayer3
 
         }
         // because i can't read japanese very well :
-        public override void OnManagedリソースの作成() //On Managed Create Resource
+        public override void CreateManagedResource() //On Managed Create Resource
         {
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
 
             CurrentState = AnimeState.NotRunning;
             
@@ -41,9 +41,9 @@ namespace TJAPlayer3
             ExtraToExScript.Init();
         }
 
-        public override void OnManagedリソースの解放() //On Managed Release Resource
+        public override void ReleaseManagedResource() //On Managed Release Resource
         {
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
 
             ExToExtraCounter = null;
             ExtraToExCounter = null;
@@ -60,21 +60,21 @@ namespace TJAPlayer3
             }
         }
 
-        public override void On活性化() //On Activate
+        public override void Activate() //On Activate
         {
-            base.On活性化();
+            base.Activate();
         }
 
-        public override int On進行描画() //On Progress Draw
+        public override int Draw() //On Progress Draw
         {
             switch (CurrentState)
             {
                 case AnimeState.ExToExtra:
-                    ExToExtraCounter.t進行();
-                    if (ExToExtraCounter.b終了値に達した)
+                    ExToExtraCounter.Tick();
+                    if (ExToExtraCounter.IsEnded)
                     {
                         CurrentState = AnimeState.NotRunning;
-                        ExToExtraCounter.t停止();
+                        ExToExtraCounter.Stop();
                         return 0;
                     }
 
@@ -83,11 +83,11 @@ namespace TJAPlayer3
                     return 1;
 
                 case AnimeState.ExtraToEx:
-                    ExtraToExCounter.t進行();
-                    if (ExtraToExCounter.b終了値に達した)
+                    ExtraToExCounter.Tick();
+                    if (ExtraToExCounter.IsEnded)
                     {
                         CurrentState = AnimeState.NotRunning;
-                        ExtraToExCounter.t停止();
+                        ExtraToExCounter.Stop();
                         return 0;
                     }
 
@@ -101,9 +101,9 @@ namespace TJAPlayer3
             }
         }
 
-        public override void On非活性化() //On Deactivate
+        public override void DeActivate() //On Deactivate
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
         public void BeginAnime(bool toExtra)

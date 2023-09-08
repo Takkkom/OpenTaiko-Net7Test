@@ -819,7 +819,7 @@ namespace TJAPlayer3
 
 
 									this.nファイルから反映できたスコア数++;
-									cdtx.On非活性化();
+									cdtx.DeActivate();
 //Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
 									#region [ 曲検索ログ出力 ]
 									//-----------------

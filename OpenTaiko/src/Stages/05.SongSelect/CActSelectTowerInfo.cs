@@ -13,51 +13,51 @@ namespace TJAPlayer3
     {
         public CActSelectTowerInfo()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             // On activation
 
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
 
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             // On de-activation
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (base.b活性化してない)
+            if (base.IsDeActivated)
                 return;
 
             // Ressource allocation
             SongSelect_Floor_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Floor_Number.png"));
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (base.b活性化してない)
+            if (base.IsDeActivated)
                 return;
 
             // Ressource freeing
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Floor_Number);
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             tFloorNumberDraw(TJAPlayer3.Skin.SongSelect_FloorNum_X, TJAPlayer3.Skin.SongSelect_FloorNum_Y, TJAPlayer3.stage選曲.r現在選択中の曲.nTotalFloor);
 

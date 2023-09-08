@@ -22,15 +22,15 @@ namespace TJAPlayer3
             // Load CActivity objects here
             // base.list子Activities.Add(this.act = new CAct());
 
-            base.list子Activities.Add(this.actFOtoTitle = new CActFIFOBlack());
+            base.ChildActivities.Add(this.actFOtoTitle = new CActFIFOBlack());
 
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             // On activation
 
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
             base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
@@ -110,23 +110,23 @@ namespace TJAPlayer3
 
             #endregion
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             // On de-activation
 
             TJAPlayer3.Songs管理.UpdateDownloadBox();
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             // Ressource allocation
 
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Script.lua"));
                 Background.Init();
@@ -139,15 +139,15 @@ namespace TJAPlayer3
                 OnlineLounge_Song_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Song_Box.png"));
                 OnlineLounge_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Return_Box.png"));
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             // Ressource freeing
 
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 TJAPlayer3.t安全にDisposeする(ref Background);
 
@@ -159,11 +159,11 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Song_Box);
                 TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Return_Box);
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             Background.Update();
             Background.Draw();
@@ -361,7 +361,7 @@ namespace TJAPlayer3
 
             //if (!IsDownloading)
             {
-                if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow) ||
+                if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange))
                 {
                     if (this.tMove(1))
@@ -370,7 +370,7 @@ namespace TJAPlayer3
                     }
                 }
 
-                else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow) ||
+                else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange))
                 {
                     if (this.tMove(-1))
@@ -379,7 +379,7 @@ namespace TJAPlayer3
                     }
                 }
 
-                else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape) ||
+                else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape) ||
                 TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
                 {
 
@@ -416,7 +416,7 @@ namespace TJAPlayer3
                     #endregion
                 }
 
-                else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return) ||
+                else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return) ||
                     TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide))
                 {
 
@@ -545,7 +545,7 @@ namespace TJAPlayer3
                 switch (base.eフェーズID)
             {
                 case CStage.Eフェーズ.共通_フェードアウト:
-                    if (this.actFOtoTitle.On進行描画() == 0)
+                    if (this.actFOtoTitle.Draw() == 0)
                     {
                         break;
                     }

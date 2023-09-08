@@ -35,14 +35,14 @@ namespace TJAPlayer3
                 st小文字位置[i].ptX = i * 18;
                 st小文字位置[i].ch = i.ToString().ToCharArray()[0];
             }
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
 		}
 
         public void t次に移動(int player)
         {
             if (n現在の選択行[player] < 5)
             {
-                ctBarAnime[player].t開始(0, 180, 1, TJAPlayer3.Timer);
+                ctBarAnime[player].Start(0, 180, 1, TJAPlayer3.Timer);
                 if (!b裏譜面)
                 {
                     n現在の選択行[player]++;
@@ -99,7 +99,7 @@ namespace TJAPlayer3
 		{
             if(n現在の選択行[player] - 1 >= 0)
             {
-                ctBarAnime[player].t開始(0, 180, 1, TJAPlayer3.Timer);
+                ctBarAnime[player].Start(0, 180, 1, TJAPlayer3.Timer);
                 nスイッチカウント = 0;
                 if(n現在の選択行[player] == 6)
                     n現在の選択行[player] -= 2;
@@ -133,14 +133,14 @@ namespace TJAPlayer3
 
             this.b裏譜面 = (TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.nレベル[(int)Difficulty.Edit] >= 0 && TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.nレベル[(int)Difficulty.Oni] < 0);
 
-            this.b初めての進行描画 = true;
+            this.IsFirstDraw = true;
 		}
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
-			if( this.b活性化してる )
+			if( this.IsActivated )
 				return;
             ctBarAnime = new CCounter[5];
             ctBarAnime[0] = new CCounter();
@@ -149,20 +149,20 @@ namespace TJAPlayer3
             ctBarAnime[3] = new CCounter();
             ctBarAnime[4] = new CCounter();
 
-            base.On活性化();
+            base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
             ctBarAnime = null;
 
-            base.On非活性化();
+            base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
             Difficulty_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Bar.png"));
@@ -190,11 +190,11 @@ namespace TJAPlayer3
             }
             // this.soundSelectAnnounce = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds{Path.DirectorySeparatorChar}DiffSelect.ogg" ), ESoundGroup.SoundEffect );
 
-			base.OnManagedリソースの作成();
+			base.CreateManagedResource();
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Bar);
@@ -215,30 +215,30 @@ namespace TJAPlayer3
             }
             // TJAPlayer3.t安全にDisposeする( ref this.soundSelectAnnounce );
 
-			base.OnManagedリソースの解放();
+			base.ReleaseManagedResource();
 		}
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (this.b活性化してない)
+            if (this.IsDeActivated)
                 return 0;
 
             #region [ 初めての進行描画 ]
             //-----------------
-            if (this.b初めての進行描画)
+            if (this.IsFirstDraw)
             {
                 ctBarAnimeIn = new CCounter(0, 170, 4, TJAPlayer3.Timer);
                 // this.soundSelectAnnounce?.tサウンドを再生する();
                 //TJAPlayer3.Skin.soundSelectAnnounce.t再生する();
                 TJAPlayer3.Skin.voiceMenuDiffSelect[TJAPlayer3.SaveFile]?.t再生する();
-                base.b初めての進行描画 = false;
+                base.IsFirstDraw = false;
             }
             //-----------------
             #endregion
 
-            ctBarAnimeIn.t進行();
+            ctBarAnimeIn.Tick();
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
-                ctBarAnime[i].t進行();
+                ctBarAnime[i].Tick();
             }
 
             bool uraExists = TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.nレベル[(int)Difficulty.Edit] >= 0;
@@ -246,7 +246,7 @@ namespace TJAPlayer3
 
             #region [ キー入力 ]
 
-            if (this.ctBarAnimeIn.b終了値に達した && exextraAnimation == 0) // Prevent player actions if animation is active
+            if (this.ctBarAnimeIn.IsEnded && exextraAnimation == 0) // Prevent player actions if animation is active
             {
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
@@ -261,11 +261,11 @@ namespace TJAPlayer3
                         switch (i)
                         {
                             case 0:
-                                right = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow));
-                                left = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow));
+                                right = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow));
+                                left = (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow));
                                 decide = (TJAPlayer3.Pad.b押されたDGB(Eパッド.Decide) || 
-                                    (TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return)));
-                                cancel = (TJAPlayer3.Pad.b押されたDGB(Eパッド.Cancel) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape));
+                                    (TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return)));
+                                cancel = (TJAPlayer3.Pad.b押されたDGB(Eパッド.Cancel) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape));
                                 break;
                             case 1:
                                 if (!TJAPlayer3.ConfigIni.bAIBattleMode)
@@ -307,7 +307,7 @@ namespace TJAPlayer3
                             if (n現在の選択行[i] == 0)
                             {
                                 TJAPlayer3.Skin.sound決定音.t再生する();
-                                TJAPlayer3.stage選曲.act曲リスト.ctBarOpen.t開始(100, 260, 2, TJAPlayer3.Timer);
+                                TJAPlayer3.stage選曲.act曲リスト.ctBarOpen.Start(100, 260, 2, TJAPlayer3.Timer);
                                 this.bIsDifficltSelect = false;
                             }
                             else if (n現在の選択行[i] == 1)
@@ -383,7 +383,7 @@ namespace TJAPlayer3
                         if (cancel)
                         {
                             TJAPlayer3.Skin.sound決定音.t再生する();
-                            TJAPlayer3.stage選曲.act曲リスト.ctBarOpen.t開始(100, 260, 2, TJAPlayer3.Timer);
+                            TJAPlayer3.stage選曲.act曲リスト.ctBarOpen.Start(100, 260, 2, TJAPlayer3.Timer);
                             this.bIsDifficltSelect = false;
                         }
                     }
@@ -407,14 +407,14 @@ namespace TJAPlayer3
 
 
             Difficulty_Back[boxType].Opacity =
-                (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
-            Difficulty_Bar.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
-            Difficulty_Number.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
-            Difficulty_Crown.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
+                (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.CurrentValue - 1255);
+            Difficulty_Bar.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.CurrentValue - 1255);
+            Difficulty_Number.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.CurrentValue - 1255);
+            Difficulty_Crown.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.CurrentValue - 1255);
             TJAPlayer3.stage選曲.act曲リスト.SongSelect_ScoreRank.vc拡大縮小倍率.X = 0.65f;
             TJAPlayer3.stage選曲.act曲リスト.SongSelect_ScoreRank.vc拡大縮小倍率.Y = 0.65f;
-            TJAPlayer3.stage選曲.act曲リスト.SongSelect_ScoreRank.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
-            Difficulty_Star.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
+            TJAPlayer3.stage選曲.act曲リスト.SongSelect_ScoreRank.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.CurrentValue - 1255);
+            Difficulty_Star.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.CurrentValue - 1255);
 
             Difficulty_Back[boxType].color4 = CConversion.ColorToColor4(TJAPlayer3.stage選曲.r現在選択中の曲.BoxColor);
 
@@ -428,7 +428,7 @@ namespace TJAPlayer3
                 Difficulty_Select_Bar[i].Opacity = (int)(ctBarAnimeIn.n現在の値 >= 80 ? (ctBarAnimeIn.n現在の値 - 80) * 2.84f : 0);
                 Difficulty_Select_Bar[i].t2D描画((float)this.BarX[n現在の選択行[i]], 242, new RectangleF(0, (n現在の選択行[i] >= 2 ? 114 : 387), 259, 275 - (n現在の選択行[i] >= 2 ? 0 : 164)));
                 */
-                Difficulty_Select_Bar[i].Opacity = (int)(ctBarAnimeIn.n現在の値 >= 80 ? (ctBarAnimeIn.n現在の値 - 80) * 2.84f : 0);
+                Difficulty_Select_Bar[i].Opacity = (int)(ctBarAnimeIn.CurrentValue >= 80 ? (ctBarAnimeIn.CurrentValue - 80) * 2.84f : 0);
 
                 int backType = n現在の選択行[i] >= 2 ? 1 : 2;
 
@@ -450,7 +450,7 @@ namespace TJAPlayer3
                     TJAPlayer3.Skin.SongSelect_Difficulty_Bar_Rect[i][3]));    //閉じる
             }
 
-            exextraAnimation = TJAPlayer3.stage選曲.actExExtraTransAnime.On進行描画();
+            exextraAnimation = TJAPlayer3.stage選曲.actExExtraTransAnime.Draw();
 
             for (int i = 0; i <= (int)Difficulty.Edit; i++)
             {
@@ -599,10 +599,10 @@ namespace TJAPlayer3
                     moveY = 0;
                 }
 
-                moveX += (((float)Math.Sin((float)ctBarAnime[i].n現在の値 * (Math.PI / 180)) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_Anime[0]) -
-                    (((float)Math.Cos((float)ctBarAnimeIn.n現在の値 * (Math.PI / 170)) + 1.0f) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_AnimeIn[0]));
-                moveY += (((float)Math.Sin((float)ctBarAnime[i].n現在の値 * (Math.PI / 180)) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_Anime[1]) -
-                    (((float)Math.Cos((float)ctBarAnimeIn.n現在の値 * (Math.PI / 170)) + 1.0f) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_Anime[1]));
+                moveX += (((float)Math.Sin((float)ctBarAnime[i].CurrentValue * (Math.PI / 180)) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_Anime[0]) -
+                    (((float)Math.Cos((float)ctBarAnimeIn.CurrentValue * (Math.PI / 170)) + 1.0f) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_AnimeIn[0]));
+                moveY += (((float)Math.Sin((float)ctBarAnime[i].CurrentValue * (Math.PI / 180)) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_Anime[1]) -
+                    (((float)Math.Cos((float)ctBarAnimeIn.CurrentValue * (Math.PI / 170)) + 1.0f) * TJAPlayer3.Skin.SongSelect_Difficulty_Select_Bar_Anime[1]));
 
 
 

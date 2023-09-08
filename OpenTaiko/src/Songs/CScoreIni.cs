@@ -776,7 +776,7 @@ namespace TJAPlayer3
 							}
 							else if( item.Equals( "BGMAdjust" ) )
 							{
-								this.stファイル.BGMAdjust = CConversion.n値を文字列から取得して返す( para, 0 );
+								this.stファイル.BGMAdjust = CConversion.StringToInt( para, 0 );
 							}
 							continue;
 							#endregion

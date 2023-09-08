@@ -17,14 +17,14 @@ namespace TJAPlayer3
 		public CStage起動()
 		{
 			base.eステージID = CStage.Eステージ.起動;
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 		public List<string> list進行文字列;
 
 		// CStage 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			Trace.TraceInformation( "起動ステージを活性化します。" );
 			Trace.Indent();
@@ -32,7 +32,7 @@ namespace TJAPlayer3
 			{
 				this.list進行文字列 = new List<string>();
 				base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
-				base.On活性化();
+				base.Activate();
 				Trace.TraceInformation( "起動ステージの活性化を完了しました。" );
 			}
 			finally
@@ -40,7 +40,7 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			Trace.TraceInformation( "起動ステージを非活性化します。" );
 			Trace.Indent();
@@ -56,7 +56,7 @@ namespace TJAPlayer3
 						es.thDTXFileEnumerate.Join();
 					}
 				}
-				base.On非活性化();
+				base.DeActivate();
 				Trace.TraceInformation( "起動ステージの非活性化を完了しました。" );
 			}
 			finally
@@ -64,27 +64,27 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				this.tx背景 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}1_Title{Path.DirectorySeparatorChar}Background.png" ), false );
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( base.b初めての進行描画 )
+				if( base.IsFirstDraw )
 				{
 					this.list進行文字列.Add( "DTXManiaXG Ver.K powered by YAMAHA Silent Session Drums\n" );
 					this.list進行文字列.Add( "Product by.kairera0467\n" );
@@ -98,7 +98,7 @@ namespace TJAPlayer3
 
                     es = new CEnumSongs();
 					es.StartEnumFromCache();										// 曲リスト取得(別スレッドで実行される)
-					base.b初めての進行描画 = false;
+					base.IsFirstDraw = false;
 					return 0;
 				}
 
@@ -181,7 +181,7 @@ namespace TJAPlayer3
 				{
 					TJAPlayer3.Songs管理 = ( es != null ) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
 
-					if(TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return))
+					if(TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return))
                     {
 						TJAPlayer3.Skin.sound決定音.t再生する();
 						return 1;

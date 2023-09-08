@@ -13,7 +13,7 @@ namespace TJAPlayer3
 
         public FlyingNotes()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
 
@@ -57,7 +57,7 @@ namespace TJAPlayer3
 
         // CActivity 実装
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < 128; i++)
             {
@@ -69,48 +69,48 @@ namespace TJAPlayer3
             {
                 StartPointX[i] = TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_X[i];
             }
-            base.On活性化();
+            base.Activate();
         }
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < 128; i++)
             {
                 Flying[i].Counter = null;
             }
-            base.On非活性化();
+            base.DeActivate();
         }
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 for (int i = 0; i < 128; i++)
                 {
                     if (Flying[i].IsUsing)
                     {
-                        Flying[i].OldValue = Flying[i].Counter.n現在の値;
-                        Flying[i].Counter.t進行();
-                        if (Flying[i].Counter.b終了値に達した)
+                        Flying[i].OldValue = Flying[i].Counter.CurrentValue;
+                        Flying[i].Counter.Tick();
+                        if (Flying[i].Counter.IsEnded)
                         {
-                            Flying[i].Counter.t停止();
+                            Flying[i].Counter.Stop();
                             Flying[i].IsUsing = false;
                             TJAPlayer3.stage演奏ドラム画面.actGauge.Start(Flying[i].Lane, E判定.Perfect, Flying[i].Player);
                             TJAPlayer3.stage演奏ドラム画面.actChipEffects.Start(Flying[i].Player, Flying[i].Lane);
                         }
-                        for (int n = Flying[i].OldValue; n < Flying[i].Counter.n現在の値; n += 16)
+                        for (int n = Flying[i].OldValue; n < Flying[i].Counter.CurrentValue; n += 16)
                         {
                             int endX;
                             int endY;
@@ -141,7 +141,7 @@ namespace TJAPlayer3
                             }
                             */
 
-                            double value = (Flying[i].Counter.n現在の値 / 140.0);
+                            double value = (Flying[i].Counter.CurrentValue / 140.0);
 
                             Flying[i].X = StartPointX[Flying[i].Player] + TJAPlayer3.stage演奏ドラム画面.GetJPOSCROLLX(Flying[i].Player) + (movingDistanceX * value);
                             Flying[i].Y = TJAPlayer3.Skin.Game_Effect_FlyingNotes_StartPoint_Y[Flying[i].Player] + TJAPlayer3.stage演奏ドラム画面.GetJPOSCROLLY(Flying[i].Player) + (int)(movingDistanceY * value);
@@ -162,7 +162,7 @@ namespace TJAPlayer3
                             {
                             }
 
-                            if (n % TJAPlayer3.Skin.Game_Effect_FireWorks_Timing == 0 && !Flying[i].IsRoll && Flying[i].Counter.n現在の値 > 18)
+                            if (n % TJAPlayer3.Skin.Game_Effect_FireWorks_Timing == 0 && !Flying[i].IsRoll && Flying[i].Counter.CurrentValue > 18)
                             {
                                 if (Flying[i].Lane == 3 || Flying[i].Lane == 4)
                                 {
@@ -207,7 +207,7 @@ namespace TJAPlayer3
                     }
                 }
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
 

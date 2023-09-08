@@ -14,20 +14,20 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏DrumsFooter()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             var footerDir = CSkin.Path($"{TextureLoader.BASE}{TextureLoader.GAME}{TextureLoader.FOOTER}");
 
@@ -44,23 +44,23 @@ namespace TJAPlayer3
                 }
             }
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             TJAPlayer3.t安全にDisposeする(ref Mob_Footer);
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             if (this.Mob_Footer != null)
             {
                 this.Mob_Footer.t2D描画(0, TJAPlayer3.Skin.Resolution[1] - this.Mob_Footer.szテクスチャサイズ.Height);
             }
-            return base.On進行描画();
+            return base.Draw();
         }
 
         #region[ private ]

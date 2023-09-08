@@ -21,10 +21,10 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏Drumsレーン太鼓()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < 5; i++)
             {
@@ -41,10 +41,10 @@ namespace TJAPlayer3
 
 
             this.ctゴーゴー炎 = new CCounter(0, 6, 50, TJAPlayer3.Timer);
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < 5; i++)
             {
@@ -53,26 +53,26 @@ namespace TJAPlayer3
             }
             this.ctゴーゴー = null;
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (base.b初めての進行描画)
+            if (base.IsFirstDraw)
             {
                 for (int i = 0; i < 5; i++)
-                    this.stBranch[i].nフラッシュ制御タイマ = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
-                base.b初めての進行描画 = false;
+                    this.stBranch[i].nフラッシュ制御タイマ = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                base.IsFirstDraw = false;
             }
 
             //それぞれが独立したレイヤーでないといけないのでforループはパーツごとに分離すること。
@@ -119,7 +119,7 @@ namespace TJAPlayer3
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
                 #region[ 分岐アニメ制御タイマー ]
-                long num = FDK.CSound管理.PlayTimer.n現在時刻;
+                long num = FDK.SoundManager.PlayTimer.NowTime;
                 if (num < this.stBranch[i].nフラッシュ制御タイマ)
                 {
                     this.stBranch[i].nフラッシュ制御タイマ = num;
@@ -144,12 +144,12 @@ namespace TJAPlayer3
                     this.stBranch[i].nフラッシュ制御タイマ += 8;
                 }
 
-                if (!this.stBranch[i].ct分岐アニメ進行.b停止中)
+                if (!this.stBranch[i].ct分岐アニメ進行.IsStoped)
                 {
-                    this.stBranch[i].ct分岐アニメ進行.t進行();
-                    if (this.stBranch[i].ct分岐アニメ進行.b終了値に達した)
+                    this.stBranch[i].ct分岐アニメ進行.Tick();
+                    if (this.stBranch[i].ct分岐アニメ進行.IsEnded)
                     {
-                        this.stBranch[i].ct分岐アニメ進行.t停止();
+                        this.stBranch[i].ct分岐アニメ進行.Stop();
                     }
                 }
                 #endregion
@@ -189,14 +189,14 @@ namespace TJAPlayer3
                     if (TJAPlayer3.ConfigIni.nBranchAnime == 1)
                     {
                         #region[ AC7～14風の背後レイヤー ]
-                        if (this.stBranch[i].ct分岐アニメ進行.b進行中)
+                        if (this.stBranch[i].ct分岐アニメ進行.IsTicked)
                         {
-                            int n透明度 = ((100 - this.stBranch[i].ct分岐アニメ進行.n現在の値) * 0xff) / 100;
+                            int n透明度 = ((100 - this.stBranch[i].ct分岐アニメ進行.CurrentValue) * 0xff) / 100;
 
-                            if (this.stBranch[i].ct分岐アニメ進行.b終了値に達した)
+                            if (this.stBranch[i].ct分岐アニメ進行.IsEnded)
                             {
                                 n透明度 = 255;
-                                this.stBranch[i].ct分岐アニメ進行.t停止();
+                                this.stBranch[i].ct分岐アニメ進行.Stop();
                             }
 
                             #region[ 普通譜面_レベルアップ ]
@@ -213,9 +213,9 @@ namespace TJAPlayer3
                             //普通→達人
                             if (this.stBranch[i].nBefore == CDTX.ECourse.eNormal && this.stBranch[i].nAfter == CDTX.ECourse.eMaster)
                             {
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 100)
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 100)
                                 {
-                                    n透明度 = ((100 - this.stBranch[i].ct分岐アニメ進行.n現在の値) * 0xff) / 100;
+                                    n透明度 = ((100 - this.stBranch[i].ct分岐アニメ進行.CurrentValue) * 0xff) / 100;
                                 }
                                 if (TJAPlayer3.Tx.Lane_Base[0] != null && TJAPlayer3.Tx.Lane_Base[2] != null)
                                 {
@@ -263,7 +263,7 @@ namespace TJAPlayer3
                     }
                     else if (TJAPlayer3.ConfigIni.nBranchAnime == 0)
                     {
-                        TJAPlayer3.stage演奏ドラム画面.actLane.On進行描画();
+                        TJAPlayer3.stage演奏ドラム画面.actLane.Draw();
                     }
                 }
             }
@@ -274,32 +274,32 @@ namespace TJAPlayer3
                 #region[ ゴーゴータイムレーン背景レイヤー ]
                 if (TJAPlayer3.Tx.Lane_Background_GoGo != null && TJAPlayer3.stage演奏ドラム画面.bIsGOGOTIME[i])
                 {
-                    if (!this.ctゴーゴー.b停止中)
+                    if (!this.ctゴーゴー.IsStoped)
                     {
-                        this.ctゴーゴー.t進行();
+                        this.ctゴーゴー.Tick();
                     }
 
-                    if (this.ctゴーゴー.n現在の値 <= 4)
+                    if (this.ctゴーゴー.CurrentValue <= 4)
                     {
                         TJAPlayer3.Tx.Lane_Background_GoGo.vc拡大縮小倍率.Y = 0.2f;
                         TJAPlayer3.Tx.Lane_Background_GoGo.t2D描画(x[i], y[i] + 54);
                     }
-                    else if (this.ctゴーゴー.n現在の値 <= 5)
+                    else if (this.ctゴーゴー.CurrentValue <= 5)
                     {
                         TJAPlayer3.Tx.Lane_Background_GoGo.vc拡大縮小倍率.Y = 0.4f;
                         TJAPlayer3.Tx.Lane_Background_GoGo.t2D描画(x[i], y[i] + 40);
                     }
-                    else if (this.ctゴーゴー.n現在の値 <= 6)
+                    else if (this.ctゴーゴー.CurrentValue <= 6)
                     {
                         TJAPlayer3.Tx.Lane_Background_GoGo.vc拡大縮小倍率.Y = 0.6f;
                         TJAPlayer3.Tx.Lane_Background_GoGo.t2D描画(x[i], y[i] + 26);
                     }
-                    else if (this.ctゴーゴー.n現在の値 <= 8)
+                    else if (this.ctゴーゴー.CurrentValue <= 8)
                     {
                         TJAPlayer3.Tx.Lane_Background_GoGo.vc拡大縮小倍率.Y = 0.8f;
                         TJAPlayer3.Tx.Lane_Background_GoGo.t2D描画(x[i], y[i] + 13);
                     }
-                    else if (this.ctゴーゴー.n現在の値 >= 9)
+                    else if (this.ctゴーゴー.CurrentValue >= 9)
                     {
                         TJAPlayer3.Tx.Lane_Background_GoGo.vc拡大縮小倍率.Y = 1.0f;
                         TJAPlayer3.Tx.Lane_Background_GoGo.t2D描画(x[i], y[i]);
@@ -330,7 +330,7 @@ namespace TJAPlayer3
 
                     if (TJAPlayer3.ConfigIni.nBranchAnime == 0 && !_laneNull)
                     {
-                        if (!this.stBranch[i].ct分岐アニメ進行.b進行中)
+                        if (!this.stBranch[i].ct分岐アニメ進行.IsTicked)
                         {
                             switch (TJAPlayer3.stage演奏ドラム画面.nレーン用表示コース[i])
                             {
@@ -348,7 +348,7 @@ namespace TJAPlayer3
                                     break;
                             }
                         }
-                        if (this.stBranch[i].ct分岐アニメ進行.b進行中)
+                        if (this.stBranch[i].ct分岐アニメ進行.IsTicked)
                         {
                             #region[ 普通譜面_レベルアップ ]
                             //普通→玄人
@@ -358,11 +358,11 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
 
-                                TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
+                                TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 60));
                                 //CDTXMania.Tx.Lane_Text[1].n透明度 = this.ct分岐アニメ進行.n現在の値 > 100 ? 255 : ( ( ( this.ct分岐アニメ進行.n現在の値 * 0xff ) / 60 ) );
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 60)
                                 {
-                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
+                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.CurrentValue / 2;
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(x[i], y[i] + this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], (y[i] - 30) + this.stBranch[i].nY);
@@ -381,11 +381,11 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 60)
                                 {
-                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
+                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.CurrentValue / 2;
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(x[i], (y[i] - 12) + this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
+                                    TJAPlayer3.Tx.Lane_Text[0].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 100));
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], (y[i] - 20) + this.stBranch[i].nY);
                                 }
                                 //if( this.stBranch[ i ].ct分岐アニメ進行.n現在の値 >= 5 && this.stBranch[ i ].ct分岐アニメ進行.n現在の値 < 60 )
@@ -395,18 +395,18 @@ namespace TJAPlayer3
                                 //    this.tx普通譜面[ 1 ].n透明度 = this.stBranch[ i ].ct分岐アニメ進行.n現在の値 > 100 ? 0 : ( 255 - ( ( this.stBranch[ i ].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
                                 //    this.tx玄人譜面[ 1 ].t2D描画(CDTXMania.app.Device, 333, ( CDTXMania.Skin.nScrollFieldY[ i ] - 10 ) + this.stBranch[ i ].nY);
                                 //}
-                                else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 60 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 150)
+                                else if (this.stBranch[i].ct分岐アニメ進行.CurrentValue >= 60 && this.stBranch[i].ct分岐アニメ進行.CurrentValue < 150)
                                 {
                                     this.stBranch[i].nY = 21;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], y[i]);
                                     TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
                                 }
-                                else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 150 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 210)
+                                else if (this.stBranch[i].ct分岐アニメ進行.CurrentValue >= 150 && this.stBranch[i].ct分岐アニメ進行.CurrentValue < 210)
                                 {
-                                    this.stBranch[i].nY = ((this.stBranch[i].ct分岐アニメ進行.n現在の値 - 150) / 2);
+                                    this.stBranch[i].nY = ((this.stBranch[i].ct分岐アニメ進行.CurrentValue - 150) / 2);
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], y[i] + this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
+                                    TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 100));
                                     TJAPlayer3.Tx.Lane_Text[2].t2D描画(x[i], (y[i] - 20) + this.stBranch[i].nY);
                                 }
                                 else
@@ -424,10 +424,10 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
 
-                                TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
+                                TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 60));
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 60)
                                 {
-                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
+                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.CurrentValue / 2;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], y[i] + this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[2].t2D描画(x[i], (y[i] - 20) + this.stBranch[i].nY);
                                 }
@@ -444,10 +444,10 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
 
-                                TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
+                                TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 60));
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 60)
                                 {
-                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
+                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.CurrentValue / 2;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], y[i] - this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(x[i], (y[i] + 30) - this.stBranch[i].nY);
                                 }
@@ -464,28 +464,28 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
 
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 60)
                                 {
-                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
-                                    TJAPlayer3.Tx.Lane_Text[2].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
+                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.CurrentValue / 2;
+                                    TJAPlayer3.Tx.Lane_Text[2].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 60));
                                     TJAPlayer3.Tx.Lane_Text[2].t2D描画(x[i], y[i] - this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], (y[i] + 30) - this.stBranch[i].nY);
                                 }
-                                else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 60 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 150)
+                                else if (this.stBranch[i].ct分岐アニメ進行.CurrentValue >= 60 && this.stBranch[i].ct分岐アニメ進行.CurrentValue < 150)
                                 {
                                     this.stBranch[i].nY = 21;
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], y[i]);
                                     TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
                                 }
-                                else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 150 && this.stBranch[i].ct分岐アニメ進行.n現在の値 < 210)
+                                else if (this.stBranch[i].ct分岐アニメ進行.CurrentValue >= 150 && this.stBranch[i].ct分岐アニメ進行.CurrentValue < 210)
                                 {
-                                    this.stBranch[i].nY = ((this.stBranch[i].ct分岐アニメ進行.n現在の値 - 150) / 2);
+                                    this.stBranch[i].nY = ((this.stBranch[i].ct分岐アニメ進行.CurrentValue - 150) / 2);
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], y[i] - this.stBranch[i].nY);
-                                    TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 100));
+                                    TJAPlayer3.Tx.Lane_Text[1].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 100));
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(x[i], (y[i] + 30) - this.stBranch[i].nY);
                                 }
-                                else if (this.stBranch[i].ct分岐アニメ進行.n現在の値 >= 210)
+                                else if (this.stBranch[i].ct分岐アニメ進行.CurrentValue >= 210)
                                 {
                                     TJAPlayer3.Tx.Lane_Text[0].Opacity = 255;
                                     TJAPlayer3.Tx.Lane_Text[0].t2D描画(x[i], y[i]);
@@ -497,10 +497,10 @@ namespace TJAPlayer3
                                 TJAPlayer3.Tx.Lane_Text[1].Opacity = 255;
                                 TJAPlayer3.Tx.Lane_Text[2].Opacity = 255;
 
-                                TJAPlayer3.Tx.Lane_Text[2].Opacity = this.stBranch[i].ct分岐アニメ進行.n現在の値 > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.n現在の値 * 0xff) / 60));
-                                if (this.stBranch[i].ct分岐アニメ進行.n現在の値 < 60)
+                                TJAPlayer3.Tx.Lane_Text[2].Opacity = this.stBranch[i].ct分岐アニメ進行.CurrentValue > 100 ? 0 : (255 - ((this.stBranch[i].ct分岐アニメ進行.CurrentValue * 0xff) / 60));
+                                if (this.stBranch[i].ct分岐アニメ進行.CurrentValue < 60)
                                 {
-                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.n現在の値 / 2;
+                                    this.stBranch[i].nY = this.stBranch[i].ct分岐アニメ進行.CurrentValue / 2;
                                     TJAPlayer3.Tx.Lane_Text[2].t2D描画(x[i], y[i] - this.stBranch[i].nY);
                                     TJAPlayer3.Tx.Lane_Text[1].t2D描画(x[i], (y[i] + 30) - this.stBranch[i].nY);
                                 }
@@ -608,7 +608,7 @@ namespace TJAPlayer3
             }
 
 
-            TJAPlayer3.stage演奏ドラム画面.actTaikoLaneFlash.On進行描画();
+            TJAPlayer3.stage演奏ドラム画面.actTaikoLaneFlash.Draw();
 
 
 
@@ -712,7 +712,7 @@ namespace TJAPlayer3
                 }
                 */
             }
-            var nTime = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+            var nTime = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
@@ -759,7 +759,7 @@ namespace TJAPlayer3
                 if (TJAPlayer3.Tx.Lane_Background_GoGo != null) TJAPlayer3.Tx.Lane_Background_GoGo.Opacity = 255;
             }
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public void ゴーゴー炎()
@@ -782,7 +782,7 @@ namespace TJAPlayer3
             {
                 if (TJAPlayer3.stage演奏ドラム画面.bIsGOGOTIME[i])
                 {
-                    this.ctゴーゴー炎.t進行Loop();
+                    this.ctゴーゴー炎.TickLoop();
 
                     if (TJAPlayer3.Tx.Effects_Fire != null)
                     {
@@ -790,7 +790,7 @@ namespace TJAPlayer3
 
                         float[] ar倍率 = new float[] { 0.8f, 1.2f, 1.7f, 2.5f, 2.3f, 2.2f, 2.0f, 1.8f, 1.7f, 1.6f, 1.6f, 1.5f, 1.5f, 1.4f, 1.3f, 1.2f, 1.1f, 1.0f };
 
-                        f倍率 = ar倍率[this.ctゴーゴー.n現在の値];
+                        f倍率 = ar倍率[this.ctゴーゴー.CurrentValue];
 
                         /*
                         Matrix mat = Matrix.Identity;
@@ -827,19 +827,19 @@ namespace TJAPlayer3
                         TJAPlayer3.Tx.Effects_Fire.vc拡大縮小倍率.Y = f倍率;
 
                         TJAPlayer3.Tx.Effects_Fire.t2D描画(x, y, 
-                            new Rectangle(width * (this.ctゴーゴー炎.n現在の値), 0, width, height));
+                            new Rectangle(width * (this.ctゴーゴー炎.CurrentValue), 0, width, height));
                     }
                 }
             }
             #endregion
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
-                if (!this.st状態[i].ct進行.b停止中)
+                if (!this.st状態[i].ct進行.IsStoped)
                 {
-                    this.st状態[i].ct進行.t進行();
-                    if (this.st状態[i].ct進行.b終了値に達した)
+                    this.st状態[i].ct進行.Tick();
+                    if (this.st状態[i].ct進行.IsEnded)
                     {
-                        this.st状態[i].ct進行.t停止();
+                        this.st状態[i].ct進行.Stop();
                     }
                     //if( this.txアタックエフェクトLower != null )
                     {
@@ -873,18 +873,18 @@ namespace TJAPlayer3
                             case E判定.Great:
                             case E判定.Auto:
                                 //this.txアタックエフェクトLower.t2D描画( CDTXMania.app.Device, 285, 127, new Rectangle( this.st状態[ i ].ct進行.n現在の値 * 260, n, 260, 260 ) );
-                                if (this.st状態[i].nIsBig == 1 && TJAPlayer3.Tx.Effects_Hit_Great_Big[this.st状態[i].ct進行.n現在の値] != null)
-                                    TJAPlayer3.Tx.Effects_Hit_Great_Big[this.st状態[i].ct進行.n現在の値].t2D描画(x, y);
-                                else if (TJAPlayer3.Tx.Effects_Hit_Great[this.st状態[i].ct進行.n現在の値] != null)
-                                    TJAPlayer3.Tx.Effects_Hit_Great[this.st状態[i].ct進行.n現在の値].t2D描画(x, y);
+                                if (this.st状態[i].nIsBig == 1 && TJAPlayer3.Tx.Effects_Hit_Great_Big[this.st状態[i].ct進行.CurrentValue] != null)
+                                    TJAPlayer3.Tx.Effects_Hit_Great_Big[this.st状態[i].ct進行.CurrentValue].t2D描画(x, y);
+                                else if (TJAPlayer3.Tx.Effects_Hit_Great[this.st状態[i].ct進行.CurrentValue] != null)
+                                    TJAPlayer3.Tx.Effects_Hit_Great[this.st状態[i].ct進行.CurrentValue].t2D描画(x, y);
                                 break;
 
                             case E判定.Good:
                                 //this.txアタックエフェクトLower.t2D描画( CDTXMania.app.Device, 285, 127, new Rectangle( this.st状態[ i ].ct進行.n現在の値 * 260, n + 260, 260, 260 ) );
-                                if (this.st状態[i].nIsBig == 1 && TJAPlayer3.Tx.Effects_Hit_Good_Big[this.st状態[i].ct進行.n現在の値] != null)
-                                    TJAPlayer3.Tx.Effects_Hit_Good_Big[this.st状態[i].ct進行.n現在の値].t2D描画(x, y);
-                                else if (TJAPlayer3.Tx.Effects_Hit_Good[this.st状態[i].ct進行.n現在の値] != null)
-                                    TJAPlayer3.Tx.Effects_Hit_Good[this.st状態[i].ct進行.n現在の値].t2D描画(x, y);
+                                if (this.st状態[i].nIsBig == 1 && TJAPlayer3.Tx.Effects_Hit_Good_Big[this.st状態[i].ct進行.CurrentValue] != null)
+                                    TJAPlayer3.Tx.Effects_Hit_Good_Big[this.st状態[i].ct進行.CurrentValue].t2D描画(x, y);
+                                else if (TJAPlayer3.Tx.Effects_Hit_Good[this.st状態[i].ct進行.CurrentValue] != null)
+                                    TJAPlayer3.Tx.Effects_Hit_Good[this.st状態[i].ct進行.CurrentValue].t2D描画(x, y);
                                 break;
 
                             case E判定.Miss:
@@ -956,7 +956,7 @@ namespace TJAPlayer3
 
         public void t判定枠移動(double db移動時間, int n移動px, int n移動方向, int nPlayer, int vJs)
         {
-            this.n移動開始時刻[nPlayer] = (int)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+            this.n移動開始時刻[nPlayer] = (int)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
             this.n移動開始X[nPlayer] = TJAPlayer3.stage演奏ドラム画面.JPOSCROLLX[nPlayer];
             this.n移動開始Y[nPlayer] = TJAPlayer3.stage演奏ドラム画面.JPOSCROLLY[nPlayer];
             this.n総移動時間[nPlayer] = (int)(db移動時間 * 1000);

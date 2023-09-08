@@ -14,10 +14,10 @@ namespace TJAPlayer3
 
 		public CAct演奏Drums判定文字列()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
-        public override void On活性化()
+        public override void Activate()
         {
 			JudgeAnimes = new JudgeAnime[5, 512];
 			for (int i = 0; i < 512; i++)
@@ -28,10 +28,10 @@ namespace TJAPlayer3
 				JudgeAnimes[3, i] = new JudgeAnime();
 				JudgeAnimes[4, i] = new JudgeAnime();
 			}
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
 			for (int i = 0; i < 512; i++)
             {
@@ -41,24 +41,24 @@ namespace TJAPlayer3
 				JudgeAnimes[3, i] = null;
 				JudgeAnimes[4, i] = null;
 			}
-            base.On非活性化();
+            base.DeActivate();
         }
 
         // CActivity 実装（共通クラスからの差分のみ）
-        public override int On進行描画()
+        public override int Draw()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				for (int i = 0; i < 512; i++)
 				{
 					for(int j = 0; j < 5; j++)
 					{
-						if (JudgeAnimes[j, i].counter.b停止中) continue;
-						JudgeAnimes[j, i].counter.t進行();
+						if (JudgeAnimes[j, i].counter.IsStoped) continue;
+						JudgeAnimes[j, i].counter.Tick();
 
 						if (TJAPlayer3.Tx.Judge != null)
 						{
-							float moveValue = CubicEaseOut(JudgeAnimes[j, i].counter.n現在の値 / 410.0f) - 1.0f;
+							float moveValue = CubicEaseOut(JudgeAnimes[j, i].counter.CurrentValue / 410.0f) - 1.0f;
 
 							float x = 0;
 							float y = 0;
@@ -81,7 +81,7 @@ namespace TJAPlayer3
 							x += (moveValue * TJAPlayer3.Skin.Game_Judge_Move[0]) + TJAPlayer3.stage演奏ドラム画面.GetJPOSCROLLX(j);
 							y += (moveValue * TJAPlayer3.Skin.Game_Judge_Move[1]) + TJAPlayer3.stage演奏ドラム画面.GetJPOSCROLLY(j);
 
-							TJAPlayer3.Tx.Judge.Opacity = (int)(255f - (JudgeAnimes[j, i].counter.n現在の値 >= 360 ? ((JudgeAnimes[j, i].counter.n現在の値 - 360) / 50.0f) * 255f : 0f));
+							TJAPlayer3.Tx.Judge.Opacity = (int)(255f - (JudgeAnimes[j, i].counter.CurrentValue >= 360 ? ((JudgeAnimes[j, i].counter.CurrentValue - 360) / 50.0f) * 255f : 0f));
 							TJAPlayer3.Tx.Judge.t2D描画(x, y, JudgeAnimes[j, i].rc);
                         }
 						
@@ -93,7 +93,7 @@ namespace TJAPlayer3
 
 		public void Start(int player, E判定 judge)
 		{
-			JudgeAnimes[player, JudgeAnime.Index].counter.t開始(0, 410, 1, TJAPlayer3.Timer);
+			JudgeAnimes[player, JudgeAnime.Index].counter.Start(0, 410, 1, TJAPlayer3.Timer);
 			JudgeAnimes[player, JudgeAnime.Index].Judge = judge;
 
 			//int njudge = judge == E判定.Perfect ? 0 : judge == E判定.Good ? 1 : judge == E判定.ADLIB ? 3 : judge == E判定.Auto ? 0 : 2;

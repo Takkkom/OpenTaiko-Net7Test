@@ -13,7 +13,7 @@ namespace TJAPlayer3
 
         public FireWorks()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
 
@@ -42,7 +42,7 @@ namespace TJAPlayer3
 
         // CActivity 実装
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < 32; i++)
             {
@@ -50,43 +50,43 @@ namespace TJAPlayer3
                 FireWork[i].IsUsing = false;
                 FireWork[i].Counter = new CCounter();
             }
-            base.On活性化();
+            base.Activate();
         }
-        public override void On非活性化()
+        public override void DeActivate()
         {
             for (int i = 0; i < 32; i++)
             {
                 FireWork[i].Counter = null;
             }
-            base.On非活性化();
+            base.DeActivate();
         }
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
-        public override int On進行描画()
+        public override int Draw()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 for (int i = 0; i < 32; i++)
                 {
                     if(FireWork[i].IsUsing)
                     {
-                        FireWork[i].Counter.t進行();
-                        TJAPlayer3.Tx.Effects_Hit_FireWorks?.t2D中心基準描画((float)FireWork[i].X, (float)FireWork[i].Y, 1, new Rectangle(FireWork[i].Counter.n現在の値 * TJAPlayer3.Skin.Game_Effect_FireWorks[0], 0, TJAPlayer3.Skin.Game_Effect_FireWorks[0], TJAPlayer3.Skin.Game_Effect_FireWorks[1]));
-                        if (FireWork[i].Counter.b終了値に達した)
+                        FireWork[i].Counter.Tick();
+                        TJAPlayer3.Tx.Effects_Hit_FireWorks?.t2D中心基準描画((float)FireWork[i].X, (float)FireWork[i].Y, 1, new Rectangle(FireWork[i].Counter.CurrentValue * TJAPlayer3.Skin.Game_Effect_FireWorks[0], 0, TJAPlayer3.Skin.Game_Effect_FireWorks[0], TJAPlayer3.Skin.Game_Effect_FireWorks[1]));
+                        if (FireWork[i].Counter.IsEnded)
                         {
-                            FireWork[i].Counter.t停止();
+                            FireWork[i].Counter.Stop();
                             FireWork[i].IsUsing = false;
                         }
                     }

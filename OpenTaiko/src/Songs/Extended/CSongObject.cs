@@ -40,8 +40,8 @@ namespace TJAPlayer3
 
         public void tStartAnimation(double animInterval, bool loop)
         {
-            counter.t開始(0, textures.Length - 1, animInterval, TJAPlayer3.Timer);
-            counter.n現在の値 = this.frame;
+            counter.Start(0, textures.Length - 1, animInterval, TJAPlayer3.Timer);
+            counter.CurrentValue = this.frame;
 
             this.isLooping = loop;
             this.isAnimating = true;
@@ -49,7 +49,7 @@ namespace TJAPlayer3
 
         public void tStopAnimation()
         {
-            counter.t停止();
+            counter.Stop();
             this.isAnimating = false;
         }
 
@@ -57,14 +57,14 @@ namespace TJAPlayer3
         {
             if (isAnimating)
             {
-                if (isLooping) counter.t進行Loop();
+                if (isLooping) counter.TickLoop();
                 else
                 {
-                    counter.t進行();
-                    if (counter.b終了値に達した) this.tStopAnimation();
+                    counter.Tick();
+                    if (counter.IsEnded) this.tStopAnimation();
                 }
 
-                frame = counter.n現在の値;
+                frame = counter.CurrentValue;
             }
 
             CTexture tx = this.textures[frame];

@@ -13,30 +13,30 @@ namespace TJAPlayer3
     {
         public CActSelectDanInfo()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             // On activation
 
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
             ctStep = new CCounter(0, 1000, 2, TJAPlayer3.Timer);
             ctStepFade = new CCounter(0, 255, 0.5, TJAPlayer3.Timer);
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             // On de-activation
 
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             // Ressource allocation
             Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
@@ -57,10 +57,10 @@ namespace TJAPlayer3
                 ttkExams[i] = new CActSelect曲リスト.TitleTextureKey(CLangManager.LangInstance.GetString(1010 + i), pfExamFont, Color.Black, Color.Transparent, 700);
             }
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             // Ressource freeing
             TJAPlayer3.t安全にDisposeする(ref Dani_Difficulty_Cymbol);
@@ -68,14 +68,14 @@ namespace TJAPlayer3
             TJAPlayer3.t安全にDisposeする(ref pfTitleFont);
             TJAPlayer3.t安全にDisposeする(ref pfExamFont);
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            ctStep.t進行();
-            ctStepFade.t進行();
-            if (ctStep.n現在の値 == ctStep.n終了値)
+            ctStep.Tick();
+            ctStepFade.Tick();
+            if (ctStep.CurrentValue == ctStep.EndValue)
             {
                 ctStep = new CCounter(0, 1000, 2, TJAPlayer3.Timer);
                 tNextStep();
@@ -92,11 +92,11 @@ namespace TJAPlayer3
                     {
                         if (nNowSongIndex == songIndex)
                         {
-                            opacity = ctStepFade.n現在の値;
+                            opacity = ctStepFade.CurrentValue;
                         }
                         else if (nPrevSongIndex == songIndex)
                         {
-                            opacity = 255 - ctStepFade.n現在の値;
+                            opacity = 255 - ctStepFade.CurrentValue;
                         }
                         else
                         {
@@ -158,11 +158,11 @@ namespace TJAPlayer3
                                 {
                                     if (nNowSongIndex == i / 3)
                                     {
-                                        opacity = ctStepFade.n現在の値;
+                                        opacity = ctStepFade.CurrentValue;
                                     }
                                     else if (nPrevSongIndex == i / 3)
                                     {
-                                        opacity = 255 - ctStepFade.n現在の値;
+                                        opacity = 255 - ctStepFade.CurrentValue;
                                     }
                                     else
                                     {

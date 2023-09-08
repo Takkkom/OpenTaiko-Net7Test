@@ -14,20 +14,20 @@ namespace TJAPlayer3
 		{
 			base.eステージID = CStage.Eステージ.終了;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
 		// CStage 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			Trace.TraceInformation( "終了ステージを活性化します。" );
 			Trace.Indent();
 			try
 			{
 				this.ct時間稼ぎ = new CCounter();
-				base.On活性化();
+				base.Activate();
 			}
 			finally
 			{
@@ -35,13 +35,13 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			Trace.TraceInformation( "終了ステージを非活性化します。" );
 			Trace.Indent();
 			try
 			{
-				base.On非活性化();
+				base.DeActivate();
 			}
 			finally
 			{
@@ -49,9 +49,9 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.EXIT}Script.lua"));
 				Background.Init();
@@ -62,12 +62,12 @@ namespace TJAPlayer3
 				//this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\9_background.jpg" ), false );
 				//            this.tx白 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ), false );
 				//            this.ds背景 = CDTXMania.t失敗してもスキップ可能なDirectShowを生成する( CSkin.Path( @"Graphics\9_background.mp4" ), CDTXMania.app.WindowHandle, true );
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 				TJAPlayer3.t安全にDisposeする(ref Background);
 
@@ -77,10 +77,10 @@ namespace TJAPlayer3
 				//            CDTXMania.tテクスチャの解放( ref this.tx文字3 );
 				//            CDTXMania.tテクスチャの解放( ref this.tx白 );
 				//            CDTXMania.t安全にDisposeする( ref this.ds背景 );
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
 			/*
             if( !TJAPlayer3.ConfigIni.bEndingAnime ) //2017.01.27 DD
@@ -89,24 +89,24 @@ namespace TJAPlayer3
             }
 			*/
 
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( base.b初めての進行描画 )
+				if( base.IsFirstDraw )
 				{
 					TJAPlayer3.Skin.soundゲーム終了音.t再生する();
-					this.ct時間稼ぎ.t開始( 0, 3000, 1, TJAPlayer3.Timer );
-                    base.b初めての進行描画 = false;
+					this.ct時間稼ぎ.Start( 0, 3000, 1, TJAPlayer3.Timer );
+                    base.IsFirstDraw = false;
 				}
 
 
-				this.ct時間稼ぎ.t進行();
+				this.ct時間稼ぎ.Tick();
 
 				Background.Update();
 				Background.Draw();
 
 				//TJAPlayer3.Tx.Exit_Background?.t2D描画( 0, 0 );
 
-                if( this.ct時間稼ぎ.b終了値に達した && !TJAPlayer3.Skin.soundゲーム終了音.b再生中 )
+                if( this.ct時間稼ぎ.IsEnded && !TJAPlayer3.Skin.soundゲーム終了音.b再生中 )
 				{
 					return 1;
 				}

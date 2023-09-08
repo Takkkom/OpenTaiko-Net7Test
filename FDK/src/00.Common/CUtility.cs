@@ -10,7 +10,7 @@ namespace FDK
 	public class CUtility
 	{
 
-		public static void t完全なガベージコレクションを実施する()
+		public static void RunCompleteGC()
 		{
 			GC.Collect();					// アクセス不可能なオブジェクトを除去し、ファイナライぜーション実施。
 			GC.WaitForPendingFinalizers();	// ファイナライゼーションが終わるまでスレッドを待機。
@@ -22,10 +22,10 @@ namespace FDK
 
 		// ログ
 
-		public static void LogBlock( string str処理名, Action method )
+		public static void LogBlock( string name, Action method )
 		{
 			Trace.TraceInformation( "--------------------" );
-			Trace.TraceInformation( "開始 - " + str処理名 );
+			Trace.TraceInformation( "開始 - " + name );
 			Trace.Indent();
 			try
 			{
@@ -34,11 +34,11 @@ namespace FDK
 			finally
 			{
 				Trace.Unindent();
-				Trace.TraceInformation( "終了 - " + str処理名 );
+				Trace.TraceInformation( "終了 - " + name );
 				Trace.TraceInformation( "--------------------" );
 			}
 		}
-		public static void t例外の詳細をログに出力する( Exception e )
+		public static void LogException( Exception e )
 		{
 			Trace.WriteLine( "---例外ここから----" );
 			Trace.WriteLine( e.ToString() );
@@ -48,14 +48,14 @@ namespace FDK
 
 		// IO
 
-		public static string t指定した拡張子を持つファイルを検索し最初に見つけたファイルの絶対パスを返す( string strフォルダパス, List<string> list拡張子リスト )
+		public static string t指定した拡張子を持つファイルを検索し最初に見つけたファイルの絶対パスを返す( string strフォルダパス, List<string> extensions )
 		{
 			string[] files = Directory.GetFiles( strフォルダパス );		// GetFiles() は完全パスを返す。
 
 
 			// ファイル順より拡張子順を優先して検索する。→ 拡張子リストの前方の拡張子ほど先に発見されるようにするため。
 
-			foreach( string ext in list拡張子リスト )
+			foreach( string ext in extensions )
 			{
 				foreach( string file in files )
 				{
@@ -69,7 +69,7 @@ namespace FDK
 			return null;	// なかった
 		}
 
-		public static void tXMLファイルを読み込む<T>( string strXMLファイル名, out T xmlObject )
+		public static void ReadXML<T>( string fileName, out T xmlObject )
 		{
 			xmlObject = default( T );
 
@@ -77,7 +77,7 @@ namespace FDK
 			StreamReader sr = null;
 			try
 			{
-				fs = new FileStream( strXMLファイル名, FileMode.Open, FileAccess.Read, FileShare.ReadWrite );	// FileShare を付けとかないと、Close() 後もロックがかかる。
+				fs = new FileStream( fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite );	// FileShare を付けとかないと、Close() 後もロックがかかる。
 				sr = new StreamReader( fs, Encoding.UTF8 );
 				var xmlsl = new System.Xml.Serialization.XmlSerializer( typeof( T ) );
 				xmlObject = (T) xmlsl.Deserialize( sr );
@@ -88,13 +88,13 @@ namespace FDK
 					sr.Close();		// fr も一緒にClose()される
 			}
 		}
-		public static void tXMLファイルを保存する<T>( string strXMLファイル名, T xmlObject )
+		public static void WriteXML<T>( string fileName, T xmlObject )
 		{
 			FileStream fs = null;
 			StreamWriter sw = null;
 			try
 			{
-				fs = new FileStream( strXMLファイル名, FileMode.Create, FileAccess.Write, FileShare.ReadWrite );	// FileShare を付けとかないと、Close() 後もロックがかかる。
+				fs = new FileStream( fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite );	// FileShare を付けとかないと、Close() 後もロックがかかる。
 				sw = new StreamWriter( fs, Encoding.UTF8 );
 				var xmlsl = new System.Xml.Serialization.XmlSerializer( typeof( T ) );
 				xmlsl.Serialize( sw, xmlObject );
@@ -126,7 +126,7 @@ namespace FDK
 			return (float) RadianToDegree( (double) angle );
 		}
 
-        public static bool bToggleBoolian( ref bool bFlag )
+        public static bool ToggleBoolian( ref bool bFlag )
         {
             if( bFlag == true ) bFlag = false;
             else if( bFlag == false ) bFlag = true;

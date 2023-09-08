@@ -17,19 +17,19 @@ namespace TJAPlayer3
 		public CStageタイトル()
 		{
 			base.eステージID = CStage.Eステージ.タイトル;
-			base.b活性化してない = true;
-			base.list子Activities.Add(this.actFIfromSetup = new CActFIFOBlack());
-			base.list子Activities.Add(this.actFI = new CActFIFOBlack());
-			base.list子Activities.Add(this.actFO = new CActFIFOBlack());
+			base.IsDeActivated = true;
+			base.ChildActivities.Add(this.actFIfromSetup = new CActFIFOBlack());
+			base.ChildActivities.Add(this.actFI = new CActFIFOBlack());
+			base.ChildActivities.Add(this.actFO = new CActFIFOBlack());
 
-			base.list子Activities.Add(this.PuchiChara = new PuchiChara());
+			base.ChildActivities.Add(this.PuchiChara = new PuchiChara());
 
 		}
 
 
 		// CStage 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			Trace.TraceInformation("タイトルステージを活性化します。");
 			Trace.Indent();
@@ -75,7 +75,7 @@ namespace TJAPlayer3
 					TJAPlayer3.Skin.soundEntry.t再生する();
 				if (TJAPlayer3.ConfigIni.bBGM音を発声する)
 					TJAPlayer3.Skin.bgmタイトルイン.t再生する();
-				base.On活性化();
+				base.Activate();
 			}
 			finally
 			{
@@ -83,7 +83,7 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			Trace.TraceInformation("タイトルステージを非活性化します。");
 			Trace.Indent();
@@ -96,7 +96,7 @@ namespace TJAPlayer3
 				Trace.TraceInformation("タイトルステージの非活性化を完了しました。");
 				Trace.Unindent();
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
 
 		public void tReloadMenus()
@@ -105,9 +105,9 @@ namespace TJAPlayer3
 				CMainMenuTab.tInitMenus(this.pfMenuTitle, this.pfBoxText, ModeSelect_Bar, ModeSelect_Bar_Chara);
 		}
 
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if (base.b活性化してない)
+			if (base.IsDeActivated)
 				return;
 
 			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Script.lua"));
@@ -158,11 +158,11 @@ namespace TJAPlayer3
 			// Init Menus
 			tReloadMenus();
 
-			base.OnManagedリソースの作成();
+			base.CreateManagedResource();
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if (base.b活性化してない)
+			if (base.IsDeActivated)
 				return;
 
 			TJAPlayer3.t安全にDisposeする(ref Background);
@@ -190,15 +190,15 @@ namespace TJAPlayer3
 			TJAPlayer3.t安全にDisposeする(ref pfMenuTitle);
 			TJAPlayer3.t安全にDisposeする(ref pfBoxText);
 
-			base.OnManagedリソースの解放();
+			base.ReleaseManagedResource();
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				#region [ 初めての進行描画 ]
 				//---------------------
-				if (base.b初めての進行描画)
+				if (base.IsFirstDraw)
 				{
 					if (TJAPlayer3.r直前のステージ == TJAPlayer3.stage起動)
 					{
@@ -210,18 +210,18 @@ namespace TJAPlayer3
 						this.actFI.tフェードイン開始();
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					}
-					base.b初めての進行描画 = false;
+					base.IsFirstDraw = false;
 				}
 				//---------------------
 				#endregion
 
-				this.ctコインイン待機.t進行Loop();
-				this.ctバナパス読み込み成功.t進行();
-				this.ctバナパス読み込み失敗.t進行();
-				this.ctエントリーバー点滅.t進行Loop();
-				this.ctエントリーバー決定点滅.t進行();
-				this.ctどんちゃんイン.t進行();
-				this.ctBarMove.t進行();
+				this.ctコインイン待機.TickLoop();
+				this.ctバナパス読み込み成功.Tick();
+				this.ctバナパス読み込み失敗.Tick();
+				this.ctエントリーバー点滅.TickLoop();
+				this.ctエントリーバー決定点滅.Tick();
+				this.ctどんちゃんイン.Tick();
+				this.ctBarMove.Tick();
 
 				if (!TJAPlayer3.Skin.bgmタイトルイン.b再生中)
 				{
@@ -239,7 +239,7 @@ namespace TJAPlayer3
 				if (base.eフェーズID == CStage.Eフェーズ.共通_通常状態        // 通常状態、かつ
 					&& TJAPlayer3.act現在入力を占有中のプラグイン == null)    // プラグインの入力占有がない
 				{
-					if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape) || TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
+					if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape) || TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
 					{
 						if (bモード選択)
 						{
@@ -278,8 +278,8 @@ namespace TJAPlayer3
 							// Hit 1P banapass
 							TJAPlayer3.SaveFile = 0;
 							CMenuCharacter.tMenuResetTimer(CMenuCharacter.ECharacterAnimation.ENTRY_NORMAL);
-							this.ctバナパス読み込み待機.t開始(0, 600, 1, TJAPlayer3.Timer);
-							this.ctバナパス読み込み待機.n現在の値 = (int)this.ctバナパス読み込み待機.n終了値;
+							this.ctバナパス読み込み待機.Start(0, 600, 1, TJAPlayer3.Timer);
+							this.ctバナパス読み込み待機.CurrentValue = (int)this.ctバナパス読み込み待機.EndValue;
 							for (int i = 0; i < 2; i++)
 								TJAPlayer3.NamePlate.tNamePlateRefreshTitles(i);
 						}
@@ -288,33 +288,33 @@ namespace TJAPlayer3
 							// Hit 2P banapass
 							TJAPlayer3.SaveFile = 1;
 							CMenuCharacter.tMenuResetTimer(CMenuCharacter.ECharacterAnimation.ENTRY_NORMAL);
-							this.ctバナパス読み込み待機.t開始(0, 600, 1, TJAPlayer3.Timer);
-							this.ctバナパス読み込み待機.n現在の値 = (int)this.ctバナパス読み込み待機.n終了値;
+							this.ctバナパス読み込み待機.Start(0, 600, 1, TJAPlayer3.Timer);
+							this.ctバナパス読み込み待機.CurrentValue = (int)this.ctバナパス読み込み待機.EndValue;
 							for (int i = 0; i < 2; i++)
 								TJAPlayer3.NamePlate.tNamePlateRefreshTitles(i);
 						}
 						else
 						{
 							// Default legacy P long press (Don't change the save file, will be deleted soon)
-							if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.P))
-								this.ctバナパス読み込み待機.t開始(0, 600, 1, TJAPlayer3.Timer);
-							if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.P))
-								ctバナパス読み込み待機.t進行();
-							if (TJAPlayer3.Input管理.Keyboard.bキーが離された((int)SlimDXKeys.Key.P))
+							if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.P))
+								this.ctバナパス読み込み待機.Start(0, 600, 1, TJAPlayer3.Timer);
+							if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.P))
+								ctバナパス読み込み待機.Tick();
+							if (TJAPlayer3.Input管理.Keyboard.KeyReleased((int)SlimDXKeys.Key.P))
 							{
-								this.ctバナパス読み込み待機.t停止();
-								if (this.ctバナパス読み込み待機.n現在の値 < 600 && !bバナパス読み込み失敗)
+								this.ctバナパス読み込み待機.Stop();
+								if (this.ctバナパス読み込み待機.CurrentValue < 600 && !bバナパス読み込み失敗)
 								{
-									ctバナパス読み込み失敗.t開始(0, 1128, 1, TJAPlayer3.Timer);
+									ctバナパス読み込み失敗.Start(0, 1128, 1, TJAPlayer3.Timer);
 									bバナパス読み込み失敗 = true;
 								}
 							}
 						}
 					}
 
-					if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.RightArrow))
+					if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.RightArrow))
 					{
-						if (bプレイヤーエントリー && !bプレイヤーエントリー決定 && this.ctバナパス読み込み成功.b終了値に達した)
+						if (bプレイヤーエントリー && !bプレイヤーエントリー決定 && this.ctバナパス読み込み成功.IsEnded)
 						{
 							if (n現在の選択行プレイヤーエントリー + 1 <= 2)
 							{
@@ -329,7 +329,7 @@ namespace TJAPlayer3
 							if (n現在の選択行モード選択 < usedMenusCount - 1)
 							{
 								TJAPlayer3.Skin.sound変更音.t再生する();
-								ctBarMove.t開始(0, 250, 1.2f, TJAPlayer3.Timer);
+								ctBarMove.Start(0, 250, 1.2f, TJAPlayer3.Timer);
 								n現在の選択行モード選択++;
 								this.bDownPushed = true;
 
@@ -341,9 +341,9 @@ namespace TJAPlayer3
 						}
 					}
 
-					if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) || TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.LeftArrow))
+					if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) || TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.LeftArrow))
 					{
-						if (bプレイヤーエントリー && !bプレイヤーエントリー決定 && this.ctバナパス読み込み成功.b終了値に達した)
+						if (bプレイヤーエントリー && !bプレイヤーエントリー決定 && this.ctバナパス読み込み成功.IsEnded)
 						{
 							if (n現在の選択行プレイヤーエントリー - 1 >= 0)
 							{
@@ -357,7 +357,7 @@ namespace TJAPlayer3
 							if (n現在の選択行モード選択 > 0)
 							{
 								TJAPlayer3.Skin.sound変更音.t再生する();
-								ctBarMove.t開始(0, 250, 1.2f, TJAPlayer3.Timer);
+								ctBarMove.Start(0, 250, 1.2f, TJAPlayer3.Timer);
 								n現在の選択行モード選択--;
 								this.bDownPushed = false;
 
@@ -371,16 +371,16 @@ namespace TJAPlayer3
 
 
 					if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide)
-						|| TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return))
+						|| TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return))
 					{
-						if (bプレイヤーエントリー && this.ctバナパス読み込み成功.b終了値に達した)
+						if (bプレイヤーエントリー && this.ctバナパス読み込み成功.IsEnded)
 						{
 							if (n現在の選択行プレイヤーエントリー == 0 || n現在の選択行プレイヤーエントリー == 2)
 							{
 								if (!bプレイヤーエントリー決定)
 								{
 									TJAPlayer3.Skin.sound決定音.t再生する();
-									ctエントリーバー決定点滅.t開始(0, 1055, 1, TJAPlayer3.Timer);
+									ctエントリーバー決定点滅.Start(0, 1055, 1, TJAPlayer3.Timer);
 									bプレイヤーエントリー決定 = true;
 									TJAPlayer3.PlayerSide = (n現在の選択行プレイヤーエントリー == 2) ? 1 : 0;
 									if (TJAPlayer3.PlayerSide == 1)
@@ -423,18 +423,18 @@ namespace TJAPlayer3
 						}
 					}
 
-					if (ctバナパス読み込み待機.n現在の値 >= 500)
+					if (ctバナパス読み込み待機.CurrentValue >= 500)
 					{
 						if (!bバナパス読み込み)
 						{
 							TJAPlayer3.Skin.soundEntry.t停止する();
-							ctバナパス読み込み成功.t開始(0, 3655, 1, TJAPlayer3.Timer);
+							ctバナパス読み込み成功.Start(0, 3655, 1, TJAPlayer3.Timer);
 							bバナパス読み込み = true;
 							bどんちゃんカウンター初期化 = false;
 						}
 					}
 
-					if (ctエントリーバー決定点滅.n現在の値 >= 1055)
+					if (ctエントリーバー決定点滅.CurrentValue >= 1055)
 					{
 						if (!bモード選択)
 						{
@@ -446,8 +446,8 @@ namespace TJAPlayer3
 							if (TJAPlayer3.Skin.voiceTitleSanka[TJAPlayer3.SaveFile] != null && !TJAPlayer3.Skin.voiceTitleSanka[TJAPlayer3.SaveFile].bPlayed)
 								TJAPlayer3.Skin.voiceTitleSanka[TJAPlayer3.SaveFile]?.t再生する();
 
-							ctどんちゃんイン.t開始(0, 180, 2, TJAPlayer3.Timer);
-							ctBarAnimeIn.t開始(0, 1295, 1, TJAPlayer3.Timer);
+							ctどんちゃんイン.Start(0, 180, 2, TJAPlayer3.Timer);
+							ctBarAnimeIn.Start(0, 1295, 1, TJAPlayer3.Timer);
 							bモード選択 = true;
 						}
 					}
@@ -473,44 +473,44 @@ namespace TJAPlayer3
 					{
 						Entry_Bar.t2D描画(0, 0);
 
-						if (this.ctコインイン待機.n現在の値 <= 255)
-							Entry_Bar_Text.Opacity = this.ctコインイン待機.n現在の値;
-						else if (this.ctコインイン待機.n現在の値 <= 2000 - 355)
+						if (this.ctコインイン待機.CurrentValue <= 255)
+							Entry_Bar_Text.Opacity = this.ctコインイン待機.CurrentValue;
+						else if (this.ctコインイン待機.CurrentValue <= 2000 - 355)
 							Entry_Bar_Text.Opacity = 255;
 						else
-							Entry_Bar_Text.Opacity = 255 - (this.ctコインイン待機.n現在の値 - (2000 - 355));
+							Entry_Bar_Text.Opacity = 255 - (this.ctコインイン待機.CurrentValue - (2000 - 355));
 
 						Entry_Bar_Text.t2D描画(TJAPlayer3.Skin.Title_Entry_Bar_Text_X[0], TJAPlayer3.Skin.Title_Entry_Bar_Text_Y[0], new RectangleF(0, 0, Entry_Bar_Text.sz画像サイズ.Width, Entry_Bar_Text.sz画像サイズ.Height / 2));
 						Entry_Bar_Text.t2D描画(TJAPlayer3.Skin.Title_Entry_Bar_Text_X[1], TJAPlayer3.Skin.Title_Entry_Bar_Text_Y[1], new RectangleF(0, Entry_Bar_Text.sz画像サイズ.Height / 2, Entry_Bar_Text.sz画像サイズ.Width, Entry_Bar_Text.sz画像サイズ.Height / 2));
 					}
 					else
 					{
-						if (this.ctバナパス読み込み成功.n現在の値 <= 1000 && this.ctバナパス読み込み失敗.n現在の値 <= 1128)
+						if (this.ctバナパス読み込み成功.CurrentValue <= 1000 && this.ctバナパス読み込み失敗.CurrentValue <= 1128)
 						{
 							if (bバナパス読み込み)
 							{
-								TJAPlayer3.Tx.Tile_Black.Opacity = this.ctバナパス読み込み成功.n現在の値 <= 2972 ? 128 : 128 - (this.ctバナパス読み込み成功.n現在の値 - 2972);
+								TJAPlayer3.Tx.Tile_Black.Opacity = this.ctバナパス読み込み成功.CurrentValue <= 2972 ? 128 : 128 - (this.ctバナパス読み込み成功.CurrentValue - 2972);
 
 								for (int i = 0; i < TJAPlayer3.Skin.Resolution[0] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width + 1; i++)
 									for (int j = 0; j < TJAPlayer3.Skin.Resolution[1] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height + 1; j++)
 										TJAPlayer3.Tx.Tile_Black.t2D描画(i * TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width, j * TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height);
 
-								Banapas_Load[0].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 * 2;
-								Banapas_Load[0].vc拡大縮小倍率.Y = ctバナパス読み込み成功.n現在の値 <= 100 ? ctバナパス読み込み成功.n現在の値 * 0.01f : 1.0f;
+								Banapas_Load[0].Opacity = ctバナパス読み込み成功.CurrentValue >= 872 ? 255 - (ctバナパス読み込み成功.CurrentValue - 872) * 2 : ctバナパス読み込み成功.CurrentValue * 2;
+								Banapas_Load[0].vc拡大縮小倍率.Y = ctバナパス読み込み成功.CurrentValue <= 100 ? ctバナパス読み込み成功.CurrentValue * 0.01f : 1.0f;
 								Banapas_Load[0].t2D描画(0, 0);
 
-								Banapas_Load[1].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 <= 96 ? (int)((ctバナパス読み込み成功.n現在の値 - 96) * 7.96875f) : 255;
+								Banapas_Load[1].Opacity = ctバナパス読み込み成功.CurrentValue >= 872 ? 255 - (ctバナパス読み込み成功.CurrentValue - 872) * 2 : ctバナパス読み込み成功.CurrentValue <= 96 ? (int)((ctバナパス読み込み成功.CurrentValue - 96) * 7.96875f) : 255;
 								Banapas_Load[1].t2D描画(0, 0);
 
 								if (Banapas_Load[2] != null)
 								{
                                     int step = Banapas_Load[2].szテクスチャサイズ.Width / TJAPlayer3.Skin.Title_LoadingPinFrameCount;
 									int cycle = TJAPlayer3.Skin.Title_LoadingPinCycle;
-									int _stamp = (ctバナパス読み込み成功.n現在の値 - 200) % (TJAPlayer3.Skin.Title_LoadingPinInstances * cycle);
+									int _stamp = (ctバナパス読み込み成功.CurrentValue - 200) % (TJAPlayer3.Skin.Title_LoadingPinInstances * cycle);
 
                                     for (int i = 0; i < TJAPlayer3.Skin.Title_LoadingPinInstances; i++)
                                     {
-                                        Banapas_Load[2].Opacity = ctバナパス読み込み成功.n現在の値 >= 872 ? 255 - (ctバナパス読み込み成功.n現在の値 - 872) * 2 : ctバナパス読み込み成功.n現在の値 <= 96 ? (int)((ctバナパス読み込み成功.n現在の値 - 96) * 7.96875f) : 255;
+                                        Banapas_Load[2].Opacity = ctバナパス読み込み成功.CurrentValue >= 872 ? 255 - (ctバナパス読み込み成功.CurrentValue - 872) * 2 : ctバナパス読み込み成功.CurrentValue <= 96 ? (int)((ctバナパス読み込み成功.CurrentValue - 96) * 7.96875f) : 255;
 
 
                                         Banapas_Load[2].t2D拡大率考慮中央基準描画(
@@ -531,7 +531,7 @@ namespace TJAPlayer3
 							}
 							if (bバナパス読み込み失敗)
 							{
-								TJAPlayer3.Tx.Tile_Black.Opacity = this.ctバナパス読み込み失敗.n現在の値 <= 1000 ? 128 : 128 - (this.ctバナパス読み込み失敗.n現在の値 - 1000);
+								TJAPlayer3.Tx.Tile_Black.Opacity = this.ctバナパス読み込み失敗.CurrentValue <= 1000 ? 128 : 128 - (this.ctバナパス読み込み失敗.CurrentValue - 1000);
 
 								for (int i = 0; i < TJAPlayer3.Skin.Resolution[0] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width + 1; i++)
 									for (int j = 0; j < TJAPlayer3.Skin.Resolution[1] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height + 1; j++)
@@ -540,12 +540,12 @@ namespace TJAPlayer3
 								if (!TJAPlayer3.Skin.soundError.bPlayed)
 									TJAPlayer3.Skin.soundError.t再生する();
 
-								int count = this.ctバナパス読み込み失敗.n現在の値;
+								int count = this.ctバナパス読み込み失敗.CurrentValue;
 								Banapas_Load_Failure[0].Opacity = count >= 872 ? 255 - (count - 872) * 2 : count * 2;
 								Banapas_Load_Failure[0].vc拡大縮小倍率.Y = count <= 100 ? count * 0.01f : 1.0f;
 								Banapas_Load_Failure[0].t2D描画(0, 0);
 
-								if (ctバナパス読み込み失敗.n現在の値 >= 1128)
+								if (ctバナパス読み込み失敗.CurrentValue >= 1128)
 								{
 									bバナパス読み込み失敗 = false;
 									TJAPlayer3.Skin.soundError.bPlayed = false;
@@ -556,7 +556,7 @@ namespace TJAPlayer3
 						{
 							if (bバナパス読み込み)
 							{
-								TJAPlayer3.Tx.Tile_Black.Opacity = this.ctバナパス読み込み成功.n現在の値 <= 2972 ? 128 : 128 - (this.ctバナパス読み込み成功.n現在の値 - 2972);
+								TJAPlayer3.Tx.Tile_Black.Opacity = this.ctバナパス読み込み成功.CurrentValue <= 2972 ? 128 : 128 - (this.ctバナパス読み込み成功.CurrentValue - 2972);
 
 								for (int i = 0; i < TJAPlayer3.Skin.Resolution[0] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Width + 1; i++)
 									for (int j = 0; j < TJAPlayer3.Skin.Resolution[1] / TJAPlayer3.Tx.Tile_Black.szテクスチャサイズ.Height + 1; j++)
@@ -565,7 +565,7 @@ namespace TJAPlayer3
 								if (!TJAPlayer3.Skin.SoundBanapas.bPlayed)
 									TJAPlayer3.Skin.SoundBanapas.t再生する();
 
-								int count = this.ctバナパス読み込み成功.n現在の値 - 1000;
+								int count = this.ctバナパス読み込み成功.CurrentValue - 1000;
 								Banapas_Load_Clear[0].Opacity = count >= 1872 ? 255 - (count - 1872) * 2 : count * 2;
 								Banapas_Load_Clear[0].vc拡大縮小倍率.Y = count <= 100 ? count * 0.01f : 1.0f;
 								Banapas_Load_Clear[0].t2D描画(0, 0);
@@ -606,7 +606,7 @@ namespace TJAPlayer3
 								Banapas_Load_Clear[1].Opacity = count >= 1872 ? 255 - (count - 1872) * 2 : count * 2;
 								Banapas_Load_Clear[1].t2D拡大率考慮下中心基準描画(TJAPlayer3.Skin.Title_Banapas_Load_Clear_Anime[0], TJAPlayer3.Skin.Title_Banapas_Load_Clear_Anime[1] - anime);
 
-								if (ctバナパス読み込み成功.n現在の値 >= 2000)
+								if (ctバナパス読み込み成功.CurrentValue >= 2000)
 								{
 									bプレイヤーエントリー = true;
 								}
@@ -629,7 +629,7 @@ namespace TJAPlayer3
 						this.bどんちゃんカウンター初期化 = true;
 					}
 
-					int alpha = ctエントリーバー決定点滅.n現在の値 >= 800 ? 255 - (ctエントリーバー決定点滅.n現在の値 - 800) : (this.ctバナパス読み込み成功.n現在の値 - 3400);
+					int alpha = ctエントリーバー決定点滅.CurrentValue >= 800 ? 255 - (ctエントリーバー決定点滅.CurrentValue - 800) : (this.ctバナパス読み込み成功.CurrentValue - 3400);
 
 					Entry_Player[0].Opacity = alpha;
 					Entry_Player[1].Opacity = alpha;
@@ -678,7 +678,7 @@ namespace TJAPlayer3
                     //this.PuchiChara.On進行描画(485 + 100, 140 + 190, false, alpha);
                     this.PuchiChara.On進行描画(puchi_x, puchi_y, false, alpha);
 
-                    Entry_Player[2].Opacity = ctエントリーバー決定点滅.n現在の値 >= 800 ? 255 - (ctエントリーバー決定点滅.n現在の値 - 800) : (this.ctバナパス読み込み成功.n現在の値 - 3400) - (this.ctエントリーバー点滅.n現在の値 <= 255 ? this.ctエントリーバー点滅.n現在の値 : 255 - (this.ctエントリーバー点滅.n現在の値 - 255));
+                    Entry_Player[2].Opacity = ctエントリーバー決定点滅.CurrentValue >= 800 ? 255 - (ctエントリーバー決定点滅.CurrentValue - 800) : (this.ctバナパス読み込み成功.CurrentValue - 3400) - (this.ctエントリーバー点滅.CurrentValue <= 255 ? this.ctエントリーバー点滅.CurrentValue : 255 - (this.ctエントリーバー点滅.CurrentValue - 255));
 					Entry_Player[2].t2D描画(TJAPlayer3.Skin.Title_Entry_Player_Select_X[n現在の選択行プレイヤーエントリー], TJAPlayer3.Skin.Title_Entry_Player_Select_Y[n現在の選択行プレイヤーエントリー],
 						new RectangleF(TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[0][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][0],
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[0][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][1],
@@ -700,18 +700,18 @@ namespace TJAPlayer3
 
 					int Opacity = 0;
 
-					if (ctエントリーバー決定点滅.n現在の値 <= 100)
-						Opacity = (int)(ctエントリーバー決定点滅.n現在の値 * 2.55f);
-					else if (ctエントリーバー決定点滅.n現在の値 <= 200)
-						Opacity = 255 - (int)((ctエントリーバー決定点滅.n現在の値 - 100) * 2.55f);
-					else if (ctエントリーバー決定点滅.n現在の値 <= 300)
-						Opacity = (int)((ctエントリーバー決定点滅.n現在の値 - 200) * 2.55f);
-					else if (ctエントリーバー決定点滅.n現在の値 <= 400)
-						Opacity = 255 - (int)((ctエントリーバー決定点滅.n現在の値 - 300) * 2.55f);
-					else if (ctエントリーバー決定点滅.n現在の値 <= 500)
-						Opacity = (int)((ctエントリーバー決定点滅.n現在の値 - 400) * 2.55f);
-					else if (ctエントリーバー決定点滅.n現在の値 <= 600)
-						Opacity = 255 - (int)((ctエントリーバー決定点滅.n現在の値 - 500) * 2.55f);
+					if (ctエントリーバー決定点滅.CurrentValue <= 100)
+						Opacity = (int)(ctエントリーバー決定点滅.CurrentValue * 2.55f);
+					else if (ctエントリーバー決定点滅.CurrentValue <= 200)
+						Opacity = 255 - (int)((ctエントリーバー決定点滅.CurrentValue - 100) * 2.55f);
+					else if (ctエントリーバー決定点滅.CurrentValue <= 300)
+						Opacity = (int)((ctエントリーバー決定点滅.CurrentValue - 200) * 2.55f);
+					else if (ctエントリーバー決定点滅.CurrentValue <= 400)
+						Opacity = 255 - (int)((ctエントリーバー決定点滅.CurrentValue - 300) * 2.55f);
+					else if (ctエントリーバー決定点滅.CurrentValue <= 500)
+						Opacity = (int)((ctエントリーバー決定点滅.CurrentValue - 400) * 2.55f);
+					else if (ctエントリーバー決定点滅.CurrentValue <= 600)
+						Opacity = 255 - (int)((ctエントリーバー決定点滅.CurrentValue - 500) * 2.55f);
 
 					#endregion
 
@@ -723,7 +723,7 @@ namespace TJAPlayer3
 						TJAPlayer3.Skin.Title_Entry_Player_Select_Rect[2][n現在の選択行プレイヤーエントリー == 1 ? 1 : 0][3]
 						));
 
-					Opacity = ctエントリーバー決定点滅.n現在の値 >= 800 ? 255 - (ctエントリーバー決定点滅.n現在の値 - 800) : (this.ctバナパス読み込み成功.n現在の値 - 3400);
+					Opacity = ctエントリーバー決定点滅.CurrentValue >= 800 ? 255 - (ctエントリーバー決定点滅.CurrentValue - 800) : (this.ctバナパス読み込み成功.CurrentValue - 3400);
 					if (Opacity > 0)
 						TJAPlayer3.NamePlate.tNamePlateDraw(TJAPlayer3.Skin.Title_Entry_NamePlate[0], TJAPlayer3.Skin.Title_Entry_NamePlate[1], 0, true, Opacity);
 				}
@@ -734,7 +734,7 @@ namespace TJAPlayer3
 
 				if (bモード選択)
 				{
-					this.ctBarAnimeIn.t進行();
+					this.ctBarAnimeIn.Tick();
 
 					#region [ どんちゃん描画 ]
 
@@ -744,8 +744,8 @@ namespace TJAPlayer3
 
 						float DonchanX = 0f, DonchanY = 0f;
 
-						DonchanX = -200 + ((float)Math.Sin(ctどんちゃんイン.n現在の値 / 2 * (Math.PI / 180)) * 200f);
-						DonchanY = ((float)Math.Sin((90 + (ctどんちゃんイン.n現在の値 / 2)) * (Math.PI / 180)) * 150f);
+						DonchanX = -200 + ((float)Math.Sin(ctどんちゃんイン.CurrentValue / 2 * (Math.PI / 180)) * 200f);
+						DonchanY = ((float)Math.Sin((90 + (ctどんちゃんイン.CurrentValue / 2)) * (Math.PI / 180)) * 150f);
 						if (player == 1) DonchanX *= -1;
 
 						int _charaId = TJAPlayer3.SaveFileInstances[TJAPlayer3.GetActualPlayer(player)].data.Character;
@@ -771,7 +771,7 @@ namespace TJAPlayer3
 
 					#endregion
 
-					if (ctBarAnimeIn.n現在の値 >= (int)(16 * 16.6f))
+					if (ctBarAnimeIn.CurrentValue >= (int)(16 * 16.6f))
 					{
 						// TJAPlayer3.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, ctBarMove.n現在の値.ToString());
 
@@ -808,9 +808,9 @@ namespace TJAPlayer3
 							#endregion
 
 							// if (this.stModeBar[i].n現在存在している行 == 1 && ctBarMove.n現在の値 >= 150)
-							if (usedMenusPos[i] == 1 && ctBarMove.n現在の値 >= 150)
+							if (usedMenusPos[i] == 1 && ctBarMove.CurrentValue >= 150)
 							{
-								float barAnimef = (ctBarMove.n現在の値 / 100.0f) - 1.5f;
+								float barAnimef = (ctBarMove.CurrentValue / 100.0f) - 1.5f;
 
 								float barAnime = TJAPlayer3.Skin.Title_ModeSelect_Bar_Move[0] +
 									(barAnimef * (TJAPlayer3.Skin.Title_ModeSelect_Bar_Move[1] - TJAPlayer3.Skin.Title_ModeSelect_Bar_Move[0]));
@@ -901,7 +901,7 @@ namespace TJAPlayer3
 
 
 								float anime = 0;
-								float BarAnimeCount = (this.ctBarMove.n現在の値 - 150) / 100.0f;
+								float BarAnimeCount = (this.ctBarMove.CurrentValue - 150) / 100.0f;
 
 								if (BarAnimeCount <= 0.45)
 									anime = BarAnimeCount * 3.333333333f;
@@ -932,8 +932,8 @@ namespace TJAPlayer3
 							}
 							else
 							{
-								int BarAnimeY = ctBarAnimeIn.n現在の値 >= (int)(26 * 16.6f) + 100 && ctBarAnimeIn.n現在の値 <= (int)(26 * 16.6f) + 299 ? 600 - (ctBarAnimeIn.n現在の値 - (int)(26 * 16.6f + 100)) * 3 : ctBarAnimeIn.n現在の値 >= (int)(26 * 16.6f) + 100 ? 0 : 600;
-								int BarAnimeX = ctBarAnimeIn.n現在の値 >= (int)(26 * 16.6f) + 100 && ctBarAnimeIn.n現在の値 <= (int)(26 * 16.6f) + 299 ? 100 - (int)((ctBarAnimeIn.n現在の値 - (int)(26 * 16.6f + 100)) * 0.5f) : ctBarAnimeIn.n現在の値 >= (int)(26 * 16.6f) + 100 ? 0 : 100;
+								int BarAnimeY = ctBarAnimeIn.CurrentValue >= (int)(26 * 16.6f) + 100 && ctBarAnimeIn.CurrentValue <= (int)(26 * 16.6f) + 299 ? 600 - (ctBarAnimeIn.CurrentValue - (int)(26 * 16.6f + 100)) * 3 : ctBarAnimeIn.CurrentValue >= (int)(26 * 16.6f) + 100 ? 0 : 600;
+								int BarAnimeX = ctBarAnimeIn.CurrentValue >= (int)(26 * 16.6f) + 100 && ctBarAnimeIn.CurrentValue <= (int)(26 * 16.6f) + 299 ? 100 - (int)((ctBarAnimeIn.CurrentValue - (int)(26 * 16.6f + 100)) * 0.5f) : ctBarAnimeIn.CurrentValue >= (int)(26 * 16.6f) + 100 ? 0 : 100;
 
 								int BarMoveX = 0;
 								int BarMoveY = 0;
@@ -954,8 +954,8 @@ namespace TJAPlayer3
 
 								#endregion
 
-								BarMoveX = ctBarMove.n現在の値 <= 100 ? (int)(pos.X - posSelect.X) - (int)(ctBarMove.n現在の値 / 100f * (pos.X - posSelect.X)) : 0;
-								BarMoveY = ctBarMove.n現在の値 <= 100 ? (int)(pos.Y - posSelect.Y) - (int)(ctBarMove.n現在の値 / 100f * (pos.Y - posSelect.Y)) : 0;
+								BarMoveX = ctBarMove.CurrentValue <= 100 ? (int)(pos.X - posSelect.X) - (int)(ctBarMove.CurrentValue / 100f * (pos.X - posSelect.X)) : 0;
+								BarMoveY = ctBarMove.CurrentValue <= 100 ? (int)(pos.Y - posSelect.Y) - (int)(ctBarMove.CurrentValue / 100f * (pos.Y - posSelect.Y)) : 0;
 
 
 								if (_bar != null)
@@ -1011,14 +1011,14 @@ namespace TJAPlayer3
 				switch (eフェーズid)
 				{
 					case CStage.Eフェーズ.共通_フェードイン:
-						if (this.actFI.On進行描画() != 0)
+						if (this.actFI.Draw() != 0)
 						{
 							base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 						}
 						break;
 
 					case CStage.Eフェーズ.共通_フェードアウト:
-						if (this.actFO.On進行描画() == 0)
+						if (this.actFO.Draw() == 0)
 						{
 							TJAPlayer3.Skin.bgmタイトル.t停止する();
 							TJAPlayer3.Skin.bgmタイトルイン.t停止する();
@@ -1032,7 +1032,7 @@ namespace TJAPlayer3
 						return ((int)CMainMenuTab.__Menus[usedMenus[this.n現在の選択行モード選択]].rp);
 
 					case CStage.Eフェーズ.タイトル_起動画面からのフェードイン:
-						if (this.actFIfromSetup.On進行描画() != 0)
+						if (this.actFIfromSetup.Draw() != 0)
 						{
 							base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 						}
@@ -1091,18 +1091,18 @@ namespace TJAPlayer3
 				bプレイヤーエントリー決定 = true;
 				bどんちゃんカウンター初期化 = true;
 
-				this.ctバナパス読み込み待機.t開始(0, 600, 1, TJAPlayer3.Timer);
-				this.ctバナパス読み込み待機.n現在の値 = (int)this.ctバナパス読み込み待機.n終了値;
-				ctエントリーバー決定点滅.t開始(0, 1055, 1, TJAPlayer3.Timer);
-				ctエントリーバー決定点滅.n現在の値 = (int)ctエントリーバー決定点滅.n現在の値;
-				ctバナパス読み込み成功.t開始(0, 3655, 1, TJAPlayer3.Timer);
-				ctバナパス読み込み成功.n現在の値 = (int)ctバナパス読み込み成功.n終了値;
+				this.ctバナパス読み込み待機.Start(0, 600, 1, TJAPlayer3.Timer);
+				this.ctバナパス読み込み待機.CurrentValue = (int)this.ctバナパス読み込み待機.EndValue;
+				ctエントリーバー決定点滅.Start(0, 1055, 1, TJAPlayer3.Timer);
+				ctエントリーバー決定点滅.CurrentValue = (int)ctエントリーバー決定点滅.CurrentValue;
+				ctバナパス読み込み成功.Start(0, 3655, 1, TJAPlayer3.Timer);
+				ctバナパス読み込み成功.CurrentValue = (int)ctバナパス読み込み成功.EndValue;
 
-				ctどんちゃんイン.t開始(0, 180, 2, TJAPlayer3.Timer);
-				ctBarAnimeIn.t開始(0, 1295, 1, TJAPlayer3.Timer);
+				ctどんちゃんイン.Start(0, 180, 2, TJAPlayer3.Timer);
+				ctBarAnimeIn.Start(0, 1295, 1, TJAPlayer3.Timer);
 
-				ctコインイン待機.n現在の値 = (int)ctコインイン待機.n終了値;
-				ctエントリーバー点滅.n現在の値 = (int)ctエントリーバー点滅.n終了値;
+				ctコインイン待機.CurrentValue = (int)ctコインイン待機.EndValue;
+				ctエントリーバー点滅.CurrentValue = (int)ctエントリーバー点滅.EndValue;
 
 				TJAPlayer3.Skin.SoundBanapas.bPlayed = true;
 				//TJAPlayer3.Skin.soundsanka.bPlayed = true;
@@ -1131,7 +1131,7 @@ namespace TJAPlayer3
 
 			this.ctBarAnimeIn = new CCounter();
 			this.ctBarMove = new CCounter();
-			this.ctBarMove.n現在の値 = 250;
+			this.ctBarMove.CurrentValue = 250;
 
 			this.bバナパス読み込み = false;
 			this.bバナパス読み込み失敗 = false;

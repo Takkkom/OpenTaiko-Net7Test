@@ -1416,7 +1416,7 @@ namespace TJAPlayer3
         public CDTX(string strファイル名, bool bヘッダのみ, double db再生速度, int nBGMAdjust, int difficulty)
             : this()
         {
-            this.On活性化();
+            this.Activate();
             this.t入力(strファイル名, bヘッダのみ, db再生速度, nBGMAdjust, 0, 0, false, difficulty);
         }
         /*
@@ -1430,7 +1430,7 @@ namespace TJAPlayer3
         public CDTX(string strファイル名, bool bヘッダのみ, double db再生速度, int nBGMAdjust, int nReadVersion, int nPlayerSide, bool bSession, int difficulty)
             : this()
         {
-            this.On活性化();
+            this.Activate();
             this.t入力(strファイル名, bヘッダのみ, db再生速度, nBGMAdjust, nReadVersion, nPlayerSide, bSession, difficulty);
         }
 
@@ -1465,9 +1465,9 @@ namespace TJAPlayer3
             {
                 for (int i = 0; i < nPolyphonicSounds; i++)
                 {
-                    if ((wc.rSound[i] != null) && (wc.rSound[i].b再生中))
+                    if ((wc.rSound[i] != null) && (wc.rSound[i].IsPlaying))
                     {
-                        long nCurrentTime = CSound管理.PlayTimer.nシステム時刻ms;
+                        long nCurrentTime = SoundManager.PlayTimer.SystemTimeMs;
                         if (nCurrentTime > wc.n再生開始時刻[i])
                         {
                             long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[i];
@@ -1480,12 +1480,12 @@ namespace TJAPlayer3
                             // WASAPI/ASIO用↓
                             if (!TJAPlayer3.stage演奏ドラム画面.bPAUSE)
                             {
-                                if (wc.rSound[i].b一時停止中) wc.rSound[i].t再生を再開する(nAbsTimeFromStartPlaying);
+                                if (wc.rSound[i].IsPaused) wc.rSound[i].Resume(nAbsTimeFromStartPlaying);
                                 else wc.rSound[i].tSetPositonToBegin(nAbsTimeFromStartPlaying);
                             }
                             else
                             {
-                                wc.rSound[i].t再生を一時停止する();
+                                wc.rSound[i].Pause();
                             }
                         }
                     }
@@ -1502,7 +1502,7 @@ namespace TJAPlayer3
             {
                 for (int i = 0; i < nPolyphonicSounds; i++)
                 {
-                    if (cwav.rSound[i] != null && cwav.rSound[i].b再生中)
+                    if (cwav.rSound[i] != null && cwav.rSound[i].IsPlaying)
                     {
                         if (bミキサーからも削除する)
                         {
@@ -1510,7 +1510,7 @@ namespace TJAPlayer3
                         }
                         else
                         {
-                            cwav.rSound[i].t再生を停止する();
+                            cwav.rSound[i].Stop();
                         }
                     }
                 }
@@ -1547,7 +1547,7 @@ namespace TJAPlayer3
 
                         if (!TJAPlayer3.ConfigIni.bDynamicBassMixerManagement)
                         {
-                            cwav.rSound[i].tBASSサウンドをミキサーに追加する();
+                            cwav.rSound[i].AddBassSoundFromMixer();
                         }
 
                         if (TJAPlayer3.ConfigIni.bLog作成解放ログ出力)
@@ -1885,8 +1885,8 @@ namespace TJAPlayer3
                         //                           will have just made such an attempt.
                         TJAPlayer3.SongGainController.Set(wc.SongVol, wc.SongLoudnessMetadata, sound);
 
-                        sound.n位置 = wc.n位置;
-                        sound.t再生を開始する();
+                        sound.SoundPosition = wc.n位置;
+                        sound.PlayStart();
                     }
                     wc.n再生開始時刻[wc.n現在再生中のサウンド番号] = n再生開始システム時刻ms;
                     this.tWave再生位置自動補正(wc);
@@ -1916,7 +1916,7 @@ namespace TJAPlayer3
             {
                 for (int j = 0; j < nPolyphonicSounds; j++)
                 {
-                    if ((cwav.rSound[j] != null) && cwav.rSound[j].b再生中)
+                    if ((cwav.rSound[j] != null) && cwav.rSound[j].IsPlaying)
                     {
                         cwav.n再生開始時刻[j] += nBGMAdjustの増減値;
                     }
@@ -1929,10 +1929,10 @@ namespace TJAPlayer3
             {
                 for (int i = 0; i < nPolyphonicSounds; i++)
                 {
-                    if ((cwav.rSound[i] != null) && cwav.rSound[i].b再生中)
+                    if ((cwav.rSound[i] != null) && cwav.rSound[i].IsPlaying)
                     {
-                        cwav.rSound[i].t再生を一時停止する();
-                        cwav.n一時停止時刻[i] = CSound管理.PlayTimer.nシステム時刻ms;
+                        cwav.rSound[i].Pause();
+                        cwav.n一時停止時刻[i] = SoundManager.PlayTimer.SystemTimeMs;
                     }
                 }
             }
@@ -1943,12 +1943,12 @@ namespace TJAPlayer3
             {
                 for (int i = 0; i < nPolyphonicSounds; i++)
                 {
-                    if ((cwav.rSound[i] != null) && cwav.rSound[i].b一時停止中)
+                    if ((cwav.rSound[i] != null) && cwav.rSound[i].IsPaused)
                     {
                         //long num1 = cwav.n一時停止時刻[ i ];
                         //long num2 = cwav.n再生開始時刻[ i ];
-                        cwav.rSound[i].t再生を再開する(cwav.n一時停止時刻[i] - cwav.n再生開始時刻[i]);
-                        cwav.n再生開始時刻[i] += CSound管理.PlayTimer.nシステム時刻ms - cwav.n一時停止時刻[i];
+                        cwav.rSound[i].Resume(cwav.n一時停止時刻[i] - cwav.n再生開始時刻[i]);
+                        cwav.n再生開始時刻[i] += SoundManager.PlayTimer.SystemTimeMs - cwav.n一時停止時刻[i];
                     }
                 }
             }
@@ -6849,7 +6849,7 @@ namespace TJAPlayer3
         /// <param name="InputText"></param>
         private void t難易度別ヘッダ(string InputText)
         {
-            if (TJAPlayer3.actEnumSongs != null && TJAPlayer3.actEnumSongs.b活性化してない)
+            if (TJAPlayer3.actEnumSongs != null && TJAPlayer3.actEnumSongs.IsDeActivated)
             {
                 if (InputText.Equals("#HBSCROLL") && TJAPlayer3.ConfigIni.bスクロールモードを上書き == false)
                 {
@@ -8338,7 +8338,7 @@ namespace TJAPlayer3
 
         // CActivity 実装
         private CCachedFontRenderer pf歌詞フォント;
-        public override void On活性化()
+        public override void Activate()
         {
             if (TJAPlayer3.r現在のステージ.eステージID == CStage.Eステージ.曲読み込み)
             {
@@ -8386,9 +8386,9 @@ namespace TJAPlayer3
             this.listTextures = new Dictionary<string, CTexture>();
             this.listOriginalTextures = new Dictionary<string, CTexture>();
             this.currentObjAnimations = new Dictionary<string, CChip>();
-            base.On活性化();
+            base.Activate();
         }
-        public override void On非活性化()
+        public override void DeActivate()
         {
             if (this.listWAV != null)
             {
@@ -8519,19 +8519,19 @@ namespace TJAPlayer3
                 this.listTextures.Clear();
             }
 
-            base.On非活性化();
+            base.DeActivate();
         }
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 this.tAVIの読み込み();
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 if (this.listVD != null)
                 {
@@ -8542,7 +8542,7 @@ namespace TJAPlayer3
                     this.listVD = null;
                 }
                 TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 

@@ -224,7 +224,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 	//		this.n現在の選択行 = 0;
 			this.bキー入力待ち = true;
@@ -232,21 +232,21 @@ namespace TJAPlayer3
 			{
 				this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, TJAPlayer3.Timer );
 			}
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 			b選択した = false;
 			this.bIsActivePopupMenu = false;
 			this.font = new CActDFPFont();
-			base.list子Activities.Add( this.font );
+			base.ChildActivities.Add( this.font );
 			nItemSelecting = -1;
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
-				base.list子Activities.Remove( this.font );
-				this.font.On非活性化();
+				base.ChildActivities.Remove( this.font );
+				this.font.DeActivate();
 				this.font = null;
 
 				//CDTXMania.tテクスチャの解放( ref this.txCursor );
@@ -255,42 +255,42 @@ namespace TJAPlayer3
 				{
 					this.ctキー反復用[ i ] = null;
 				}
-				base.On非活性化();
+				base.DeActivate();
 			}
 		}
 
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-		    base.OnManagedリソースの作成();
+		    base.CreateManagedResource();
 
 		    ConditionallyInitializePrvFont();
 		}
 
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if ( !base.b活性化してない )
+			if ( !base.IsDeActivated )
 			{
 				//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
 				//CDTXMania.tテクスチャの解放( ref this.txCursor );
                 TJAPlayer3.t安全にDisposeする( ref this.prvFont );
 			}
-			base.OnManagedリソースの解放();
+			base.ReleaseManagedResource();
 		}
 
-		public override int On進行描画()
+		public override int Draw()
 		{
 			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
 		}
 
 		public int t進行描画()
 		{
-			if ( !base.b活性化してない && this.bIsActivePopupMenu )
+			if ( !base.IsDeActivated && this.bIsActivePopupMenu )
 			{
 				if ( this.bキー入力待ち )
 				{
 					#region [ Shift-F1: CONFIG画面 ]
-					if ( ( TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int)SlimDXKeys.Key.RightShift ) || TJAPlayer3.Input管理.Keyboard.bキーが押されている( (int)SlimDXKeys.Key.LeftShift ) ) &&
-						TJAPlayer3.Input管理.Keyboard.bキーが押された( (int)SlimDXKeys.Key.F1 ) )
+					if ( ( TJAPlayer3.Input管理.Keyboard.KeyPressing( (int)SlimDXKeys.Key.RightShift ) || TJAPlayer3.Input管理.Keyboard.KeyPressing( (int)SlimDXKeys.Key.LeftShift ) ) &&
+						TJAPlayer3.Input管理.Keyboard.KeyPressed( (int)SlimDXKeys.Key.F1 ) )
 					{	// [SHIFT] + [F1] CONFIG
 						TJAPlayer3.Skin.sound取消音.t再生する();
 						tCancel();
@@ -298,7 +298,7 @@ namespace TJAPlayer3
 					}
 					#endregion
 					#region [ キー入力: キャンセル ]
-					else if ( ( TJAPlayer3.Input管理.Keyboard.bキーが押された( (int)SlimDXKeys.Key.Escape )
+					else if ( ( TJAPlayer3.Input管理.Keyboard.KeyPressed( (int)SlimDXKeys.Key.Escape )
 						|| TJAPlayer3.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT )
 						|| TJAPlayer3.Pad.b押されたGB( Eパッド.Cancel ) )
                         && this.bEsc有効 )
@@ -330,7 +330,7 @@ namespace TJAPlayer3
 							|| TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LC)
 							|| TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LRed)
 							|| TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RRed)
-							|| (TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return)))
+							|| (TJAPlayer3.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return)))
 						{
 							eInst = E楽器パート.DRUMS;
 							eAction = ESortAction.Decide;
@@ -341,16 +341,16 @@ namespace TJAPlayer3
 						}
 						#endregion
 						#region [ キー入力: 前に移動 ]
-						this.ctキー反復用.Up.tキー反復(TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.UpArrow), new CCounter.DGキー処理(this.t前に移動));
-						this.ctキー反復用.R.tキー反復(TJAPlayer3.Pad.b押されているGB(Eパッド.R), new CCounter.DGキー処理(this.t前に移動));
+						this.ctキー反復用.Up.KeyIntervalFunc(TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.UpArrow), new CCounter.KeyProcess(this.t前に移動));
+						this.ctキー反復用.R.KeyIntervalFunc(TJAPlayer3.Pad.b押されているGB(Eパッド.R), new CCounter.KeyProcess(this.t前に移動));
 						if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.SD) || TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LBlue))
 						{
 							this.t前に移動();
 						}
 						#endregion
 						#region [ キー入力: 次に移動 ]
-						this.ctキー反復用.Down.tキー反復(TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.DownArrow), new CCounter.DGキー処理(this.t次に移動));
-						this.ctキー反復用.B.tキー反復(TJAPlayer3.Pad.b押されているGB(Eパッド.B), new CCounter.DGキー処理(this.t次に移動));
+						this.ctキー反復用.Down.KeyIntervalFunc(TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.DownArrow), new CCounter.KeyProcess(this.t次に移動));
+						this.ctキー反復用.B.KeyIntervalFunc(TJAPlayer3.Pad.b押されているGB(Eパッド.B), new CCounter.KeyProcess(this.t次に移動));
 						if (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LT) || TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RBlue))
 						{
 							this.t次に移動();

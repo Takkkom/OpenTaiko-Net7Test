@@ -72,7 +72,7 @@ namespace TJAPlayer3
 				if ( this.eInvisibleMode[ nInst ] == EInvisible.SEMI )
 				{
 					ShowChipTemporally( eInst );
-					ccounter[ nInst ].n現在の値 = nDisplayTimeMs;
+					ccounter[ nInst ].CurrentValue = nDisplayTimeMs;
 				}
 			}
 		}
@@ -82,7 +82,7 @@ namespace TJAPlayer3
 		/// <param name="eInst">楽器パート</param>
 		public void ShowChipTemporally( E楽器パート eInst )
 		{
-			ccounter[ (int) eInst ].t開始( 0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, TJAPlayer3.Timer );
+			ccounter[ (int) eInst ].Start( 0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, TJAPlayer3.Timer );
 		}
 
 		/// <summary>
@@ -104,7 +104,7 @@ namespace TJAPlayer3
 			int nInst = (int) cc.e楽器パート;
 			EChipInvisibleState retcode = EChipInvisibleState.SHOW;
 
-			ccounter[ nInst ].t進行();
+			ccounter[ nInst ].Tick();
 
 			switch ( eInvisibleMode[ nInst ] )
 			{
@@ -126,23 +126,23 @@ namespace TJAPlayer3
 						return EChipInvisibleState.SHOW;
 					}
 
-					if ( ccounter[ nInst ].n現在の値 <= 0 || ccounter[ nInst ].n現在の値 > nDisplayTimeMs + nFadeoutTimeMs )
+					if ( ccounter[ nInst ].CurrentValue <= 0 || ccounter[ nInst ].CurrentValue > nDisplayTimeMs + nFadeoutTimeMs )
 					// まだ一度もMissっていない or フェードアウトしきった後
 					{
 						cc.b可視 = false;
 						cc.n透明度 = 255;
 						retcode = EChipInvisibleState.INVISIBLE;
 					}
-					else if ( ccounter[ nInst ].n現在の値 < nDisplayTimeMs )								// 表示期間
+					else if ( ccounter[ nInst ].CurrentValue < nDisplayTimeMs )								// 表示期間
 					{
 						cc.b可視 = true;
 						cc.n透明度 = 255;
 						retcode = EChipInvisibleState.SHOW;
 					}
-					else if ( ccounter[ nInst ].n現在の値 < nDisplayTimeMs + nFadeoutTimeMs )		// フェードアウト期間
+					else if ( ccounter[ nInst ].CurrentValue < nDisplayTimeMs + nFadeoutTimeMs )		// フェードアウト期間
 					{
 						cc.b可視 = true;
-						cc.n透明度 = 255 - (int) ( Convert.ToDouble( ccounter[ nInst ].n現在の値 - nDisplayTimeMs ) / nFadeoutTimeMs * 255.0 );
+						cc.n透明度 = 255 - (int) ( Convert.ToDouble( ccounter[ nInst ].CurrentValue - nDisplayTimeMs ) / nFadeoutTimeMs * 255.0 );
 						retcode = EChipInvisibleState.FADEOUT;
 					}
 					break;
@@ -173,7 +173,7 @@ namespace TJAPlayer3
 				for ( int i = 0; i < 5; i++ )
 				{
 					// ctInvisibleTimer[ i ].Dispose();
-					ccounter[ i ].t停止();
+					ccounter[ i ].Stop();
 					ccounter[ i ] = null;
 				}
 			}

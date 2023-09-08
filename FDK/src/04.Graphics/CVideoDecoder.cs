@@ -72,7 +72,7 @@ namespace FDK
 				for (int i = 0; i < framelist.Length; i++)
 					framelist[i] = new CDecodedFrame(new Size(codec_context->width, codec_context->height));
 
-				CTimer = new CTimer(CTimer.E種別.MultiMedia);
+				CTimer = new CTimer(CTimer.TimerType.MultiMedia);
 			}
 		}
 
@@ -99,8 +99,8 @@ namespace FDK
 
 		public void Start()
 		{
-			CTimer.tリセット();
-			CTimer.t再開();
+			CTimer.Reset();
+			CTimer.Resume();
 			this.bPlaying = true;
 		}
 
@@ -108,19 +108,19 @@ namespace FDK
 		{
 			if (this.bPlaying)
 			{
-				CTimer.t一時停止();
+				CTimer.Pause();
 				this.bPlaying = false;
 			}
 			else
 			{
-				CTimer.t再開();
+				CTimer.Resume();
 				this.bPlaying = true;
 			}
 		}
 
 		public void Stop()
 		{
-			CTimer.t一時停止();
+			CTimer.Pause();
 			this.bPlaying = false;
 		}
 
@@ -142,7 +142,7 @@ namespace FDK
 			if (ffmpeg.av_seek_frame(format_context, video_stream->index, timestampms, ffmpeg.AVSEEK_FLAG_BACKWARD) < 0)
 				Trace.TraceError("av_seek_frame failed\n");
 			ffmpeg.avcodec_flush_buffers(codec_context);
-			CTimer.n現在時刻ms = timestampms;
+			CTimer.NowTimeMs = timestampms;
 			cts?.Dispose();
 			while (decodedframes.TryDequeue(out CDecodedFrame frame))
 				frame.RemoveFrame();
@@ -156,16 +156,16 @@ namespace FDK
 		{
 			if (this.bPlaying && decodedframes.Count != 0)
 			{
-				CTimer.t更新();
+				CTimer.Update();
 				if (decodedframes.TryPeek(out CDecodedFrame frame))
 				{
-					while (frame.Time <= (CTimer.n現在時刻ms * _dbPlaySpeed))
+					while (frame.Time <= (CTimer.NowTimeMs * _dbPlaySpeed))
 					{
 						if (decodedframes.TryDequeue(out CDecodedFrame cdecodedframe)) {
 
 							if (decodedframes.Count != 0)
 								if (decodedframes.TryPeek(out frame))
-									if (frame.Time <= (CTimer.n現在時刻ms * _dbPlaySpeed))
+									if (frame.Time <= (CTimer.NowTimeMs * _dbPlaySpeed))
 									{
 										cdecodedframe.RemoveFrame();
 										continue;

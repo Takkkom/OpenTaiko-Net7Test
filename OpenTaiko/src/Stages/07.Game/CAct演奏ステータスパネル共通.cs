@@ -82,7 +82,7 @@ namespace TJAPlayer3
 			//statuspanelArray[ 11 ] = statuspanel12;
 			//this.stパネルマップ = statuspanelArray;
 			#endregion
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
@@ -110,10 +110,10 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			this.nStatus = 0;
-			base.On活性化();
+			base.Activate();
 		}
 
 

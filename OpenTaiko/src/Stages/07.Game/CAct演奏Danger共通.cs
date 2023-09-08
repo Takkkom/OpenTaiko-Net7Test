@@ -12,13 +12,13 @@ namespace TJAPlayer3
 
 		public CAct演奏Danger共通()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			for ( int i = 0; i < 3; i++ )
 			{
@@ -29,13 +29,13 @@ namespace TJAPlayer3
 			this.ct移動用 = null;
 			this.ct透明度用 = null;
 
-			base.On活性化();
+			base.Activate();
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			this.ct移動用 = null;
 			this.ct透明度用 = null;
-			base.On非活性化();
+			base.DeActivate();
 		}
 
 		/// <summary>

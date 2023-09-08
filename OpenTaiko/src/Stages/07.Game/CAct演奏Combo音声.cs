@@ -14,7 +14,7 @@ namespace TJAPlayer3
 
 		public CAct演奏Combo音声()
 		{
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		
 		// メソッド
@@ -26,7 +26,7 @@ namespace TJAPlayer3
                 var index = ListCombo[player][VoiceIndex[player]];
                 if (nCombo == index.nCombo)
                 {
-                    index.soundComboVoice.t再生を開始する();
+                    index.soundComboVoice.PlayStart();
                     VoiceIndex[player]++;
                 }
                 
@@ -41,7 +41,7 @@ namespace TJAPlayer3
                 var index = ListFloor[0][FloorIndex[0]];
                 if (CFloorManagement.LastRegisteredFloor == index.nCombo)
                 {
-                    index.soundComboVoice.t再生を開始する();
+                    index.soundComboVoice.PlayStart();
                     FloorIndex[0]++;
                 }
             }
@@ -58,7 +58,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
             for (int i = 0; i < 5; i++)
             {
@@ -67,11 +67,11 @@ namespace TJAPlayer3
             }
             VoiceIndex = new int[] { 0, 0, 0, 0, 0 };
             FloorIndex = new int[] { 0, 0, 0, 0, 0 };
-            base.On活性化();
+            base.Activate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
                 
 
@@ -102,7 +102,7 @@ namespace TJAPlayer3
                                     comboVoice.soundComboVoice.n位置 = 100;
                             }
                             */
-                            comboVoice.soundComboVoice.n位置 = TJAPlayer3.ConfigIni.nPanning[TJAPlayer3.ConfigIni.nPlayerCount - 1][i];
+                            comboVoice.soundComboVoice.SoundPosition = TJAPlayer3.ConfigIni.nPanning[TJAPlayer3.ConfigIni.nPlayerCount - 1][i];
                             comboVoice.nCombo = int.Parse(Path.GetFileNameWithoutExtension(item));
                             ListCombo[i].Add(comboVoice);
                         }
@@ -138,12 +138,12 @@ namespace TJAPlayer3
                     #endregion
 
                 }
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
                 for (int i = 0; i < 5; i++)
                 {
@@ -160,7 +160,7 @@ namespace TJAPlayer3
                     ListFloor[i].Clear();
                 }
 
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
 

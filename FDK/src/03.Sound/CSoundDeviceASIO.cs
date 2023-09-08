@@ -44,7 +44,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public long n実出力遅延ms
+		public long OutputDelay
 		{
 			get;
 			protected set;
@@ -54,7 +54,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public int nASIODevice
+		public int ASIODevice
 		{
 			get;
 			set;
@@ -62,17 +62,17 @@ namespace FDK
 
 		// CSoundTimer 用に公開しているプロパティ
 
-		public long n経過時間ms
+		public long ElapsedTimeMs
 		{
 			get;
 			protected set;
 		}
-		public long n経過時間を更新したシステム時刻ms
+		public long UpdateSystemTimeMs
 		{
 			get;
 			protected set;
 		}
-		public CTimer tmシステムタイマ
+		public CTimer SystemTimer
 		{
 			get;
 			protected set;
@@ -116,17 +116,17 @@ namespace FDK
 
 		// メソッド
 
-		public CSoundDeviceASIO( long n希望バッファサイズms, int _nASIODevice )
+		public CSoundDeviceASIO( long bufferSize, int deviceIndex )
 		{
 			// 初期化。
 
 			Trace.TraceInformation( "BASS (ASIO) の初期化を開始します。" );
 			this.SoundDeviceType = ESoundDeviceType.Unknown;
-			this.n実出力遅延ms = 0;
-			this.n経過時間ms = 0;
-			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
-			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
-			this.nASIODevice = _nASIODevice;
+			this.OutputDelay = 0;
+			this.ElapsedTimeMs = 0;
+			this.UpdateSystemTimeMs = CTimer.UnusedNum;
+			this.SystemTimer = new CTimer( CTimer.TimerType.MultiMedia );
+			this.ASIODevice = deviceIndex;
 
 			// BASS の設定。
 
@@ -165,7 +165,7 @@ namespace FDK
 
 			// BASS ASIO の初期化。
 			AsioInfo asioInfo;
-			if ( BassAsio.Init( nASIODevice, AsioInitFlags.Thread ) )	// 専用スレッドにて起動
+			if ( BassAsio.Init( ASIODevice, AsioInitFlags.Thread ) )	// 専用スレッドにて起動
 			{
 				#region [ ASIO の初期化に成功。]
 				//-----------------
@@ -318,7 +318,7 @@ namespace FDK
 
 			// 出力を開始。
 
-			this.nバッファサイズsample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
+			this.nバッファサイズsample = (int) ( bufferSize * this.db周波数 / 1000.0 );
 			//this.nバッファサイズsample = (int)  nバッファサイズbyte;
 			if ( !BassAsio.Start( this.nバッファサイズsample ) )		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
 			{
@@ -331,9 +331,9 @@ namespace FDK
 			else
 			{
 				int n遅延sample = BassAsio.GetLatency( false );	// この関数は BASS_ASIO_Start() 後にしか呼び出せない。
-				int n希望遅延sample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
-				this.BufferSize = this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
-				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, n希望遅延sample, this.n実出力遅延ms, n希望バッファサイズms );
+				int n希望遅延sample = (int) ( bufferSize * this.db周波数 / 1000.0 );
+				this.BufferSize = this.OutputDelay = (long) ( n遅延sample * 1000.0f / this.db周波数 );
+				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, n希望遅延sample, this.OutputDelay, bufferSize );
 			}
 		}
 
@@ -341,13 +341,13 @@ namespace FDK
 		public CSound tCreateSound( string strファイル名, ESoundGroup soundGroup )
 		{
 			var sound = new CSound(soundGroup);
-			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
+			sound.CreateASIOSound( strファイル名, this.hMixer );
 			return sound;
 		}
 
 		public void tCreateSound( string strファイル名, CSound sound )
 		{
-			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
+			sound.CreateASIOSound( strファイル名, this.hMixer );
 		}
 		#endregion
 
@@ -374,8 +374,8 @@ namespace FDK
 
 			if( bManagedDispose )
 			{
-				tmシステムタイマ.Dispose();
-				tmシステムタイマ = null;
+				SystemTimer.Dispose();
+				SystemTimer = null;
 			}
 		}
 		~CSoundDeviceASIO()
@@ -411,8 +411,8 @@ namespace FDK
 			// 経過時間を更新。
 			// データの転送差分ではなく累積転送バイト数から算出する。
 
-			this.n経過時間ms = ( this.n累積転送バイト数 * 1000 / this.nミキサーの1秒あたりのバイト数 ) - this.n実出力遅延ms;
-			this.n経過時間を更新したシステム時刻ms = this.tmシステムタイマ.nシステム時刻ms;
+			this.ElapsedTimeMs = ( this.n累積転送バイト数 * 1000 / this.nミキサーの1秒あたりのバイト数 ) - this.OutputDelay;
+			this.UpdateSystemTimeMs = this.SystemTimer.SystemTimeMs;
 
 
 			// 経過時間を更新後に、今回分の累積転送バイト数を反映。

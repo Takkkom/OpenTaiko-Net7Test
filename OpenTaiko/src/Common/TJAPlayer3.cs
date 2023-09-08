@@ -100,7 +100,7 @@ namespace TJAPlayer3
 			{
 				if( ( dtx[ 0 ] != null ) && ( app != null ) )
 				{
-					dtx[ 0 ].On非活性化();
+					dtx[ 0 ].DeActivate();
 					app.listトップレベルActivities.Remove( dtx[ 0 ] );
 				}
 				dtx[ 0 ] = value;
@@ -120,7 +120,7 @@ namespace TJAPlayer3
 			{
 				if( ( dtx[ 1 ] != null ) && ( app != null ) )
 				{
-					dtx[ 1 ].On非活性化();
+					dtx[ 1 ].DeActivate();
 					app.listトップレベルActivities.Remove( dtx[ 1 ] );
 				}
 				dtx[ 1 ] = value;
@@ -140,7 +140,7 @@ namespace TJAPlayer3
 			{
 				if ((dtx[2] != null) && (app != null))
 				{
-					dtx[2].On非活性化();
+					dtx[2].DeActivate();
 					app.listトップレベルActivities.Remove(dtx[2]);
 				}
 				dtx[2] = value;
@@ -160,7 +160,7 @@ namespace TJAPlayer3
 			{
 				if ((dtx[3] != null) && (app != null))
 				{
-					dtx[3].On非活性化();
+					dtx[3].DeActivate();
 					app.listトップレベルActivities.Remove(dtx[3]);
 				}
 				dtx[3] = value;
@@ -180,7 +180,7 @@ namespace TJAPlayer3
 			{
 				if ((dtx[4] != null) && (app != null))
 				{
-					dtx[4].On非活性化();
+					dtx[4].DeActivate();
 					app.listトップレベルActivities.Remove(dtx[4]);
 				}
 				dtx[4] = value;
@@ -220,7 +220,7 @@ namespace TJAPlayer3
 			get; 
 			private set;
 		}
-		public static CInput管理 Input管理 
+		public static CInputManager Input管理 
 		{
 			get;
 			private set;
@@ -323,7 +323,7 @@ namespace TJAPlayer3
 			private set;
 		}
 
-		public static CSound管理 Sound管理
+		public static SoundManager Sound管理
 		{
 			get;
 			private set;
@@ -665,7 +665,7 @@ namespace TJAPlayer3
 			if( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
-					activity.OnUnmanagedリソースの作成();
+					activity.CreateUnmanagedResource();
 			}
 
 			foreach( STPlugin st in this.PluginList )
@@ -680,7 +680,7 @@ namespace TJAPlayer3
 			if( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
-					activity.OnUnmanagedリソースの解放();
+					activity.ReleaseUnmanagedResource();
 			}
 
 			foreach( STPlugin st in this.PluginList )
@@ -709,10 +709,10 @@ namespace TJAPlayer3
 		protected override void Draw()
 		{
 			// Sound管理?.t再生中の処理をする();
-            Timer?.t更新();
-            CSound管理.PlayTimer?.t更新();
-            Input管理?.tポーリング( TJAPlayer3.ConfigIni.bバッファ入力を行う );
-            FPS?.tカウンタ更新();
+            Timer?.Update();
+            SoundManager.PlayTimer?.Update();
+            Input管理?.Polling( TJAPlayer3.ConfigIni.bバッファ入力を行う );
+            FPS?.Update();
 
 			// #xxxxx 2013.4.8 yyagi; sleepの挿入位置を、EndScnene～Present間から、BeginScene前に移動。描画遅延を小さくするため。
 
@@ -774,7 +774,7 @@ namespace TJAPlayer3
 
 			if( r現在のステージ != null )
 			{
-				this.n進行描画の戻り値 = ( r現在のステージ != null ) ? r現在のステージ.On進行描画() : 0;
+				this.n進行描画の戻り値 = ( r現在のステージ != null ) ? r現在のステージ.Draw() : 0;
 
 				#region [ プラグインの進行描画 ]
 				//---------------------
@@ -798,7 +798,7 @@ namespace TJAPlayer3
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
 				if ( !TJAPlayer3.bコンパクトモード )
 				{
-					actEnumSongs.On進行描画();							// "Enumerating Songs..."アイコンの描画
+					actEnumSongs.Draw();							// "Enumerating Songs..."アイコンの描画
 				}
 				switch ( r現在のステージ.eステージID )
 				{
@@ -814,7 +814,7 @@ namespace TJAPlayer3
 								 this.n進行描画の戻り値 == (int) CStageタイトル.E戻り値.継続 &&
 								 !EnumSongs.IsSongListEnumStarted )
 							{
-								actEnumSongs.On活性化();
+								actEnumSongs.Activate();
 								TJAPlayer3.stage選曲.bIsEnumeratingSongs = true;
 								EnumSongs.Init();	// 取得した曲数を、新インスタンスにも与える
 								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動_開始
@@ -829,12 +829,12 @@ namespace TJAPlayer3
 									case 0:     // 何もない
 										EnumSongs.Resume();
 										EnumSongs.IsSlowdown = false;
-										actEnumSongs.On活性化();
+										actEnumSongs.Activate();
 										break;
 
 									case 2:		// 曲決定
 										EnumSongs.Suspend();						// #27060 バックグラウンドの曲検索を一時停止
-										actEnumSongs.On非活性化();
+										actEnumSongs.DeActivate();
 										break;
 								}
 							}
@@ -852,7 +852,7 @@ namespace TJAPlayer3
 							// CStage選曲.On活性化() に回した方がいいかな？
 							if ( EnumSongs.IsSongListEnumerated )
 							{
-								actEnumSongs.On非活性化();
+								actEnumSongs.DeActivate();
 								TJAPlayer3.stage選曲.bIsEnumeratingSongs = false;
 
 								bool bRemakeSongTitleBar = ( r現在のステージ.eステージID == CStage.Eステージ.選曲 ) ? true : false;
@@ -877,19 +877,19 @@ namespace TJAPlayer3
 						{
 							if( !bコンパクトモード )
 							{
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ タイトル" );
-								stageタイトル.On活性化();
+								stageタイトル.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 							}
 							else
 							{
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 曲読み込み" );
-								stage曲読み込み.On活性化();
+								stage曲読み込み.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 							}
@@ -914,10 +914,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.GAMESTART:
 								#region [ 選曲処理へ ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 選曲" );
-								stage選曲.On活性化();
+								stage選曲.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
 
@@ -929,10 +929,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.DANGAMESTART:
 								#region [ 段位選択処理へ ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 段位選択" );
-								stage段位選択.On活性化();								
+								stage段位選択.Activate();								
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage段位選択;
 								TJAPlayer3.latestSongSelect = stage段位選択;
@@ -943,10 +943,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.TAIKOTOWERSSTART:
 								#region [Online Lounge]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Online Lounge");
-								stageTowerSelect.On活性化();
+								stageTowerSelect.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageTowerSelect;
 								//-----------------------------
@@ -956,10 +956,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.HEYA:
 								#region [Heya menu]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Taiko Heya");
-								stageHeya.On活性化();
+								stageHeya.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageHeya;
 								//-----------------------------
@@ -969,10 +969,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.ONLINELOUNGE:
 								#region [Online Lounge]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Online Lounge");
-								stageOnlineLounge.On活性化();
+								stageOnlineLounge.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageOnlineLounge;
 								//-----------------------------
@@ -982,10 +982,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.ENCYCLOPEDIA:
 								#region [Online Lounge]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Open Encyclopedia");
-								stageOpenEncyclopedia.On活性化();
+								stageOpenEncyclopedia.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageOpenEncyclopedia;
 								//-----------------------------
@@ -995,10 +995,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.CONFIG:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ コンフィグ" );
-								stageコンフィグ.On活性化();
+								stageコンフィグ.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageコンフィグ;
 								//-----------------------------
@@ -1008,10 +1008,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.EXIT:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 終了" );
-								stage終了.On活性化();
+								stage終了.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage終了;
 								//-----------------------------
@@ -1021,10 +1021,10 @@ namespace TJAPlayer3
 							case (int)CStageタイトル.E戻り値.AIBATTLEMODE:
 								#region [ 選曲処理へ ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 選曲");
-								stage選曲.On活性化();
+								stage選曲.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
 
@@ -1060,10 +1060,10 @@ namespace TJAPlayer3
 								case CStage.Eステージ.タイトル:
 									#region [ *** ]
 									//-----------------------------
-									r現在のステージ.On非活性化();
+									r現在のステージ.DeActivate();
 									Trace.TraceInformation( "----------------------" );
 									Trace.TraceInformation( "■ タイトル" );
-									stageタイトル.On活性化();
+									stageタイトル.Activate();
 									stageタイトル.tReloadMenus();
 									r直前のステージ = r現在のステージ;
 									r現在のステージ = stageタイトル;
@@ -1083,10 +1083,10 @@ namespace TJAPlayer3
 								case CStage.Eステージ.選曲:
 									#region [ *** ]
 									//-----------------------------
-									r現在のステージ.On非活性化();
+									r現在のステージ.DeActivate();
 									Trace.TraceInformation( "----------------------" );
 									Trace.TraceInformation( "■ 選曲" );
-									stage選曲.On活性化();
+									stage選曲.Activate();
 									r直前のステージ = r現在のステージ;
 									r現在のステージ = stage選曲;
 
@@ -1116,10 +1116,10 @@ namespace TJAPlayer3
 							case (int) CStage選曲.E戻り値.タイトルに戻る:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ タイトル" );
-								stageタイトル.On活性化();
+								stageタイトル.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1151,10 +1151,10 @@ namespace TJAPlayer3
 							case (int) CStage選曲.E戻り値.選曲した:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 曲読み込み" );
-								stage曲読み込み.On活性化();
+								stage曲読み込み.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
@@ -1202,10 +1202,10 @@ namespace TJAPlayer3
 							case (int) CStage選曲.E戻り値.コンフィグ呼び出し:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ コンフィグ" );
-								stageコンフィグ.On活性化();
+								stageコンフィグ.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageコンフィグ;
 
@@ -1228,10 +1228,10 @@ namespace TJAPlayer3
 
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ スキン切り替え" );
-								stageChangeSkin.On活性化();
+								stageChangeSkin.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageChangeSkin;
 								break;
@@ -1249,10 +1249,10 @@ namespace TJAPlayer3
 							case (int)CStage選曲.E戻り値.タイトルに戻る:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
-								stageタイトル.On活性化();
+								stageタイトル.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1279,10 +1279,10 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 曲読み込み");
-								stage曲読み込み.On活性化();
+								stage曲読み込み.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
@@ -1308,10 +1308,10 @@ namespace TJAPlayer3
 							case (int)CStage選曲.E戻り値.タイトルに戻る:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
-								stageタイトル.On活性化();
+								stageタイトル.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1340,13 +1340,13 @@ namespace TJAPlayer3
 						if( this.n進行描画の戻り値 != 0 )
 						{
 							TJAPlayer3.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
-							r現在のステージ.On非活性化();
+							r現在のステージ.DeActivate();
 							#region [ ESC押下時は、曲の読み込みを中止して選曲画面に戻る ]
 							if ( this.n進行描画の戻り値 == (int) E曲読込画面の戻り値.読込中止 )
 							{
 								//DTX.t全チップの再生停止();
 								if( DTX != null )
-                                    DTX.On非活性化();
+                                    DTX.DeActivate();
 
 								// ???
 
@@ -1371,7 +1371,7 @@ namespace TJAPlayer3
 
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Return to song select menu");
-								TJAPlayer3.latestSongSelect.On活性化();
+								TJAPlayer3.latestSongSelect.Activate();
 								r直前のステージ = r現在のステージ;
 
 								// Seek latest registered song select screen
@@ -1473,7 +1473,7 @@ for (int i = 0; i < 3; i++) {
 									TJAPlayer3.stage演奏ドラム画面.t再読込();
 
 									TJAPlayer3.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
-									CSound管理.bIsTimeStretch = DTXVmode.TimeStretch;
+									SoundManager.bIsTimeStretch = DTXVmode.TimeStretch;
 									if ( TJAPlayer3.ConfigIni.b垂直帰線待ちを行う != DTXVmode.VSyncWait )
 									{
 										TJAPlayer3.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
@@ -1493,9 +1493,9 @@ for (int i = 0; i < 3; i++) {
 							case (int) E演奏画面の戻り値.再読込_再演奏:
 								#region [ DTXファイルを再読み込みして、再演奏 ]
 								DTX.t全チップの再生停止();
-								DTX.On非活性化();
-								r現在のステージ.On非活性化();
-								stage曲読み込み.On活性化();
+								DTX.DeActivate();
+								r現在のステージ.DeActivate();
+								stage曲読み込み.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 								this.tガベージコレクションを実行する();
@@ -1527,8 +1527,8 @@ for (int i = 0; i < 3; i++) {
 								#endregion
 
 								DTX.t全チップの再生停止();
-								DTX.On非活性化();
-								r現在のステージ.On非活性化();
+								DTX.DeActivate();
+								r現在のステージ.DeActivate();
 
 									// Play cancelled return screen
 
@@ -1553,7 +1553,7 @@ for (int i = 0; i < 3; i++) {
 
 									Trace.TraceInformation("----------------------");
 									Trace.TraceInformation("■ Return to song select menu");
-									TJAPlayer3.latestSongSelect.On活性化();
+									TJAPlayer3.latestSongSelect.Activate();
 									r直前のステージ = r現在のステージ;
 
 									// Seek latest registered song select screen
@@ -1593,12 +1593,12 @@ for (int i = 0; i < 3; i++) {
 								#endregion
 
 								DTX.t全チップの再生停止();
-								DTX.On非活性化();
-								r現在のステージ.On非活性化();
+								DTX.DeActivate();
+								r現在のステージ.DeActivate();
 
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 選曲");
-								stage選曲.On活性化();
+								stage選曲.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
 
@@ -1678,11 +1678,11 @@ for (int i = 0; i < 3; i++) {
 								//---------------------
 								#endregion
 
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 結果" );
 								stage結果.st演奏記録.Drums = c演奏記録_Drums;
-								stage結果.On活性化();
+								stage結果.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage結果;
 
@@ -1712,8 +1712,8 @@ for (int i = 0; i < 3; i++) {
 						{
 							//DTX.t全チップの再生一時停止();
                             DTX.t全チップの再生停止とミキサーからの削除();
-                            DTX.On非活性化();
-							r現在のステージ.On非活性化();
+                            DTX.DeActivate();
+							r現在のステージ.DeActivate();
                             this.tガベージコレクションを実行する();
 
 
@@ -1740,7 +1740,7 @@ for (int i = 0; i < 3; i++) {
 
 							Trace.TraceInformation("----------------------");
 							Trace.TraceInformation("■ Return to song select menu");
-							TJAPlayer3.latestSongSelect.On活性化();
+							TJAPlayer3.latestSongSelect.Activate();
 							r直前のステージ = r現在のステージ;
 
 							// Seek latest registered song select screen
@@ -1769,10 +1769,10 @@ for (int i = 0; i < 3; i++) {
 							case (int)EReturnValue.ReturnToTitle:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
-								stageタイトル.On活性化();
+								stageタイトル.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1799,10 +1799,10 @@ for (int i = 0; i < 3; i++) {
 								#region [ *** ]
 								//-----------------------------
 								latestSongSelect = stageTowerSelect;
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 曲読み込み");
-								stage曲読み込み.On活性化();
+								stage曲読み込み.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
@@ -1826,10 +1826,10 @@ for (int i = 0; i < 3; i++) {
 						//-----------------------------
 						if ( this.n進行描画の戻り値 != 0 )
 						{
-							r現在のステージ.On非活性化();
+							r現在のステージ.DeActivate();
 							Trace.TraceInformation( "----------------------" );
 							Trace.TraceInformation( "■ 選曲" );
-							stage選曲.On活性化();
+							stage選曲.Activate();
 							r直前のステージ = r現在のステージ;
 							r現在のステージ = stage選曲;
 							this.tガベージコレクションを実行する();
@@ -1857,10 +1857,10 @@ for (int i = 0; i < 3; i++) {
 							case (int)CStage選曲.E戻り値.タイトルに戻る:
 								#region [ *** ]
 								//-----------------------------
-								r現在のステージ.On非活性化();
+								r現在のステージ.DeActivate();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
-								stageタイトル.On活性化();
+								stageタイトル.Activate();
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1883,7 +1883,7 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 
-			    actScanningLoudness?.On進行描画();
+			    actScanningLoudness?.Draw();
 
 				if (!ConfigIni.bTokkunMode)
 				{
@@ -1908,9 +1908,9 @@ for (int i = 0; i < 3; i++) {
 
 				if (r現在のステージ != null && r現在のステージ.eステージID != CStage.Eステージ.起動 && TJAPlayer3.Tx.Network_Connection != null)
 				{
-					if (Math.Abs(CSound管理.PlayTimer.nシステム時刻ms - this.前回のシステム時刻ms) > 10000)
+					if (Math.Abs(SoundManager.PlayTimer.SystemTimeMs - this.前回のシステム時刻ms) > 10000)
 					{
-						this.前回のシステム時刻ms = CSound管理.PlayTimer.nシステム時刻ms;
+						this.前回のシステム時刻ms = SoundManager.PlayTimer.SystemTimeMs;
 						Task.Factory.StartNew(() =>
 						{
 							//IPv4 8.8.8.8にPingを送信する(timeout 5000ms)
@@ -1933,15 +1933,15 @@ for (int i = 0; i < 3; i++) {
 
 			foreach(var capture in ConfigIni.KeyAssign.System.Capture)
 			{
-				if (TJAPlayer3.Input管理.Keyboard.bキーが押された(capture.コード))
+				if (TJAPlayer3.Input管理.Keyboard.KeyPressed(capture.コード))
 				{
-					if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.LeftControl))
+					if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.LeftControl))
 					{
 						if (r現在のステージ.eステージID != CStage.Eステージ.演奏)
 						{
 							RefleshSkin();
-							r現在のステージ.On非活性化();
-							r現在のステージ.On活性化();
+							r現在のステージ.DeActivate();
+							r現在のステージ.Activate();
 						}
 					}
 					else
@@ -1966,7 +1966,7 @@ for (int i = 0; i < 3; i++) {
 			if ( this.b次のタイミングで全画面_ウィンドウ切り替えを行う )
 			{
 				ConfigIni.b全画面モード = !ConfigIni.b全画面モード;
-				app.t全画面_ウィンドウモード切り替え();
+				app.ToggleWindowMode();
 				this.b次のタイミングで全画面_ウィンドウ切り替えを行う = false;
 			}
 			#endregion
@@ -2313,7 +2313,7 @@ for (int i = 0; i < 3; i++) {
 			Trace.Indent();
 			try
 			{
-				Timer = new CTimer( CTimer.E種別.MultiMedia );
+				Timer = new CTimer( CTimer.TimerType.MultiMedia );
 				Trace.TraceInformation( "タイマの初期化を完了しました。" );
 			}
 			finally
@@ -2347,7 +2347,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				act文字コンソール = new C文字コンソール();
 				Trace.TraceInformation( "文字コンソールを生成しました。" );
-				act文字コンソール.On活性化();
+				act文字コンソール.Activate();
 				Trace.TraceInformation( "文字コンソールを活性化しました。" );
 				Trace.TraceInformation( "文字コンソールの初期化を完了しました。" );
 			}
@@ -2369,10 +2369,10 @@ for (int i = 0; i < 3; i++) {
 			try
 			{
 				bool bUseMIDIIn = !DTXVmode.Enabled;
-				Input管理 = new CInput管理(Window_);
-				foreach( IInputDevice device in Input管理.list入力デバイス )
+				Input管理 = new CInputManager(Window_);
+				foreach( IInputDevice device in Input管理.InputDevices )
 				{
-					if( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && !ConfigIni.dicJoystick.ContainsValue( device.GUID ) )
+					if( ( device.CurrentType == InputDeviceType.Joystick ) && !ConfigIni.dicJoystick.ContainsValue( device.GUID ) )
 					{
 						int key = 0;
 						while( ConfigIni.dicJoystick.ContainsKey( key ) )
@@ -2382,9 +2382,9 @@ for (int i = 0; i < 3; i++) {
 						ConfigIni.dicJoystick.Add( key, device.GUID );
 					}
 				}
-				foreach( IInputDevice device2 in Input管理.list入力デバイス )
+				foreach( IInputDevice device2 in Input管理.InputDevices )
 				{
-					if( device2.e入力デバイス種別 == E入力デバイス種別.Joystick )
+					if( device2.CurrentType == InputDeviceType.Joystick )
 					{
 						foreach( KeyValuePair<int, string> pair in ConfigIni.dicJoystick )
 						{
@@ -2455,7 +2455,7 @@ for (int i = 0; i < 3; i++) {
 						soundDeviceType = ESoundDeviceType.Unknown;
 						break;
 				}
-				Sound管理 = new CSound管理(Window_,
+				Sound管理 = new SoundManager(Window_,
 											soundDeviceType,
 											TJAPlayer3.ConfigIni.nBassBufferSizeMs,
 											TJAPlayer3.ConfigIni.nWASAPIBufferSizeMs,
@@ -2473,7 +2473,7 @@ for (int i = 0; i < 3; i++) {
 				try
 				{
 				    actScanningLoudness = new CActScanningLoudness();
-				    actScanningLoudness.On活性化();
+				    actScanningLoudness.Activate();
 				    LoudnessMetadataScanner.ScanningStateChanged +=
 				        (_, args) => actScanningLoudness.bIsActivelyScanning = args.IsActivelyScanning;
 				    LoudnessMetadataScanner.StartBackgroundScanning();
@@ -2491,7 +2491,7 @@ for (int i = 0; i < 3; i++) {
 				}
 
 				ShowWindowTitleWithSoundType();
-				FDK.CSound管理.bIsTimeStretch = TJAPlayer3.ConfigIni.bTimeStretch;
+				FDK.SoundManager.bIsTimeStretch = TJAPlayer3.ConfigIni.bTimeStretch;
 				Sound管理.nMasterVolume = TJAPlayer3.ConfigIni.nMasterVolume;
 				//FDK.CSound管理.bIsMP3DecodeByWindowsCodec = CDTXMania.ConfigIni.bNoMP3Streaming;
 				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
@@ -2531,7 +2531,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Random の初期化 ]
 			//---------------------
-			Random = new Random( (int) Timer.nシステム時刻 );
+			Random = new Random( (int) Timer.SystemTime );
 			//---------------------
 			#endregion
 			#region [ Stages initialisation ]
@@ -2658,7 +2658,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				r現在のステージ = stage起動;
 			}
-			r現在のステージ.On活性化();
+			r現在のステージ.Activate();
 
 			//---------------------
 			#endregion
@@ -2689,7 +2689,7 @@ for (int i = 0; i < 3; i++) {
 					Trace.Indent();
 					try
 					{
-						actEnumSongs.On非活性化();
+						actEnumSongs.DeActivate();
 						actEnumSongs= null;
 						Trace.TraceInformation( "曲検索actの終了処理を完了しました。" );
 					}
@@ -2707,13 +2707,13 @@ for (int i = 0; i < 3; i++) {
 				#endregion
 				#region [ 現在のステージの終了処理 ]
 				//---------------------
-				if( TJAPlayer3.r現在のステージ != null && TJAPlayer3.r現在のステージ.b活性化してる )		// #25398 2011.06.07 MODIFY FROM
+				if( TJAPlayer3.r現在のステージ != null && TJAPlayer3.r現在のステージ.IsActivated )		// #25398 2011.06.07 MODIFY FROM
 				{
 					Trace.TraceInformation( "現在のステージを終了します。" );
 					Trace.Indent();
 					try
 					{
-						r現在のステージ.On非活性化();
+						r現在のステージ.DeActivate();
 						Trace.TraceInformation( "現在のステージの終了処理を完了しました。" );
 					}
 					finally
@@ -2881,7 +2881,7 @@ for (int i = 0; i < 3; i++) {
 					Trace.Indent();
 					try
 					{
-						act文字コンソール.On非活性化();
+						act文字コンソール.DeActivate();
 						act文字コンソール = null;
 						Trace.TraceInformation( "文字コンソールの終了処理を完了しました。" );
 					}
@@ -2974,7 +2974,7 @@ for (int i = 0; i < 3; i++) {
 			        SoundGroupLevelController = null;
 			        SongGainController = null;
 			        LoudnessMetadataScanner.StopBackgroundScanning(joinImmediately: true);
-                    actScanningLoudness.On非活性化();
+                    actScanningLoudness.DeActivate();
 			        actScanningLoudness = null;
 			    }
 			    finally
@@ -3099,7 +3099,7 @@ for (int i = 0; i < 3; i++) {
         {
             Trace.TraceInformation("スキン変更:" + TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName(false));
 
-            TJAPlayer3.act文字コンソール.On非活性化();
+            TJAPlayer3.act文字コンソール.DeActivate();
 
             TJAPlayer3.Skin.Dispose();
             TJAPlayer3.Skin = null;
@@ -3111,7 +3111,7 @@ for (int i = 0; i < 3; i++) {
 
 			TJAPlayer3.Tx.LoadTexture();
 
-            TJAPlayer3.act文字コンソール.On活性化();
+            TJAPlayer3.act文字コンソール.Activate();
 			TJAPlayer3.NamePlate.RefleshSkin();
 			CActSelectPopupMenu.RefleshSkin();
 			CActSelect段位リスト.RefleshSkin();

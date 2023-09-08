@@ -9,11 +9,11 @@ namespace FDK
 	{
 		ESoundDeviceType SoundDeviceType { get; }
 		int nMasterVolume { get; set; }
-		long n実出力遅延ms { get; }
+		long OutputDelay { get; }
 		long BufferSize { get; }
-		long n経過時間ms { get; }
-		long n経過時間を更新したシステム時刻ms { get; }
-		CTimer tmシステムタイマ { get; }
+		long ElapsedTimeMs { get; }
+		long UpdateSystemTimeMs { get; }
+		CTimer SystemTimer { get; }
 
 		CSound tCreateSound( string strファイル名, ESoundGroup soundGroup );
 		void tCreateSound( string strファイル名, CSound sound );

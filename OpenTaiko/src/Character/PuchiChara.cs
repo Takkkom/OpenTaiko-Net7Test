@@ -15,23 +15,23 @@ namespace TJAPlayer3
     {
         public PuchiChara()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             Counter = new CCounter(0, TJAPlayer3.Skin.Game_PuchiChara[2] - 1, TJAPlayer3.Skin.Game_PuchiChara_Timer * 0.5f, TJAPlayer3.Timer);
-            SineCounter = new CCounter(0, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer, CSound管理.PlayTimer);
+            SineCounter = new CCounter(0, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer, SoundManager.PlayTimer);
             SineCounterIdle = new CCounter(1, 360, (float)TJAPlayer3.Skin.Game_PuchiChara_SineTimer * 2f, TJAPlayer3.Timer);
             this.inGame = false;
-            base.On活性化();
+            base.Activate();
         }
-        public override void On非活性化()
+        public override void DeActivate()
         {
             Counter = null;
             SineCounter = null;
             SineCounterIdle = null;
-            base.On非活性化();
+            base.DeActivate();
         }
 
         public static int tGetPuchiCharaIndexByName(int p)
@@ -48,7 +48,7 @@ namespace TJAPlayer3
         public void ChangeBPM(double bpm)
         {
             Counter = new CCounter(0, TJAPlayer3.Skin.Game_PuchiChara[2] - 1, (int)(TJAPlayer3.Skin.Game_PuchiChara_Timer * bpm / TJAPlayer3.Skin.Game_PuchiChara[2]), TJAPlayer3.Timer);
-            SineCounter = new CCounter(1, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer * bpm / 180, CSound管理.PlayTimer);
+            SineCounter = new CCounter(1, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer * bpm / 180, SoundManager.PlayTimer);
             this.inGame = true;
         }
 
@@ -66,11 +66,11 @@ namespace TJAPlayer3
         /// <returns></returns>
         public int On進行描画(int x, int y, bool isGrowing, int alpha = 255, bool isBalloon = false, int player = 0, float scale = 1.0f)
         {
-            if (!TJAPlayer3.ConfigIni.ShowPuchiChara) return base.On進行描画();
-            if (Counter == null || SineCounter == null || TJAPlayer3.Tx.Puchichara == null) return base.On進行描画();
-            Counter.t進行Loop();
-            SineCounter.t進行LoopDb();
-            SineCounterIdle.t進行Loop();
+            if (!TJAPlayer3.ConfigIni.ShowPuchiChara) return base.Draw();
+            if (Counter == null || SineCounter == null || TJAPlayer3.Tx.Puchichara == null) return base.Draw();
+            Counter.TickLoop();
+            SineCounter.TickLoopDB();
+            SineCounterIdle.TickLoop();
 
             int p = TJAPlayer3.GetActualPlayer(player);
 
@@ -81,9 +81,9 @@ namespace TJAPlayer3
             */
 
             if (inGame)
-                sineY = (double)SineCounter.n現在の値;
+                sineY = (double)SineCounter.CurrentValue;
             else
-                sineY = (double)SineCounterIdle.n現在の値;
+                sineY = (double)SineCounterIdle.CurrentValue;
 
             // TJAPlayer3.act文字コンソール.tPrint(700, 560, C文字コンソール.Eフォント種別.白, sineY.ToString());
 
@@ -117,10 +117,10 @@ namespace TJAPlayer3
                 int adjustedX = x - 32;
                 int adjustedY = y - 32;
 
-                chara.t2D拡大率考慮中央基準描画(adjustedX, adjustedY + (int)sineY, new Rectangle((Counter.n現在の値 + 2) * TJAPlayer3.Skin.Game_PuchiChara[0], 0, TJAPlayer3.Skin.Game_PuchiChara[0], TJAPlayer3.Skin.Game_PuchiChara[1]));
+                chara.t2D拡大率考慮中央基準描画(adjustedX, adjustedY + (int)sineY, new Rectangle((Counter.CurrentValue + 2) * TJAPlayer3.Skin.Game_PuchiChara[0], 0, TJAPlayer3.Skin.Game_PuchiChara[0], TJAPlayer3.Skin.Game_PuchiChara[1]));
             }
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         public double sineY;

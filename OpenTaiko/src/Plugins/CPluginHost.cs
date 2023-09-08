@@ -27,7 +27,7 @@ namespace TJAPlayer3
 		{
 			get { return TJAPlayer3.Timer; }
 		}
-		public CSound管理 Sound管理
+		public SoundManager Sound管理
 		{
 			get { return TJAPlayer3.Sound管理; }
 		}

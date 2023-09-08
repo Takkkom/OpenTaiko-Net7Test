@@ -8,34 +8,34 @@ namespace FDK
 	{
 		// プロパティ
 
-		public bool b活性化してる { get; private set; }
-		public bool b活性化してない
+		public bool IsActivated { get; private set; }
+		public bool IsDeActivated
 		{
 			get
 			{
-				return !this.b活性化してる;
+				return !this.IsActivated;
 			}
 			set
 			{
-				this.b活性化してる = !value;
+				this.IsActivated = !value;
 			}
 		}
-		public List<CActivity> list子Activities;
+		public List<CActivity> ChildActivities;
 
 		/// <summary>
 		/// <para>初めて On進行描画() を呼び出す場合に true を示す。（On活性化() 内で true にセットされる。）</para>
 		/// <para>このフラグは、On活性化() では行えないタイミングのシビアな初期化を On進行描画() で行うために準備されている。利用は必須ではない。</para>
 		/// <para>On進行描画() 側では、必要な初期化を追えたら false をセットすること。</para>
 		/// </summary>
-		protected bool b初めての進行描画 = true;
+		protected bool IsFirstDraw = true;
 
 	
 		// コンストラクタ
 
 		public CActivity()
 		{
-			this.b活性化してない = true;
-			this.list子Activities = new List<CActivity>();
+			this.IsDeActivated = true;
+			this.ChildActivities = new List<CActivity>();
 		}
 
 
@@ -44,40 +44,40 @@ namespace FDK
 		#region [ 子クラスで必要なもののみ override すること。]
 		//-----------------
 
-		public virtual void On活性化()
+		public virtual void Activate()
 		{
 			// すでに活性化してるなら何もしない。
-			if( this.b活性化してる )
+			if( this.IsActivated )
 				return;
 
-			this.b活性化してる = true;		// このフラグは、以下の処理をする前にセットする。
+			this.IsActivated = true;		// このフラグは、以下の処理をする前にセットする。
 
 			// 自身のリソースを作成する。
-			this.OnManagedリソースの作成();
-			this.OnUnmanagedリソースの作成();
+			this.CreateManagedResource();
+			this.CreateUnmanagedResource();
 
 			// すべての子 Activity を活性化する。
-			foreach( CActivity activity in this.list子Activities )
-				activity.On活性化();
+			foreach( CActivity activity in this.ChildActivities )
+				activity.Activate();
 
 			// その他の初期化
-			this.b初めての進行描画 = true;
+			this.IsFirstDraw = true;
 		}
-		public virtual void On非活性化()
+		public virtual void DeActivate()
 		{
 			// 活性化してないなら何もしない。
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			// 自身のリソースを解放する。
-			this.OnUnmanagedリソースの解放();
-			this.OnManagedリソースの解放();
+			this.ReleaseUnmanagedResource();
+			this.ReleaseManagedResource();
 
 			// すべての 子Activity を非活性化する。
-			foreach( CActivity activity in this.list子Activities )
-				activity.On非活性化();
+			foreach( CActivity activity in this.ChildActivities )
+				activity.DeActivate();
 
-			this.b活性化してない = true;	// このフラグは、以上のメソッドを呼び出した後にセットする。
+			this.IsDeActivated = true;	// このフラグは、以上のメソッドを呼び出した後にセットする。
 		}
 
 		/// <summary>
@@ -87,15 +87,15 @@ namespace FDK
 		/// <para>いつどのタイミングで呼び出されるか（いつDirect3Dが再作成されるか）分からないので、
 		/// いつ何時呼び出されても問題無いようにコーディングしておくこと。</para>
 		/// </summary>
-		public virtual void OnManagedリソースの作成()
+		public virtual void CreateManagedResource()
 		{
 			// 活性化してないなら何もしない。
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			// すべての 子Activity の Managed リソースを作成する。
-			foreach( CActivity activity in this.list子Activities )
-				activity.OnManagedリソースの作成();
+			foreach( CActivity activity in this.ChildActivities )
+				activity.CreateManagedResource();
 		}
 
 		/// <summary>
@@ -105,15 +105,15 @@ namespace FDK
 		/// <para>いつどのタイミングで呼び出されるか（いつDirect3Dが再作成またはリセットされるか）分からないので、
 		/// いつ何時呼び出されても問題無いようにコーディングしておくこと。</para>
 		/// </summary>
-		public virtual void OnUnmanagedリソースの作成()
+		public virtual void CreateUnmanagedResource()
 		{
 			// 活性化してないなら何もしない。
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			// すべての 子Activity の Unmanaged リソースを作成する。
-			foreach( CActivity activity in this.list子Activities )
-				activity.OnUnmanagedリソースの作成();
+			foreach( CActivity activity in this.ChildActivities )
+				activity.CreateUnmanagedResource();
 		}
 		
 		/// <summary>
@@ -122,15 +122,15 @@ namespace FDK
 		/// <para>いつどのタイミングで呼び出されるか（いつDirect3Dが解放またはリセットされるか）分からないので、
 		/// いつ何時呼び出されても問題無いようにコーディングしておくこと。</para>
 		/// </summary>
-		public virtual void OnUnmanagedリソースの解放()
+		public virtual void ReleaseUnmanagedResource()
 		{
 			// 活性化してないなら何もしない。
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			// すべての 子Activity の Unmanaged リソースを解放する。
-			foreach( CActivity activity in this.list子Activities )
-				activity.OnUnmanagedリソースの解放();
+			foreach( CActivity activity in this.ChildActivities )
+				activity.ReleaseUnmanagedResource();
 		}
 
 		/// <summary>
@@ -140,15 +140,15 @@ namespace FDK
 		/// <para>いつどのタイミングで呼び出されるか（いつDirect3Dが解放されるか）分からないので、
 		/// いつ何時呼び出されても問題無いようにコーディングしておくこと。</para>
 		/// </summary>
-		public virtual void OnManagedリソースの解放()
+		public virtual void ReleaseManagedResource()
 		{
 			// 活性化してないなら何もしない。
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return;
 
 			// すべての 子Activity の Managed リソースを解放する。
-			foreach( CActivity activity in this.list子Activities )
-				activity.OnManagedリソースの解放();
+			foreach( CActivity activity in this.ChildActivities )
+				activity.ReleaseManagedResource();
 		}
 
 		/// <summary>
@@ -156,10 +156,10 @@ namespace FDK
 		/// <para>このメソッドは BeginScene() の後に呼び出されるので、メソッド内でいきなり描画を行ってかまわない。</para>
 		/// </summary>
 		/// <returns>任意の整数。呼び出し元との整合性を合わせておくこと。</returns>
-		public virtual int On進行描画()
+		public virtual int Draw()
 		{
 			// 活性化してないなら何もしない。
-			if( this.b活性化してない )
+			if( this.IsDeActivated )
 				return 0;
 
 

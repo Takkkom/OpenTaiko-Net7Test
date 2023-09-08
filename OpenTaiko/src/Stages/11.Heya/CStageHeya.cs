@@ -20,15 +20,15 @@ namespace TJAPlayer3
             base.eステージID = Eステージ.Heya;
             base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 
-            base.list子Activities.Add(this.actFOtoTitle = new CActFIFOBlack());
+            base.ChildActivities.Add(this.actFOtoTitle = new CActFIFOBlack());
 
-            base.list子Activities.Add(this.PuchiChara = new PuchiChara());
+            base.ChildActivities.Add(this.PuchiChara = new PuchiChara());
         }
 
 
-        public override void On活性化()
+        public override void Activate()
         {
-            if (base.b活性化してる)
+            if (base.IsActivated)
                 return;
 
             base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
@@ -155,17 +155,17 @@ namespace TJAPlayer3
 
             this.PuchiChara.IdleAnimation();
 
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Script.lua"));
                 Background.Init();
@@ -179,13 +179,13 @@ namespace TJAPlayer3
                 Heya_Lock = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Lock.png"));
 
 
-                base.OnManagedリソースの作成();
+                base.CreateManagedResource();
             }
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
-            if (!base.b活性化してない)
+            if (!base.IsDeActivated)
             {
                 TJAPlayer3.t安全にDisposeする(ref Background);
                 
@@ -197,16 +197,16 @@ namespace TJAPlayer3
                 TJAPlayer3.t安全にDisposeする(ref Heya_Box);
                 TJAPlayer3.t安全にDisposeする(ref Heya_Lock);
 
-                base.OnManagedリソースの解放();
+                base.ReleaseManagedResource();
             }
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
             //ctDonchan_Normal.t進行Loop();
-            ctDonchan_In.t進行();
+            ctDonchan_In.Tick();
 
-            ScrollCounter.t進行();
+            ScrollCounter.Tick();
 
             Background.Update();
             Background.Draw();
@@ -295,7 +295,7 @@ namespace TJAPlayer3
 
                     TJAPlayer3.Tx.Puchichara[pos].tx?.t2D拡大率考慮中央基準描画(scroll.Item1 + TJAPlayer3.Skin.Heya_Center_Menu_Box_Item_Offset[0], 
                         scroll.Item2 + TJAPlayer3.Skin.Heya_Center_Menu_Box_Item_Offset[1] + (int)(PuchiChara.sineY), 
-                        new Rectangle((PuchiChara.Counter.n現在の値 + 2 * puriColumn) * TJAPlayer3.Skin.Game_PuchiChara[0], 
+                        new Rectangle((PuchiChara.Counter.CurrentValue + 2 * puriColumn) * TJAPlayer3.Skin.Game_PuchiChara[0], 
                         puriRow * TJAPlayer3.Skin.Game_PuchiChara[1], 
                         TJAPlayer3.Skin.Game_PuchiChara[0], 
                         TJAPlayer3.Skin.Game_PuchiChara[1]));
@@ -481,7 +481,7 @@ namespace TJAPlayer3
 
                     if (iType >= 0 && iType < TJAPlayer3.Skin.Config_NamePlate_Ptn_Title)
                     {
-                        TJAPlayer3.Tx.NamePlate_Title[iType][TJAPlayer3.NamePlate.ctAnimatedNamePlateTitle.n現在の値 % TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[iType]].t2D拡大率考慮上中央基準描画(
+                        TJAPlayer3.Tx.NamePlate_Title[iType][TJAPlayer3.NamePlate.ctAnimatedNamePlateTitle.CurrentValue % TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[iType]].t2D拡大率考慮上中央基準描画(
                             scroll.Item1,
                             scroll.Item2);
                     } 
@@ -512,20 +512,20 @@ namespace TJAPlayer3
 
             #region [General Don animations]
 
-            if (!ctDonchan_In.b開始した)
+            if (!ctDonchan_In.IsStarted)
             {
                 TJAPlayer3.Skin.soundHeyaBGM.t再生する();
-                ctDonchan_In.t開始(0, 180, 1.25f, TJAPlayer3.Timer);    
+                ctDonchan_In.Start(0, 180, 1.25f, TJAPlayer3.Timer);    
             }
 
             #region [ どんちゃん関連 ]
 
-            if (ctDonchan_In.n現在の値 != 90)
+            if (ctDonchan_In.CurrentValue != 90)
             {
                 float DonchanX = 0f, DonchanY = 0f;
 
-                DonchanX = -200 + (float)Math.Sin(ctDonchan_In.n現在の値 / 2 * (Math.PI / 180)) * 200f;
-                DonchanY = ((float)Math.Sin((90 + (ctDonchan_In.n現在の値 / 2)) * (Math.PI / 180)) * 150f);
+                DonchanX = -200 + (float)Math.Sin(ctDonchan_In.CurrentValue / 2 * (Math.PI / 180)) * 200f;
+                DonchanY = ((float)Math.Sin((90 + (ctDonchan_In.CurrentValue / 2)) * (Math.PI / 180)) * 150f);
 
                 //int _charaId = TJAPlayer3.NamePlateConfig.data.Character[TJAPlayer3.GetActualPlayer(0)];
 
@@ -558,7 +558,7 @@ namespace TJAPlayer3
 
             #region [ Inputs ]
 
-            if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.RightArrow) ||
+            if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.RightArrow) ||
                 TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange))
             {
                 if (this.tMove(1))
@@ -567,7 +567,7 @@ namespace TJAPlayer3
                 }
             }
 
-            else if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.LeftArrow) ||
+            else if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.LeftArrow) ||
                 TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange))
             {
                 if (this.tMove(-1))
@@ -576,7 +576,7 @@ namespace TJAPlayer3
                 }
             }
 
-            else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return) ||
+            else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return) ||
                 TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide))
             {
 
@@ -716,7 +716,7 @@ namespace TJAPlayer3
                 #endregion
             }
 
-            else if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape) ||
+            else if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape) ||
                 TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.Cancel))
             {
                 
@@ -745,7 +745,7 @@ namespace TJAPlayer3
             switch (base.eフェーズID)
             {
                 case CStage.Eフェーズ.共通_フェードアウト:
-                    if (this.actFOtoTitle.On進行描画() == 0)
+                    if (this.actFOtoTitle.Draw() == 0)
                     {
                         break;
                     }
@@ -815,13 +815,13 @@ namespace TJAPlayer3
 
         private bool tMove(int off)
         {
-            if (ScrollCounter.n現在の値 < ScrollCounter.n終了値
-                && (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.RightArrow)
-                || TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.LeftArrow)))
+            if (ScrollCounter.CurrentValue < ScrollCounter.EndValue
+                && (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.RightArrow)
+                || TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.LeftArrow)))
                 return false;
 
             ScrollMode = off;
-            ScrollCounter.n現在の値 = 0;
+            ScrollCounter.CurrentValue = 0;
 
             if (iCurrentMenu == -1)
                 iMainMenuCurrent = (this.ttkMainMenuOpt.Length + iMainMenuCurrent + off) % this.ttkMainMenuOpt.Length;
@@ -847,7 +847,7 @@ namespace TJAPlayer3
 
         private (int, int) DrawBox_Slot(int i)
         {
-            double value = (1.0 - Math.Sin((((ScrollCounter.n現在の値) / 2000.0)) * Math.PI));
+            double value = (1.0 - Math.Sin((((ScrollCounter.CurrentValue) / 2000.0)) * Math.PI));
 
             int nextIndex = i + ScrollMode;
             nextIndex = Math.Min(TJAPlayer3.Skin.Heya_Center_Menu_Box_Count - 1, nextIndex);
@@ -862,7 +862,7 @@ namespace TJAPlayer3
 
         private (int, int) DrawSide_Menu(int i)
         {
-            double value = (1.0 - Math.Sin((((ScrollCounter.n現在の値) / 2000.0)) * Math.PI));
+            double value = (1.0 - Math.Sin((((ScrollCounter.CurrentValue) / 2000.0)) * Math.PI));
 
             int nextIndex = i + ScrollMode;
             nextIndex = Math.Min(TJAPlayer3.Skin.Heya_Side_Menu_Count - 1, nextIndex);

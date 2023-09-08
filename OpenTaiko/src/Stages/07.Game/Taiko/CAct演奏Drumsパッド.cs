@@ -86,7 +86,7 @@ namespace TJAPlayer3
             st基本位置Array[ 9 ] = st基本位置10;
 
 			this.st基本位置 = st基本位置Array;
-			base.b活性化してない = true;
+			base.IsDeActivated = true;
 		}
 		
 		
@@ -101,7 +101,7 @@ namespace TJAPlayer3
 
 		// CActivity 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 			this.nフラッシュ制御タイマ = -1;
 			this.nY座標制御タイマ = -1;
@@ -114,35 +114,35 @@ namespace TJAPlayer3
 				stパッド状態.n明るさ = 0;
 				this.stパッド状態[ i ] = stパッド状態;
 			}
-			base.On活性化();
+			base.Activate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
 
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if( !base.b活性化してない )
+			if( !base.IsDeActivated )
 			{
-				if( base.b初めての進行描画 )
+				if( base.IsFirstDraw )
 				{
-					this.nフラッシュ制御タイマ = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
-					this.nY座標制御タイマ = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
-					base.b初めての進行描画 = false;
+					this.nフラッシュ制御タイマ = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+					this.nY座標制御タイマ = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+					base.IsFirstDraw = false;
 				}
-				long num = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+				long num = (long)(SoundManager.PlayTimer.NowTime * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 				if ( num < this.nフラッシュ制御タイマ )
 				{
 					this.nフラッシュ制御タイマ = num;
@@ -158,7 +158,7 @@ namespace TJAPlayer3
 					}
 					this.nフラッシュ制御タイマ += 15;
 				}
-				long num3 = CSound管理.PlayTimer.n現在時刻;
+				long num3 = SoundManager.PlayTimer.NowTime;
 				if( num3 < this.nY座標制御タイマ )
 				{
 					this.nY座標制御タイマ = num3;

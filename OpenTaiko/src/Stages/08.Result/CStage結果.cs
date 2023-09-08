@@ -51,12 +51,12 @@ namespace TJAPlayer3
 			this.nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
 			base.eステージID = CStage.Eステージ.結果;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
-			base.b活性化してない = true;
-			base.list子Activities.Add(this.actParameterPanel = new CActResultParameterPanel());
-			base.list子Activities.Add(this.actSongBar = new CActResultSongBar());
-			base.list子Activities.Add(this.actOption = new CActオプションパネル());
-			base.list子Activities.Add(this.actFI = new CActFIFOResult());
-			base.list子Activities.Add(this.actFO = new CActFIFOBlack());
+			base.IsDeActivated = true;
+			base.ChildActivities.Add(this.actParameterPanel = new CActResultParameterPanel());
+			base.ChildActivities.Add(this.actSongBar = new CActResultSongBar());
+			base.ChildActivities.Add(this.actOption = new CActオプションパネル());
+			base.ChildActivities.Add(this.actFI = new CActFIFOResult());
+			base.ChildActivities.Add(this.actFO = new CActFIFOBlack());
 		}
 
 
@@ -102,7 +102,7 @@ namespace TJAPlayer3
 
 		// CStage 実装
 
-		public override void On活性化()
+		public override void Activate()
 		{
 
 			if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Dan && TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Tower)
@@ -783,7 +783,7 @@ namespace TJAPlayer3
 				this.ctPhase3 = null;
 				examsShift = 0;
 
-				base.On活性化();
+				base.Activate();
 			}
 			finally
 			{
@@ -791,18 +791,18 @@ namespace TJAPlayer3
 				Trace.Unindent();
 			}
 		}
-		public override void On非活性化()
+		public override void DeActivate()
 		{
 			if (this.rResultSound != null)
 			{
 				TJAPlayer3.Sound管理.tDisposeSound(this.rResultSound);
 				this.rResultSound = null;
 			}
-			base.On非活性化();
+			base.DeActivate();
 		}
-		public override void OnManagedリソースの作成()
+		public override void CreateManagedResource()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				b音声再生 = false;
 				this.EndAnime = false;
@@ -835,7 +835,7 @@ namespace TJAPlayer3
 				Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
 
 				ctDanSongInfoChange = new CCounter(0, 3000, 1, TJAPlayer3.Timer);
-				ctDanSongInfoChange.n現在の値 = 255;
+				ctDanSongInfoChange.CurrentValue = 255;
 
 				if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
                 {
@@ -899,12 +899,12 @@ namespace TJAPlayer3
 					Background.Init();
 				}
 
-				base.OnManagedリソースの作成();
+				base.CreateManagedResource();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void ReleaseManagedResource()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 				if (this.ct登場用 != null)
 				{
@@ -942,19 +942,19 @@ namespace TJAPlayer3
 					TJAPlayer3.t安全にDisposeする(ref pfDanTitles);
 				}
 
-				base.OnManagedリソースの解放();
+				base.ReleaseManagedResource();
 			}
 		}
-		public override int On進行描画()
+		public override int Draw()
 		{
-			if (!base.b活性化してない)
+			if (!base.IsDeActivated)
 			{
 
-				ctShine_Plate.t進行Loop();
+				ctShine_Plate.TickLoop();
 
 				// int num;
 				
-				if (base.b初めての進行描画)
+				if (base.IsFirstDraw)
 				{
 					this.ct登場用 = new CCounter(0, 100, 5, TJAPlayer3.Timer);
 					this.actFI.tフェードイン開始();
@@ -962,18 +962,18 @@ namespace TJAPlayer3
 
 					if (this.rResultSound != null)
 					{
-						this.rResultSound.t再生を開始する();
+						this.rResultSound.PlayStart();
 					}
 
-					base.b初めての進行描画 = false;
+					base.IsFirstDraw = false;
 				}
 				this.bアニメが完了 = true;
-				if (this.ct登場用.b進行中)
+				if (this.ct登場用.IsTicked)
 				{
-					this.ct登場用.t進行();
-					if (this.ct登場用.b終了値に達した)
+					this.ct登場用.Tick();
+					if (this.ct登場用.IsEnded)
 					{
-						this.ct登場用.t停止();
+						this.ct登場用.Stop();
 					}
 					else
 					{
@@ -1250,9 +1250,9 @@ namespace TJAPlayer3
 						}
 					}
 
-					if (this.ct登場用.b進行中 && (Result_Header != null))
+					if (this.ct登場用.IsTicked && (Result_Header != null))
 					{
-						double num2 = ((double)this.ct登場用.n現在の値) / 100.0;
+						double num2 = ((double)this.ct登場用.CurrentValue) / 100.0;
 						double num3 = Math.Sin(Math.PI / 2 * num2);
 						
 						// num = ((int)(TJAPlayer3.Tx.Result_Header.sz画像サイズ.Height * num3)) - TJAPlayer3.Tx.Result_Header.sz画像サイズ.Height;
@@ -1294,13 +1294,13 @@ namespace TJAPlayer3
 						if (ctPhase1 == null)
                         {
 							ctPhase1 = new CCounter(0, 8200 + songCount * 300, 0.5f, TJAPlayer3.Timer);
-							ctPhase1.n現在の値 = 0;
+							ctPhase1.CurrentValue = 0;
 						}
 							
-						ctPhase1.t進行();
+						ctPhase1.Tick();
 
 						if (ctPhase2 != null)
-							ctPhase2.t進行();
+							ctPhase2.Tick();
 
 						#endregion
 
@@ -1322,7 +1322,7 @@ namespace TJAPlayer3
 
 						Dan_Plate?.t2D中心基準描画(138, 220);
 
-						int plateOffset = Math.Max(0, 1600 - ctPhase1.n現在の値) * 2;
+						int plateOffset = Math.Max(0, 1600 - ctPhase1.CurrentValue) * 2;
 
 						CActSelect段位リスト.tDisplayDanPlate(Dan_Plate,
 							null,
@@ -1333,9 +1333,9 @@ namespace TJAPlayer3
 
 						#region [Charts Individual Results]
 
-						ctDanSongInfoChange.t進行();
+						ctDanSongInfoChange.Tick();
 
-						if (ctDanSongInfoChange.n現在の値 == ctDanSongInfoChange.n終了値 && songCount > 3)
+						if (ctDanSongInfoChange.CurrentValue == ctDanSongInfoChange.EndValue && songCount > 3)
 						{
 							NextDanSongInfo();
 						}
@@ -1346,7 +1346,7 @@ namespace TJAPlayer3
 
 						for (int i = 0; i < songCount; i++)
                         {
-							int songOffset = (int)(Math.Max(0, 3200 + 300 * i - ctPhase1.n現在の値) * screen_ratio_x);
+							int songOffset = (int)(Math.Max(0, 3200 + 300 * i - ctPhase1.CurrentValue) * screen_ratio_x);
 
 							int quadrant = i / 3;
 							if (quadrant == nNowDanSongInfo)
@@ -1360,9 +1360,9 @@ namespace TJAPlayer3
 						int examsOffset = 0;
 
 						if (ctPhase2 != null && examsShift != 0)
-							examsOffset = (examsShift < 0) ? 1280 - ctPhase2.n現在の値 : ctPhase2.n現在の値;
-						else if (ctPhase1.b終了値に達してない)
-							examsOffset = Math.Max(0, 5500 + 300 * songCount - ctPhase1.n現在の値) * 2;
+							examsOffset = (examsShift < 0) ? 1280 - ctPhase2.CurrentValue : ctPhase2.CurrentValue;
+						else if (ctPhase1.IsUnEnded)
+							examsOffset = Math.Max(0, 5500 + 300 * songCount - ctPhase1.CurrentValue) * 2;
 
 						examsOffset = (int)(examsOffset * screen_ratio_x);
 
@@ -1374,7 +1374,7 @@ namespace TJAPlayer3
 
 						Exam.Status examStatus = TJAPlayer3.stage演奏ドラム画面.actDan.GetExamStatus(TJAPlayer3.stage結果.st演奏記録.Drums.Dan_C);
 
-						int unitsBeforeAppearance = Math.Max(0, 8200 + 300 * songCount - ctPhase1.n現在の値);
+						int unitsBeforeAppearance = Math.Max(0, 8200 + 300 * songCount - ctPhase1.CurrentValue);
 
 						if (unitsBeforeAppearance <= 270)
                         {
@@ -1477,7 +1477,7 @@ namespace TJAPlayer3
 
 						// Pictures here
 
-						this.ctTower_Animation.t進行();
+						this.ctTower_Animation.Tick();
 
                         #region [Tower background]
 
@@ -1497,8 +1497,8 @@ namespace TJAPlayer3
 								yFactor = TJAPlayer3.Tx.TowerResult_Tower[currentTowerType].szテクスチャサイズ.Height / (float)TJAPlayer3.Tx.TowerResult_Background.szテクスチャサイズ.Height;
 							}
 
-							TJAPlayer3.Tx.TowerResult_Background?.t2D描画(0, -1 * this.ctTower_Animation.n現在の値);
-							TJAPlayer3.Tx.TowerResult_Tower[currentTowerType]?.t2D描画(xFactor, -1 * yFactor * this.ctTower_Animation.n現在の値);
+							TJAPlayer3.Tx.TowerResult_Background?.t2D描画(0, -1 * this.ctTower_Animation.CurrentValue);
+							TJAPlayer3.Tx.TowerResult_Tower[currentTowerType]?.t2D描画(xFactor, -1 * yFactor * this.ctTower_Animation.CurrentValue);
 						}
 
 						#endregion
@@ -1571,12 +1571,12 @@ namespace TJAPlayer3
 
 
 
-				if (this.actParameterPanel.On進行描画() == 0)
+				if (this.actParameterPanel.Draw() == 0)
 				{
 					this.bアニメが完了 = false;
 				}
 
-				if (this.actSongBar.On進行描画() == 0)
+				if (this.actSongBar.Draw() == 0)
 				{
 					this.bアニメが完了 = false;
 				}
@@ -1645,7 +1645,7 @@ namespace TJAPlayer3
 
 				if (base.eフェーズID == CStage.Eフェーズ.共通_フェードイン)
 				{
-					if (this.actFI.On進行描画() != 0)
+					if (this.actFI.Draw() != 0)
 					{
 						base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 					}
@@ -1671,7 +1671,7 @@ namespace TJAPlayer3
 				{
 					if (base.eフェーズID == CStage.Eフェーズ.共通_通常状態)
 					{
-						if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Escape))
+						if (TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Escape))
 						{
 							#region [ Return to song select screen (Faster method) ]
 
@@ -1695,21 +1695,21 @@ namespace TJAPlayer3
 							|| TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RD)) 
 							|| (TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LC) 
 							|| (TJAPlayer3.Pad.b押されたDGB(Eパッド.Decide) 
-							|| TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return)))))
+							|| TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return)))))
 						{
 							TJAPlayer3.Skin.sound決定音.t再生する();
 
                             #region [ Skip animations ]
 
                             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] < (int)Difficulty.Tower
-								&& this.actParameterPanel.ct全体進行.n現在の値 < this.actParameterPanel.MountainAppearValue)
+								&& this.actParameterPanel.ct全体進行.CurrentValue < this.actParameterPanel.MountainAppearValue)
                             {
 								this.actParameterPanel.tSkipResultAnimations();
                             }
 							else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan
-								&& (ctPhase1 != null && ctPhase1.b終了値に達してない))
+								&& (ctPhase1 != null && ctPhase1.IsUnEnded))
                             {
-								ctPhase1.n現在の値 = (int)ctPhase1.n終了値;
+								ctPhase1.CurrentValue = (int)ctPhase1.EndValue;
                             }
 
 							#endregion
@@ -1719,7 +1719,7 @@ namespace TJAPlayer3
 								if (!mqModals.tIsQueueEmpty(0) 
 									&& (
 										TJAPlayer3.Pad.b押されたDGB(Eパッド.Decide)
-										|| TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.Return)
+										|| TJAPlayer3.Input管理.Keyboard.KeyPressed((int)SlimDXKeys.Key.Return)
 										)
 									)
 								{
@@ -1754,7 +1754,7 @@ namespace TJAPlayer3
 								TJAPlayer3.Pad.b押されたDGB(Eパッド.LRed2P)
 								|| TJAPlayer3.Pad.b押されたDGB(Eパッド.RRed2P)
 							))) {
-							if (!mqModals.tIsQueueEmpty(1) && this.actParameterPanel.ct全体進行.n現在の値 >= this.actParameterPanel.MountainAppearValue)
+							if (!mqModals.tIsQueueEmpty(1) && this.actParameterPanel.ct全体進行.CurrentValue >= this.actParameterPanel.MountainAppearValue)
 							{
 								TJAPlayer3.Skin.sound決定音.t再生する();
 
@@ -1767,7 +1767,7 @@ namespace TJAPlayer3
 								|| TJAPlayer3.Pad.b押されたDGB(Eパッド.RRed3P)
 							)))
 						{
-							if (!mqModals.tIsQueueEmpty(2) && this.actParameterPanel.ct全体進行.n現在の値 >= this.actParameterPanel.MountainAppearValue)
+							if (!mqModals.tIsQueueEmpty(2) && this.actParameterPanel.ct全体進行.CurrentValue >= this.actParameterPanel.MountainAppearValue)
 							{
 								TJAPlayer3.Skin.sound決定音.t再生する();
 
@@ -1780,7 +1780,7 @@ namespace TJAPlayer3
 								|| TJAPlayer3.Pad.b押されたDGB(Eパッド.RRed4P)
 							)))
 						{
-							if (!mqModals.tIsQueueEmpty(3) && this.actParameterPanel.ct全体進行.n現在の値 >= this.actParameterPanel.MountainAppearValue)
+							if (!mqModals.tIsQueueEmpty(3) && this.actParameterPanel.ct全体進行.CurrentValue >= this.actParameterPanel.MountainAppearValue)
 							{
 								TJAPlayer3.Skin.sound決定音.t再生する();
 
@@ -1793,7 +1793,7 @@ namespace TJAPlayer3
 								|| TJAPlayer3.Pad.b押されたDGB(Eパッド.RRed5P)
 							)))
 						{
-							if (!mqModals.tIsQueueEmpty(4) && this.actParameterPanel.ct全体進行.n現在の値 >= this.actParameterPanel.MountainAppearValue)
+							if (!mqModals.tIsQueueEmpty(4) && this.actParameterPanel.ct全体進行.CurrentValue >= this.actParameterPanel.MountainAppearValue)
 							{
 								TJAPlayer3.Skin.sound決定音.t再生する();
 
@@ -1803,19 +1803,19 @@ namespace TJAPlayer3
 						}
 
 
-						if (TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.LeftArrow) ||
+						if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.LeftArrow) ||
 								TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.LeftChange) ||
-							TJAPlayer3.Input管理.Keyboard.bキーが押されている((int)SlimDXKeys.Key.RightArrow) ||
+							TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.RightArrow) ||
 								TJAPlayer3.Pad.b押された(E楽器パート.DRUMS, Eパッド.RightChange))
 						{
 							if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
                             {
 								#region [ Phase 2 (Swap freely between Exams and Songs) ]
 
-								if (ctPhase1 != null && ctPhase1.b終了値に達した && (ctPhase2 == null || ctPhase2.b終了値に達した))
+								if (ctPhase1 != null && ctPhase1.IsEnded && (ctPhase2 == null || ctPhase2.IsEnded))
                                 {
 									ctPhase2 = new CCounter(0, 1280, 0.5f, TJAPlayer3.Timer);
-									ctPhase2.n現在の値 = 0;
+									ctPhase2.CurrentValue = 0;
 
 									if (examsShift == 0)
 										examsShift = 1;
@@ -1891,7 +1891,7 @@ namespace TJAPlayer3
 			int drawPos = i % 3;
 			int nowIndex = (i / 3);
 
-			int opacityCounter = Math.Min(ctDanSongInfoChange.n現在の値, 255);
+			int opacityCounter = Math.Min(ctDanSongInfoChange.CurrentValue, 255);
 			int opacity;
 
 			if (nowIndex == nNowDanSongInfo)
@@ -2155,7 +2155,7 @@ namespace TJAPlayer3
 		private void NextDanSongInfo()
 		{
 			ctDanSongInfoChange = new CCounter(0, 2000, 1, TJAPlayer3.Timer);
-			ctDanSongInfoChange.n現在の値 = 0;
+			ctDanSongInfoChange.CurrentValue = 0;
 
 			nNowDanSongInfo++;
 			if (nNowDanSongInfo >= Math.Ceiling(TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count / 3.0))

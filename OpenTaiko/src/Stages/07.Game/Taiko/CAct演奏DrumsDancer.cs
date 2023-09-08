@@ -15,22 +15,22 @@ namespace TJAPlayer3
         /// </summary>
         public CAct演奏DrumsDancer()
         {
-            base.b活性化してない = true;
+            base.IsDeActivated = true;
         }
 
-        public override void On活性化()
+        public override void Activate()
         {
             //this.ct踊り子モーション = new CCounter();
-            base.On活性化();
+            base.Activate();
         }
 
-        public override void On非活性化()
+        public override void DeActivate()
         {
             //this.ct踊り子モーション = null;
-            base.On非活性化();
+            base.DeActivate();
         }
 
-        public override void OnManagedリソースの作成()
+        public override void CreateManagedResource()
         {
             Random random = new Random();
             Dancer = new CTexture[5][];
@@ -59,30 +59,30 @@ namespace TJAPlayer3
                 }
             }
 
-            this.ar踊り子モーション番号 = CConversion.ar配列形式のstringをint配列に変換して返す(TJAPlayer3.Skin.Game_Dancer_Motion);
-            if(this.ar踊り子モーション番号 == null) ar踊り子モーション番号 = CConversion.ar配列形式のstringをint配列に変換して返す("0,0");
+            this.ar踊り子モーション番号 = CConversion.StringToIntArray(TJAPlayer3.Skin.Game_Dancer_Motion);
+            if(this.ar踊り子モーション番号 == null) ar踊り子モーション番号 = CConversion.StringToIntArray("0,0");
 
             nNowDancerCounter = 0;
             nNowDancerFrame = 0;
 
-            base.OnManagedリソースの作成();
+            base.CreateManagedResource();
         }
 
-        public override void OnManagedリソースの解放()
+        public override void ReleaseManagedResource()
         {
             for (int i = 0; i < 5; i++)
             {
                 TJAPlayer3.t安全にDisposeする(ref Dancer[i]);
             }
 
-            base.OnManagedリソースの解放();
+            base.ReleaseManagedResource();
         }
 
-        public override int On進行描画()
+        public override int Draw()
         {
-            if( this.b初めての進行描画 )
+            if( this.IsFirstDraw )
             {
-                this.b初めての進行描画 = true;
+                this.IsFirstDraw = true;
             }
 
             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Tower && TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Dan)
@@ -110,7 +110,7 @@ namespace TJAPlayer3
                 }
             }
 
-            return base.On進行描画();
+            return base.Draw();
         }
 
         #region[ private ]

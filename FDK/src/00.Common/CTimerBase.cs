@@ -10,14 +10,14 @@ namespace FDK
 	/// </summary>
 	public abstract class CTimerBase : IDisposable
 	{
-		public const long n未使用 = -1;
+		public const long UnusedNum = -1;
 
 		// この２つを override する。
-		public abstract long nシステム時刻ms
+		public abstract long SystemTimeMs
 		{
 			get;
 		}
-        public double dbシステム時刻ms
+        public double SystemTimeMs_Double
         {
             get;
             set;
@@ -25,154 +25,154 @@ namespace FDK
 		public abstract void Dispose();
 
 		#region [ DTXMania用に、語尾にmsのつかない宣言を追加 ]
-		public long nシステム時刻
+		public long SystemTime
 		{
-			get { return nシステム時刻ms; }
+			get { return SystemTimeMs; }
 		}
-		public long n現在時刻
+		public long NowTime
 		{
-			get { return n現在時刻ms; }
-			set { n現在時刻ms = value; }
+			get { return NowTimeMs; }
+			set { NowTimeMs = value; }
 		}
-		public long n前回リセットした時のシステム時刻
+		public long PrevResetTime
 		{
-			get { return n前回リセットした時のシステム時刻ms; }
+			get { return PrevResetTimeMs; }
 		}
 
         //double
-        public double dbシステム時刻
+        public double SystemTime_Double
 		{
-			get { return dbシステム時刻ms; }
+			get { return SystemTimeMs_Double; }
 		}
-		public double db現在時刻
+		public double NowTime_Double
 		{
-			get { return db現在時刻ms; }
-			set { db現在時刻ms = value; }
+			get { return NowTimeMs_Double; }
+			set { NowTimeMs_Double = value; }
 		}
-		public double db前回リセットした時のシステム時刻
+		public double PrevResetTime_Double
 		{
-			get { return db前回リセットした時のシステム時刻ms; }
+			get { return PrevResetTimeMs_Double; }
 		}
 		#endregion
 
-		public long n現在時刻ms
+		public long NowTimeMs
 		{
 			get
 			{
-				if( this.n停止数 > 0 )
-					return ( this.n一時停止システム時刻ms - this.n前回リセットした時のシステム時刻ms );
+				if( this.StopCount > 0 )
+					return ( this.PauseSystemTimeMs - this.PrevResetTimeMs );
 
-				return ( this.n更新システム時刻ms - this.n前回リセットした時のシステム時刻ms );
+				return ( this.UpdateSystemTime - this.PrevResetTimeMs );
 			}
 			set
 			{
-				if( this.n停止数 > 0 )
-					this.n前回リセットした時のシステム時刻ms = this.n一時停止システム時刻ms - value;
+				if( this.StopCount > 0 )
+					this.PrevResetTimeMs = this.PauseSystemTimeMs - value;
 				else
-					this.n前回リセットした時のシステム時刻ms = this.n更新システム時刻ms - value;
+					this.PrevResetTimeMs = this.UpdateSystemTime - value;
 			}
 		}
-		public long nリアルタイム現在時刻ms
+		public long RealNowTimeMs
 		{
 			get
 			{
-				if( this.n停止数 > 0 )
-					return ( this.n一時停止システム時刻ms - this.n前回リセットした時のシステム時刻ms );
+				if( this.StopCount > 0 )
+					return ( this.PauseSystemTimeMs - this.PrevResetTimeMs );
 
-				return ( this.nシステム時刻ms - this.n前回リセットした時のシステム時刻ms );
+				return ( this.SystemTimeMs - this.PrevResetTimeMs );
 			}
 		}
-		public long n前回リセットした時のシステム時刻ms
+		public long PrevResetTimeMs
 		{
 			get;
 			protected set;
 		}
 
 
-        public double db現在時刻ms
+        public double NowTimeMs_Double
 		{
 			get
 			{
-				if( this.n停止数 > 0 )
-					return ( this.db一時停止システム時刻ms - this.db前回リセットした時のシステム時刻ms );
+				if( this.StopCount > 0 )
+					return ( this.PauseSystemTimeMs_Double - this.PrevResetTimeMs_Double );
 
-				return ( this.db更新システム時刻ms - this.db前回リセットした時のシステム時刻ms );
+				return ( this.UpdateSystemTime_Double - this.PrevResetTimeMs_Double );
 			}
 			set
 			{
-				if( this.n停止数 > 0 )
-					this.db前回リセットした時のシステム時刻ms = this.db一時停止システム時刻ms - value;
+				if( this.StopCount > 0 )
+					this.PrevResetTimeMs_Double = this.PauseSystemTimeMs_Double - value;
 				else
-					this.db前回リセットした時のシステム時刻ms = this.db更新システム時刻ms - value;
+					this.PrevResetTimeMs_Double = this.UpdateSystemTime_Double - value;
 			}
 		}
-		public double dbリアルタイム現在時刻ms
+		public double RealNowTimeMs_Double
 		{
 			get
 			{
-				if( this.n停止数 > 0 )
-					return ( this.db一時停止システム時刻ms - this.db前回リセットした時のシステム時刻ms );
+				if( this.StopCount > 0 )
+					return ( this.PauseSystemTimeMs_Double - this.PrevResetTimeMs_Double );
 
-				return ( this.dbシステム時刻ms - this.db前回リセットした時のシステム時刻ms );
+				return ( this.SystemTimeMs_Double - this.PrevResetTimeMs_Double );
 			}
 		}
-		public double db前回リセットした時のシステム時刻ms
+		public double PrevResetTimeMs_Double
 		{
 			get;
 			protected set;
 		}
 
-        public bool b停止していない
+        public bool IsUnStoped
         {
             get
             {
-                return ( this.n停止数 == 0 );
+                return ( this.StopCount == 0 );
             }
         }
 
-		public void tリセット()
+		public void Reset()
 		{
-			this.t更新();
-			this.n前回リセットした時のシステム時刻ms = this.n更新システム時刻ms;
-			this.n一時停止システム時刻ms = this.n更新システム時刻ms;
-			this.n停止数 = 0;
+			this.Update();
+			this.PrevResetTimeMs = this.UpdateSystemTime;
+			this.PauseSystemTimeMs = this.UpdateSystemTime;
+			this.StopCount = 0;
 		}
-		public void t一時停止()
+		public void Pause()
 		{
-			if( this.n停止数 == 0 )
+			if( this.StopCount == 0 )
             {
-				this.n一時停止システム時刻ms = this.n更新システム時刻ms;
-                this.db一時停止システム時刻ms = this.db更新システム時刻ms;
+				this.PauseSystemTimeMs = this.UpdateSystemTime;
+                this.PauseSystemTimeMs_Double = this.UpdateSystemTime_Double;
             }
 
-			this.n停止数++;
+			this.StopCount++;
 		}
-		public void t更新()
+		public void Update()
 		{
-			this.n更新システム時刻ms = this.nシステム時刻ms;
-            this.db更新システム時刻ms = this.dbシステム時刻ms;
+			this.UpdateSystemTime = this.SystemTimeMs;
+            this.UpdateSystemTime_Double = this.SystemTimeMs_Double;
 		}
-		public void t再開()
+		public void Resume()
 		{
-			if( this.n停止数 > 0 )
+			if( this.StopCount > 0 )
 			{
-				this.n停止数--;
-				if( this.n停止数 == 0 )
+				this.StopCount--;
+				if( this.StopCount == 0 )
 				{
-					this.t更新();
-					this.n前回リセットした時のシステム時刻ms += this.n更新システム時刻ms - this.n一時停止システム時刻ms;
-                    this.db前回リセットした時のシステム時刻ms += this.db更新システム時刻ms - this.db一時停止システム時刻ms;
+					this.Update();
+					this.PrevResetTimeMs += this.UpdateSystemTime - this.PauseSystemTimeMs;
+                    this.PrevResetTimeMs_Double += this.UpdateSystemTime_Double - this.PauseSystemTimeMs_Double;
 				}
 			}
 		}
 		
 		#region [ protected ]
 		//-----------------
-		protected long n一時停止システム時刻ms = 0;
-		protected long n更新システム時刻ms = 0;
-        protected double db一時停止システム時刻ms = 0;
-        protected double db更新システム時刻ms = 0;
-		protected int n停止数 = 0;
+		protected long PauseSystemTimeMs = 0;
+		protected long UpdateSystemTime = 0;
+        protected double PauseSystemTimeMs_Double = 0;
+        protected double UpdateSystemTime_Double = 0;
+		protected int StopCount = 0;
 		//-----------------
 		#endregion
 	}

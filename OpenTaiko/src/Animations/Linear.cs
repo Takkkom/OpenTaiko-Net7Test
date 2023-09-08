@@ -26,7 +26,7 @@ namespace TJAPlayer3.Animations
 
         public override object GetAnimation()
         {
-            var persent = Counter.n現在の値 / (double)TimeMs;
+            var persent = Counter.CurrentValue / (double)TimeMs;
             return (Sa * persent) + StartPoint;
         }
 

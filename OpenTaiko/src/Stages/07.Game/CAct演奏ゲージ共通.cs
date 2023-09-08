@@ -29,7 +29,7 @@ namespace TJAPlayer3
 
         // CActivity 実装
 
-        public override void On活性化()
+        public override void Activate()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -45,14 +45,14 @@ namespace TJAPlayer3
             this.DTX[3] = TJAPlayer3.DTX_4P;
             this.DTX[4] = TJAPlayer3.DTX_5P;
             actLVLNFont = new CActLVLNFont();
-            actLVLNFont.On活性化();
-            base.On活性化();
+            actLVLNFont.Activate();
+            base.Activate();
         }
-        public override void On非活性化()
+        public override void DeActivate()
         {
-            actLVLNFont.On非活性化();
+            actLVLNFont.DeActivate();
             actLVLNFont = null;
-            base.On非活性化();
+            base.DeActivate();
         }
 
         const double GAUGE_MAX = 100.0;
