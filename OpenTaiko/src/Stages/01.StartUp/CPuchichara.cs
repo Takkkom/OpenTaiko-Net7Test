@@ -35,33 +35,33 @@ namespace TJAPlayer3
             _path = path;
 
             // Puchichara textures
-            tx = TJAPlayer3.Tx.TxCAbsolute($@"{path}\Chara.png");
+            tx = TJAPlayer3.Tx.TxCAbsolute($@"{path}{Path.DirectorySeparatorChar}Chara.png");
             if (tx != null)
             {
                 tx.vc拡大縮小倍率 = new Vector3D<float>(TJAPlayer3.Skin.Game_PuchiChara_Scale[0]);
             }
 
             // Heya render
-            render = TJAPlayer3.Tx.TxCAbsolute($@"{path}\Render.png");
+            render = TJAPlayer3.Tx.TxCAbsolute($@"{path}{Path.DirectorySeparatorChar}Render.png");
 
             // Puchichara welcome sfx
-            welcome = new CSkin.Cシステムサウンド($@"{path}\Welcome.ogg", false, false, true, ESoundGroup.Voice);
+            welcome = new CSkin.Cシステムサウンド($@"{path}{Path.DirectorySeparatorChar}Welcome.ogg", false, false, true, ESoundGroup.Voice);
 
             // Puchichara metadata
-            if (File.Exists($@"{path}\Metadata.json"))
-                metadata = ConfigManager.GetConfig<DBPuchichara.PuchicharaData>($@"{path}\Metadata.json");
+            if (File.Exists($@"{path}{Path.DirectorySeparatorChar}Metadata.json"))
+                metadata = ConfigManager.GetConfig<DBPuchichara.PuchicharaData>($@"{path}{Path.DirectorySeparatorChar}Metadata.json");
             else
                 metadata = new DBPuchichara.PuchicharaData();
 
             // Puchichara metadata
-            if (File.Exists($@"{path}\Effects.json"))
-                effect = ConfigManager.GetConfig<DBPuchichara.PuchicharaEffect>($@"{path}\Effects.json");
+            if (File.Exists($@"{path}{Path.DirectorySeparatorChar}Effects.json"))
+                effect = ConfigManager.GetConfig<DBPuchichara.PuchicharaEffect>($@"{path}{Path.DirectorySeparatorChar}Effects.json");
             else
                 effect = new DBPuchichara.PuchicharaEffect();
 
             // Puchichara unlockables
-            if (File.Exists($@"{path}\Unlock.json"))
-                unlock = ConfigManager.GetConfig<DBUnlockables.CUnlockConditions>($@"{path}\Unlock.json");
+            if (File.Exists($@"{path}{Path.DirectorySeparatorChar}Unlock.json"))
+                unlock = ConfigManager.GetConfig<DBUnlockables.CUnlockConditions>($@"{path}{Path.DirectorySeparatorChar}Unlock.json");
             else
                 unlock = null;
         }
