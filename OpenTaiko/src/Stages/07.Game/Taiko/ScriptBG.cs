@@ -35,27 +35,39 @@ namespace TJAPlayer3
         }
         public void DrawGraph(double x, double y, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             Textures[fileName]?.t2D描画((int)x, (int)y);
         }
         public void DrawRectGraph(double x, double y, int rect_x, int rect_y, int rect_width, int rect_height, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             Textures[fileName]?.t2D描画((int)x, (int)y, new System.Drawing.RectangleF(rect_x, rect_y, rect_width, rect_height));
         }
         public void DrawGraphCenter(double x, double y, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             Textures[fileName]?.t2D拡大率考慮中央基準描画((int)x, (int)y);
         }
         public void DrawGraphRectCenter(double x, double y, int rect_x, int rect_y, int rect_width, int rect_height, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             Textures[fileName]?.t2D拡大率考慮中央基準描画((int)x, (int)y, new System.Drawing.RectangleF(rect_x, rect_y, rect_width, rect_height));
         }
         public void SetOpacity(double opacity, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             if (Textures[fileName] != null)
                 Textures[fileName].Opacity = (int)opacity;
         }
         public void SetScale(double xscale, double yscale, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             if (Textures[fileName] != null)
             {
                 Textures[fileName].vc拡大縮小倍率.X = (float)xscale;
@@ -64,6 +76,8 @@ namespace TJAPlayer3
         }
         public void SetRotation(double angle, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             if (Textures[fileName] != null)
             {
                 Textures[fileName].fZ軸中心回転 = (float)(angle * Math.PI / 180);
@@ -71,6 +85,8 @@ namespace TJAPlayer3
         }
         public void SetColor(double r, double g, double b, string fileName)
         {
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
             if (Textures[fileName] != null)
             {
                 Textures[fileName].color4 = new Color4((float)r, (float)g, (float)b, 1f);
