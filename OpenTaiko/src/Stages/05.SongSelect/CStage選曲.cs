@@ -281,9 +281,9 @@ namespace TJAPlayer3
                     string str選択曲ファイル名 = cスコア.ファイル情報.ファイルの絶対パス;
                     int n曲番号inブロック = TJAPlayer3.stage選曲.act曲リスト.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(c曲リストノード);
 
-                    foreach (TJAPlayer3.STPlugin stPlugin in TJAPlayer3.app.listプラグイン)
+                    foreach (TJAPlayer3.STPlugin stPlugin in TJAPlayer3.app.PluginList)
                     {
-                        Directory.SetCurrentDirectory(stPlugin.strプラグインフォルダ);
+                        Directory.SetCurrentDirectory(stPlugin.pluginDirectory);
                         stPlugin.plugin.On選択曲変更(str選択曲ファイル名, n曲番号inブロック);
                         Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
                     }
