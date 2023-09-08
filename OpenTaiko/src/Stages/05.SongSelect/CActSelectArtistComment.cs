@@ -129,7 +129,7 @@ namespace TJAPlayer3
 
 		public override void On活性化()
 		{
-			this.ft描画用フォント = new CCachedFontRenderer("MS UI Gothic", 26, CFontRenderer.FontStyle.Regular );
+			this.ft描画用フォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, 26, CFontRenderer.FontStyle.Regular );
 			this.txArtist = null;
 			this.txComment = null;
 			this.strArtist = "";

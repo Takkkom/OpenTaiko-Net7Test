@@ -44,8 +44,8 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    this.pfTITLE = new CCachedFontRenderer( "MS UI Gothic", TJAPlayer3.Skin.SongLoading_Title_FontSize);
-                    this.pfSUBTITLE = new CCachedFontRenderer( "MS UI Gothic" , TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
+                    this.pfTITLE = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongLoading_Title_FontSize);
+                    this.pfSUBTITLE = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
                 }
 				this.nBGM再生開始時刻 = -1;
 				this.nBGMの総再生時間ms = 0;
@@ -529,8 +529,8 @@ namespace TJAPlayer3
                                 }
                                 else
                                 {
-                                    pfTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Game_DanC_Title_Size);
-                                    pfSubTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
+                                    pfTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_DanC_Title_Size);
+                                    pfSubTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
                                 }
 
                                 var titleForeColor = TJAPlayer3.Skin.Game_DanC_Title_ForeColor;

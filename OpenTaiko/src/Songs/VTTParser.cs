@@ -443,7 +443,7 @@ namespace TJAPlayer3
 
             foreach (LyricData data in datalist)
             {
-                string fontfamily = !string.IsNullOrEmpty(TJAPlayer3.Skin.Game_Lyric_FontName) ? TJAPlayer3.Skin.Game_Lyric_FontName : "MS UI Gothic"; // everytime CPrivateFont is disposed, it also disposes fontfamily, so I gotta reinitialize this everytime :(
+                string fontfamily = !string.IsNullOrEmpty(TJAPlayer3.Skin.Game_Lyric_FontName) ? TJAPlayer3.Skin.Game_Lyric_FontName : CFontRenderer.DefaultFontName; // everytime CPrivateFont is disposed, it also disposes fontfamily, so I gotta reinitialize this everytime :(
                 using (CCachedFontRenderer fastdraw = new CCachedFontRenderer(fontfamily, TJAPlayer3.Skin.Game_Lyric_FontSize, data.Style))
                 {
                     SKBitmap textdrawing = fastdraw.DrawText(data.Text, data.ForeColor, data.BackColor, null, 30); // Draw main text

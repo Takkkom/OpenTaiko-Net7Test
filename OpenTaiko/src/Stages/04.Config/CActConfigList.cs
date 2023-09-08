@@ -917,7 +917,7 @@ namespace TJAPlayer3
             if ( !string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
 			    this.prvFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Config_Font_Scale);	// t項目リストの設定 の前に必要
             else
-                this.prvFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Config_Font_Scale);
+                this.prvFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Config_Font_Scale);
 
             //			this.listMenu = new List<stMenuItemRight>();
 

@@ -8356,7 +8356,7 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    this.pf歌詞フォント = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Game_Lyric_FontSize);
+                    this.pf歌詞フォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_Lyric_FontSize);
                 }
             }
             this.listWAV = new Dictionary<int, CWAV>();

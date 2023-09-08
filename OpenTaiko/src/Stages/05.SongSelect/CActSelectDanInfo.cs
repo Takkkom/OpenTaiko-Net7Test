@@ -44,12 +44,12 @@ namespace TJAPlayer3
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_DanInfo_Title_Size);
             else
-                pfTitleFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.SongSelect_DanInfo_Title_Size);
+                pfTitleFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_DanInfo_Title_Size);
 
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfExamFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_DanInfo_Exam_Size);
             else
-                pfExamFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.SongSelect_DanInfo_Exam_Size);
+                pfExamFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_DanInfo_Exam_Size);
 
             ttkExams = new CActSelect曲リスト.TitleTextureKey[(int)Exam.Type.Total];
             for (int i = 0; i < ttkExams.Length; i++)

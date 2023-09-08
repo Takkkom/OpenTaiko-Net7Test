@@ -27,9 +27,9 @@ namespace TJAPlayer3
                 else
                 {
                     if (TJAPlayer3.SaveFileInstances[player].data.Title == "" || TJAPlayer3.SaveFileInstances[player].data.Title == null)
-                        this.pfName[player] = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.NamePlate_Font_Name_Size_Normal);
+                        this.pfName[player] = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.NamePlate_Font_Name_Size_Normal);
                     else
-                        this.pfName[player] = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.NamePlate_Font_Name_Size_WithTitle);
+                        this.pfName[player] = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.NamePlate_Font_Name_Size_WithTitle);
                 }
             }
 
@@ -43,8 +43,8 @@ namespace TJAPlayer3
             }
             else
             {
-                this.pfTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.NamePlate_Font_Title_Size);
-                this.pfdan = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.NamePlate_Font_Dan_Size);
+                this.pfTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.NamePlate_Font_Title_Size);
+                this.pfdan = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.NamePlate_Font_Dan_Size);
             }
         }
 

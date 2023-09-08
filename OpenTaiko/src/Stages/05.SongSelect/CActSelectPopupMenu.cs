@@ -99,7 +99,7 @@ namespace TJAPlayer3
 				if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
 					prvFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.PopupMenu_Font_Size);
 				else
-					prvFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.PopupMenu_Font_Size);
+					prvFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.PopupMenu_Font_Size);
 	        }
 	    }
 

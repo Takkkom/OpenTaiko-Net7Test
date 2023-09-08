@@ -117,8 +117,8 @@ namespace TJAPlayer3
             }
             else
             {
-                this.pfTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.SongSelect_MusicName_Scale);
-                this.pfSubTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
+                this.pfTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_MusicName_Scale);
+                this.pfSubTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
             }
 
             this.txTitle = TJAPlayer3.tテクスチャの生成(pfTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strタイトル, Color.White, Color.Black, null, 30 ));

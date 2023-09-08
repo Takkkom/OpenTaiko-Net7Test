@@ -53,8 +53,8 @@ namespace TJAPlayer3
             }
             else
             {
-                this.pfOLFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.OnlineLounge_Font_OLFont);
-                this.pfOLFontLarge = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
+                this.pfOLFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFont);
+                this.pfOLFontLarge = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
             }
                 
 

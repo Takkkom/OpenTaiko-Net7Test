@@ -68,7 +68,7 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    this.ftフォント = new CCachedFontRenderer("MS UI Gothic", (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
+                    this.ftフォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
                 }
 				for( int i = 0; i < 4; i++ )													//
 				{																				//
@@ -132,7 +132,7 @@ namespace TJAPlayer3
 
 			txMenuItemLeft = new CTexture[strMenuItem.Length, 2];
 
-			using (var prvFont = new CCachedFontRenderer(string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName) ? "MS UI Gothic" : TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Config_Font_Scale))
+			using (var prvFont = new CCachedFontRenderer(string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName) ? CFontRenderer.DefaultFontName : TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Config_Font_Scale))
 			{
 				for (int i = 0; i < strMenuItem.Length; i++)
 				{

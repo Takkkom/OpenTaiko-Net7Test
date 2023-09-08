@@ -56,12 +56,12 @@ namespace TJAPlayer3
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfDanSong = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
             else
-                pfDanSong = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
+                pfDanSong = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
 
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 this.pfExamFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
             else
-                this.pfExamFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
+                this.pfExamFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
 
             this.ttkExams = new TitleTextureKey[(int)Exam.Type.Total];
             for (int i = 0; i < this.ttkExams.Length; i++)

@@ -116,12 +116,12 @@ namespace TJAPlayer3
 			if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
 				this.pfMenuTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[0]);
 			else
-				this.pfMenuTitle = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[0]);
+				this.pfMenuTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[0]);
 
 			if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.BoxFontName))
 				this.pfBoxText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.BoxFontName, TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[1]);
 			else
-				this.pfBoxText = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[1]);
+				this.pfBoxText = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[1]);
 				
             Entry_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Bar.png"));
             Entry_Bar_Text = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Entry_Bar_Text.png"));

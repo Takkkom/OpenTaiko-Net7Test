@@ -8887,7 +8887,7 @@ namespace TJAPlayer3
         public int Game_GenreText_FontSize = 12;
         public int Game_Lyric_X = 640;
         public int Game_Lyric_Y = 630;
-        public string Game_Lyric_FontName = "MS UI Gothic";
+        public string Game_Lyric_FontName = CFontRenderer.DefaultFontName;
         public int Game_Lyric_FontSize = 38;
         public int Game_Lyric_VTTRubyOffset = 65;
         public ReferencePoint Game_Lyric_ReferencePoint = ReferencePoint.Center;

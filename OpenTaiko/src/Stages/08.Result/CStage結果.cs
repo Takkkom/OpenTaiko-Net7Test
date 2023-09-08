@@ -847,9 +847,9 @@ namespace TJAPlayer3
 					}
 					else
 					{
-						this.pfTowerText = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.TowerResult_Font_TowerText);
-						this.pfTowerText48 = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.TowerResult_Font_TowerText48);
-						this.pfTowerText72 = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.TowerResult_Font_TowerText72);
+						this.pfTowerText = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText);
+						this.pfTowerText48 = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText48);
+						this.pfTowerText72 = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText72);
 					}
 
 					this.ttkMaxFloors = new TitleTextureKey("/" + TJAPlayer3.stage選曲.r確定された曲.arスコア[5].譜面情報.nTotalFloor.ToString() + CLangManager.LangInstance.GetString(1001), pfTowerText48, Color.Black, Color.Transparent, 700);
@@ -871,7 +871,7 @@ namespace TJAPlayer3
 					}
 					else
 					{
-						this.pfDanTitles = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.DanResult_Font_DanTitles_Size);
+						this.pfDanTitles = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DanResult_Font_DanTitles_Size);
 					}
 
 					this.ttkDanTitles = new TitleTextureKey[TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count];

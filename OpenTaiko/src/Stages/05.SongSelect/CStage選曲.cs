@@ -318,7 +318,7 @@ namespace TJAPlayer3
 
                 TJAPlayer3.Skin.voiceMenuSongSelect[TJAPlayer3.SaveFile]?.t再生する();
                 
-                this.ftフォント = new CCachedFontRenderer("MS UI Gothic", 26, CFontRenderer.FontStyle.Regular);
+                this.ftフォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, 26, CFontRenderer.FontStyle.Regular);
                 for (int i = 0; i < 2; i++)
                     this.ctキー反復用[i] = new CCounter(0, 0, 0, TJAPlayer3.Timer);
 

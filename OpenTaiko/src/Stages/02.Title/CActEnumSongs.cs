@@ -87,7 +87,7 @@ namespace TJAPlayer3
 
 			try
 			{
-				CCachedFontRenderer ftMessage = new CCachedFontRenderer("MS UI Gothic", 40, CCachedFontRenderer.FontStyle.Bold );
+				CCachedFontRenderer ftMessage = new CCachedFontRenderer(CFontRenderer.DefaultFontName, 40, CCachedFontRenderer.FontStyle.Bold );
 				string[] strMessage = 
 				{
 					"     曲データの一覧を\n       取得しています。\n   しばらくお待ちください。",
