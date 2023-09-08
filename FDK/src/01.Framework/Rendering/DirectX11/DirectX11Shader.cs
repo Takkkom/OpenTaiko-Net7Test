@@ -156,7 +156,7 @@ namespace SampleFramework
                             SemanticIndex = 0,
                             Format = Format.FormatR32G32Float,
                             InputSlot = 0,
-                            AlignedByteOffset = (uint)(sizeof(float) * 4),
+                            AlignedByteOffset = (uint)(sizeof(float) * 3),
                             InputSlotClass = InputClassification.PerVertexData,
                             InstanceDataStepRate = 0
                         }
@@ -198,16 +198,19 @@ namespace SampleFramework
         public unsafe void SetMVP(Matrix4X4<float> mvp)
         {
             ConstantBufferStruct_.mvp = mvp;
+            DirectX11Device.ImmediateContext.UpdateSubresource(ConstantBuffer, 0, null, ConstantBufferStruct_, 0, 0);
         }
 
         public unsafe void SetColor(Vector4D<float> color)
         {
             ConstantBufferStruct_.color = color;
+            DirectX11Device.ImmediateContext.UpdateSubresource(ConstantBuffer, 0, null, ConstantBufferStruct_, 0, 0);
         }
 
         public unsafe void SetTextureRect(Vector4D<float> rect)
         {
             ConstantBufferStruct_.textureRect = rect;
+            DirectX11Device.ImmediateContext.UpdateSubresource(ConstantBuffer, 0, null, ConstantBufferStruct_, 0, 0);
         }
 
         public void Dispose()

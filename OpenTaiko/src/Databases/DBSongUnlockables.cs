@@ -19,7 +19,7 @@ namespace TJAPlayer3
 
         public DBSongUnlockables()
         {
-            _fn = @".\Databases\SongUnlockables.json";
+            _fn = @$"{TJAPlayer3.strEXEのあるフォルダ}Databases{Path.DirectorySeparatorChar}SongUnlockables.json";
             base.tDBInitSavable();
         }
         public class SongUnlockable

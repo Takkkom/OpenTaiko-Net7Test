@@ -73,7 +73,7 @@ namespace TJAPlayer3
 			    {
 			        string strDTXファイルパス = TJAPlayer3.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
 
-			        var strフォルダ名 = Path.GetDirectoryName(strDTXファイルパス) + @"\";
+			        var strフォルダ名 = Path.GetDirectoryName(strDTXファイルパス) + Path.DirectorySeparatorChar;
 
 			        if (File.Exists(strフォルダ名 + @"set.def"))
 			        {
@@ -102,7 +102,7 @@ namespace TJAPlayer3
 			        str曲タイトル == "Input Calibration" &&
 			        strサブタイトル == "TJAPlayer3 Developers";
 
-				this.strSTAGEFILE = CSkin.Path(@"Graphics\4_SongLoading\Background.png");
+				this.strSTAGEFILE = CSkin.Path(@$"Graphics{Path.DirectorySeparatorChar}4_SongLoading{Path.DirectorySeparatorChar}Background.png");
 
 				base.On活性化();
 			}
@@ -133,7 +133,7 @@ namespace TJAPlayer3
 			if( !base.b活性化してない )
 			{
 				this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
-				//this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_SongnamePlate.png" ) );
+				//this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}6_SongnamePlate.png" ) );
 
 				float wait = 600f;
 				if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)

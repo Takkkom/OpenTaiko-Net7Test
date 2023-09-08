@@ -154,17 +154,17 @@ namespace TJAPlayer3
 
             Random random = new Random();
 
-            if (System.IO.Directory.Exists($@"{bgOrigindir}\Up"))
+            if (System.IO.Directory.Exists($@"{bgOrigindir}{Path.DirectorySeparatorChar}Up"))
             {
-                var upDirs = System.IO.Directory.GetDirectories($@"{bgOrigindir}\Up");
+                var upDirs = System.IO.Directory.GetDirectories($@"{bgOrigindir}{Path.DirectorySeparatorChar}Up");
 
                 // If there is a preset upper background and this preset exists on the skin use it, else random upper background
-                var _presetPath = (preset != null) ? $@"{bgOrigindir}\Up\" + preset.UpperBackground : "";
+                var _presetPath = (preset != null) ? $@"{bgOrigindir}{Path.DirectorySeparatorChar}Up{Path.DirectorySeparatorChar}" + preset.UpperBackground : "";
                 var upPath = (preset != null && System.IO.Directory.Exists(_presetPath)) 
                     ?  _presetPath
                     : upDirs[random.Next(0, upDirs.Length)];
 
-                UpScript = new ScriptBG($@"{upPath}\Script.lua");
+                UpScript = new ScriptBG($@"{upPath}{Path.DirectorySeparatorChar}Script.lua");
                 UpScript.Init();
 
                 IsUpNotFound = false;
@@ -174,17 +174,17 @@ namespace TJAPlayer3
                 IsUpNotFound = true;
             }
 
-            if (System.IO.Directory.Exists($@"{bgOrigindir}\Down"))
+            if (System.IO.Directory.Exists($@"{bgOrigindir}{Path.DirectorySeparatorChar}Down"))
             {
-                var downDirs = System.IO.Directory.GetDirectories($@"{bgOrigindir}\Down");
+                var downDirs = System.IO.Directory.GetDirectories($@"{bgOrigindir}{Path.DirectorySeparatorChar}Down");
 
                 // If there is a preset lower background and this preset exists on the skin use it, else random upper background
-                var _presetPath = (preset != null) ? $@"{bgOrigindir}\Down\" + preset.LowerBackground : "";
+                var _presetPath = (preset != null) ? $@"{bgOrigindir}{Path.DirectorySeparatorChar}Down{Path.DirectorySeparatorChar}" + preset.LowerBackground : "";
                 var downPath = (preset != null && System.IO.Directory.Exists(_presetPath))
                     ? _presetPath
                     : downDirs[random.Next(0, downDirs.Length)];
 
-                DownScript = new ScriptBG($@"{downPath}\Script.lua");
+                DownScript = new ScriptBG($@"{downPath}{Path.DirectorySeparatorChar}Script.lua");
                 DownScript.Init();
 
                 IsDownNotFound = false;

@@ -10,66 +10,66 @@ namespace TJAPlayer3
 {
     class TextureLoader
     {
-        public const string BASE = @"Graphics\";
-        const string GLOBAL = @"Global\";
+        public static string BASE = @$"Graphics{Path.DirectorySeparatorChar}";
+        public static string GLOBAL = @$"Global{Path.DirectorySeparatorChar}";
 
         // Global assets 
-        const string PUCHICHARA = @"PuchiChara\";
-        const string CHARACTERS = @"Characters\";
+        public static string PUCHICHARA = @$"PuchiChara{Path.DirectorySeparatorChar}";
+        public static string CHARACTERS = @$"Characters{Path.DirectorySeparatorChar}";
 
         // Stage
-        public const string TITLE = @"1_Title\";
-        public const string CONFIG = @"2_Config\";
-        public const string SONGSELECT = @"3_SongSelect\";
-        public const string DANISELECT = @"3_DaniSelect\";
-        const string SONGLOADING = @"4_SongLoading\";
-        public const string GAME = @"5_Game\";
-        public const string RESULT = @"6_Result\";
-        public const string EXIT = @"7_Exit\";
-        public const string DANRESULT = @"7_DanResult\";
-        public const string TOWERRESULT = @"8_TowerResult\";
-        public const string HEYA = @"10_Heya\";
+        public static string TITLE = @$"1_Title{Path.DirectorySeparatorChar}";
+        public static string CONFIG = @$"2_Config{Path.DirectorySeparatorChar}";
+        public static string SONGSELECT = @$"3_SongSelect{Path.DirectorySeparatorChar}";
+        public static string DANISELECT = @$"3_DaniSelect{Path.DirectorySeparatorChar}";
+        public static string SONGLOADING = @$"4_SongLoading{Path.DirectorySeparatorChar}";
+        public static string GAME = @$"5_Game{Path.DirectorySeparatorChar}";
+        public static string RESULT = @$"6_Result{Path.DirectorySeparatorChar}";
+        public static string EXIT = @$"7_Exit{Path.DirectorySeparatorChar}";
+        public static string DANRESULT = @$"7_DanResult{Path.DirectorySeparatorChar}";
+        public static string TOWERRESULT = @$"8_TowerResult{Path.DirectorySeparatorChar}";
+        public static string HEYA = @$"10_Heya{Path.DirectorySeparatorChar}";
         
-        const string MODALS = @"11_Modals\";
-        public const string ONLINELOUNGE = @"12_OnlineLounge\";
-        public const string TOWERSELECT = @"13_TowerSelect\";
-        public const string OPENENCYCLOPEDIA = @"15_OpenEncyclopedia\";
+        public static string MODALS = @$"11_Modals{Path.DirectorySeparatorChar}";
+        public static string ONLINELOUNGE = @$"12_OnlineLounge{Path.DirectorySeparatorChar}";
+        public static string TOWERSELECT = @$"13_TowerSelect{Path.DirectorySeparatorChar}";
+        public static string OPENENCYCLOPEDIA = @$"15_OpenEncyclopedia{Path.DirectorySeparatorChar}";
 
         // InGame
-        public const string DANCER = @"2_Dancer\";
-        const string MOB = @"3_Mob\";
-        const string COURSESYMBOL = @"4_CourseSymbol\";
-        public const string BACKGROUND = @"5_Background\";
-        const string TAIKO = @"6_Taiko\";
-        const string GAUGE = @"7_Gauge\";
-        public const string FOOTER = @"8_Footer\";
-        public const string END = @"9_End\";
-        const string EFFECTS = @"10_Effects\";
-        const string BALLOON = @"11_Balloon\";
-        const string LANE = @"12_Lane\";
-        const string GENRE = @"13_Genre\";
-        const string GAMEMODE = @"14_GameMode\";
-        const string FAILED = @"15_Failed\";
-        public const string RUNNER = @"16_Runner\";
-        const string TRAINING = @"19_Training\";
-        const string DANC = @"17_DanC\";
-        const string TOWER = @"20_Tower\";
-        const string MODICONS = @"21_ModIcons\";
-        const string AIBATTLE = @"22_AIBattle\";
+        public static string DANCER = @$"2_Dancer{Path.DirectorySeparatorChar}";
+        public static string MOB = @$"3_Mob{Path.DirectorySeparatorChar}";
+        public static string COURSESYMBOL = @$"4_CourseSymbol{Path.DirectorySeparatorChar}";
+        public static string BACKGROUND = @$"5_Background{Path.DirectorySeparatorChar}";
+        public static string TAIKO = @$"6_Taiko{Path.DirectorySeparatorChar}";
+        public static string GAUGE = @$"7_Gauge{Path.DirectorySeparatorChar}";
+        public static string FOOTER = @$"8_Footer{Path.DirectorySeparatorChar}";
+        public static string END = @$"9_End{Path.DirectorySeparatorChar}";
+        public static string EFFECTS = @$"10_Effects{Path.DirectorySeparatorChar}";
+        public static string BALLOON = @$"11_Balloon{Path.DirectorySeparatorChar}";
+        public static string LANE = @$"12_Lane{Path.DirectorySeparatorChar}";
+        public static string GENRE = @$"13_Genre{Path.DirectorySeparatorChar}";
+        public static string GAMEMODE = @$"14_GameMode{Path.DirectorySeparatorChar}";
+        public static string FAILED = @$"15_Failed{Path.DirectorySeparatorChar}";
+        public static string RUNNER = @$"16_Runner{Path.DirectorySeparatorChar}";
+        public static string TRAINING = @$"19_Training{Path.DirectorySeparatorChar}";
+        public static string DANC = @$"17_DanC{Path.DirectorySeparatorChar}";
+        public static string TOWER = @$"20_Tower{Path.DirectorySeparatorChar}";
+        public static string MODICONS = @$"21_ModIcons{Path.DirectorySeparatorChar}";
+        public static string AIBATTLE = @$"22_AIBattle{Path.DirectorySeparatorChar}";
 
         // Special balloons
-        const string KUSUDAMA = @"Kusudama\";
-        const string FUSE = @"Fuseroll\";
+        public static string KUSUDAMA = @$"Kusudama{Path.DirectorySeparatorChar}";
+        public static string FUSE = @$"Fuseroll{Path.DirectorySeparatorChar}";
 
         // Tower infos
-        const string TOWERDON = @"Tower_Don\";
-        const string TOWERFLOOR = @"Tower_Floors\";
+        public static string TOWERDON = @$"Tower_Don{Path.DirectorySeparatorChar}";
+        public static string TOWERFLOOR = @$"Tower_Floors{Path.DirectorySeparatorChar}";
 
         // InGame_Effects
-        const string FIRE = @"Fire\";
-        const string HIT = @"Hit\";
-        const string ROLL = @"Roll\";
-        const string SPLASH = @"Splash\";
+        public static string FIRE = @$"Fire{Path.DirectorySeparatorChar}";
+        public static string HIT = @$"Hit{Path.DirectorySeparatorChar}";
+        public static string ROLL = @$"Roll{Path.DirectorySeparatorChar}";
+        public static string SPLASH = @$"Splash{Path.DirectorySeparatorChar}";
 
         public Dictionary<string, CTexture> trackedTextures = new Dictionary<string, CTexture>();
 
@@ -141,27 +141,27 @@ namespace TJAPlayer3
         public void LoadTexture()
         {
             #region 共通
-            Tile_Black = TxC(@"Tile_Black.png");
-            Menu_Title = TxC(@"Menu_Title.png");
-            Menu_Highlight = TxC(@"Menu_Highlight.png");
-            Enum_Song = TxC(@"Enum_Song.png");
-            Loading = TxC(@"Loading.png");
-            Scanning_Loudness = TxC(@"Scanning_Loudness.png");
-            Overlay = TxC(@"Overlay.png");
-            Network_Connection = TxC(@"Network_Connection.png");
-            Readme = TxC(@"Readme.png");
+            Tile_Black = TxC(@$"Tile_Black.png");
+            Menu_Title = TxC(@$"Menu_Title.png");
+            Menu_Highlight = TxC(@$"Menu_Highlight.png");
+            Enum_Song = TxC(@$"Enum_Song.png");
+            Loading = TxC(@$"Loading.png");
+            Scanning_Loudness = TxC(@$"Scanning_Loudness.png");
+            Overlay = TxC(@$"Overlay.png");
+            Network_Connection = TxC(@$"Network_Connection.png");
+            Readme = TxC(@$"Readme.png");
             NamePlate = new CTexture[2];
-            NamePlateBase = TxC(@"NamePlate.png");
-            NamePlate_Extension = TxC(@"NamePlate_Extension.png");
-            NamePlate[0] = TxC(@"1P_NamePlate.png");
-            NamePlate[1] = TxC(@"2P_NamePlate.png");
-            NamePlate_Effect[0] = TxC(@"9_NamePlateEffect\GoldMStar.png");
-            NamePlate_Effect[1] = TxC(@"9_NamePlateEffect\PurpleMStar.png");
-            NamePlate_Effect[2] = TxC(@"9_NamePlateEffect\GoldBStar.png");
-            NamePlate_Effect[3] = TxC(@"9_NamePlateEffect\PurpleBStar.png");
-            NamePlate_Effect[4] = TxC(@"9_NamePlateEffect\Slash.png");
+            NamePlateBase = TxC(@$"NamePlate.png");
+            NamePlate_Extension = TxC(@$"NamePlate_Extension.png");
+            NamePlate[0] = TxC(@$"1P_NamePlate.png");
+            NamePlate[1] = TxC(@$"2P_NamePlate.png");
+            NamePlate_Effect[0] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}GoldMStar.png");
+            NamePlate_Effect[1] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}PurpleMStar.png");
+            NamePlate_Effect[2] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}GoldBStar.png");
+            NamePlate_Effect[3] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}PurpleBStar.png");
+            NamePlate_Effect[4] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Slash.png");
 
-            TJAPlayer3.Skin.Config_NamePlate_Ptn_Title = System.IO.Directory.GetDirectories(CSkin.Path(BASE + @"9_NamePlateEffect\Title\")).Length;
+            TJAPlayer3.Skin.Config_NamePlate_Ptn_Title = System.IO.Directory.GetDirectories(CSkin.Path(BASE + @$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}")).Length;
             TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes = new int[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title];
 
             NamePlate_Title = new CTexture[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title][];
@@ -170,32 +170,32 @@ namespace TJAPlayer3
 
             for (int i = 0; i < TJAPlayer3.Skin.Config_NamePlate_Ptn_Title; i++)
             {
-                TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + @"9_NamePlateEffect\Title\" + i.ToString() + @"\"));
+                TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + @$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}" + i.ToString() + @$"{Path.DirectorySeparatorChar}"));
                 NamePlate_Title[i] = new CTexture[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[i]];
 
                 for (int j = 0; j < TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes[i]; j++)
                 {
-                    NamePlate_Title[i][j] = TxC(@"9_NamePlateEffect\Title\" + i.ToString() + @"\" + j.ToString() + @".png");
+                    NamePlate_Title[i][j] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}" + i.ToString() + @$"{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
                 }
 
-                NamePlate_Title_Big[i] = TxC(@"9_NamePlateEffect\Title\" + i.ToString() + @"\Big.png");
-                NamePlate_Title_Small[i] = TxC(@"9_NamePlateEffect\Title\" + i.ToString() + @"\Small.png");
+                NamePlate_Title_Big[i] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}" + i.ToString() + @$"{Path.DirectorySeparatorChar}Big.png");
+                NamePlate_Title_Small[i] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}" + i.ToString() + @$"{Path.DirectorySeparatorChar}Small.png");
             }
 
 
             #endregion
 
             #region 1_タイトル画面
-            //Title_Background = TxC(TITLE + @"Background.png");
+            //Title_Background = TxC(TITLE + @$"Background.png");
 
             #endregion
 
             #region 2_コンフィグ画面
-            //Config_Background = TxC(CONFIG + @"Background.png");
-            //Config_Header = TxC(CONFIG + @"Header.png");
-            Config_Font = TxC(CONFIG + @"Font.png");
-            Config_Font_Bold = TxC(CONFIG + @"Font_Bold.png");
-            Config_Enum_Song = TxC(CONFIG + @"Enum_Song.png");
+            //Config_Background = TxC(CONFIG + @$"Background.png");
+            //Config_Header = TxC(CONFIG + @$"Header.png");
+            Config_Font = TxC(CONFIG + @$"Font.png");
+            Config_Font_Bold = TxC(CONFIG + @$"Font_Bold.png");
+            Config_Enum_Song = TxC(CONFIG + @$"Enum_Song.png");
             #endregion
 
             #region 3_選曲画面
@@ -227,23 +227,23 @@ namespace TJAPlayer3
 
             #region 4_読み込み画面
 
-            SongLoading_Plate = TxC(SONGLOADING + @"Plate.png");
-            SongLoading_Bg = TxC(SONGLOADING + @"Bg.png");
-            SongLoading_BgWait = TxC(SONGLOADING + @"Bg_Wait.png");
-            SongLoading_Chara = TxC(SONGLOADING + @"Chara.png");
-            SongLoading_Fade = TxC(SONGLOADING + @"Fade.png");
-            SongLoading_Bg_Dan = TxC(SONGLOADING + @"Bg_Dan.png");
+            SongLoading_Plate = TxC(SONGLOADING + @$"Plate.png");
+            SongLoading_Bg = TxC(SONGLOADING + @$"Bg.png");
+            SongLoading_BgWait = TxC(SONGLOADING + @$"Bg_Wait.png");
+            SongLoading_Chara = TxC(SONGLOADING + @$"Chara.png");
+            SongLoading_Fade = TxC(SONGLOADING + @$"Fade.png");
+            SongLoading_Bg_Dan = TxC(SONGLOADING + @$"Bg_Dan.png");
 
-            SongLoading_Plate_AI = TxC(SONGLOADING + @"Plate_AI.png");
-            SongLoading_Bg_AI = TxC(SONGLOADING + @"Bg_AI.png");
-            SongLoading_Bg_AI_Wait = TxC(SONGLOADING + @"Bg_AI_Wait.png");
-            SongLoading_Fade_AI = TxC(SONGLOADING + @"Fade_AI.png");
-            SongLoading_Fade_AI_Anime_Base = TxC(SONGLOADING + @"Fade_AI_Anime_Base.png");
-            SongLoading_Fade_AI_Anime_Ring = TxC(SONGLOADING + @"Fade_AI_Anime_Ring.png");
-            SongLoading_Fade_AI_Anime_NowLoading = TxC(SONGLOADING + @"Fade_AI_Anime_NowLoading.png");
-            SongLoading_Fade_AI_Anime_Start = TxC(SONGLOADING + @"Fade_AI_Anime_Start.png");
-            SongLoading_Fade_AI_Anime_LoadBar_Base = TxC(SONGLOADING + @"Fade_AI_Anime_LoadBar_Base.png");
-            SongLoading_Fade_AI_Anime_LoadBar = TxC(SONGLOADING + @"Fade_AI_Anime_LoadBar.png");
+            SongLoading_Plate_AI = TxC(SONGLOADING + @$"Plate_AI.png");
+            SongLoading_Bg_AI = TxC(SONGLOADING + @$"Bg_AI.png");
+            SongLoading_Bg_AI_Wait = TxC(SONGLOADING + @$"Bg_AI_Wait.png");
+            SongLoading_Fade_AI = TxC(SONGLOADING + @$"Fade_AI.png");
+            SongLoading_Fade_AI_Anime_Base = TxC(SONGLOADING + @$"Fade_AI_Anime_Base.png");
+            SongLoading_Fade_AI_Anime_Ring = TxC(SONGLOADING + @$"Fade_AI_Anime_Ring.png");
+            SongLoading_Fade_AI_Anime_NowLoading = TxC(SONGLOADING + @$"Fade_AI_Anime_NowLoading.png");
+            SongLoading_Fade_AI_Anime_Start = TxC(SONGLOADING + @$"Fade_AI_Anime_Start.png");
+            SongLoading_Fade_AI_Anime_LoadBar_Base = TxC(SONGLOADING + @$"Fade_AI_Anime_LoadBar_Base.png");
+            SongLoading_Fade_AI_Anime_LoadBar = TxC(SONGLOADING + @$"Fade_AI_Anime_LoadBar.png");
 
             #endregion
 
@@ -252,33 +252,33 @@ namespace TJAPlayer3
             #region General
 
             Notes = new CTexture[2];
-            Notes[0] = TxC(GAME + @"Notes.png");
-            Notes[1] = TxC(GAME + @"Notes_Konga.png");
+            Notes[0] = TxC(GAME + @$"Notes.png");
+            Notes[1] = TxC(GAME + @$"Notes_Konga.png");
 
-            Note_Mine = TxC(GAME + @"Mine.png");
-            Note_Swap = TxC(GAME + @"Swap.png");
-            Note_Kusu = TxC(GAME + @"Kusu.png");
-            Note_FuseRoll = TxC(GAME + @"FuseRoll.png");
-            Note_Adlib = TxC(GAME + @"Adlib.png");
+            Note_Mine = TxC(GAME + @$"Mine.png");
+            Note_Swap = TxC(GAME + @$"Swap.png");
+            Note_Kusu = TxC(GAME + @$"Kusu.png");
+            Note_FuseRoll = TxC(GAME + @$"FuseRoll.png");
+            Note_Adlib = TxC(GAME + @$"Adlib.png");
 
-            Judge_Frame = TxC(GAME + @"Notes.png");
+            Judge_Frame = TxC(GAME + @$"Notes.png");
 
             SENotes = new CTexture[2];
-            SENotes[0] = TxC(GAME + @"SENotes.png");
-            SENotes[1] = TxC(GAME + @"SENotes_Konga.png");
+            SENotes[0] = TxC(GAME + @$"SENotes.png");
+            SENotes[1] = TxC(GAME + @$"SENotes_Konga.png");
 
-            SENotesExtension = TxC(GAME + @"SENotes_Extension.png");
+            SENotesExtension = TxC(GAME + @$"SENotes_Extension.png");
 
-            Notes_Arm = TxC(GAME + @"Notes_Arm.png");
-            Judge = TxC(GAME + @"Judge.png");
-            ChipEffect = TxC(GAME + @"ChipEffect.png");
-            ScoreRank = TxC(GAME + @"ScoreRank.png");
+            Notes_Arm = TxC(GAME + @$"Notes_Arm.png");
+            Judge = TxC(GAME + @$"Judge.png");
+            ChipEffect = TxC(GAME + @$"ChipEffect.png");
+            ScoreRank = TxC(GAME + @$"ScoreRank.png");
 
-            Judge_Meter = TxC(GAME + @"Judge_Meter.png");
-            Bar = TxC(GAME + @"Bar.png");
-            Bar_Branch = TxC(GAME + @"Bar_Branch.png");
+            Judge_Meter = TxC(GAME + @$"Judge_Meter.png");
+            Bar = TxC(GAME + @$"Bar.png");
+            Bar_Branch = TxC(GAME + @$"Bar_Branch.png");
 
-            var _presetsDefs = CSkin.Path(BASE + GAME + BACKGROUND + @"Presets.json");
+            var _presetsDefs = CSkin.Path(BASE + GAME + BACKGROUND + @$"Presets.json");
             if (File.Exists(_presetsDefs))
                 TJAPlayer3.Skin.Game_SkinScenes = ConfigManager.GetConfig<DBSkinPreset.SkinPreset>(_presetsDefs);
             else
@@ -300,51 +300,51 @@ namespace TJAPlayer3
             #region Taiko
 
             Taiko_Background = new CTexture[12];
-            Taiko_Background[0] = TxC(GAME + TAIKO + @"1P_Background.png");
-            Taiko_Background[1] = TxC(GAME + TAIKO + @"2P_Background.png");
-            Taiko_Background[2] = TxC(GAME + TAIKO + @"Dan_Background.png");
-            Taiko_Background[3] = TxC(GAME + TAIKO + @"Tower_Background.png");
-            Taiko_Background[4] = TxC(GAME + TAIKO + @"1P_Background_Right.png");
-            Taiko_Background[5] = TxC(GAME + TAIKO + @"1P_Background_Tokkun.png");
-            Taiko_Background[6] = TxC(GAME + TAIKO + @"2P_Background_Tokkun.png");
-            Taiko_Background[7] = TxC(GAME + TAIKO + @"3P_Background.png");
-            Taiko_Background[8] = TxC(GAME + TAIKO + @"4P_Background.png");
-            Taiko_Background[9] = TxC(GAME + TAIKO + @"AI_Background.png");
-            Taiko_Background[10] = TxC(GAME + TAIKO + @"Boss_Background.png");
-            Taiko_Background[11] = TxC(GAME + TAIKO + @"5P_Background.png");
+            Taiko_Background[0] = TxC(GAME + TAIKO + @$"1P_Background.png");
+            Taiko_Background[1] = TxC(GAME + TAIKO + @$"2P_Background.png");
+            Taiko_Background[2] = TxC(GAME + TAIKO + @$"Dan_Background.png");
+            Taiko_Background[3] = TxC(GAME + TAIKO + @$"Tower_Background.png");
+            Taiko_Background[4] = TxC(GAME + TAIKO + @$"1P_Background_Right.png");
+            Taiko_Background[5] = TxC(GAME + TAIKO + @$"1P_Background_Tokkun.png");
+            Taiko_Background[6] = TxC(GAME + TAIKO + @$"2P_Background_Tokkun.png");
+            Taiko_Background[7] = TxC(GAME + TAIKO + @$"3P_Background.png");
+            Taiko_Background[8] = TxC(GAME + TAIKO + @$"4P_Background.png");
+            Taiko_Background[9] = TxC(GAME + TAIKO + @$"AI_Background.png");
+            Taiko_Background[10] = TxC(GAME + TAIKO + @$"Boss_Background.png");
+            Taiko_Background[11] = TxC(GAME + TAIKO + @$"5P_Background.png");
 
             Taiko_Frame = new CTexture[7];
-            Taiko_Frame[0] = TxC(GAME + TAIKO + @"1P_Frame.png");
-            Taiko_Frame[1] = TxC(GAME + TAIKO + @"2P_Frame.png");
-            Taiko_Frame[2] = TxC(GAME + TAIKO + @"Tower_Frame.png");
-            Taiko_Frame[3] = TxC(GAME + TAIKO + @"Tokkun_Frame.png");
-            Taiko_Frame[4] = TxC(GAME + TAIKO + @"2P_None_Frame.png");
-            Taiko_Frame[5] = TxC(GAME + TAIKO + @"AI_Frame.png");
-            Taiko_Frame[6] = TxC(GAME + TAIKO + @"4PPlay_Frame.png");
+            Taiko_Frame[0] = TxC(GAME + TAIKO + @$"1P_Frame.png");
+            Taiko_Frame[1] = TxC(GAME + TAIKO + @$"2P_Frame.png");
+            Taiko_Frame[2] = TxC(GAME + TAIKO + @$"Tower_Frame.png");
+            Taiko_Frame[3] = TxC(GAME + TAIKO + @$"Tokkun_Frame.png");
+            Taiko_Frame[4] = TxC(GAME + TAIKO + @$"2P_None_Frame.png");
+            Taiko_Frame[5] = TxC(GAME + TAIKO + @$"AI_Frame.png");
+            Taiko_Frame[6] = TxC(GAME + TAIKO + @$"4PPlay_Frame.png");
 
             Taiko_PlayerNumber = new CTexture[5];
-            Taiko_PlayerNumber[0] = TxC(GAME + TAIKO + @"1P_PlayerNumber.png");
-            Taiko_PlayerNumber[1] = TxC(GAME + TAIKO + @"2P_PlayerNumber.png");
-            Taiko_PlayerNumber[2] = TxC(GAME + TAIKO + @"3P_PlayerNumber.png");
-            Taiko_PlayerNumber[3] = TxC(GAME + TAIKO + @"4P_PlayerNumber.png");
-            Taiko_PlayerNumber[4] = TxC(GAME + TAIKO + @"5P_PlayerNumber.png");
+            Taiko_PlayerNumber[0] = TxC(GAME + TAIKO + @$"1P_PlayerNumber.png");
+            Taiko_PlayerNumber[1] = TxC(GAME + TAIKO + @$"2P_PlayerNumber.png");
+            Taiko_PlayerNumber[2] = TxC(GAME + TAIKO + @$"3P_PlayerNumber.png");
+            Taiko_PlayerNumber[3] = TxC(GAME + TAIKO + @$"4P_PlayerNumber.png");
+            Taiko_PlayerNumber[4] = TxC(GAME + TAIKO + @$"5P_PlayerNumber.png");
 
 
             Taiko_Base = new CTexture[2];
-            Taiko_Base[0] = TxC(GAME + TAIKO + @"Base.png");
-            Taiko_Base[1] = TxC(GAME + TAIKO + @"Base_Konga.png");
+            Taiko_Base[0] = TxC(GAME + TAIKO + @$"Base.png");
+            Taiko_Base[1] = TxC(GAME + TAIKO + @$"Base_Konga.png");
 
-            Taiko_Don_Left = TxC(GAME + TAIKO + @"Don.png");
-            Taiko_Don_Right = TxC(GAME + TAIKO + @"Don.png");
-            Taiko_Ka_Left = TxC(GAME + TAIKO + @"Ka.png");
-            Taiko_Ka_Right = TxC(GAME + TAIKO + @"Ka.png");
+            Taiko_Don_Left = TxC(GAME + TAIKO + @$"Don.png");
+            Taiko_Don_Right = TxC(GAME + TAIKO + @$"Don.png");
+            Taiko_Ka_Left = TxC(GAME + TAIKO + @$"Ka.png");
+            Taiko_Ka_Right = TxC(GAME + TAIKO + @$"Ka.png");
 
-            Taiko_Konga_Don = TxC(GAME + TAIKO + @"Don_Konga.png");
-            Taiko_Konga_Ka = TxC(GAME + TAIKO + @"Ka_Konga.png");
-            Taiko_Konga_Clap = TxC(GAME + TAIKO + @"Clap.png");
+            Taiko_Konga_Don = TxC(GAME + TAIKO + @$"Don_Konga.png");
+            Taiko_Konga_Ka = TxC(GAME + TAIKO + @$"Ka_Konga.png");
+            Taiko_Konga_Clap = TxC(GAME + TAIKO + @$"Clap.png");
 
-            Taiko_LevelUp = TxC(GAME + TAIKO + @"LevelUp.png");
-            Taiko_LevelDown = TxC(GAME + TAIKO + @"LevelDown.png");
+            Taiko_LevelUp = TxC(GAME + TAIKO + @$"LevelUp.png");
+            Taiko_LevelDown = TxC(GAME + TAIKO + @$"LevelDown.png");
             Couse_Symbol = new CTexture[(int)Difficulty.Total + 1]; // +1は真打ちモードの分
             Couse_Symbol_Back = new CTexture[(int)Difficulty.Total + 1]; // +1は真打ちモードの分
             Couse_Symbol_Back_Flash = new CTexture[(int)Difficulty.Total + 1]; // +1は真打ちモードの分
@@ -357,24 +357,24 @@ namespace TJAPlayer3
             }
 
             Taiko_Score = new CTexture[6];
-            Taiko_Score[0] = TxC(GAME + TAIKO + @"Score.png");
-            Taiko_Score[1] = TxC(GAME + TAIKO + @"Score_1P.png");
-            Taiko_Score[2] = TxC(GAME + TAIKO + @"Score_2P.png");
-            Taiko_Score[3] = TxC(GAME + TAIKO + @"Score_3P.png");
-            Taiko_Score[4] = TxC(GAME + TAIKO + @"Score_4P.png");
-            Taiko_Score[5] = TxC(GAME + TAIKO + @"Score_5P.png");
+            Taiko_Score[0] = TxC(GAME + TAIKO + @$"Score.png");
+            Taiko_Score[1] = TxC(GAME + TAIKO + @$"Score_1P.png");
+            Taiko_Score[2] = TxC(GAME + TAIKO + @$"Score_2P.png");
+            Taiko_Score[3] = TxC(GAME + TAIKO + @$"Score_3P.png");
+            Taiko_Score[4] = TxC(GAME + TAIKO + @$"Score_4P.png");
+            Taiko_Score[5] = TxC(GAME + TAIKO + @$"Score_5P.png");
             Taiko_Combo = new CTexture[4];
-            Taiko_Combo[0] = TxC(GAME + TAIKO + @"Combo.png");
-            Taiko_Combo[1] = TxC(GAME + TAIKO + @"Combo_Big.png");
-            Taiko_Combo[2] = TxC(GAME + TAIKO + @"Combo_Midium.png");
-            Taiko_Combo[3] = TxC(GAME + TAIKO + @"Combo_Huge.png");
-            Taiko_Combo_Effect = TxC(GAME + TAIKO + @"Combo_Effect.png");
-            Taiko_Combo_Text = TxC(GAME + TAIKO + @"Combo_Text.png");
+            Taiko_Combo[0] = TxC(GAME + TAIKO + @$"Combo.png");
+            Taiko_Combo[1] = TxC(GAME + TAIKO + @$"Combo_Big.png");
+            Taiko_Combo[2] = TxC(GAME + TAIKO + @$"Combo_Midium.png");
+            Taiko_Combo[3] = TxC(GAME + TAIKO + @$"Combo_Huge.png");
+            Taiko_Combo_Effect = TxC(GAME + TAIKO + @$"Combo_Effect.png");
+            Taiko_Combo_Text = TxC(GAME + TAIKO + @$"Combo_Text.png");
 
             Taiko_Combo_Guide = new CTexture[3];
             for (int i = 0; i < Taiko_Combo_Guide.Length; i++)
             {
-                Taiko_Combo_Guide[i] = TxC(GAME + TAIKO + @"Combo_Guide" + i.ToString() + ".png");
+                Taiko_Combo_Guide[i] = TxC(GAME + TAIKO + @$"Combo_Guide" + i.ToString() + ".png");
             }
 
             #endregion
@@ -382,149 +382,149 @@ namespace TJAPlayer3
             #region Gauge
 
             Gauge = new CTexture[8];
-            Gauge[0] = TxC(GAME + GAUGE + @"1P.png");
-            Gauge[1] = TxC(GAME + GAUGE + @"2P.png");
-            Gauge[2] = TxC(GAME + GAUGE + @"1P_Right.png");
-            Gauge[3] = TxC(GAME + GAUGE + @"1P_4PGauge.png");
-            Gauge[4] = TxC(GAME + GAUGE + @"2P_4PGauge.png");
-            Gauge[5] = TxC(GAME + GAUGE + @"3P_4PGauge.png");
-            Gauge[6] = TxC(GAME + GAUGE + @"4P_4PGauge.png");
-            Gauge[7] = TxC(GAME + GAUGE + @"5P_4PGauge.png");
+            Gauge[0] = TxC(GAME + GAUGE + @$"1P.png");
+            Gauge[1] = TxC(GAME + GAUGE + @$"2P.png");
+            Gauge[2] = TxC(GAME + GAUGE + @$"1P_Right.png");
+            Gauge[3] = TxC(GAME + GAUGE + @$"1P_4PGauge.png");
+            Gauge[4] = TxC(GAME + GAUGE + @$"2P_4PGauge.png");
+            Gauge[5] = TxC(GAME + GAUGE + @$"3P_4PGauge.png");
+            Gauge[6] = TxC(GAME + GAUGE + @$"4P_4PGauge.png");
+            Gauge[7] = TxC(GAME + GAUGE + @$"5P_4PGauge.png");
 
             Gauge_Base = new CTexture[8];
-            Gauge_Base[0] = TxC(GAME + GAUGE + @"1P_Base.png");
-            Gauge_Base[1] = TxC(GAME + GAUGE + @"2P_Base.png");
-            Gauge_Base[2] = TxC(GAME + GAUGE + @"1P_Base_Right.png");
-            Gauge_Base[3] = TxC(GAME + GAUGE + @"1P_Base_4PGauge.png");
-            Gauge_Base[4] = TxC(GAME + GAUGE + @"2P_Base_4PGauge.png");
-            Gauge_Base[5] = TxC(GAME + GAUGE + @"3P_Base_4PGauge.png");
-            Gauge_Base[6] = TxC(GAME + GAUGE + @"4P_Base_4PGauge.png");
-            Gauge_Base[7] = TxC(GAME + GAUGE + @"5P_Base_4PGauge.png");
+            Gauge_Base[0] = TxC(GAME + GAUGE + @$"1P_Base.png");
+            Gauge_Base[1] = TxC(GAME + GAUGE + @$"2P_Base.png");
+            Gauge_Base[2] = TxC(GAME + GAUGE + @$"1P_Base_Right.png");
+            Gauge_Base[3] = TxC(GAME + GAUGE + @$"1P_Base_4PGauge.png");
+            Gauge_Base[4] = TxC(GAME + GAUGE + @$"2P_Base_4PGauge.png");
+            Gauge_Base[5] = TxC(GAME + GAUGE + @$"3P_Base_4PGauge.png");
+            Gauge_Base[6] = TxC(GAME + GAUGE + @$"4P_Base_4PGauge.png");
+            Gauge_Base[7] = TxC(GAME + GAUGE + @$"5P_Base_4PGauge.png");
 
             Gauge_Line = new CTexture[2];
-            Gauge_Line[0] = TxC(GAME + GAUGE + @"1P_Line.png");
-            Gauge_Line[1] = TxC(GAME + GAUGE + @"2P_Line.png");
+            Gauge_Line[0] = TxC(GAME + GAUGE + @$"1P_Line.png");
+            Gauge_Line[1] = TxC(GAME + GAUGE + @$"2P_Line.png");
 
             Gauge_Clear = new CTexture[3];
-            Gauge_Clear[0] = TxC(GAME + GAUGE + @"Clear.png");
-            Gauge_Clear[1] = TxC(GAME + GAUGE + @"Clear_2PGauge.png");
-            Gauge_Clear[2] = TxC(GAME + GAUGE + @"Clear_4PGauge.png");
+            Gauge_Clear[0] = TxC(GAME + GAUGE + @$"Clear.png");
+            Gauge_Clear[1] = TxC(GAME + GAUGE + @$"Clear_2PGauge.png");
+            Gauge_Clear[2] = TxC(GAME + GAUGE + @$"Clear_4PGauge.png");
 
             Gauge_Base_Norma = new CTexture[3];
-            Gauge_Base_Norma[0] = TxC(GAME + GAUGE + @"Norma_Base.png");
-            Gauge_Base_Norma[1] = TxC(GAME + GAUGE + @"Norma_Base_2PGauge.png");
-            Gauge_Base_Norma[2] = TxC(GAME + GAUGE + @"Norma_Base_4PGauge.png");
+            Gauge_Base_Norma[0] = TxC(GAME + GAUGE + @$"Norma_Base.png");
+            Gauge_Base_Norma[1] = TxC(GAME + GAUGE + @$"Norma_Base_2PGauge.png");
+            Gauge_Base_Norma[2] = TxC(GAME + GAUGE + @$"Norma_Base_4PGauge.png");
 
             Gauge_Killzone = new CTexture[3];
-            Gauge_Killzone[0] = TxC(GAME + GAUGE + @"Killzone.png");
-            Gauge_Killzone[1] = TxC(GAME + GAUGE + @"Killzone_2PGauge.png");
-            Gauge_Killzone[2] = TxC(GAME + GAUGE + @"Killzone_4PGauge.png");
+            Gauge_Killzone[0] = TxC(GAME + GAUGE + @$"Killzone.png");
+            Gauge_Killzone[1] = TxC(GAME + GAUGE + @$"Killzone_2PGauge.png");
+            Gauge_Killzone[2] = TxC(GAME + GAUGE + @$"Killzone_4PGauge.png");
 
-            TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow\"));
+            TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @$"Rainbow{Path.DirectorySeparatorChar}"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn != 0)
             {
                 Gauge_Rainbow = new CTexture[TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn];
                 for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn; i++)
                 {
-                    Gauge_Rainbow[i] = TxC(GAME + GAUGE + @"Rainbow\" + i.ToString() + ".png");
+                    Gauge_Rainbow[i] = TxC(GAME + GAUGE + @$"Rainbow{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
                 }
             }
 
-            TJAPlayer3.Skin.Game_Gauge_Rainbow_Flat_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow_Flat\"));
+            TJAPlayer3.Skin.Game_Gauge_Rainbow_Flat_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @$"Rainbow_Flat{Path.DirectorySeparatorChar}"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_Flat_Ptn != 0)
             {
                 Gauge_Rainbow_Flat = new CTexture[TJAPlayer3.Skin.Game_Gauge_Rainbow_Flat_Ptn];
                 for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Rainbow_Flat_Ptn; i++)
                 {
-                    Gauge_Rainbow_Flat[i] = TxC(GAME + GAUGE + @"Rainbow_Flat\" + i.ToString() + ".png");
+                    Gauge_Rainbow_Flat[i] = TxC(GAME + GAUGE + @$"Rainbow_Flat{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
                 }
             }
 
-            TJAPlayer3.Skin.Game_Gauge_Rainbow_2PGauge_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @"Rainbow_2PGauge\"));
+            TJAPlayer3.Skin.Game_Gauge_Rainbow_2PGauge_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + GAUGE + @$"Rainbow_2PGauge{Path.DirectorySeparatorChar}"));
             if (TJAPlayer3.Skin.Game_Gauge_Rainbow_2PGauge_Ptn != 0)
             {
                 Gauge_Rainbow_2PGauge = new CTexture[TJAPlayer3.Skin.Game_Gauge_Rainbow_2PGauge_Ptn];
                 for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Rainbow_2PGauge_Ptn; i++)
                 {
-                    Gauge_Rainbow_2PGauge[i] = TxC(GAME + GAUGE + @"Rainbow_2PGauge\" + i.ToString() + ".png");
+                    Gauge_Rainbow_2PGauge[i] = TxC(GAME + GAUGE + @$"Rainbow_2PGauge{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
                 }
             }
 
             // Dan
 
-            TJAPlayer3.Skin.Game_Gauge_Dan_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + DANC + @"Rainbow\"));
+            TJAPlayer3.Skin.Game_Gauge_Dan_Rainbow_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + DANC + @$"Rainbow{Path.DirectorySeparatorChar}"));
             if (TJAPlayer3.Skin.Game_Gauge_Dan_Rainbow_Ptn != 0)
             {
                 Gauge_Dan_Rainbow = new CTexture[TJAPlayer3.Skin.Game_Gauge_Dan_Rainbow_Ptn];
                 for (int i = 0; i < TJAPlayer3.Skin.Game_Gauge_Dan_Rainbow_Ptn; i++)
                 {
-                    Gauge_Dan_Rainbow[i] = TxC(GAME + DANC + @"Rainbow\" + i.ToString() + ".png");
+                    Gauge_Dan_Rainbow[i] = TxC(GAME + DANC + @$"Rainbow{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
                 }
             }
 
             Gauge_Dan = new CTexture[6];
 
-            Gauge_Dan[0] = TxC(GAME + GAUGE + @"1P_Dan_Base.png");
-            Gauge_Dan[1] = TxC(GAME + GAUGE + @"1P_Dan.png");
-            Gauge_Dan[2] = TxC(GAME + GAUGE + @"1P_Dan_Clear_Base.png");
-            Gauge_Dan[3] = TxC(GAME + GAUGE + @"1P_Dan_Clear.png");
-            Gauge_Dan[4] = TxC(GAME + GAUGE + @"1P_Dan_Base_Right.png");
-            Gauge_Dan[5] = TxC(GAME + GAUGE + @"1P_Dan_Right.png");
+            Gauge_Dan[0] = TxC(GAME + GAUGE + @$"1P_Dan_Base.png");
+            Gauge_Dan[1] = TxC(GAME + GAUGE + @$"1P_Dan.png");
+            Gauge_Dan[2] = TxC(GAME + GAUGE + @$"1P_Dan_Clear_Base.png");
+            Gauge_Dan[3] = TxC(GAME + GAUGE + @$"1P_Dan_Clear.png");
+            Gauge_Dan[4] = TxC(GAME + GAUGE + @$"1P_Dan_Base_Right.png");
+            Gauge_Dan[5] = TxC(GAME + GAUGE + @$"1P_Dan_Right.png");
 
-            Gauge_Soul = TxC(GAME + GAUGE + @"Soul.png");
-            Gauge_Flash = TxC(GAME + GAUGE + @"Flash.png");
-            Gauge_Soul_Fire = TxC(GAME + GAUGE + @"Fire.png");
+            Gauge_Soul = TxC(GAME + GAUGE + @$"Soul.png");
+            Gauge_Flash = TxC(GAME + GAUGE + @$"Flash.png");
+            Gauge_Soul_Fire = TxC(GAME + GAUGE + @$"Fire.png");
             Gauge_Soul_Explosion = new CTexture[2];
-            Gauge_Soul_Explosion[0] = TxC(GAME + GAUGE + @"1P_Explosion.png");
-            Gauge_Soul_Explosion[1] = TxC(GAME + GAUGE + @"2P_Explosion.png");
+            Gauge_Soul_Explosion[0] = TxC(GAME + GAUGE + @$"1P_Explosion.png");
+            Gauge_Soul_Explosion[1] = TxC(GAME + GAUGE + @$"2P_Explosion.png");
 
             #endregion
 
             #region Balloon
 
             Balloon_Combo = new CTexture[2];
-            Balloon_Combo[0] = TxC(GAME + BALLOON + @"Combo_1P.png");
-            Balloon_Combo[1] = TxC(GAME + BALLOON + @"Combo_2P.png");
-            Balloon_Roll = TxC(GAME + BALLOON + @"Roll.png");
-            Balloon_Balloon = TxC(GAME + BALLOON + @"Balloon.png");
-            Balloon_Number_Roll = TxC(GAME + BALLOON + @"Number_Roll.png");
-            Balloon_Number_Combo = TxC(GAME + BALLOON + @"Number_Combo.png");
+            Balloon_Combo[0] = TxC(GAME + BALLOON + @$"Combo_1P.png");
+            Balloon_Combo[1] = TxC(GAME + BALLOON + @$"Combo_2P.png");
+            Balloon_Roll = TxC(GAME + BALLOON + @$"Roll.png");
+            Balloon_Balloon = TxC(GAME + BALLOON + @$"Balloon.png");
+            Balloon_Number_Roll = TxC(GAME + BALLOON + @$"Number_Roll.png");
+            Balloon_Number_Combo = TxC(GAME + BALLOON + @$"Number_Combo.png");
 
             Balloon_Breaking = new CTexture[6];
             for (int i = 0; i < 6; i++)
             {
-                Balloon_Breaking[i] = TxC(GAME + BALLOON + @"Breaking_" + i.ToString() + ".png");
+                Balloon_Breaking[i] = TxC(GAME + BALLOON + @$"Breaking_" + i.ToString() + ".png");
             }
 
-            Kusudama = TxC(GAME + BALLOON + KUSUDAMA + @"Kusudama.png");
-            Kusudama_Clear = TxC(GAME + BALLOON + KUSUDAMA + @"Kusudama_Clear.png");
-            Kusudama_Fail = TxC(GAME + BALLOON + KUSUDAMA + @"Kusudama_Fail.png");
-            Kusudama_Number = TxC(GAME + BALLOON + KUSUDAMA + @"Kusudama_Number.png");
-            Kusudama_Back = TxC(GAME + BALLOON + KUSUDAMA + @"Kusudama_Back.png");
+            Kusudama = TxC(GAME + BALLOON + KUSUDAMA + @$"Kusudama.png");
+            Kusudama_Clear = TxC(GAME + BALLOON + KUSUDAMA + @$"Kusudama_Clear.png");
+            Kusudama_Fail = TxC(GAME + BALLOON + KUSUDAMA + @$"Kusudama_Fail.png");
+            Kusudama_Number = TxC(GAME + BALLOON + KUSUDAMA + @$"Kusudama_Number.png");
+            Kusudama_Back = TxC(GAME + BALLOON + KUSUDAMA + @$"Kusudama_Back.png");
 
-            Fuse_Number = TxC(GAME + BALLOON + FUSE + @"Number_Fuse.png");
-            Fuse_Balloon = TxC(GAME + BALLOON + FUSE + @"Fuse.png");
+            Fuse_Number = TxC(GAME + BALLOON + FUSE + @$"Number_Fuse.png");
+            Fuse_Balloon = TxC(GAME + BALLOON + FUSE + @$"Fuse.png");
 
             #endregion
 
             #region Effects
 
-            Effects_Hit_Explosion = TxCAf(GAME + EFFECTS + @"Hit\Explosion.png");
+            Effects_Hit_Explosion = TxCAf(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}Explosion.png");
             if (Effects_Hit_Explosion != null) Effects_Hit_Explosion.b加算合成 = TJAPlayer3.Skin.Game_Effect_HitExplosion_AddBlend;
-            Effects_Hit_Explosion_Big = TxC(GAME + EFFECTS + @"Hit\Explosion_Big.png");
+            Effects_Hit_Explosion_Big = TxC(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}Explosion_Big.png");
             if (Effects_Hit_Explosion_Big != null) Effects_Hit_Explosion_Big.b加算合成 = TJAPlayer3.Skin.Game_Effect_HitExplosionBig_AddBlend;
-            Effects_Hit_FireWorks = TxC(GAME + EFFECTS + @"Hit\FireWorks.png");
+            Effects_Hit_FireWorks = TxC(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}FireWorks.png");
             if (Effects_Hit_FireWorks != null) Effects_Hit_FireWorks.b加算合成 = TJAPlayer3.Skin.Game_Effect_FireWorks_AddBlend;
 
-            Effects_Hit_Bomb = TxCAf(GAME + EFFECTS + @"Hit\Bomb.png");
+            Effects_Hit_Bomb = TxCAf(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}Bomb.png");
 
 
-            Effects_Fire = TxC(GAME + EFFECTS + @"Fire.png");
+            Effects_Fire = TxC(GAME + EFFECTS + @$"Fire.png");
             if (Effects_Fire != null) Effects_Fire.b加算合成 = TJAPlayer3.Skin.Game_Effect_Fire_AddBlend;
 
-            Effects_Rainbow = TxC(GAME + EFFECTS + @"Rainbow.png");
+            Effects_Rainbow = TxC(GAME + EFFECTS + @$"Rainbow.png");
 
-            Effects_GoGoSplash = TxC(GAME + EFFECTS + @"GoGoSplash.png");
+            Effects_GoGoSplash = TxC(GAME + EFFECTS + @$"GoGoSplash.png");
             if (Effects_GoGoSplash != null) Effects_GoGoSplash.b加算合成 = TJAPlayer3.Skin.Game_Effect_GoGoSplash_AddBlend;
             Effects_Hit_Great = new CTexture[15];
             Effects_Hit_Great_Big = new CTexture[15];
@@ -532,16 +532,16 @@ namespace TJAPlayer3
             Effects_Hit_Good_Big = new CTexture[15];
             for (int i = 0; i < 15; i++)
             {
-                Effects_Hit_Great[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great\" + i.ToString() + ".png");
-                Effects_Hit_Great_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Great_Big\" + i.ToString() + ".png");
-                Effects_Hit_Good[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Good\" + i.ToString() + ".png");
-                Effects_Hit_Good_Big[i] = TxC(GAME + EFFECTS + @"Hit\" + @"Good_Big\" + i.ToString() + ".png");
+                Effects_Hit_Great[i] = TxC(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}" + @$"Great{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
+                Effects_Hit_Great_Big[i] = TxC(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}" + @$"Great_Big{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
+                Effects_Hit_Good[i] = TxC(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}" + @$"Good{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
+                Effects_Hit_Good_Big[i] = TxC(GAME + EFFECTS + @$"Hit{Path.DirectorySeparatorChar}" + @$"Good_Big{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
             }
-            TJAPlayer3.Skin.Game_Effect_Roll_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + EFFECTS + @"Roll\"));
+            TJAPlayer3.Skin.Game_Effect_Roll_Ptn = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + EFFECTS + @$"Roll{Path.DirectorySeparatorChar}"));
             Effects_Roll = new CTexture[TJAPlayer3.Skin.Game_Effect_Roll_Ptn];
             for (int i = 0; i < TJAPlayer3.Skin.Game_Effect_Roll_Ptn; i++)
             {
-                Effects_Roll[i] = TxC(GAME + EFFECTS + @"Roll\" + i.ToString() + ".png");
+                Effects_Roll[i] = TxC(GAME + EFFECTS + @$"Roll{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
             }
 
             #endregion
@@ -565,121 +565,121 @@ namespace TJAPlayer3
 
             for (int i = 0; i < Lane_Red.Length; i++)
             {
-                Lane_Red[i] = TxC(GAME + LANE + @"Red" + _suffixes[i] + @".png");
-                Lane_Blue[i] = TxC(GAME + LANE + @"Blue" + _suffixes[i] + @".png");
-                Lane_Clap[i] = TxC(GAME + LANE + @"Clap" + _suffixes[i] + @".png");
+                Lane_Red[i] = TxC(GAME + LANE + @$"Red" + _suffixes[i] + @$".png");
+                Lane_Blue[i] = TxC(GAME + LANE + @$"Blue" + _suffixes[i] + @$".png");
+                Lane_Clap[i] = TxC(GAME + LANE + @$"Clap" + _suffixes[i] + @$".png");
             }
             
 
-            Lane_Yellow = TxC(GAME + LANE + @"Yellow.png");
-            Lane_Background_Main = TxC(GAME + LANE + @"Background_Main.png");
-            Lane_Background_AI = TxC(GAME + LANE + @"Background_AI.png");
-            Lane_Background_Sub = TxC(GAME + LANE + @"Background_Sub.png");
-            Lane_Background_GoGo = TxC(GAME + LANE + @"Background_GoGo.png");
+            Lane_Yellow = TxC(GAME + LANE + @$"Yellow.png");
+            Lane_Background_Main = TxC(GAME + LANE + @$"Background_Main.png");
+            Lane_Background_AI = TxC(GAME + LANE + @$"Background_AI.png");
+            Lane_Background_Sub = TxC(GAME + LANE + @$"Background_Sub.png");
+            Lane_Background_GoGo = TxC(GAME + LANE + @$"Background_GoGo.png");
 
             #endregion
 
             #region 終了演出
 
-            End_Clear_Chara = TxC(GAME + END + @"Clear_Chara.png");
-            End_Star = TxC(GAME + END + @"Star.png");
+            End_Clear_Chara = TxC(GAME + END + @$"Clear_Chara.png");
+            End_Star = TxC(GAME + END + @$"Star.png");
 
             End_Clear_Text = new CTexture[2];
-            End_Clear_Text[0] = TxC(GAME + END + @"Clear_Text.png");
-            End_Clear_Text[1] = TxC(GAME + END + @"Clear_Text_End.png");
+            End_Clear_Text[0] = TxC(GAME + END + @$"Clear_Text.png");
+            End_Clear_Text[1] = TxC(GAME + END + @$"Clear_Text_End.png");
 
             End_Clear_L = new CTexture[5];
             End_Clear_R = new CTexture[5];
             for (int i = 0; i < 5; i++)
             {
-                End_Clear_L[i] = TxC(GAME + END + @"Clear\" + @"Clear_L_" + i.ToString() + ".png");
-                End_Clear_R[i] = TxC(GAME + END + @"Clear\" + @"Clear_R_" + i.ToString() + ".png");
+                End_Clear_L[i] = TxC(GAME + END + @$"Clear{Path.DirectorySeparatorChar}" + @$"Clear_L_" + i.ToString() + ".png");
+                End_Clear_R[i] = TxC(GAME + END + @$"Clear{Path.DirectorySeparatorChar}" + @$"Clear_R_" + i.ToString() + ".png");
             
             }
-            End_Clear_Text_ = TxC(GAME + END + @"Clear\" + @"Clear_Text.png");
-            End_Clear_Text_Effect = TxC(GAME + END + @"Clear\" + @"Clear_Text_Effect.png");
+            End_Clear_Text_ = TxC(GAME + END + @$"Clear{Path.DirectorySeparatorChar}" + @$"Clear_Text.png");
+            End_Clear_Text_Effect = TxC(GAME + END + @$"Clear{Path.DirectorySeparatorChar}" + @$"Clear_Text_Effect.png");
             if (End_Clear_Text_Effect != null) End_Clear_Text_Effect.b加算合成 = true;
 
-            ClearFailed = TxC(GAME + END + @"ClearFailed\" + "Clear_Failed.png");
-            ClearFailed1 = TxC(GAME + END + @"ClearFailed\" + "Clear_Failed1.png");
-            ClearFailed2 = TxC(GAME + END + @"ClearFailed\" + "Clear_Failed2.png");
+            ClearFailed = TxC(GAME + END + @$"ClearFailed{Path.DirectorySeparatorChar}" + "Clear_Failed.png");
+            ClearFailed1 = TxC(GAME + END + @$"ClearFailed{Path.DirectorySeparatorChar}" + "Clear_Failed1.png");
+            ClearFailed2 = TxC(GAME + END + @$"ClearFailed{Path.DirectorySeparatorChar}" + "Clear_Failed2.png");
 
             End_ClearFailed = new CTexture[26];
             for (int i = 0; i < 26; i++)
-                End_ClearFailed[i] = TxC(GAME + END + @"ClearFailed\" + i.ToString() + ".png");
+                End_ClearFailed[i] = TxC(GAME + END + @$"ClearFailed{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
 
             End_FullCombo = new CTexture[67];
             for (int i = 0; i < 67; i++)
-                End_FullCombo[i] = TxC(GAME + END + @"FullCombo\" + i.ToString() + ".png");
+                End_FullCombo[i] = TxC(GAME + END + @$"FullCombo{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
             
             End_FullComboLoop = new CTexture[3];
             for (int i = 0; i < 3; i++)
-                End_FullComboLoop[i] = TxC(GAME + END + @"FullCombo\" + "loop_" + i.ToString() + ".png");
+                End_FullComboLoop[i] = TxC(GAME + END + @$"FullCombo{Path.DirectorySeparatorChar}" + "loop_" + i.ToString() + ".png");
 
-            End_DondaFullComboBg = TxC(GAME + END + @"DondaFullCombo\" + "bg.png");
+            End_DondaFullComboBg = TxC(GAME + END + @$"DondaFullCombo{Path.DirectorySeparatorChar}" + "bg.png");
             
             End_DondaFullCombo = new CTexture[62];
             for (int i = 0; i < 62; i++)
-                End_DondaFullCombo[i] = TxC(GAME + END + @"DondaFullCombo\" + i.ToString() + ".png");
+                End_DondaFullCombo[i] = TxC(GAME + END + @$"DondaFullCombo{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
 
             End_DondaFullComboLoop = new CTexture[3];
             for (int i = 0; i < 3; i++)
-                End_DondaFullComboLoop[i] = TxC(GAME + END + @"DondaFullCombo\" + "loop_" + i.ToString() + ".png");
+                End_DondaFullComboLoop[i] = TxC(GAME + END + @$"DondaFullCombo{Path.DirectorySeparatorChar}" + "loop_" + i.ToString() + ".png");
 
 
             End_Goukaku = new CTexture[3];
 
             for (int i = 0; i < End_Goukaku.Length; i++)
             {
-                End_Goukaku[i] = TxC(GAME + END + @"Dan" + i.ToString() + ".png");
+                End_Goukaku[i] = TxC(GAME + END + @$"Dan" + i.ToString() + ".png");
             }
 
             #endregion
 
             #region GameMode
 
-            GameMode_Timer_Tick = TxC(GAME + GAMEMODE + @"Timer_Tick.png");
-            GameMode_Timer_Frame = TxC(GAME + GAMEMODE + @"Timer_Frame.png");
+            GameMode_Timer_Tick = TxC(GAME + GAMEMODE + @$"Timer_Tick.png");
+            GameMode_Timer_Frame = TxC(GAME + GAMEMODE + @$"Timer_Frame.png");
             
             #endregion
 
             #region ClearFailed
 
-            Failed_Game = TxC(GAME + FAILED + @"Game.png");
-            Failed_Stage = TxC(GAME + FAILED + @"Stage.png");
+            Failed_Game = TxC(GAME + FAILED + @$"Game.png");
+            Failed_Stage = TxC(GAME + FAILED + @$"Stage.png");
             
             #endregion
 
             #region Runner
 
-            //Runner = TxC(GAME + RUNNER + @"0.png");
+            //Runner = TxC(GAME + RUNNER + @$"0.png");
 
             #endregion
 
             #region DanC
 
-            DanC_Background = TxC(GAME + DANC + @"Background.png");
+            DanC_Background = TxC(GAME + DANC + @$"Background.png");
             DanC_Gauge = new CTexture[4];
             var type = new string[] { "Normal", "Reach", "Clear", "Flush" };
             for (int i = 0; i < 4; i++)
             {
-                DanC_Gauge[i] = TxC(GAME + DANC + @"Gauge_" + type[i] + ".png");
+                DanC_Gauge[i] = TxC(GAME + DANC + @$"Gauge_" + type[i] + ".png");
             }
-            DanC_Base = TxC(GAME + DANC + @"Base.png");
-            DanC_Base_Small = TxC(GAME + DANC + @"Base_Small.png");
+            DanC_Base = TxC(GAME + DANC + @$"Base.png");
+            DanC_Base_Small = TxC(GAME + DANC + @$"Base_Small.png");
 
-            DanC_Gauge_Base = TxC(GAME + DANC + @"Gauge_Base.png");
-            DanC_Failed = TxC(GAME + DANC + @"Failed.png");
-            DanC_Number = TxC(GAME + DANC + @"Number.png");
-            DanC_Small_Number = TxC(GAME + DANC + @"Small_Number.png");
-            DanC_ExamType = TxC(GAME + DANC + @"ExamType.png");
-            DanC_ExamRange = TxC(GAME + DANC + @"ExamRange.png");
-            DanC_ExamUnit = TxC(GAME + DANC + @"ExamUnit.png");
-            DanC_Screen = TxC(GAME + DANC + @"Screen.png");
-            DanC_SmallBase = TxC(GAME + DANC + @"SmallBase.png");
-            DanC_Small_ExamCymbol = TxC(GAME + DANC + @"Small_ExamCymbol.png");
-            DanC_ExamCymbol = TxC(GAME + DANC + @"ExamCymbol.png");
-            DanC_MiniNumber = TxC(GAME + DANC + @"MiniNumber.png");
+            DanC_Gauge_Base = TxC(GAME + DANC + @$"Gauge_Base.png");
+            DanC_Failed = TxC(GAME + DANC + @$"Failed.png");
+            DanC_Number = TxC(GAME + DANC + @$"Number.png");
+            DanC_Small_Number = TxC(GAME + DANC + @$"Small_Number.png");
+            DanC_ExamType = TxC(GAME + DANC + @$"ExamType.png");
+            DanC_ExamRange = TxC(GAME + DANC + @$"ExamRange.png");
+            DanC_ExamUnit = TxC(GAME + DANC + @$"ExamUnit.png");
+            DanC_Screen = TxC(GAME + DANC + @$"Screen.png");
+            DanC_SmallBase = TxC(GAME + DANC + @$"SmallBase.png");
+            DanC_Small_ExamCymbol = TxC(GAME + DANC + @$"Small_ExamCymbol.png");
+            DanC_ExamCymbol = TxC(GAME + DANC + @$"ExamCymbol.png");
+            DanC_MiniNumber = TxC(GAME + DANC + @$"MiniNumber.png");
 
             #endregion
 
@@ -705,24 +705,24 @@ namespace TJAPlayer3
 
             #region Training
 
-            Tokkun_DownBG = TxC(GAME + TRAINING + @"Down.png");
-            Tokkun_BigTaiko = TxC(GAME + TRAINING + @"BigTaiko.png");
-            Tokkun_ProgressBar = TxC(GAME + TRAINING + @"ProgressBar_Red.png");
-            Tokkun_ProgressBarWhite = TxC(GAME + TRAINING + @"ProgressBar_White.png");
-            Tokkun_GoGoPoint = TxC(GAME + TRAINING + @"GoGoPoint.png");
-            Tokkun_JumpPoint = TxC(GAME + TRAINING + @"JumpPoint.png");
-            Tokkun_Background_Up = TxC(GAME + TRAINING + @"Background_Up.png");
-            Tokkun_BigNumber = TxC(GAME + TRAINING + @"BigNumber.png");
-            Tokkun_SmallNumber = TxC(GAME + TRAINING + @"SmallNumber.png");
-            Tokkun_Speed_Measure = TxC(GAME + TRAINING + @"Speed_Measure.png");
+            Tokkun_DownBG = TxC(GAME + TRAINING + @$"Down.png");
+            Tokkun_BigTaiko = TxC(GAME + TRAINING + @$"BigTaiko.png");
+            Tokkun_ProgressBar = TxC(GAME + TRAINING + @$"ProgressBar_Red.png");
+            Tokkun_ProgressBarWhite = TxC(GAME + TRAINING + @$"ProgressBar_White.png");
+            Tokkun_GoGoPoint = TxC(GAME + TRAINING + @$"GoGoPoint.png");
+            Tokkun_JumpPoint = TxC(GAME + TRAINING + @$"JumpPoint.png");
+            Tokkun_Background_Up = TxC(GAME + TRAINING + @$"Background_Up.png");
+            Tokkun_BigNumber = TxC(GAME + TRAINING + @$"BigNumber.png");
+            Tokkun_SmallNumber = TxC(GAME + TRAINING + @$"SmallNumber.png");
+            Tokkun_Speed_Measure = TxC(GAME + TRAINING + @$"Speed_Measure.png");
             
             #endregion
 
             #region [20_Tower]
 
-            Tower_Sky_Gradient = TxC(GAME + TOWER + @"Sky_Gradient.png");
+            Tower_Sky_Gradient = TxC(GAME + TOWER + @$"Sky_Gradient.png");
 
-            Tower_Miss = TxC(GAME + TOWER + @"Miss.png");
+            Tower_Miss = TxC(GAME + TOWER + @$"Miss.png");
 
             // Tower elements
             TJAPlayer3.Skin.Game_Tower_Ptn = System.IO.Directory.GetDirectories(CSkin.Path(BASE + GAME + TOWER + TOWERFLOOR)).Length;
@@ -735,22 +735,22 @@ namespace TJAPlayer3
 
             for (int i = 0; i < TJAPlayer3.Skin.Game_Tower_Ptn; i++)
             {
-                TJAPlayer3.Skin.Game_Tower_Ptn_Base[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERFLOOR + i.ToString() + @"\Base\"), "Base");
-                TJAPlayer3.Skin.Game_Tower_Ptn_Deco[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERFLOOR + i.ToString() + @"\Deco\"), "Deco");
+                TJAPlayer3.Skin.Game_Tower_Ptn_Base[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERFLOOR + i.ToString() + @$"{Path.DirectorySeparatorChar}Base{Path.DirectorySeparatorChar}"), "Base");
+                TJAPlayer3.Skin.Game_Tower_Ptn_Deco[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERFLOOR + i.ToString() + @$"{Path.DirectorySeparatorChar}Deco{Path.DirectorySeparatorChar}"), "Deco");
 
-                Tower_Top[i] = TxC(GAME + TOWER + TOWERFLOOR + i.ToString() + @"\Top.png");
+                Tower_Top[i] = TxC(GAME + TOWER + TOWERFLOOR + i.ToString() + @$"{Path.DirectorySeparatorChar}Top.png");
 
                 Tower_Base[i] = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Base[i]];
                 Tower_Deco[i] = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Deco[i]];
 
                 for (int j = 0; j < TJAPlayer3.Skin.Game_Tower_Ptn_Base[i]; j++)
                 {
-                    Tower_Base[i][j] = TxC(GAME + TOWER + TOWERFLOOR + i.ToString() + @"\Base\Base" + j.ToString() + ".png");
+                    Tower_Base[i][j] = TxC(GAME + TOWER + TOWERFLOOR + i.ToString() + @$"{Path.DirectorySeparatorChar}Base{Path.DirectorySeparatorChar}Base" + j.ToString() + ".png");
                 }
 
                 for (int j = 0; j < TJAPlayer3.Skin.Game_Tower_Ptn_Deco[i]; j++)
                 {
-                    Tower_Deco[i][j] = TxC(GAME + TOWER + TOWERFLOOR + i.ToString() + @"\Deco\Deco" + j.ToString() + ".png");
+                    Tower_Deco[i][j] = TxC(GAME + TOWER + TOWERFLOOR + i.ToString() + @$"{Path.DirectorySeparatorChar}Deco{Path.DirectorySeparatorChar}Deco" + j.ToString() + ".png");
                 }
             }
 
@@ -768,10 +768,10 @@ namespace TJAPlayer3
 
             for (int i = 0; i < TJAPlayer3.Skin.Game_Tower_Ptn_Don; i++)
             {
-                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Climbing[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @"\Climbing\"), "Climbing");
-                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Running[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @"\Running\"), "Running");
-                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Standing[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @"\Standing\"), "Standing");
-                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Jump[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @"\Jump\"), "Jump");
+                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Climbing[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Climbing{Path.DirectorySeparatorChar}"), "Climbing");
+                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Running[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Running{Path.DirectorySeparatorChar}"), "Running");
+                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Standing[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Standing{Path.DirectorySeparatorChar}"), "Standing");
+                TJAPlayer3.Skin.Game_Tower_Ptn_Don_Jump[i] = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Jump{Path.DirectorySeparatorChar}"), "Jump");
 
                 Tower_Don_Climbing[i] = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Don_Climbing[i]];
                 Tower_Don_Running[i] = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Don_Running[i]];
@@ -780,22 +780,22 @@ namespace TJAPlayer3
 
                 for (int j = 0; j < TJAPlayer3.Skin.Game_Tower_Ptn_Don_Climbing[i]; j++)
                 {
-                    Tower_Don_Climbing[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @"\Climbing\Climbing" + j.ToString() + ".png");
+                    Tower_Don_Climbing[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Climbing{Path.DirectorySeparatorChar}Climbing" + j.ToString() + ".png");
                 }
 
                 for (int j = 0; j < TJAPlayer3.Skin.Game_Tower_Ptn_Don_Running[i]; j++)
                 {
-                    Tower_Don_Running[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @"\Running\Running" + j.ToString() + ".png");
+                    Tower_Don_Running[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Running{Path.DirectorySeparatorChar}Running" + j.ToString() + ".png");
                 }
 
                 for (int j = 0; j < TJAPlayer3.Skin.Game_Tower_Ptn_Don_Standing[i]; j++)
                 {
-                    Tower_Don_Standing[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @"\Standing\Standing" + j.ToString() + ".png");
+                    Tower_Don_Standing[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Standing{Path.DirectorySeparatorChar}Standing" + j.ToString() + ".png");
                 }
 
                 for (int j = 0; j < TJAPlayer3.Skin.Game_Tower_Ptn_Don_Jump[i]; j++)
                 {
-                    Tower_Don_Jump[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @"\Jump\Jump" + j.ToString() + ".png");
+                    Tower_Don_Jump[i][j] = TxC(GAME + TOWER + TOWERDON + i.ToString() + @$"{Path.DirectorySeparatorChar}Jump{Path.DirectorySeparatorChar}Jump" + j.ToString() + ".png");
                 }
             }
 
@@ -806,88 +806,88 @@ namespace TJAPlayer3
             HiSp = new CTexture[14];
             for (int i = 0; i < HiSp.Length; i++)
             {
-                HiSp[i] = TxC(GAME + MODICONS + @"HS\" + i.ToString() + @".png");
+                HiSp[i] = TxC(GAME + MODICONS + @$"HS{Path.DirectorySeparatorChar}" + i.ToString() + @$".png");
             }
 
             Mod_Timing = new CTexture[5];
             for (int i = 0; i < Mod_Timing.Length; i++)
             {
-                Mod_Timing[i] = TxC(GAME + MODICONS + @"Timing\" + i.ToString() + @".png");
+                Mod_Timing[i] = TxC(GAME + MODICONS + @$"Timing{Path.DirectorySeparatorChar}" + i.ToString() + @$".png");
             }
 
             Mod_SongSpeed = new CTexture[2];
             for (int i = 0; i < Mod_SongSpeed.Length; i++)
             {
-                Mod_SongSpeed[i] = TxC(GAME + MODICONS + @"SongSpeed\" + i.ToString() + @".png");
+                Mod_SongSpeed[i] = TxC(GAME + MODICONS + @$"SongSpeed{Path.DirectorySeparatorChar}" + i.ToString() + @$".png");
             }
 
             Mod_Fun = new CTexture[3];
             for (int i = 0; i < Mod_Fun.Length; i++)
             {
-                Mod_Fun[i] = TxC(GAME + MODICONS + @"Fun\" + i.ToString() + @".png");
+                Mod_Fun[i] = TxC(GAME + MODICONS + @$"Fun{Path.DirectorySeparatorChar}" + i.ToString() + @$".png");
             }
 
-            Mod_Doron = TxC(GAME + MODICONS + @"Doron.png");
-            Mod_Stealth = TxC(GAME + MODICONS + @"Stealth.png");
-            Mod_Mirror = TxC(GAME + MODICONS + @"Mirror.png");
-            Mod_Super = TxC(GAME + MODICONS + @"Super.png");
-            Mod_Hyper = TxC(GAME + MODICONS + @"Hyper.png");
-            Mod_Random = TxC(GAME + MODICONS + @"Random.png");
-            Mod_Auto = TxC(GAME + MODICONS + @"Auto.png");
-            Mod_Just = TxC(GAME + MODICONS + @"Just.png");
-            Mod_Safe = TxC(GAME + MODICONS + @"Safe.png");
-            Mod_None = TxC(GAME + MODICONS + @"None.png");
+            Mod_Doron = TxC(GAME + MODICONS + @$"Doron.png");
+            Mod_Stealth = TxC(GAME + MODICONS + @$"Stealth.png");
+            Mod_Mirror = TxC(GAME + MODICONS + @$"Mirror.png");
+            Mod_Super = TxC(GAME + MODICONS + @$"Super.png");
+            Mod_Hyper = TxC(GAME + MODICONS + @$"Hyper.png");
+            Mod_Random = TxC(GAME + MODICONS + @$"Random.png");
+            Mod_Auto = TxC(GAME + MODICONS + @$"Auto.png");
+            Mod_Just = TxC(GAME + MODICONS + @$"Just.png");
+            Mod_Safe = TxC(GAME + MODICONS + @$"Safe.png");
+            Mod_None = TxC(GAME + MODICONS + @$"None.png");
 
             #endregion
 
             #region [22_AIBattle]
 
-            AIBattle_SectionTime_Panel = TxC(GAME + AIBATTLE + @"SectionTime_Panel.png");
+            AIBattle_SectionTime_Panel = TxC(GAME + AIBATTLE + @$"SectionTime_Panel.png");
 
-            AIBattle_SectionTime_Bar_Base = TxC(GAME + AIBATTLE + @"SectionTime_Bar_Base.png");
-            AIBattle_SectionTime_Bar_Finish = TxC(GAME + AIBATTLE + @"SectionTime_Bar_Finish.png");
-            AIBattle_SectionTime_Bar_Normal = TxC(GAME + AIBATTLE + @"SectionTime_Bar_Normal.png");
+            AIBattle_SectionTime_Bar_Base = TxC(GAME + AIBATTLE + @$"SectionTime_Bar_Base.png");
+            AIBattle_SectionTime_Bar_Finish = TxC(GAME + AIBATTLE + @$"SectionTime_Bar_Finish.png");
+            AIBattle_SectionTime_Bar_Normal = TxC(GAME + AIBATTLE + @$"SectionTime_Bar_Normal.png");
 
-            AIBattle_Batch_Base = TxC(GAME + AIBATTLE + @"Batch_Base.png");
-            AIBattle_Batch = TxC(GAME + AIBATTLE + @"Batch.png");
+            AIBattle_Batch_Base = TxC(GAME + AIBATTLE + @$"Batch_Base.png");
+            AIBattle_Batch = TxC(GAME + AIBATTLE + @$"Batch.png");
 
-            AIBattle_Judge_Meter[0] = TxC(GAME + AIBATTLE + @"Judge_Meter.png");
-            AIBattle_Judge_Meter[1] = TxC(GAME + AIBATTLE + @"Judge_Meter_AI.png");
+            AIBattle_Judge_Meter[0] = TxC(GAME + AIBATTLE + @$"Judge_Meter.png");
+            AIBattle_Judge_Meter[1] = TxC(GAME + AIBATTLE + @$"Judge_Meter_AI.png");
 
-            AIBattle_Judge_Number = TxC(GAME + AIBATTLE + @"Judge_Number.png");
+            AIBattle_Judge_Number = TxC(GAME + AIBATTLE + @$"Judge_Number.png");
 
             #endregion
 
             #endregion
 
             #region 6_結果発表
-            Result_FadeIn = TxC(RESULT + @"FadeIn.png");
-            Result_Soul_Text = TxC(RESULT + @"Soul_Text.png");
-            Result_Soul_Fire = TxC(RESULT + @"Result_Soul_Fire.png");
+            Result_FadeIn = TxC(RESULT + @$"FadeIn.png");
+            Result_Soul_Text = TxC(RESULT + @$"Soul_Text.png");
+            Result_Soul_Fire = TxC(RESULT + @$"Result_Soul_Fire.png");
 
-            Result_Gauge[0] = TxC(RESULT + @"Gauge.png");
-            Result_Gauge_Base[0] = TxC(RESULT + @"Gauge_Base.png");
-            Result_Gauge[1] = TxC(RESULT + @"Gauge_2.png");
-            Result_Gauge_Base[1] = TxC(RESULT + @"Gauge_Base_2.png");
-            Result_Gauge[2] = TxC(RESULT + @"Gauge_3.png");
-            Result_Gauge_Base[2] = TxC(RESULT + @"Gauge_Base_3.png");
-            Result_Gauge[3] = TxC(RESULT + @"Gauge_4.png");
-            Result_Gauge_Base[3] = TxC(RESULT + @"Gauge_Base_4.png");
-            Result_Gauge[4] = TxC(RESULT + @"Gauge_5.png");
-            Result_Gauge_Base[4] = TxC(RESULT + @"Gauge_Base_5.png");
+            Result_Gauge[0] = TxC(RESULT + @$"Gauge.png");
+            Result_Gauge_Base[0] = TxC(RESULT + @$"Gauge_Base.png");
+            Result_Gauge[1] = TxC(RESULT + @$"Gauge_2.png");
+            Result_Gauge_Base[1] = TxC(RESULT + @$"Gauge_Base_2.png");
+            Result_Gauge[2] = TxC(RESULT + @$"Gauge_3.png");
+            Result_Gauge_Base[2] = TxC(RESULT + @$"Gauge_Base_3.png");
+            Result_Gauge[3] = TxC(RESULT + @$"Gauge_4.png");
+            Result_Gauge_Base[3] = TxC(RESULT + @$"Gauge_Base_4.png");
+            Result_Gauge[4] = TxC(RESULT + @$"Gauge_5.png");
+            Result_Gauge_Base[4] = TxC(RESULT + @$"Gauge_Base_5.png");
 
-            Result_Gauge_Frame = TxC(RESULT + @"Gauge_Frame.png");
-            Result_Gauge_Clear = TxC(RESULT + @"Gauge_Clear.png");
-            Result_Gauge_Clear_Base = TxC(RESULT + @"Gauge_Clear_Base.png");
-            Result_Gauge_Killzone = TxC(RESULT + @"Gauge_Killzone.png");
+            Result_Gauge_Frame = TxC(RESULT + @$"Gauge_Frame.png");
+            Result_Gauge_Clear = TxC(RESULT + @$"Gauge_Clear.png");
+            Result_Gauge_Clear_Base = TxC(RESULT + @$"Gauge_Clear_Base.png");
+            Result_Gauge_Killzone = TxC(RESULT + @$"Gauge_Killzone.png");
 
             for (int i = 0; i < 41; i++)
-                Result_Rainbow[i] = TxC(RESULT + @"Rainbow\" + i.ToString() + ".png");
+                Result_Rainbow[i] = TxC(RESULT + @$"Rainbow{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
 
             #endregion
 
             #region 7_終了画面
-            //Exit_Background = TxC(EXIT + @"Background.png");
+            //Exit_Background = TxC(EXIT + @$"Background.png");
             #endregion
 
             #region 7_AIResults
@@ -896,27 +896,27 @@ namespace TJAPlayer3
 
             #region [7_DanResults]
 
-            //DanResult_Background = TxC(DANRESULT + @"Background.png");
+            //DanResult_Background = TxC(DANRESULT + @$"Background.png");
 
             #endregion
 
             #region [8_TowerResults]
 
-            TowerResult_Background = TxC(TOWERRESULT + @"Background.png");
+            TowerResult_Background = TxC(TOWERRESULT + @$"Background.png");
 
-            TJAPlayer3.Skin.Game_Tower_Ptn_Result = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + TOWERRESULT + @"Tower\"));
+            TJAPlayer3.Skin.Game_Tower_Ptn_Result = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + TOWERRESULT + @$"Tower{Path.DirectorySeparatorChar}"));
             TowerResult_Tower = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Result];
 
             for (int i = 0; i < TJAPlayer3.Skin.Game_Tower_Ptn_Result; i++)
             {
-                TowerResult_Tower[i] = TxC(TOWERRESULT + @"Tower\" + i.ToString() + ".png");
+                TowerResult_Tower[i] = TxC(TOWERRESULT + @$"Tower{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
             }
 
             #endregion
 
             #region [10_Heya]
 
-            //Heya_Background = TxC(HEYA + @"Background.png");
+            //Heya_Background = TxC(HEYA + @$"Background.png");
             #endregion
 
             #region [11_Characters]
@@ -1054,16 +1054,16 @@ namespace TJAPlayer3
 
             for (int i = 0; i < TJAPlayer3.Skin.Characters_Ptn; i++)
             {
-                Characters_Heya_Preview[i] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Normal\0.png");
-                Characters_Heya_Render[i] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Render.png");
+                Characters_Heya_Preview[i] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Normal{Path.DirectorySeparatorChar}0.png");
+                Characters_Heya_Render[i] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Render.png");
 
                 TJAPlayer3.Skin.Characters_Resolution[i] = new int[] { 1280, 720 };
                 TJAPlayer3.Skin.Characters_Heya_Render_Offset[i] = new int[] { 0, 0 };
 
                 var _str = "";
-                TJAPlayer3.Skin.LoadSkinConfigFromFile(charaDirs[i] + @"\CharaConfig.txt", ref _str);
+                TJAPlayer3.Skin.LoadSkinConfigFromFile(charaDirs[i] + @$"{Path.DirectorySeparatorChar}CharaConfig.txt", ref _str);
 
-                string[] delimiter = { "\n", "\r" };
+                string[] delimiter = { "{Path.DirectorySeparatorChar}n", "{Path.DirectorySeparatorChar}r" };
                 string[] strSingleLine = _str.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string line in strSingleLine)
@@ -1096,15 +1096,15 @@ namespace TJAPlayer3
             Modal_Half_5P = new CTexture[6];
             for (int i = 0; i < 5; i++)
             {
-                Modal_Full[i] = TxC(MODALS + i.ToString() + @"_full.png");
-                Modal_Half[i] = TxC(MODALS + i.ToString() + @"_half.png");
-                Modal_Half_4P[i] = TxC(MODALS + i.ToString() + @"_half_4P.png");
-                Modal_Half_5P[i] = TxC(MODALS + i.ToString() + @"_half_5P.png");
+                Modal_Full[i] = TxC(MODALS + i.ToString() + @$"_full.png");
+                Modal_Half[i] = TxC(MODALS + i.ToString() + @$"_half.png");
+                Modal_Half_4P[i] = TxC(MODALS + i.ToString() + @$"_half_4P.png");
+                Modal_Half_5P[i] = TxC(MODALS + i.ToString() + @$"_half_5P.png");
             }
-            Modal_Full[Modal_Full.Length - 1] = TxC(MODALS + @"Coin_full.png");
-            Modal_Half[Modal_Full.Length - 1] = TxC(MODALS + @"Coin_half.png");
-            Modal_Half_4P[Modal_Full.Length - 1] = TxC(MODALS + @"Coin_half_4P.png");
-            Modal_Half_5P[Modal_Full.Length - 1] = TxC(MODALS + @"Coin_half_5P.png");
+            Modal_Full[Modal_Full.Length - 1] = TxC(MODALS + @$"Coin_full.png");
+            Modal_Half[Modal_Full.Length - 1] = TxC(MODALS + @$"Coin_half.png");
+            Modal_Half_4P[Modal_Full.Length - 1] = TxC(MODALS + @$"Coin_half_4P.png");
+            Modal_Half_5P[Modal_Full.Length - 1] = TxC(MODALS + @$"Coin_half_5P.png");
 
             #endregion
 
@@ -1134,10 +1134,10 @@ namespace TJAPlayer3
 
         public CSkin.Cシステムサウンド VoiceSelectOggOrWav(string basePath)
         {
-            if (File.Exists(basePath + @".ogg"))
-                return new CSkin.Cシステムサウンド(basePath + @".ogg", false, false, true, ESoundGroup.Voice);
+            if (File.Exists(basePath + @$".ogg"))
+                return new CSkin.Cシステムサウンド(basePath + @$".ogg", false, false, true, ESoundGroup.Voice);
             else
-                return new CSkin.Cシステムサウンド(basePath + @".wav", false, false, true, ESoundGroup.Voice);
+                return new CSkin.Cシステムサウンド(basePath + @$".wav", false, false, true, ESoundGroup.Voice);
         }
 
         public void ReloadCharacter(int old, int newC, int player, bool primary = false)
@@ -1252,32 +1252,32 @@ namespace TJAPlayer3
 
                 #region [Character individual values count initialisation]
 
-                TJAPlayer3.Skin.Characters_Normal_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Normal\");
-                TJAPlayer3.Skin.Characters_Normal_Missed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Miss\");
-                TJAPlayer3.Skin.Characters_Normal_MissedDown_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\MissDown\");
-                TJAPlayer3.Skin.Characters_Normal_Cleared_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Clear\");
-                TJAPlayer3.Skin.Characters_Normal_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Clear_Max\");
-                TJAPlayer3.Skin.Characters_GoGoTime_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\GoGo\");
-                TJAPlayer3.Skin.Characters_GoGoTime_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\GoGo_Max\");
-                TJAPlayer3.Skin.Characters_10Combo_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\10combo\");
-                TJAPlayer3.Skin.Characters_10Combo_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\10combo_Max\");
-                TJAPlayer3.Skin.Characters_GoGoStart_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\GoGoStart\");
-                TJAPlayer3.Skin.Characters_GoGoStart_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\GoGoStart_Max\");
-                TJAPlayer3.Skin.Characters_Become_Cleared_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Clearin\");
-                TJAPlayer3.Skin.Characters_Become_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Soulin\");
-                TJAPlayer3.Skin.Characters_Return_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Return\");
-                TJAPlayer3.Skin.Characters_Balloon_Breaking_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Balloon_Breaking\");
-                TJAPlayer3.Skin.Characters_Balloon_Broke_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Balloon_Broke\");
-                TJAPlayer3.Skin.Characters_Balloon_Miss_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Balloon_Miss\");
-                TJAPlayer3.Skin.Characters_Title_Entry_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Title_Entry\");
-                TJAPlayer3.Skin.Characters_Title_Normal_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Title_Normal\");
-                TJAPlayer3.Skin.Characters_Menu_Loop_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Menu_Loop\");
-                TJAPlayer3.Skin.Characters_Menu_Select_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Menu_Select\");
-                TJAPlayer3.Skin.Characters_Menu_Start_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Menu_Start\");
-                TJAPlayer3.Skin.Characters_Result_Clear_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Result_Clear\");
-                TJAPlayer3.Skin.Characters_Result_Failed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Result_Failed\");
-                TJAPlayer3.Skin.Characters_Result_Failed_In_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Result_Failed_In\");
-                TJAPlayer3.Skin.Characters_Result_Normal_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @"\Result_Normal\");
+                TJAPlayer3.Skin.Characters_Normal_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Normal{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Normal_Missed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Miss{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Normal_MissedDown_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}MissDown{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Normal_Cleared_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Normal_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Clear_Max{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_GoGoTime_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}GoGo{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_GoGoTime_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}GoGo_Max{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_10Combo_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}10combo{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_10Combo_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}10combo_Max{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_GoGoStart_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}GoGoStart{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_GoGoStart_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}GoGoStart_Max{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Become_Cleared_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Clearin{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Become_Maxed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Soulin{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Return_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Return{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Balloon_Breaking_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Balloon_Breaking{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Balloon_Broke_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Balloon_Broke{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Balloon_Miss_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Balloon_Miss{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Title_Entry_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Title_Entry{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Title_Normal_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Title_Normal{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Menu_Loop_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Menu_Loop{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Menu_Select_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Menu_Select{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Menu_Start_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Menu_Start{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Result_Clear_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Result_Clear{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Result_Failed_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Result_Failed{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Result_Failed_In_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Result_Failed_In{Path.DirectorySeparatorChar}");
+                TJAPlayer3.Skin.Characters_Result_Normal_Ptn[i] = TJAPlayer3.t連番画像の枚数を数える(charaPath + @$"{Path.DirectorySeparatorChar}Result_Normal{Path.DirectorySeparatorChar}");
 
                 Characters_Normal[i] = new CTexture[TJAPlayer3.Skin.Characters_Normal_Ptn[i]];
                 Characters_Normal_Missed[i] = new CTexture[TJAPlayer3.Skin.Characters_Normal_Missed_Ptn[i]];
@@ -1311,82 +1311,82 @@ namespace TJAPlayer3
                 #region [Characters asset loading]
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Menu_Loop_Ptn[i]; j++)
-                    Characters_Menu_Loop[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Menu_Loop\" + j.ToString() + @".png");
+                    Characters_Menu_Loop[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Menu_Loop{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Menu_Select_Ptn[i]; j++)
-                    Characters_Menu_Select[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Menu_Select\" + j.ToString() + @".png");
+                    Characters_Menu_Select[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Menu_Select{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Menu_Start_Ptn[i]; j++)
-                    Characters_Menu_Start[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Menu_Start\" + j.ToString() + @".png");
+                    Characters_Menu_Start[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Menu_Start{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Result_Normal_Ptn[i]; j++)
-                    Characters_Result_Normal[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Result_Normal\" + j.ToString() + @".png");
+                    Characters_Result_Normal[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Result_Normal{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Result_Failed_In_Ptn[i]; j++)
-                    Characters_Result_Failed_In[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Result_Failed_In\" + j.ToString() + @".png");
+                    Characters_Result_Failed_In[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Result_Failed_In{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Result_Failed_Ptn[i]; j++)
-                    Characters_Result_Failed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Result_Failed\" + j.ToString() + @".png");
+                    Characters_Result_Failed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Result_Failed{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Result_Clear_Ptn[i]; j++)
-                    Characters_Result_Clear[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Result_Clear\" + j.ToString() + @".png");
+                    Characters_Result_Clear[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Result_Clear{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Title_Normal_Ptn[i]; j++)
-                    Characters_Title_Normal[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Title_Normal\" + j.ToString() + @".png");
+                    Characters_Title_Normal[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Title_Normal{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Title_Entry_Ptn[i]; j++)
-                    Characters_Title_Entry[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Title_Entry\" + j.ToString() + @".png");
+                    Characters_Title_Entry[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Title_Entry{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Normal_Ptn[i]; j++)
-                    Characters_Normal[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Normal\" + j.ToString() + @".png");
+                    Characters_Normal[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Normal{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Normal_Missed_Ptn[i]; j++)
-                    Characters_Normal_Missed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Miss\" + j.ToString() + @".png");
+                    Characters_Normal_Missed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Miss{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Normal_MissedDown_Ptn[i]; j++)
-                    Characters_Normal_MissedDown[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\MissDown\" + j.ToString() + @".png");
+                    Characters_Normal_MissedDown[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}MissDown{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Normal_Cleared_Ptn[i]; j++)
-                    Characters_Normal_Cleared[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Clear\" + j.ToString() + @".png");
+                    Characters_Normal_Cleared[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Normal_Maxed_Ptn[i]; j++)
-                    Characters_Normal_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Clear_Max\" + j.ToString() + @".png");
+                    Characters_Normal_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Clear_Max{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_GoGoTime_Ptn[i]; j++)
-                    Characters_GoGoTime[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\GoGo\" + j.ToString() + @".png");
+                    Characters_GoGoTime[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}GoGo{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_GoGoTime_Maxed_Ptn[i]; j++)
-                    Characters_GoGoTime_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\GoGo_Max\" + j.ToString() + @".png");
+                    Characters_GoGoTime_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}GoGo_Max{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_GoGoStart_Ptn[i]; j++)
-                    Characters_GoGoStart[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\GoGoStart\" + j.ToString() + @".png");
+                    Characters_GoGoStart[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}GoGoStart{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_GoGoStart_Maxed_Ptn[i]; j++)
-                    Characters_GoGoStart_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\GoGoStart_Max\" + j.ToString() + @".png");
+                    Characters_GoGoStart_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}GoGoStart_Max{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_10Combo_Ptn[i]; j++)
-                    Characters_10Combo[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\10combo\" + j.ToString() + @".png");
+                    Characters_10Combo[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}10combo{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_10Combo_Maxed_Ptn[i]; j++)
-                    Characters_10Combo_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\10combo_Max\" + j.ToString() + @".png");
+                    Characters_10Combo_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}10combo_Max{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Become_Cleared_Ptn[i]; j++)
-                    Characters_Become_Cleared[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Clearin\" + j.ToString() + @".png");
+                    Characters_Become_Cleared[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Clearin{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Become_Maxed_Ptn[i]; j++)
-                    Characters_Become_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Soulin\" + j.ToString() + @".png");
+                    Characters_Become_Maxed[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Soulin{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Return_Ptn[i]; j++)
-                    Characters_Return[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Return\" + j.ToString() + @".png");
+                    Characters_Return[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Return{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Balloon_Breaking_Ptn[i]; j++)
-                    Characters_Balloon_Breaking[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Balloon_Breaking\" + j.ToString() + @".png");
+                    Characters_Balloon_Breaking[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Balloon_Breaking{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Balloon_Broke_Ptn[i]; j++)
-                    Characters_Balloon_Broke[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Balloon_Broke\" + j.ToString() + @".png");
+                    Characters_Balloon_Broke[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Balloon_Broke{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 for (int j = 0; j < TJAPlayer3.Skin.Characters_Balloon_Miss_Ptn[i]; j++)
-                    Characters_Balloon_Miss[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @"\Balloon_Miss\" + j.ToString() + @".png");
+                    Characters_Balloon_Miss[i][j] = TxCGlobal(CHARACTERS + TJAPlayer3.Skin.Characters_DirName[i] + @$"{Path.DirectorySeparatorChar}Balloon_Miss{Path.DirectorySeparatorChar}" + j.ToString() + @$".png");
 
                 #endregion
 
@@ -1448,7 +1448,7 @@ namespace TJAPlayer3
                 #endregion
 
                 var _str = "";
-                TJAPlayer3.Skin.LoadSkinConfigFromFile(charaPath + @"\CharaConfig.txt", ref _str);
+                TJAPlayer3.Skin.LoadSkinConfigFromFile(charaPath + @$"{Path.DirectorySeparatorChar}CharaConfig.txt", ref _str);
 
                 string[] delimiter = { "\n" };
                 string[] strSingleLine = _str.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
@@ -1815,27 +1815,27 @@ namespace TJAPlayer3
 
             #region [Allocate and load the new samples]
 
-            _skin.voiceClearFailed[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Clear\Failed");
-            _skin.voiceClearClear[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Clear\Clear");
-            _skin.voiceClearFullCombo[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Clear\FullCombo");
-            _skin.voiceClearAllPerfect[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Clear\AllPerfect");
-            _skin.voiceAIWin[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Clear\AIBattle_Win");
-            _skin.voiceAILose[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Clear\AIBattle_Lose");
-            _skin.voiceMenuSongSelect[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\SongSelect");
-            _skin.voiceMenuSongDecide[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\SongDecide");
-            _skin.voiceMenuSongDecide_AI[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\SongDecide_AI");
-            _skin.voiceMenuDiffSelect[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\DiffSelect");
-            _skin.voiceMenuDanSelectStart[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\DanSelectStart");
-            _skin.voiceMenuDanSelectPrompt[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\DanSelectPrompt");
-            _skin.voiceMenuDanSelectConfirm[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Menu\DanSelectConfirm");
-            _skin.voiceTitleSanka[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Title\Sanka");
-            _skin.voiceTowerMiss[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Tower\Miss");
-            _skin.voiceResultBestScore[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Result\BestScore");
-            _skin.voiceResultClearFailed[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Result\ClearFailed");
-            _skin.voiceResultClearSuccess[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Result\ClearSuccess");
-            _skin.voiceResultDanFailed[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Result\DanFailed");
-            _skin.voiceResultDanRedPass[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Result\DanRedPass");
-            _skin.voiceResultDanGoldPass[player] = VoiceSelectOggOrWav(charaPath + @"\Sounds\Result\DanGoldPass");
+            _skin.voiceClearFailed[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}Failed");
+            _skin.voiceClearClear[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}Clear");
+            _skin.voiceClearFullCombo[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}FullCombo");
+            _skin.voiceClearAllPerfect[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}AllPerfect");
+            _skin.voiceAIWin[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}AIBattle_Win");
+            _skin.voiceAILose[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Clear{Path.DirectorySeparatorChar}AIBattle_Lose");
+            _skin.voiceMenuSongSelect[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}SongSelect");
+            _skin.voiceMenuSongDecide[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}SongDecide");
+            _skin.voiceMenuSongDecide_AI[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}SongDecide_AI");
+            _skin.voiceMenuDiffSelect[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}DiffSelect");
+            _skin.voiceMenuDanSelectStart[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}DanSelectStart");
+            _skin.voiceMenuDanSelectPrompt[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}DanSelectPrompt");
+            _skin.voiceMenuDanSelectConfirm[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Menu{Path.DirectorySeparatorChar}DanSelectConfirm");
+            _skin.voiceTitleSanka[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}Sanka");
+            _skin.voiceTowerMiss[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Miss");
+            _skin.voiceResultBestScore[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Result{Path.DirectorySeparatorChar}BestScore");
+            _skin.voiceResultClearFailed[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Result{Path.DirectorySeparatorChar}ClearFailed");
+            _skin.voiceResultClearSuccess[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Result{Path.DirectorySeparatorChar}ClearSuccess");
+            _skin.voiceResultDanFailed[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Result{Path.DirectorySeparatorChar}DanFailed");
+            _skin.voiceResultDanRedPass[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Result{Path.DirectorySeparatorChar}DanRedPass");
+            _skin.voiceResultDanGoldPass[player] = VoiceSelectOggOrWav(charaPath + @$"{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Result{Path.DirectorySeparatorChar}DanGoldPass");
 
             #endregion
 

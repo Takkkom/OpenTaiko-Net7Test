@@ -48,8 +48,8 @@ namespace TJAPlayer3
 
         private string _GetPathTextFile(string parent)
         {
-            string _expected = parent + @"\" + _lang + ".txt";
-            string _default = parent + @"\" + CLangManager.DefaultLanguage.Item1 + ".txt";
+            string _expected = parent + Path.DirectorySeparatorChar + _lang + ".txt";
+            string _default = parent + Path.DirectorySeparatorChar + CLangManager.DefaultLanguage.Item1 + ".txt";
 
             if (File.Exists(_expected))
                 return _expected;
@@ -60,7 +60,7 @@ namespace TJAPlayer3
         {
             try
             {
-                string _path = _GetPathTextFile(@".\Encyclopedia\" + (_fetchingMenus ? @"Menus\" : @"Pages\") + key.ToString());
+                string _path = _GetPathTextFile(@$"{TJAPlayer3.strEXEのあるフォルダ}Encyclopedia{Path.DirectorySeparatorChar}" + (_fetchingMenus ? @$"Menus{Path.DirectorySeparatorChar}" : @$"Pages{Path.DirectorySeparatorChar}") + key.ToString());
 
                 return File.ReadAllText(_path);
             }
@@ -72,7 +72,7 @@ namespace TJAPlayer3
 
         private string _GetImagePath(int key)
         {
-            return @".\Encyclopedia\Images\" + key.ToString() + @".png";
+            return @$"{TJAPlayer3.strEXEのあるフォルダ}Encyclopedia{Path.DirectorySeparatorChar}Images{Path.DirectorySeparatorChar}" + key.ToString() + @".png";
         }
 
         #endregion

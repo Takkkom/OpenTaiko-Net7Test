@@ -28,7 +28,7 @@ namespace SampleFramework
 
         internal static ComPtr<ID3D11DepthStencilView> DepthStencilView;
 
-        internal static float* CurrnetClearColor;
+        internal static float[] CurrnetClearColor;
 
         internal static IWindow Window_;
 
@@ -36,22 +36,6 @@ namespace SampleFramework
 
 
 
-
-
-        float[] vertices =
-        {
-        //X    Y      Z
-        0.5f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.5f
-    };
-
-        uint[] indices =
-        {
-        0, 1, 3,
-        1, 2, 3
-    };
 
         uint vertexStride = 5U * sizeof(float);
         uint vertexOffset = 0U;
@@ -190,10 +174,7 @@ namespace SampleFramework
 
         public void SetClearColor(float r, float g, float b, float a)
         {
-            fixed (float* color = new float[] { r, g, b, a })
-            {
-                CurrnetClearColor = color;
-            }
+            CurrnetClearColor = new float[] { r, g, b, a };
         }
 
         public void SetViewPort(int x, int y, uint width, uint height)
@@ -219,8 +200,8 @@ namespace SampleFramework
         public void ClearBuffer()
         {
             ImmediateContext.OMSetRenderTargets(1, ref RenderTargetView, DepthStencilView);
-            ImmediateContext.ClearRenderTargetView(RenderTargetView, ref CurrnetClearColor[0]);
-            ImmediateContext.ClearDepthStencilView(DepthStencilView, (uint)ClearFlag.Depth | (uint)ClearFlag.Depth, 1.0f, 0);
+            ImmediateContext.ClearRenderTargetView(RenderTargetView, CurrnetClearColor);
+            ImmediateContext.ClearDepthStencilView(DepthStencilView, (uint)ClearFlag.Depth | (uint)ClearFlag.Stencil, 1.0f, 0);
         }
 
         public void SwapBuffer()
@@ -254,9 +235,9 @@ namespace SampleFramework
                 
                 cbuffer ConstantBuffer
                 {
-                    float4x4 mvp;
-                    float4 color;
-                    float4 textureRect;
+                    float4x4 Mvp;
+                    float4 Color;
+                    float4 TextureRect;
                 }
 
                 vs_out vs_main(vs_in input) {
@@ -269,8 +250,10 @@ namespace SampleFramework
                 }
 
                 float4 ps_main(vs_out input) : SV_TARGET {
-                    float2 uv = input.uvposition_clip;
-                    return float4( uv.x, uv.y, 0.0, 1.0 );
+                    float2 uv = float2(input.uvposition_clip.x, input.uvposition_clip.y);
+                    float4 totalcolor = float4( uv.x, uv.y, 0.0, 1.0 );
+
+                    return totalcolor;
                 }
                 ");
         }
@@ -290,7 +273,6 @@ namespace SampleFramework
             ImmediateContext.IASetVertexBuffers(0, 1, dx11polygon.VertexBuffer, in vertexStride, in vertexOffset);
             ImmediateContext.IASetIndexBuffer(dx11polygon.IndexBuffer, Format.FormatR32Uint, 0);
 
-            ImmediateContext.UpdateSubresource(dx11shader.ConstantBuffer, 0, null, dx11shader.ConstantBufferStruct_, 0, 0);
             ImmediateContext.VSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
 
             // Bind our shaders.

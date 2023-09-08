@@ -227,7 +227,7 @@ namespace TJAPlayer3
 				Result_CrownEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}CrownEffect.png"));
 				Result_Shine = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Shine.png"));
 
-				Result_Flower = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower\Flower.png"));
+				Result_Flower = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Flower.png"));
 
 				Result_Speech_Bubble[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble.png"));
 				Result_Speech_Bubble[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble_2.png"));
@@ -239,16 +239,16 @@ namespace TJAPlayer3
 					Result_Panel_5P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_5P_" + (i + 1).ToString() + ".png"));
 
 				for (int i = 1; i <= 5; i++)
-					Result_Flower_Rotate[i - 1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower\Rotate_" + i.ToString() + ".png"));
+					Result_Flower_Rotate[i - 1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Rotate_" + i.ToString() + ".png"));
 
 				for (int i = 0; i < 3; i++)
-					Result_Crown[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Crown\Crown_" + i.ToString() + ".png"));
+					Result_Crown[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Crown{Path.DirectorySeparatorChar}Crown_" + i.ToString() + ".png"));
 
-				Result_AIBattle_Panel_AI = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle\Panel_AI.png"));
-				Result_AIBattle_Batch = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle\Batch.png"));
-				Result_AIBattle_SectionPlate = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle\SectionPlate.png"));
-				Result_AIBattle_WinFlag_Clear = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle\WinFlag_Win.png"));
-				Result_AIBattle_WinFlag_Lose = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle\WinFlag_Lose.png"));
+				Result_AIBattle_Panel_AI = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Panel_AI.png"));
+				Result_AIBattle_Batch = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Batch.png"));
+				Result_AIBattle_SectionPlate = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}SectionPlate.png"));
+				Result_AIBattle_WinFlag_Clear = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Win.png"));
+				Result_AIBattle_WinFlag_Lose = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Lose.png"));
 
 				ct全体進行 = new CCounter(0, 50000, 1, TJAPlayer3.Timer);
 

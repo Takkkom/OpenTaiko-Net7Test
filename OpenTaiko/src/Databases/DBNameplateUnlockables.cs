@@ -8,7 +8,7 @@ namespace TJAPlayer3
     {
         public DBNameplateUnlockables()
         {
-            _fn = @".\Databases\NameplateUnlockables.json";
+            _fn = @$"{TJAPlayer3.strEXEのあるフォルダ}Databases{Path.DirectorySeparatorChar}NameplateUnlockables.json";
             base.tDBInitSavable();
         }
         public class NameplateUnlockable

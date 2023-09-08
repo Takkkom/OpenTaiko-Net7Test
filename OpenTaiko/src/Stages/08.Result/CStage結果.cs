@@ -832,7 +832,7 @@ namespace TJAPlayer3
 					ctTower_Animation = new CCounter();
 
             	Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
-				Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @"\Dan_Plate.png");
+				Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
 
 				ctDanSongInfoChange = new CCounter(0, 3000, 1, TJAPlayer3.Timer);
 				ctDanSongInfoChange.n現在の値 = 255;
@@ -889,13 +889,13 @@ namespace TJAPlayer3
 				}
                 else if (TJAPlayer3.ConfigIni.bAIBattleMode)
 				{
-					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle\Script.lua"));
+					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Script.lua"));
 					Background.Init();
 				}
 				else
 				{
 					//Luaに移植する時にコメントアウトを解除
-					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}\Script.lua"));
+					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}{Path.DirectorySeparatorChar}Script.lua"));
 					Background.Init();
 				}
 

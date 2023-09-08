@@ -8,7 +8,7 @@ namespace TJAPlayer3
     {
         public DBCDN()
         {
-            _fn = @".\Databases\CDN.json";
+            _fn = @$"{TJAPlayer3.strEXEのあるフォルダ}Databases{Path.DirectorySeparatorChar}CDN.json";
             base.tDBInitSavable();
         }
 

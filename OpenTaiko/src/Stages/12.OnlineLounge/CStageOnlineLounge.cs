@@ -515,7 +515,7 @@ namespace TJAPlayer3
                             if (this.cdnSongListIndex < apiMethods.FetchedSongsList.Length)
                             {
                                 var song = apiMethods.FetchedSongsList[this.cdnSongListIndex - 1];
-                                //var zipPath = $@"Cache\{song.Md5}.zip";
+                                //var zipPath = $@"Cache{Path.DirectorySeparatorChar}{song.Md5}.zip";
                                 var downloadLink = GetDownloadLink(song);
 
                                 if (CSongDict.tContainsSongUrl(downloadLink) || song.DownloadNow)
@@ -618,13 +618,13 @@ namespace TJAPlayer3
             IsDownloading = true;
 
             // Create Cache folder if does not exist
-            Directory.CreateDirectory($@"Cache\");
+            Directory.CreateDirectory($@"Cache{Path.DirectorySeparatorChar}");
 
             
             var song = apiMethods.FetchedSongsList[this.cdnSongListIndex - 1];
             song.DownloadNow = true;
             var zipName = ReplaceInvalidChars($@"{TruncateString(song.SongTitle, 16)}-{TruncateString(song.Md5, 10)}");
-            var zipPath = $@"Cache\{zipName}.zip";
+            var zipPath = $@"Cache{Path.DirectorySeparatorChar}{zipName}.zip";
             var downloadLink = GetDownloadLink(song);
             
             try
@@ -655,7 +655,7 @@ namespace TJAPlayer3
                 if (downloadBox != null)
                 {
                     var path = downloadBox.arスコア[0].ファイル情報.フォルダの絶対パス;
-                    var genredPath = $@"{path}\{song.Genre.genre}\";
+                    var genredPath = $@"{path}{Path.DirectorySeparatorChar}{song.Genre.genre}{Path.DirectorySeparatorChar}";
 
                     if (!Directory.Exists(genredPath))
                     {
@@ -671,7 +671,7 @@ namespace TJAPlayer3
                                 correspondingBox = TJAPlayer3.Songs管理.list曲ルート[i];
                         }
 
-                        var newBoxDef = $@"{genredPath}\box.def";
+                        var newBoxDef = $@"{genredPath}{Path.DirectorySeparatorChar}box.def";
 
                         if (correspondingBox == null)
                         {
@@ -698,7 +698,7 @@ namespace TJAPlayer3
                             // Copy the existing box.def if available
                             var corPath = correspondingBox.arスコア[0].ファイル情報.フォルダの絶対パス;
 
-                            File.Copy($@"{corPath}\box.def", newBoxDef);
+                            File.Copy($@"{corPath}{Path.DirectorySeparatorChar}box.def", newBoxDef);
                         }
 
                         
@@ -720,13 +720,13 @@ namespace TJAPlayer3
                         idPath = directories[0];
                     }
 
-                    var uid = new CSongUniqueID(idPath + @"\uniqueID.json");
+                    var uid = new CSongUniqueID(idPath + @$"{Path.DirectorySeparatorChar}uniqueID.json");
                     uid.tAttachOnlineAddress(downloadLink);
                     CSongDict.tAddSongUrl(uid);
                     
                 }
 
-                //System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, $@"Songs\S3 Download\{song.Md5}");
+                //System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, $@"Songs{Path.DirectorySeparatorChar}S3 Download{Path.DirectorySeparatorChar}{song.Md5}");
             }
             catch (Exception e)
             {

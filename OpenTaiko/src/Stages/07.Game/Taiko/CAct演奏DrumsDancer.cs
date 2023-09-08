@@ -44,7 +44,7 @@ namespace TJAPlayer3
                     var path = dirs[random.Next(0, dirs.Length)];
                     LoadDancerConifg(path);
 
-                    nDancerPtn = TJAPlayer3.t連番画像の枚数を数える($@"{path}\1\");
+                    nDancerPtn = TJAPlayer3.t連番画像の枚数を数える($@"{path}{Path.DirectorySeparatorChar}1{Path.DirectorySeparatorChar}");
                     if (nDancerPtn != 0)
                     {
                         for (int i = 0; i < 5; i++)
@@ -52,7 +52,7 @@ namespace TJAPlayer3
                             Dancer[i] = new CTexture[nDancerPtn];
                             for (int p = 0; p < nDancerPtn; p++)
                             {
-                                Dancer[i][p] = TJAPlayer3.tテクスチャの生成($@"{path}\{(i + 1)}\{p}.png");
+                                Dancer[i][p] = TJAPlayer3.tテクスチャの生成($@"{path}{Path.DirectorySeparatorChar}{(i + 1)}{Path.DirectorySeparatorChar}{p}.png");
                             }
                         }
                     }
@@ -126,7 +126,7 @@ namespace TJAPlayer3
         private void LoadDancerConifg(string dancerPath)
         {
             var _str = "";
-            TJAPlayer3.Skin.LoadSkinConfigFromFile(dancerPath + @"\DancerConfig.txt", ref _str);
+            TJAPlayer3.Skin.LoadSkinConfigFromFile(dancerPath + @$"{Path.DirectorySeparatorChar}DancerConfig.txt", ref _str);
 
             string[] delimiter = { "\n" };
             string[] strSingleLine = _str.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);

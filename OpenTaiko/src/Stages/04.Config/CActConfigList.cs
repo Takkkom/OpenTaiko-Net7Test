@@ -688,7 +688,7 @@ namespace TJAPlayer3
 			if ( nSkinSampleIndex != nSkinIndex )
 			{
 				string path = skinSubFolders[ nSkinIndex ];
-				path = System.IO.Path.Combine( path, @"Graphics\1_Title\Background.png" );
+				path = System.IO.Path.Combine( path, @$"Graphics{Path.DirectorySeparatorChar}1_Title{Path.DirectorySeparatorChar}Background.png" );
 				SKBitmap bmSrc = SKBitmap.Decode(path);
 
 				int _w = TJAPlayer3.Skin.Resolution[0] / 4;// bmSrc.Width / 4;

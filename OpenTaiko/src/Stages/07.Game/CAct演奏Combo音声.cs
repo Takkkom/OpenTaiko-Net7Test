@@ -83,7 +83,7 @@ namespace TJAPlayer3
 
                     int _charaId = TJAPlayer3.SaveFileInstances[TJAPlayer3.GetActualPlayer(i)].data.Character;
 
-                    var currentDir = ($@"{TJAPlayer3.strEXEのあるフォルダ}Global\Characters\{TJAPlayer3.Skin.Characters_DirName[_charaId]}\Sounds\Combo\");
+                    var currentDir = ($@"{TJAPlayer3.strEXEのあるフォルダ}Global{Path.DirectorySeparatorChar}Characters{Path.DirectorySeparatorChar}{TJAPlayer3.Skin.Characters_DirName[_charaId]}{Path.DirectorySeparatorChar}Sounds{Path.DirectorySeparatorChar}Combo{Path.DirectorySeparatorChar}");
                     if (Directory.Exists(currentDir))
                     {
                         foreach (var item in Directory.GetFiles(currentDir))

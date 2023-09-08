@@ -406,7 +406,7 @@ namespace TJAPlayer3
         {
             if (!base.b活性化してない)
             {
-                AI_Background = new ScriptBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}\AIBattle\Script.lua"));
+                AI_Background = new ScriptBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}{Path.DirectorySeparatorChar}AIBattle{Path.DirectorySeparatorChar}Script.lua"));
                 AI_Background.Init();
                 
                 SongSelect_Background = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Background.png"));
@@ -428,27 +428,27 @@ namespace TJAPlayer3
                 SongSelect_High_Score = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}High_Score.png"));
                 SongSelect_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Cymbol.png"));
 
-                SongSelect_Song_Panel[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel\Song_Panel_Box.png"));
-                SongSelect_Song_Panel[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel\Song_Panel_Song.png"));
-                SongSelect_Song_Panel[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel\Song_Panel_Dan.png"));
-                SongSelect_Song_Panel[3] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel\Song_Panel_Tower.png"));
-                SongSelect_Song_Panel[4] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel\Song_Panel_Locked_Song.png"));
-                SongSelect_Song_Panel[5] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel\Song_Panel_Locked_Asset.png"));
+                SongSelect_Song_Panel[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Box.png"));
+                SongSelect_Song_Panel[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Song.png"));
+                SongSelect_Song_Panel[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Dan.png"));
+                SongSelect_Song_Panel[3] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Tower.png"));
+                SongSelect_Song_Panel[4] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Locked_Song.png"));
+                SongSelect_Song_Panel[5] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Locked_Asset.png"));
 
-                TJAPlayer3.Skin.SongSelect_Genre_Background_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Genre_Background\"), "GenreBackground_");
+                TJAPlayer3.Skin.SongSelect_Genre_Background_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Genre_Background{Path.DirectorySeparatorChar}"), "GenreBackground_");
 
                 if (TJAPlayer3.Skin.SongSelect_Genre_Background_Count != 0)
                 {
                     SongSelect_GenreBack = new CTexture[TJAPlayer3.Skin.SongSelect_Genre_Background_Count];
                     for (int i = 0; i < SongSelect_GenreBack.Length; i++)
                     {
-                        SongSelect_GenreBack[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Genre_Background\GenreBackground_" + i.ToString() + ".png"));
+                        SongSelect_GenreBack[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Genre_Background{Path.DirectorySeparatorChar}GenreBackground_" + i.ToString() + ".png"));
                     }
                 }
 
                 for (int i = 0; i < SongSelect_Table.Length; i++)
                 {
-                    SongSelect_Table[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Table\" + i.ToString() + ".png"));
+                    SongSelect_Table[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Table{Path.DirectorySeparatorChar}" + i.ToString() + ".png"));
                 }
 
                 this.ct背景スクロール用タイマー = new CCounter(0, txGenreBack.szテクスチャサイズ.Width, 30, TJAPlayer3.Timer);

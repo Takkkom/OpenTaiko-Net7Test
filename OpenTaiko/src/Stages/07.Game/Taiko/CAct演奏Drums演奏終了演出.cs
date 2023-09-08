@@ -162,94 +162,94 @@ namespace TJAPlayer3
 
                 if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
                 {
-                    Tower_DropoutScript = new EndAnimeScript($@"{origindir}Tower_Dropout\Script.lua");
+                    Tower_DropoutScript = new EndAnimeScript($@"{origindir}Tower_Dropout{Path.DirectorySeparatorChar}cript.lua");
                     Tower_DropoutScript.Init();
 
-                    Tower_TopReached_PassScript = new EndAnimeScript($@"{origindir}Tower_TopReached_Pass\Script.lua");
+                    Tower_TopReached_PassScript = new EndAnimeScript($@"{origindir}Tower_TopReached_Pass{Path.DirectorySeparatorChar}Script.lua");
                     Tower_TopReached_PassScript.Init();
 
-                    Tower_TopReached_FullComboScript = new EndAnimeScript($@"{origindir}Tower_TopReached_FullCombo\Script.lua");
+                    Tower_TopReached_FullComboScript = new EndAnimeScript($@"{origindir}Tower_TopReached_FullCombo{Path.DirectorySeparatorChar}Script.lua");
                     Tower_TopReached_FullComboScript.Init();
 
-                    Tower_TopReached_PerfectScript = new EndAnimeScript($@"{origindir}Tower_TopReached_Perfect\Script.lua");
+                    Tower_TopReached_PerfectScript = new EndAnimeScript($@"{origindir}Tower_TopReached_Perfect{Path.DirectorySeparatorChar}Script.lua");
                     Tower_TopReached_PerfectScript.Init();
 
-                    this.soundTowerDropout = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Tower\Tower_Dropout.ogg"), ESoundGroup.SoundEffect);
-                    this.soundTowerTopPass = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Tower\Tower_TopReached_Pass.ogg"), ESoundGroup.SoundEffect);
-                    this.soundTowerTopFC = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Tower\Tower_TopReached_FullCombo.ogg"), ESoundGroup.SoundEffect);
-                    this.soundTowerTopPerfect = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Tower\Tower_TopReached_Perfect.ogg"), ESoundGroup.SoundEffect);
+                    this.soundTowerDropout = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_Dropout.ogg"), ESoundGroup.SoundEffect);
+                    this.soundTowerTopPass = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_TopReached_Pass.ogg"), ESoundGroup.SoundEffect);
+                    this.soundTowerTopFC = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_TopReached_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                    this.soundTowerTopPerfect = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_TopReached_Perfect.ogg"), ESoundGroup.SoundEffect);
                 }
                 else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
                 {
-                    Dan_FailScript = new EndAnimeScript($@"{origindir}Dan_Fail\Script.lua");
+                    Dan_FailScript = new EndAnimeScript($@"{origindir}Dan_Fail{Path.DirectorySeparatorChar}Script.lua");
                     Dan_FailScript.Init();
 
-                    Dan_Red_PassScript = new EndAnimeScript($@"{origindir}Dan_Red_Pass\Script.lua");
+                    Dan_Red_PassScript = new EndAnimeScript($@"{origindir}Dan_Red_Pass{Path.DirectorySeparatorChar}Script.lua");
                     Dan_Red_PassScript.Init();
 
-                    Dan_Red_FullComboScript = new EndAnimeScript($@"{origindir}Dan_Red_FullCombo\Script.lua");
+                    Dan_Red_FullComboScript = new EndAnimeScript($@"{origindir}Dan_Red_FullCombo{Path.DirectorySeparatorChar}Script.lua");
                     Dan_Red_FullComboScript.Init();
 
-                    Dan_Red_PerfectScript = new EndAnimeScript($@"{origindir}Dan_Red_Perfect\Script.lua");
+                    Dan_Red_PerfectScript = new EndAnimeScript($@"{origindir}Dan_Red_Perfect{Path.DirectorySeparatorChar}Script.lua");
                     Dan_Red_PerfectScript.Init();
 
-                    Dan_Gold_PassScript = new EndAnimeScript($@"{origindir}Dan_Gold_Pass\Script.lua");
+                    Dan_Gold_PassScript = new EndAnimeScript($@"{origindir}Dan_Gold_Pass{Path.DirectorySeparatorChar}Script.lua");
                     Dan_Gold_PassScript.Init();
 
-                    Dan_Gold_FullComboScript = new EndAnimeScript($@"{origindir}Dan_Gold_FullCombo\Script.lua");
+                    Dan_Gold_FullComboScript = new EndAnimeScript($@"{origindir}Dan_Gold_FullCombo{Path.DirectorySeparatorChar}Script.lua");
                     Dan_Gold_FullComboScript.Init();
 
-                    Dan_Gold_PerfectScript = new EndAnimeScript($@"{origindir}Dan_Gold_Perfect\Script.lua");
+                    Dan_Gold_PerfectScript = new EndAnimeScript($@"{origindir}Dan_Gold_Perfect{Path.DirectorySeparatorChar}Script.lua");
                     Dan_Gold_PerfectScript.Init();
 
-                    this.soundDanFailed = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Fail.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDanRedClear = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Red_Pass.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDanRedFC = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Red_FullCombo.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDanRedPerfect = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Red_Perfect.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDanGoldClear = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Gold_Pass.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDanGoldFC = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Gold_FullCombo.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDanGoldPerfect = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Dan_Gold_Perfect.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanFailed = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Fail.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanRedClear = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Red_Pass.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanRedFC = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Red_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanRedPerfect = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Red_Perfect.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanGoldClear = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Gold_Pass.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanGoldFC = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Gold_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDanGoldPerfect = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Gold_Perfect.ogg"), ESoundGroup.SoundEffect);
                     
                 }
                 else if (TJAPlayer3.ConfigIni.bAIBattleMode)
                 {
-                    AILoseScript = new EndAnimeScript($@"{origindir}AI_Lose\Script.lua");
+                    AILoseScript = new EndAnimeScript($@"{origindir}AI_Lose{Path.DirectorySeparatorChar}Script.lua");
                     AILoseScript.Init();
 
-                    AIWinScript = new EndAnimeScript($@"{origindir}AI_Win\Script.lua");
+                    AIWinScript = new EndAnimeScript($@"{origindir}AI_Win{Path.DirectorySeparatorChar}Script.lua");
                     AIWinScript.Init();
 
-                    AIWin_FullComboScript = new EndAnimeScript($@"{origindir}AI_Win_FullCombo\Script.lua");
+                    AIWin_FullComboScript = new EndAnimeScript($@"{origindir}AI_Win_FullCombo{Path.DirectorySeparatorChar}Script.lua");
                     AIWin_FullComboScript.Init();
 
-                    AIWin_PerfectScript = new EndAnimeScript($@"{origindir}AI_Win_Perfect\Script.lua");
+                    AIWin_PerfectScript = new EndAnimeScript($@"{origindir}AI_Win_Perfect{Path.DirectorySeparatorChar}Script.lua");
                     AIWin_PerfectScript.Init();
 
-                    this.soundAILose = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\AIBattle_Lose.ogg"), ESoundGroup.SoundEffect);
-                    this.soundAIWin = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\AIBattle_Win.ogg"), ESoundGroup.SoundEffect);
-                    this.soundAIWinFullCombo = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\AIBattle_Win_FullCombo.ogg"), ESoundGroup.SoundEffect);
-                    this.soundAIWinDondaFullCombo = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\AIBattle_Win_AllPerfect.ogg"), ESoundGroup.SoundEffect);
+                    this.soundAILose = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Lose.ogg"), ESoundGroup.SoundEffect);
+                    this.soundAIWin = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Win.ogg"), ESoundGroup.SoundEffect);
+                    this.soundAIWinFullCombo = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Win_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                    this.soundAIWinDondaFullCombo = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Win_AllPerfect.ogg"), ESoundGroup.SoundEffect);
                 }
                 else
                 {
-                    FailedScript = new EndAnimeScript($@"{origindir}ClearFailed\Script.lua");//ClearFailed
+                    FailedScript = new EndAnimeScript($@"{origindir}ClearFailed{Path.DirectorySeparatorChar}Script.lua");//ClearFailed
                     FailedScript.Init();
 
-                    ClearScript = new EndAnimeScript($@"{origindir}Clear\Script.lua");
+                    ClearScript = new EndAnimeScript($@"{origindir}Clear{Path.DirectorySeparatorChar}Script.lua");
                     ClearScript.Init();
 
-                    FullComboScript = new EndAnimeScript($@"{origindir}FullCombo\Script.lua");
+                    FullComboScript = new EndAnimeScript($@"{origindir}FullCombo{Path.DirectorySeparatorChar}Script.lua");
                     FullComboScript.Init();
 
-                    DondaFullComboScript = new EndAnimeScript($@"{origindir}DondaFullCombo\Script.lua");
+                    DondaFullComboScript = new EndAnimeScript($@"{origindir}DondaFullCombo{Path.DirectorySeparatorChar}Script.lua");
                     DondaFullComboScript.Init();
 
                     for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                     {
-                        this.soundClear[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Clear.ogg"), ESoundGroup.SoundEffect);
-                        this.soundFailed[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Failed.ogg"), ESoundGroup.SoundEffect);
-                        this.soundFullCombo[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\FullCombo.ogg"), ESoundGroup.SoundEffect);
-                        this.soundDondaFullCombo[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\AllPerfect.ogg"), ESoundGroup.SoundEffect);
+                        this.soundClear[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Clear.ogg"), ESoundGroup.SoundEffect);
+                        this.soundFailed[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
+                        this.soundFullCombo[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}FullCombo.ogg"), ESoundGroup.SoundEffect);
+                        this.soundDondaFullCombo[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AllPerfect.ogg"), ESoundGroup.SoundEffect);
                     }
                 }
 

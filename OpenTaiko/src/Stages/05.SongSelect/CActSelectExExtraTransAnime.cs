@@ -34,8 +34,8 @@ namespace TJAPlayer3
             ExToExtraCounter = new CCounter(0, 1, TJAPlayer3.Skin.SongSelect_Difficulty_Bar_ExExtra_AnimeDuration[0], TJAPlayer3.Timer);
             ExtraToExCounter = new CCounter(0, 1, TJAPlayer3.Skin.SongSelect_Difficulty_Bar_ExExtra_AnimeDuration[1], TJAPlayer3.Timer);
             
-            ExToExtraScript = new AnimeBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\\ExToExtra\\0\\Script.lua"));
-            ExtraToExScript = new AnimeBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\\ExtraToEx\\0\\Script.lua"));
+            ExToExtraScript = new AnimeBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}ExToExtra{Path.DirectorySeparatorChar}0{Path.DirectorySeparatorChar}Script.lua"));
+            ExtraToExScript = new AnimeBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}ExtraToEx{Path.DirectorySeparatorChar}0{Path.DirectorySeparatorChar}Script.lua"));
 
             ExToExtraScript.Init();
             ExtraToExScript.Init();

@@ -370,10 +370,10 @@ namespace TJAPlayer3
 
         public override void OnManagedリソースの作成()
         {
-            Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @"\Dan_Plate.png");
-            Sound_Section = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Section.ogg"), ESoundGroup.SoundEffect);
-            Sound_Section_First = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Section_First.wav"), ESoundGroup.SoundEffect);
-            Sound_Failed = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Dan\Failed.ogg"), ESoundGroup.SoundEffect);
+            Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
+            Sound_Section = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section.ogg"), ESoundGroup.SoundEffect);
+            Sound_Section_First = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section_First.wav"), ESoundGroup.SoundEffect);
+            Sound_Failed = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
             base.OnManagedリソースの作成();
         }
 

@@ -35,7 +35,7 @@ namespace SampleFramework
             // Create our vertex buffer.
             var bufferDesc = new BufferDesc
             {
-                ByteWidth = (uint)((vertices.Length + uvs.Length) * sizeof(float)),
+                ByteWidth = (uint)(mergedArray.Count * sizeof(float)),
                 Usage = Usage.Default,
                 BindFlags = (uint)BindFlag.VertexBuffer
             };

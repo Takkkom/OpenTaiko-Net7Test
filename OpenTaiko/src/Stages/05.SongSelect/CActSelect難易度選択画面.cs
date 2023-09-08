@@ -165,30 +165,30 @@ namespace TJAPlayer3
 			if( this.b活性化してない )
 				return;
 
-            Difficulty_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Bar.png"));
-            Difficulty_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Number.png"));
-            Difficulty_Number_Colored = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Number_Colored.png"));
-            Difficulty_Number_Icon = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Number_Icon.png"));
-            Difficulty_Star = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Star.png"));
-            Difficulty_Crown = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Crown.png"));
+            Difficulty_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Bar.png"));
+            Difficulty_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number.png"));
+            Difficulty_Number_Colored = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number_Colored.png"));
+            Difficulty_Number_Icon = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number_Icon.png"));
+            Difficulty_Star = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Star.png"));
+            Difficulty_Crown = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Crown.png"));
 
-            Difficulty_Select_Bar[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Select_Bar.png"));
-            Difficulty_Select_Bar[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Select_Bar2.png"));
-            Difficulty_Select_Bar[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Select_Bar3.png"));
-            Difficulty_Select_Bar[3] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Select_Bar4.png"));
-            Difficulty_Select_Bar[4] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Select_Bar5.png"));
+            Difficulty_Select_Bar[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar.png"));
+            Difficulty_Select_Bar[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar2.png"));
+            Difficulty_Select_Bar[2] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar3.png"));
+            Difficulty_Select_Bar[3] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar4.png"));
+            Difficulty_Select_Bar[4] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar5.png"));
 
-            TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Back\"), "Difficulty_Back_");
+            TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Back{Path.DirectorySeparatorChar}"), "Difficulty_Back_");
 
             if (TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count != 0)
             {
                 Difficulty_Back = new CTexture[TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count];
                 for (int i = 0; i < Difficulty_Back.Length; i++)
                 {
-                    Difficulty_Back[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select\Difficulty_Back\Difficulty_Back_" + i.ToString() + ".png"));
+                    Difficulty_Back[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Back{Path.DirectorySeparatorChar}Difficulty_Back_" + i.ToString() + ".png"));
                 }
             }
-            // this.soundSelectAnnounce = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds\DiffSelect.ogg" ), ESoundGroup.SoundEffect );
+            // this.soundSelectAnnounce = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds{Path.DirectorySeparatorChar}DiffSelect.ogg" ), ESoundGroup.SoundEffect );
 
 			base.OnManagedリソースの作成();
 		}

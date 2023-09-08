@@ -591,7 +591,7 @@ namespace TJAPlayer3
         {
 			#region [ strEXEのあるフォルダを決定する ]
 			//-----------------
-			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
+            strEXEのあるフォルダ = Environment.CurrentDirectory + Path.DirectorySeparatorChar;
 			// END #23629 2010.11.13 from
 			//-----------------
 			#endregion
@@ -3079,7 +3079,7 @@ for (int i = 0; i < 3; i++) {
 			this.listプラグイン = new List<STPlugin>();
 
 			string strIPluginActivityの名前 = typeof( IPluginActivity ).FullName;
-			string strプラグインフォルダパス = strEXEのあるフォルダ + "Plugins\\";
+			string strプラグインフォルダパス = strEXEのあるフォルダ + "Plugins" + Path.DirectorySeparatorChar;
 
 			this.t指定フォルダ内でのプラグイン検索と生成( strプラグインフォルダパス, strIPluginActivityの名前 );
 
@@ -3165,7 +3165,7 @@ for (int i = 0; i < 3; i++) {
 			// (2) サブフォルダがあれば再帰する
 			string[] strDirs = Directory.GetDirectories( strプラグインフォルダパス, "*" );
 			foreach( string dir in strDirs )
-				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
+				this.t指定フォルダ内でのプラグイン検索と生成( dir + Path.DirectorySeparatorChar, strプラグイン型名 );
 		}
 		//-----------------
 		/*

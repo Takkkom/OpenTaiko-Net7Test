@@ -68,7 +68,7 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx背景 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\1_Title\Background.png" ), false );
+				this.tx背景 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}1_Title{Path.DirectorySeparatorChar}Background.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}

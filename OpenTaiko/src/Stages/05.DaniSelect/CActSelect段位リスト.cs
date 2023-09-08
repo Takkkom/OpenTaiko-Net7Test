@@ -775,7 +775,7 @@ namespace TJAPlayer3
                             //stバー情報[i].clearGrade = song.arスコア[6].譜面情報.nクリア[0];
                             stバー情報[i].clearGrade = song.arスコア[6].GPInfo[TJAPlayer3.SaveFile].nClear[0];
 
-                            string barCenter = Path.GetDirectoryName(song.arスコア[6].ファイル情報.ファイルの絶対パス) + @"\Bar_Center.png";
+                            string barCenter = Path.GetDirectoryName(song.arスコア[6].ファイル情報.ファイルの絶対パス) + @$"${Path.DirectorySeparatorChar}Bar_Center.png";
                             if (BarTexCache.TryGetValue(barCenter, out CTexture texture1))
                             {
                                 stバー情報[i].txBarCenter = texture1;
@@ -786,7 +786,7 @@ namespace TJAPlayer3
                                 BarTexCache.Add(barCenter, stバー情報[i].txBarCenter);
                             }
 
-                            string danPlate = Path.GetDirectoryName(song.arスコア[6].ファイル情報.ファイルの絶対パス) + @"\Dan_Plate.png";
+                            string danPlate = Path.GetDirectoryName(song.arスコア[6].ファイル情報.ファイルの絶対パス) + @$"${Path.DirectorySeparatorChar}Dan_Plate.png";
                             if (BarTexCache.TryGetValue(danPlate, out CTexture texture2))
                             {
                                 stバー情報[i].txDanPlate = texture2;

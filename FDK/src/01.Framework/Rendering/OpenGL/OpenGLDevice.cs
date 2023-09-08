@@ -70,6 +70,7 @@ namespace SampleFramework
                 layout (location = 1) in vec2 aTexCoord;
 
                 uniform mat4 mvp;
+                uniform vec4 textureRect;
 
                 out vec2 texcoord;
 
@@ -79,7 +80,8 @@ namespace SampleFramework
                     position = mvp * position;
                     
                     gl_Position = position;
-                    texcoord = aTexCoord;
+                    texcoord = textureRect.xy;
+                    texcoord.xy += aTexCoord.xy * textureRect.zw;
                 }
                 "
                 ,
@@ -90,14 +92,10 @@ namespace SampleFramework
                 out vec4 out_color;
                 uniform sampler2D texture1;
                 uniform vec4 color;
-                uniform vec4 textureRect;
 
                 void main()
                 {
-                    vec2 texcoord2 = textureRect.xy;
-                    texcoord2.xy += texcoord.xy * textureRect.zw;
-
-                    vec4 totalcolor = texture(texture1, texcoord2);
+                    vec4 totalcolor = texture(texture1, texcoord);
                     totalcolor *= color;
                     out_color = totalcolor;
                 }

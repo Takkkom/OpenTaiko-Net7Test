@@ -90,7 +90,7 @@ namespace TJAPlayer3
                     var path = dirs[random.Next(0, dirs.Length)];
                     LoadRunnerConifg(path);
 
-                    Runner = TJAPlayer3.tテクスチャの生成($@"{path}\Runner.png");
+                    Runner = TJAPlayer3.tテクスチャの生成($@"{path}{Path.DirectorySeparatorChar}Runner.png");
                 }
             }
             base.OnManagedリソースの作成();

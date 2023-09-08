@@ -140,7 +140,7 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				string pathパネル本体 = CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" );
+				string pathパネル本体 = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}ScreenSelect popup auto settings.png" );
 				if ( File.Exists( pathパネル本体 ) )
 				{
 					this.txパネル本体 = TJAPlayer3.tテクスチャの生成( pathパネル本体, true );

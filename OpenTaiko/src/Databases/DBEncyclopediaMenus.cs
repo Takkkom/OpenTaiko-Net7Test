@@ -12,7 +12,7 @@ namespace TJAPlayer3
     {
         public DBEncyclopediaMenus()
         {
-            _fn = @".\Encyclopedia\Menus.json";
+            _fn = @$"{TJAPlayer3.strEXEのあるフォルダ}Encyclopedia{Path.DirectorySeparatorChar}Menus.json";
             base.tDBInitSavable();
         }
 

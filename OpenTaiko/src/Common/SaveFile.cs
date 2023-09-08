@@ -14,7 +14,7 @@ namespace TJAPlayer3
 
         public void tSaveFile(string filename)
         {
-            path = @"Saves/" + filename + @".json";
+            path = @$"Saves{Path.DirectorySeparatorChar}" + filename + @".json";
             name = filename;
 
             if (!File.Exists(path))

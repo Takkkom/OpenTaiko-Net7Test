@@ -48,11 +48,11 @@ namespace TJAPlayer3
 		{
 			if( !base.b活性化してない )
 			{
-				this.txパネル本体 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\5_preimage panel.png" ), false );
-				this.txセンサ = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\5_sensor.png" ), false );
-				//this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_sensor light.png" ), false );
+				this.txパネル本体 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_preimage panel.png" ), false );
+				this.txセンサ = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor.png" ), false );
+				//this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor light.png" ), false );
 				this.txプレビュー画像 = null;
-				this.txプレビュー画像がないときの画像 = TJAPlayer3.tテクスチャの生成( CSkin.Path(@"Graphics\3_SongSelect\PreImageDefault.png"), false );
+				this.txプレビュー画像がないときの画像 = TJAPlayer3.tテクスチャの生成( CSkin.Path(@$"Graphics{Path.DirectorySeparatorChar}3_SongSelect{Path.DirectorySeparatorChar}PreImageDefault.png"), false );
 				this.n前回描画したフレーム番号 = -1;
 				this.b動画フレームを作成した = false;
 				this.pAVIBmp = IntPtr.Zero;
