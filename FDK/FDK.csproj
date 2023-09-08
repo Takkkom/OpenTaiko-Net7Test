@@ -25,5 +25,7 @@
     <PackageReference Include="ManagedBass.Mix" Version="3.1.1"/>
     <PackageReference Include="SkiaSharp" Version="2.88.5"/>
     <PackageReference Include="FFmpeg.AutoGen" Version="5.1.1"/>
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.5"/>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.5"/>
   </ItemGroup>
 </Project>
