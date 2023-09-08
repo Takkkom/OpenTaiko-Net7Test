@@ -281,15 +281,9 @@ namespace TJAPlayer3
                     string str選択曲ファイル名 = cスコア.ファイル情報.ファイルの絶対パス;
                     int n曲番号inブロック = TJAPlayer3.stage選曲.act曲リスト.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(c曲リストノード);
 
-<<<<<<< .merge_file_M58LN3
-                    foreach (TJAPlayer3.STPlugin stPlugin in TJAPlayer3.app.listプラグイン)
-                    {
-                        Directory.SetCurrentDirectory(stPlugin.strプラグインフォルダ);
-=======
                     foreach (TJAPlayer3.STPlugin stPlugin in TJAPlayer3.app.PluginList)
                     {
                         Directory.SetCurrentDirectory(stPlugin.pluginDirectory);
->>>>>>> .merge_file_dyk8Jr
                         stPlugin.plugin.On選択曲変更(str選択曲ファイル名, n曲番号inブロック);
                         Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
                     }
@@ -573,11 +567,7 @@ namespace TJAPlayer3
                             {
                                 if (txGenreBack != null)
                                 {
-<<<<<<< .merge_file_M58LN3
                                     txGenreBack.color4 = CConversion.ColorToColor4(this.NowBgColor);
-=======
-                                    txGenreBack.color4 = C変換.ColorToColor4(this.NowBgColor);
->>>>>>> .merge_file_dyk8Jr
                                     txGenreBack.Opacity = 255;
                                     txGenreBack.vc拡大縮小倍率.X = scale;
                                     txGenreBack.vc拡大縮小倍率.Y = scale;
@@ -592,11 +582,7 @@ namespace TJAPlayer3
                             {
                                 if (txOldGenreBack != null)
                                 {
-<<<<<<< .merge_file_M58LN3
                                     txOldGenreBack.color4 = CConversion.ColorToColor4(this.OldBgColor);
-=======
-                                    txOldGenreBack.color4 = C変換.ColorToColor4(this.OldBgColor);
->>>>>>> .merge_file_dyk8Jr
                                     txOldGenreBack.Opacity = 600 - ctBackgroundFade.n現在の値;
                                     txOldGenreBack.vc拡大縮小倍率.X = scale;
                                     txOldGenreBack.vc拡大縮小倍率.Y = scale;
@@ -1007,11 +993,7 @@ namespace TJAPlayer3
                         if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.F3))
                         {
                             TJAPlayer3.Skin.sound変更音.t再生する();
-<<<<<<< .merge_file_M58LN3
                             CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0]);
-=======
-                            C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0]);
->>>>>>> .merge_file_dyk8Jr
                         }
                         #endregion
                         #region [ F4 2PオートON/OFF ]
@@ -1020,11 +1002,7 @@ namespace TJAPlayer3
                             if (TJAPlayer3.ConfigIni.nPlayerCount > 1)
                             {
                                 TJAPlayer3.Skin.sound変更音.t再生する();
-<<<<<<< .merge_file_M58LN3
                                 CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[1]);
-=======
-                                C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[1]);
->>>>>>> .merge_file_dyk8Jr
                             }
                         }
                         #endregion
@@ -1032,11 +1010,7 @@ namespace TJAPlayer3
                         if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.F5))
                         {
                             TJAPlayer3.Skin.sound変更音.t再生する();
-<<<<<<< .merge_file_M58LN3
                             CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.bSuperHard);
-=======
-                            C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.bSuperHard);
->>>>>>> .merge_file_dyk8Jr
                         }
                         #endregion
                         #region [ F6 SCROLL ]
@@ -1065,11 +1039,7 @@ namespace TJAPlayer3
                             if (TJAPlayer3.ConfigIni.nPlayerCount < 2)
                             {
                                 TJAPlayer3.Skin.sound変更音.t再生する();
-<<<<<<< .merge_file_M58LN3
                                 CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.bTokkunMode);
-=======
-                                C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.bTokkunMode);
->>>>>>> .merge_file_dyk8Jr
                             }
                         }
                         #endregion
@@ -1606,11 +1576,7 @@ namespace TJAPlayer3
 
         public void tBoardNumberDraw(int x, int y, int num)
         {
-<<<<<<< .merge_file_M58LN3
             int[] nums = CConversion.SeparateDigits(num);
-=======
-            int[] nums = C変換.SeparateDigits(num);
->>>>>>> .merge_file_dyk8Jr
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - (nums.Length / 2.0f);
@@ -1626,11 +1592,7 @@ namespace TJAPlayer3
 
         private void tSongNumberDraw(int x, int y, int num)
         {
-<<<<<<< .merge_file_M58LN3
             int[] nums = CConversion.SeparateDigits(num);
-=======
-            int[] nums = C変換.SeparateDigits(num);
->>>>>>> .merge_file_dyk8Jr
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - (nums.Length / 2.0f);
@@ -1648,11 +1610,7 @@ namespace TJAPlayer3
         {
             //int x = 1171, y = 57;
 
-<<<<<<< .merge_file_M58LN3
             int[] nums = CConversion.SeparateDigits(num);
-=======
-            int[] nums = C変換.SeparateDigits(num);
->>>>>>> .merge_file_dyk8Jr
 
             for (int j = 0; j < nums.Length; j++)
             {

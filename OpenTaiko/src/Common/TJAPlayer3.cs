@@ -482,21 +482,12 @@ namespace TJAPlayer3
 			get;
 			private set;
 		}
-<<<<<<< .merge_file_37OrfD
-		public List<STPlugin> listプラグイン = new List<STPlugin>();
-		public struct STPlugin
-		{
-			public IPluginActivity plugin;
-			public string strプラグインフォルダ;
-			public string strアセンブリ簡易名;
-=======
 		public List<STPlugin> PluginList = new List<STPlugin>();
 		public struct STPlugin
 		{
 			public IPluginActivity plugin;
 			public string pluginDirectory;
 			public string assemblyName;
->>>>>>> .merge_file_BUP2LE
 			public Version Version;
 		}
 		private static Size currentClientSize		// #23510 2010.10.27 add yyagi to keep current window size
@@ -677,15 +668,9 @@ namespace TJAPlayer3
 					activity.OnUnmanagedリソースの作成();
 			}
 
-<<<<<<< .merge_file_37OrfD
-			foreach( STPlugin st in this.listプラグイン )
-			{
-				Directory.SetCurrentDirectory( st.strプラグインフォルダ );
-=======
 			foreach( STPlugin st in this.PluginList )
 			{
 				Directory.SetCurrentDirectory( st.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 				st.plugin.OnUnmanagedリソースの作成();
 				Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 			}
@@ -698,15 +683,9 @@ namespace TJAPlayer3
 					activity.OnUnmanagedリソースの解放();
 			}
 
-<<<<<<< .merge_file_37OrfD
-			foreach( STPlugin st in this.listプラグイン )
-			{
-				Directory.SetCurrentDirectory( st.strプラグインフォルダ );
-=======
 			foreach( STPlugin st in this.PluginList )
 			{
 				Directory.SetCurrentDirectory( st.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 				st.plugin.OnUnmanagedリソースの解放();
 				Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 			}
@@ -731,11 +710,7 @@ namespace TJAPlayer3
 		{
 			// Sound管理?.t再生中の処理をする();
             Timer?.t更新();
-<<<<<<< .merge_file_37OrfD
             CSound管理.PlayTimer?.t更新();
-=======
-            CSound管理.rc演奏用タイマ?.t更新();
->>>>>>> .merge_file_BUP2LE
             Input管理?.tポーリング( TJAPlayer3.ConfigIni.bバッファ入力を行う );
             FPS?.tカウンタ更新();
 
@@ -803,15 +778,9 @@ namespace TJAPlayer3
 
 				#region [ プラグインの進行描画 ]
 				//---------------------
-<<<<<<< .merge_file_37OrfD
-				foreach( STPlugin sp in this.listプラグイン )
-				{
-					Directory.SetCurrentDirectory( sp.strプラグインフォルダ );
-=======
 				foreach( STPlugin sp in this.PluginList )
 				{
 					Directory.SetCurrentDirectory( sp.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 
 					if( TJAPlayer3.act現在入力を占有中のプラグイン == null || TJAPlayer3.act現在入力を占有中のプラグイン == sp.plugin )
 						sp.plugin.On進行描画(TJAPlayer3.Pad, TJAPlayer3.Input管理.Keyboard );
@@ -924,15 +893,9 @@ namespace TJAPlayer3
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 							}
-<<<<<<< .merge_file_37OrfD
-							foreach( STPlugin pg in this.listプラグイン )
-							{
-								Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 							foreach( STPlugin pg in this.PluginList )
 							{
 								Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 								pg.plugin.Onステージ変更();
 								Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 							}
@@ -1075,15 +1038,9 @@ namespace TJAPlayer3
 
 						}
 
-<<<<<<< .merge_file_37OrfD
-						foreach ( STPlugin pg in this.listプラグイン )
-						{
-							Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 						foreach ( STPlugin pg in this.PluginList )
 						{
 							Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 							pg.plugin.Onステージ変更();
 							Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 						}
@@ -1111,15 +1068,9 @@ namespace TJAPlayer3
 									r直前のステージ = r現在のステージ;
 									r現在のステージ = stageタイトル;
 
-<<<<<<< .merge_file_37OrfD
-									foreach( STPlugin pg in this.listプラグイン )
-									{
-										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 									foreach( STPlugin pg in this.PluginList )
 									{
 										Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 										pg.plugin.Onステージ変更();
 										Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 									}
@@ -1139,15 +1090,9 @@ namespace TJAPlayer3
 									r直前のステージ = r現在のステージ;
 									r現在のステージ = stage選曲;
 
-<<<<<<< .merge_file_37OrfD
-									foreach( STPlugin pg in this.listプラグイン )
-									{
-										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 									foreach( STPlugin pg in this.PluginList )
 									{
 										Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 										pg.plugin.Onステージ変更();
 										Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 									}
@@ -1191,15 +1136,9 @@ namespace TJAPlayer3
 								Skin.bgm選曲画面.t停止する();
 								*/
 
-<<<<<<< .merge_file_37OrfD
-								foreach ( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach ( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1226,15 +1165,9 @@ namespace TJAPlayer3
 								CSongSelectSongManager.stopSong();
 								CSongSelectSongManager.enable();
 
-<<<<<<< .merge_file_37OrfD
-								foreach ( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach ( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1279,15 +1212,9 @@ namespace TJAPlayer3
 								CSongSelectSongManager.stopSong();
 								CSongSelectSongManager.enable();
 
-<<<<<<< .merge_file_37OrfD
-								foreach ( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach ( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1336,15 +1263,9 @@ namespace TJAPlayer3
 								CSongSelectSongManager.stopSong();
 								CSongSelectSongManager.enable();
 
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -1365,15 +1286,9 @@ namespace TJAPlayer3
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -1403,15 +1318,9 @@ namespace TJAPlayer3
 								CSongSelectSongManager.stopSong();
 								CSongSelectSongManager.enable();
 
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -1468,15 +1377,9 @@ namespace TJAPlayer3
 								// Seek latest registered song select screen
 								r現在のステージ = TJAPlayer3.latestSongSelect;
 
-<<<<<<< .merge_file_37OrfD
-								foreach ( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach ( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1501,15 +1404,9 @@ for (int i = 0; i < 3; i++) {
 #endif
 							r直前のステージ = r現在のステージ;
 							r現在のステージ = stage演奏ドラム画面;
-<<<<<<< .merge_file_37OrfD
-							foreach( STPlugin pg in this.listプラグイン )
-							{
-								Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 							foreach( STPlugin pg in this.PluginList )
 							{
 								Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 								pg.plugin.Onステージ変更();
 								Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 							}
@@ -1533,11 +1430,7 @@ for (int i = 0; i < 3; i++) {
 								TJAPlayer3.stage演奏ドラム画面.t停止();
 								if ( previewSound != null )
 								{
-<<<<<<< .merge_file_37OrfD
 									this.previewSound.tStopSound();
-=======
-									this.previewSound.tサウンドを停止する();
->>>>>>> .merge_file_BUP2LE
 									this.previewSound.Dispose();
 									this.previewSound = null;
 								}
@@ -1624,15 +1517,9 @@ for (int i = 0; i < 3; i++) {
 
 								#region [ プラグイン On演奏キャンセル() の呼び出し ]
 								//---------------------
-<<<<<<< .merge_file_37OrfD
-								foreach( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.On演奏キャンセル( scoreIni );
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1674,15 +1561,9 @@ for (int i = 0; i < 3; i++) {
 
 									#region [ プラグイン Onステージ変更() の呼び出し ]
 									//---------------------
-<<<<<<< .merge_file_37OrfD
-									foreach ( STPlugin pg in this.listプラグイン )
-									{
-										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 									foreach ( STPlugin pg in this.PluginList )
 									{
 										Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 										pg.plugin.Onステージ変更();
 										Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 									}
@@ -1702,15 +1583,9 @@ for (int i = 0; i < 3; i++) {
 
 								#region [ プラグイン On演奏失敗() の呼び出し ]
 								//---------------------
-<<<<<<< .merge_file_37OrfD
-								foreach( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.On演奏失敗( scoreIni );
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1729,15 +1604,9 @@ for (int i = 0; i < 3; i++) {
 
 								#region [ プラグイン Onステージ変更() の呼び出し ]
 								//---------------------
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -1800,15 +1669,9 @@ for (int i = 0; i < 3; i++) {
 
 								#region [ プラグイン On演奏クリア() の呼び出し ]
 								//---------------------
-<<<<<<< .merge_file_37OrfD
-								foreach( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.On演奏クリア( scoreIni );
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1825,15 +1688,9 @@ for (int i = 0; i < 3; i++) {
 
 								#region [ プラグイン Onステージ変更() の呼び出し ]
 								//---------------------
-<<<<<<< .merge_file_37OrfD
-								foreach( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-=======
 								foreach( STPlugin pg in this.PluginList )
 								{
 									Directory.SetCurrentDirectory( pg.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory( TJAPlayer3.strEXEのあるフォルダ );
 								}
@@ -1891,15 +1748,9 @@ for (int i = 0; i < 3; i++) {
 
 							stage選曲.NowSong++;
 
-<<<<<<< .merge_file_37OrfD
-							foreach (STPlugin pg in this.listプラグイン)
-							{
-								Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 							foreach (STPlugin pg in this.PluginList)
 							{
 								Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 								pg.plugin.Onステージ変更();
 								Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 							}
@@ -1932,15 +1783,9 @@ for (int i = 0; i < 3; i++) {
 								CSongSelectSongManager.stopSong();
 								CSongSelectSongManager.enable();
 
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -1961,15 +1806,9 @@ for (int i = 0; i < 3; i++) {
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -2028,15 +1867,9 @@ for (int i = 0; i < 3; i++) {
 								CSongSelectSongManager.stopSong();
 								CSongSelectSongManager.enable();
 
-<<<<<<< .merge_file_37OrfD
-								foreach (STPlugin pg in this.listプラグイン)
-								{
-									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-=======
 								foreach (STPlugin pg in this.PluginList)
 								{
 									Directory.SetCurrentDirectory(pg.pluginDirectory);
->>>>>>> .merge_file_BUP2LE
 									pg.plugin.Onステージ変更();
 									Directory.SetCurrentDirectory(TJAPlayer3.strEXEのあるフォルダ);
 								}
@@ -2075,15 +1908,9 @@ for (int i = 0; i < 3; i++) {
 
 				if (r現在のステージ != null && r現在のステージ.eステージID != CStage.Eステージ.起動 && TJAPlayer3.Tx.Network_Connection != null)
 				{
-<<<<<<< .merge_file_37OrfD
 					if (Math.Abs(CSound管理.PlayTimer.nシステム時刻ms - this.前回のシステム時刻ms) > 10000)
 					{
 						this.前回のシステム時刻ms = CSound管理.PlayTimer.nシステム時刻ms;
-=======
-					if (Math.Abs(CSound管理.rc演奏用タイマ.nシステム時刻ms - this.前回のシステム時刻ms) > 10000)
-					{
-						this.前回のシステム時刻ms = CSound管理.rc演奏用タイマ.nシステム時刻ms;
->>>>>>> .merge_file_BUP2LE
 						Task.Factory.StartNew(() =>
 						{
 							//IPv4 8.8.8.8にPingを送信する(timeout 5000ms)
@@ -2654,11 +2481,7 @@ for (int i = 0; i < 3; i++) {
 					SongGainController = new SongGainController();
 					ConfigIniToSongGainControllerBinder.Bind(ConfigIni, SongGainController);
 
-<<<<<<< .merge_file_37OrfD
 					SoundGroupLevelController = new SoundGroupLevelController(CSound.SoundInstances);
-=======
-					SoundGroupLevelController = new SoundGroupLevelController(CSound.listインスタンス);
->>>>>>> .merge_file_BUP2LE
 					ConfigIniToSoundGroupLevelControllerBinder.Bind(ConfigIni, SoundGroupLevelController);
 				}
 				finally
@@ -2771,25 +2594,15 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ プラグインの初期化 ]
 			//---------------------
-<<<<<<< .merge_file_37OrfD
-			if( this.listプラグイン != null && this.listプラグイン.Count > 0 )
-=======
 			if( this.PluginList != null && this.PluginList.Count > 0 )
->>>>>>> .merge_file_BUP2LE
 			{
 				Trace.TraceInformation( "プラグインの初期化を行います。" );
 				Trace.Indent();
 				try
 				{
-<<<<<<< .merge_file_37OrfD
-					foreach( STPlugin st in this.listプラグイン )
-					{
-						Directory.SetCurrentDirectory( st.strプラグインフォルダ );
-=======
 					foreach( STPlugin st in this.PluginList )
 					{
 						Directory.SetCurrentDirectory( st.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 						st.plugin.On初期化( this.PluginHost );
 						st.plugin.OnManagedリソースの作成();
 						st.plugin.OnUnmanagedリソースの作成();
@@ -2912,25 +2725,15 @@ for (int i = 0; i < 3; i++) {
 				#endregion
 				#region [ プラグインの終了処理 ]
 				//---------------------
-<<<<<<< .merge_file_37OrfD
-				if (this.listプラグイン != null && this.listプラグイン.Count > 0)
-=======
 				if (this.PluginList != null && this.PluginList.Count > 0)
->>>>>>> .merge_file_BUP2LE
 				{
 					Trace.TraceInformation( "すべてのプラグインを終了します。" );
 					Trace.Indent();
 					try
 					{
-<<<<<<< .merge_file_37OrfD
-						foreach( STPlugin st in this.listプラグイン )
-						{
-							Directory.SetCurrentDirectory( st.strプラグインフォルダ );
-=======
 						foreach( STPlugin st in this.PluginList )
 						{
 							Directory.SetCurrentDirectory( st.pluginDirectory );
->>>>>>> .merge_file_BUP2LE
 							st.plugin.OnUnmanagedリソースの解放();
 							st.plugin.OnManagedリソースの解放();
 							st.plugin.On終了();
@@ -3273,17 +3076,6 @@ for (int i = 0; i < 3; i++) {
 		}
 		private void tプラグイン検索と生成()
 		{
-<<<<<<< .merge_file_37OrfD
-			this.listプラグイン = new List<STPlugin>();
-
-			string strIPluginActivityの名前 = typeof( IPluginActivity ).FullName;
-			string strプラグインフォルダパス = strEXEのあるフォルダ + "Plugins" + Path.DirectorySeparatorChar;
-
-			this.t指定フォルダ内でのプラグイン検索と生成( strプラグインフォルダパス, strIPluginActivityの名前 );
-
-			if( this.listプラグイン.Count > 0 )
-				Trace.TraceInformation( this.listプラグイン.Count + " 個のプラグインを読み込みました。" );
-=======
 			this.PluginList = new List<STPlugin>();
 
 			string PluginActivityName = typeof( IPluginActivity ).FullName;
@@ -3293,7 +3085,6 @@ for (int i = 0; i < 3; i++) {
 
 			if( this.PluginList.Count > 0 )
 				Trace.TraceInformation( this.PluginList.Count + " 個のプラグインを読み込みました。" );
->>>>>>> .merge_file_BUP2LE
 		}
 
 		private void ChangeResolution(int nWidth, int nHeight)
@@ -3326,30 +3117,17 @@ for (int i = 0; i < 3; i++) {
 			CActSelect段位リスト.RefleshSkin();
 		}
 		#region [ Windowイベント処理 ]
-<<<<<<< .merge_file_37OrfD
-		private void t指定フォルダ内でのプラグイン検索と生成( string strプラグインフォルダパス, string strプラグイン型名 )
-		{
-			// 指定されたパスが存在しないとエラー
-			if( !Directory.Exists( strプラグインフォルダパス ) )
-			{
-				Trace.TraceWarning( "プラグインフォルダが存在しません。(" + strプラグインフォルダパス + ")" );
-=======
 		private void SearchAndGeneratePluginsInFolder( string PluginFolderPath, string PluginTypeName )
 		{
 			// 指定されたパスが存在しないとエラー
 			if( !Directory.Exists( PluginFolderPath ) )
 			{
 				Trace.TraceWarning( "The plugin folder does not exist. (" + PluginFolderPath + ")" );
->>>>>>> .merge_file_BUP2LE
 				return;
 			}
 
 			// (1) すべての *.dll について…
-<<<<<<< .merge_file_37OrfD
-			string[] strDLLs = System.IO.Directory.GetFiles( strプラグインフォルダパス, "*.dll" );
-=======
 			string[] strDLLs = System.IO.Directory.GetFiles( PluginFolderPath, "*.dll" );
->>>>>>> .merge_file_BUP2LE
 			foreach( string dllName in strDLLs )
 			{
 				try
@@ -3361,57 +3139,33 @@ for (int i = 0; i < 3; i++) {
 					foreach( Type t in asm.GetTypes() )
 					{
 						//  (1-3) ↓クラスであり↓Publicであり↓抽象クラスでなく↓IPlugin型のインスタンスが作れる　型を持っていれば有効
-<<<<<<< .merge_file_37OrfD
-						if( t.IsClass && t.IsPublic && !t.IsAbstract && t.GetInterface( strプラグイン型名 ) != null )
-=======
 						if( t.IsClass && t.IsPublic && !t.IsAbstract && t.GetInterface( PluginTypeName ) != null )
->>>>>>> .merge_file_BUP2LE
 						{
 							// (1-4) クラス名からインスタンスを作成する
 							var st = new STPlugin() {
 								plugin = (IPluginActivity) asm.CreateInstance( t.FullName ),
-<<<<<<< .merge_file_37OrfD
-								strプラグインフォルダ = Path.GetDirectoryName( dllName ),
-								strアセンブリ簡易名 = asm.GetName().Name,
-=======
 								pluginDirectory = Path.GetDirectoryName( dllName ),
 								assemblyName = asm.GetName().Name,
->>>>>>> .merge_file_BUP2LE
 								Version = asm.GetName().Version,
 							};
 
 							// (1-5) プラグインリストへ登録
-<<<<<<< .merge_file_37OrfD
-							this.listプラグイン.Add( st );
-							Trace.TraceInformation( "プラグイン {0} ({1}, {2}, {3}) を読み込みました。", t.FullName, Path.GetFileName( dllName ), st.strアセンブリ簡易名, st.Version.ToString() );
-=======
 							this.PluginList.Add( st );
 							Trace.TraceInformation( "Plugin {0} ({1}, {2}, {3}) has been loaded.", t.FullName, Path.GetFileName( dllName ), st.assemblyName, st.Version.ToString() );
->>>>>>> .merge_file_BUP2LE
 						}
 					}
 				}
 				catch (Exception e)
 				{
 					Trace.TraceError( e.ToString() );
-<<<<<<< .merge_file_37OrfD
-					Trace.TraceInformation( dllName + " からプラグインを生成することに失敗しました。スキップします。" );
-=======
 					Trace.TraceInformation( dllName + "could not be used to generate a plugin. Skipping plugin." );
->>>>>>> .merge_file_BUP2LE
 				}
 			}
 
 			// (2) サブフォルダがあれば再帰する
-<<<<<<< .merge_file_37OrfD
-			string[] strDirs = Directory.GetDirectories( strプラグインフォルダパス, "*" );
-			foreach( string dir in strDirs )
-				this.t指定フォルダ内でのプラグイン検索と生成( dir + Path.DirectorySeparatorChar, strプラグイン型名 );
-=======
 			string[] strDirs = Directory.GetDirectories( PluginFolderPath, "*" );
 			foreach( string dir in strDirs )
 				this.SearchAndGeneratePluginsInFolder( dir + Path.DirectorySeparatorChar, PluginTypeName );
->>>>>>> .merge_file_BUP2LE
 		}
 		//-----------------
 		/*

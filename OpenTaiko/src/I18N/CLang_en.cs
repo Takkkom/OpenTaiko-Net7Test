@@ -157,8 +157,6 @@ namespace TJAPlayer3
             [97] = "Capture",
             [98] = "Capture key assign:\nTo assign key for screen capture.\n (You can use keyboard only. You can't\nuse pads to capture screenshot.",
             [99] = "LeftRed",
-<<<<<<< .merge_file_11vLjK
-=======
             [9998] = "Buffer size when using Bass:\n" +
                     "Size can be between 0～99999ms.\n" +
                     "A value of 0 will make the OS\n" +
@@ -169,7 +167,6 @@ namespace TJAPlayer3
                     "※ NOTE: Exit CONFIGURATION to make the\n" +
                     "　      settings take effect.",
             [9999] = "Bass Buffer Size",
->>>>>>> .merge_file_NTwB0u
             [10000] = "Drums key assign:\nTo assign key/pads for LeftRed\n button.",
             [10001] = "RightRed",
             [10002] = "Drums key assign:\nTo assign key/pads for RightRed\n button.",
