@@ -29,7 +29,9 @@ namespace TJAPlayer3
         }
         public void AddGraph(string fileName)
         {
-            Textures.Add(fileName, TJAPlayer3.tテクスチャの生成($@"{DirPath}\{fileName}"));
+            fileName = fileName.Replace('/', Path.DirectorySeparatorChar);
+            fileName = fileName.Replace('\\', Path.DirectorySeparatorChar);
+            Textures.Add(fileName, TJAPlayer3.tテクスチャの生成($@"{DirPath}{Path.DirectorySeparatorChar}{fileName}"));
         }
         public void DrawGraph(double x, double y, string fileName)
         {
