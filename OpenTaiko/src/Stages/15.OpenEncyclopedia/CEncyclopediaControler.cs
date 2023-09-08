@@ -38,7 +38,7 @@ namespace TJAPlayer3
             }
             else
             {
-                _pfEncyclopediaMenu = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.OpenEncyclopedia_Font_EncyclopediaMenu_Size);
+                _pfEncyclopediaMenu = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OpenEncyclopedia_Font_EncyclopediaMenu_Size);
             }
         }
 

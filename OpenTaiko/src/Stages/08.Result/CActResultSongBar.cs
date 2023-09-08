@@ -35,7 +35,7 @@ namespace TJAPlayer3
             }
             else
             {
-                this.pfMusicName = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Result_MusicName_FontSize);
+                this.pfMusicName = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Result_MusicName_FontSize);
             }
 
 		    // After performing calibration, inform the player that

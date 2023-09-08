@@ -61,12 +61,12 @@ namespace TJAPlayer3
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerSelect_Title_Size);
             else
-                pfTitleFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.TowerSelect_Title_Size);
+                pfTitleFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerSelect_Title_Size);
 
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfSubTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerSelect_SubTitle_Size);
             else
-                pfSubTitleFont = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.TowerSelect_SubTitle_Size);
+                pfSubTitleFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerSelect_SubTitle_Size);
             tUpdateBarInfos();
 
             base.OnManagedリソースの作成();

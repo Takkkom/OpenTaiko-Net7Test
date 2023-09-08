@@ -173,10 +173,10 @@ namespace TJAPlayer3
             }
             else
             {
-                _pfModalContentHalf = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Modal_Font_ModalContentHalf_Size);
-                _pfModalTitleHalf = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Modal_Font_ModalTitleHalf_Size);
-                _pfModalContentFull = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Modal_Font_ModalContentFull_Size);
-                _pfModalTitleFull = new CCachedFontRenderer("MS UI Gothic", TJAPlayer3.Skin.Modal_Font_ModalTitleFull_Size);
+                _pfModalContentHalf = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Modal_Font_ModalContentHalf_Size);
+                _pfModalTitleHalf = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Modal_Font_ModalTitleHalf_Size);
+                _pfModalContentFull = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Modal_Font_ModalContentFull_Size);
+                _pfModalTitleFull = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Modal_Font_ModalTitleFull_Size);
             }
         }
 

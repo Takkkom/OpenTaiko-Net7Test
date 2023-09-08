@@ -10,7 +10,7 @@ namespace TJAPlayer3
 {
     internal class HPrivateFastFont
     {
-        static string DefaultFont = "MS UI Gothic";
+        static string DefaultFont = CFontRenderer.DefaultFontName;
 
         public static CCachedFontRenderer tInstantiateFont(string fontName, int scale)
         {

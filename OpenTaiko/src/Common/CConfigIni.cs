@@ -1781,8 +1781,8 @@ namespace TJAPlayer3
 			this.nAILevel = 1;
 			this.bAIBattleMode = false;
 
-			this.FontName = "MS UI Gothic";
-            this.BoxFontName = "MS UI Gothic";
+			this.FontName = CFontRenderer.DefaultFontName;
+            this.BoxFontName = CFontRenderer.DefaultFontName;
 		    this.ApplyLoudnessMetadata = true;
 			this.bEnableCountdownTimer = true;
 			this.sLang = "ja";
