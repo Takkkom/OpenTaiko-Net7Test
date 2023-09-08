@@ -307,8 +307,8 @@ namespace TJAPlayer3
                     if (TJAPlayer3.DTX.listChip.Count > 0)
                     {
                         if (ExamChange[i]
-                            ? TJAPlayer3.DTX.pDan_LastChip[NowShowingNumber].n発声時刻ms <= CSound管理.rc演奏用タイマ.n現在時刻//TJAPlayer3.Timer.n現在時刻 
-                            : TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms <= CSound管理.rc演奏用タイマ.n現在時刻)//TJAPlayer3.Timer.n現在時刻)
+                            ? TJAPlayer3.DTX.pDan_LastChip[NowShowingNumber].n発声時刻ms <= CSound管理.PlayTimer.n現在時刻//TJAPlayer3.Timer.n現在時刻 
+                            : TJAPlayer3.DTX.listChip[TJAPlayer3.DTX.listChip.Count - 1].n発声時刻ms <= CSound管理.PlayTimer.n現在時刻)//TJAPlayer3.Timer.n現在時刻)
                         {
                             switch (Challenge[i].GetExamType())
                             {
@@ -371,9 +371,9 @@ namespace TJAPlayer3
         public override void OnManagedリソースの作成()
         {
             Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
-            Sound_Section = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section.ogg"), ESoundGroup.SoundEffect);
-            Sound_Section_First = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section_First.wav"), ESoundGroup.SoundEffect);
-            Sound_Failed = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
+            Sound_Section = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section.ogg"), ESoundGroup.SoundEffect);
+            Sound_Section_First = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section_First.wav"), ESoundGroup.SoundEffect);
+            Sound_Failed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
             base.OnManagedリソースの作成();
         }
 
@@ -381,8 +381,8 @@ namespace TJAPlayer3
         {
             Dan_Plate?.Dispose();
             Sound_Section_First?.Dispose();
-            Sound_Section?.t解放する();
-            Sound_Failed?.t解放する();
+            Sound_Section?.tDispose();
+            Sound_Failed?.tDispose();
             base.OnManagedリソースの解放();
         }
 
@@ -1091,13 +1091,13 @@ namespace TJAPlayer3
 
             if (value == 0)
             {
-                TJAPlayer3.Tx.DanC_Number.color4 = C変換.ColorToColor4(Color.Gray);
-                TJAPlayer3.Tx.DanC_Small_Number.color4 = C変換.ColorToColor4(Color.Gray);
+                TJAPlayer3.Tx.DanC_Number.color4 = CConversion.ColorToColor4(Color.Gray);
+                TJAPlayer3.Tx.DanC_Small_Number.color4 = CConversion.ColorToColor4(Color.Gray);
             }
             else
             {
-                TJAPlayer3.Tx.DanC_Number.color4 = C変換.ColorToColor4(Color.White);
-                TJAPlayer3.Tx.DanC_Small_Number.color4 = C変換.ColorToColor4(Color.White);
+                TJAPlayer3.Tx.DanC_Number.color4 = CConversion.ColorToColor4(Color.White);
+                TJAPlayer3.Tx.DanC_Small_Number.color4 = CConversion.ColorToColor4(Color.White);
             }
                 
             if (bBig)

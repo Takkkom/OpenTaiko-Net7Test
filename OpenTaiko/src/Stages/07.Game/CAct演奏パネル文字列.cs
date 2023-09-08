@@ -144,7 +144,7 @@ namespace TJAPlayer3
                 }
                 else
                 {
-                    this.txGENRE.color4 = C変換.ColorToColor4(stageColor);
+                    this.txGENRE.color4 = CConversion.ColorToColor4(stageColor);
                 }
 
                 if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))

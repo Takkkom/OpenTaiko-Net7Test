@@ -51,7 +51,7 @@ namespace TJAPlayer3
 				this.nBGMの総再生時間ms = 0;
 				if( this.sd読み込み音 != null )
 				{
-					TJAPlayer3.Sound管理.tサウンドを破棄する( this.sd読み込み音 );
+					TJAPlayer3.Sound管理.tDisposeSound( this.sd読み込み音 );
 					this.sd読み込み音 = null;
 				}
 
@@ -225,13 +225,13 @@ namespace TJAPlayer3
 						CSkin.Cシステムサウンド.r最後に再生した排他システムサウンド.t停止する();
 					}
 					this.sd読み込み音.t再生を開始する();
-					this.nBGM再生開始時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
-					this.nBGMの総再生時間ms = this.sd読み込み音.n総演奏時間ms;
+					this.nBGM再生開始時刻 = CSound管理.PlayTimer.n現在時刻;
+					this.nBGMの総再生時間ms = this.sd読み込み音.TotalPlayTime;
 				}
 				else
 				{
 					TJAPlayer3.Skin.sound曲読込開始音.t再生する();
-					this.nBGM再生開始時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
+					this.nBGM再生開始時刻 = CSound管理.PlayTimer.n現在時刻;
 					this.nBGMの総再生時間ms = TJAPlayer3.Skin.sound曲読込開始音.n長さ_現在のサウンド;
 				}
 				//this.actFI.tフェードイン開始();							// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
@@ -249,8 +249,8 @@ namespace TJAPlayer3
 			{
 				if ( this.sd読み込み音 != null )
 				{
-					this.sd読み込み音.tサウンドを停止する();
-					this.sd読み込み音.t解放する();
+					this.sd読み込み音.tStopSound();
+					this.sd読み込み音.tDispose();
 				}
 				return (int) E曲読込画面の戻り値.読込中止;
 			}
@@ -667,7 +667,7 @@ namespace TJAPlayer3
 
 					if ( this.sd読み込み音 != null )
 					{
-						this.sd読み込み音.t解放する();
+						this.sd読み込み音.tDispose();
 					}
 					return (int) E曲読込画面の戻り値.読込完了;
 			}

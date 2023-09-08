@@ -789,20 +789,20 @@ namespace TJAPlayer3
 								|| _menu.implemented == false)
 							{
 								if (_bar != null)
-									_bar.color4 = C変換.ColorToColor4(Color.DarkGray);
+									_bar.color4 = CConversion.ColorToColor4(Color.DarkGray);
 								if (_chara != null)
-									_chara.color4 = C変換.ColorToColor4(Color.DarkGray);
-								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true).color4 = C変換.ColorToColor4(Color.DarkGray);
-								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkTitle, TJAPlayer3.Skin.Title_VerticalText).color4 = C変換.ColorToColor4(Color.DarkGray);
+									_chara.color4 = CConversion.ColorToColor4(Color.DarkGray);
+								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true).color4 = CConversion.ColorToColor4(Color.DarkGray);
+								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkTitle, TJAPlayer3.Skin.Title_VerticalText).color4 = CConversion.ColorToColor4(Color.DarkGray);
 							}
 							else
 							{
 								if (_bar != null)
-									_bar.color4 = C変換.ColorToColor4(Color.White);
+									_bar.color4 = CConversion.ColorToColor4(Color.White);
 								if (_chara != null)
-									_chara.color4 = C変換.ColorToColor4(Color.White);
-								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true).color4 = C変換.ColorToColor4(Color.White);
-								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkTitle, TJAPlayer3.Skin.Title_VerticalText).color4 = C変換.ColorToColor4(Color.White);
+									_chara.color4 = CConversion.ColorToColor4(Color.White);
+								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkBoxText, TJAPlayer3.Skin.Title_VerticalText, true).color4 = CConversion.ColorToColor4(Color.White);
+								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_menu.ttkTitle, TJAPlayer3.Skin.Title_VerticalText).color4 = CConversion.ColorToColor4(Color.White);
 							}
 
 							#endregion

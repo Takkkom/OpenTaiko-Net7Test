@@ -191,11 +191,11 @@ namespace TJAPlayer3
                 Color tickColor = stバー情報[currentSong].cDanTickColor;
 
                 TJAPlayer3.Tx.Dani_Plate.Opacity = 255;
-                TJAPlayer3.Tx.Dani_Plate.color4 = C変換.ColorToColor4(tickColor);
+                TJAPlayer3.Tx.Dani_Plate.color4 = CConversion.ColorToColor4(tickColor);
                 TJAPlayer3.Tx.Dani_Plate.t2D拡大率考慮上中央基準描画(xPos, yPos, new Rectangle(tickWidth * tick, 0, tickWidth, tickHeight));
 
                 // Reset color for plate flash
-                TJAPlayer3.Tx.Dani_Plate.color4 = C変換.ColorToColor4(Color.White);
+                TJAPlayer3.Tx.Dani_Plate.color4 = CConversion.ColorToColor4(Color.White);
 
                 #endregion
 
@@ -339,7 +339,7 @@ namespace TJAPlayer3
                 if (TJAPlayer3.Tx.Dani_DanPlates != null)
                 {
                     TJAPlayer3.Tx.Dani_DanPlates.Opacity = 255;
-                    TJAPlayer3.Tx.Dani_DanPlates.color4 = C変換.ColorToColor4(danTickColor);
+                    TJAPlayer3.Tx.Dani_DanPlates.color4 = CConversion.ColorToColor4(danTickColor);
                 }
                 TJAPlayer3.Tx.Dani_DanPlates?.t2D中心基準描画(x, y, new Rectangle(
                     unit * danTick,
@@ -392,14 +392,14 @@ namespace TJAPlayer3
             {
                 TJAPlayer3.Tx.Dani_DanIcon_Fade.vc拡大縮小倍率 = new Vector3D<float>(scale, scale, 1.0f);
                 TJAPlayer3.Tx.Dani_DanIcon_Fade.Opacity = opacity;
-                TJAPlayer3.Tx.Dani_DanIcon_Fade.color4 = C変換.ColorToColor4(TJAPlayer3.Skin.DaniSelect_DanIcon_Color[Math.Min(count - 1, TJAPlayer3.Skin.DaniSelect_DanIcon_Color.Length - 1)]);
+                TJAPlayer3.Tx.Dani_DanIcon_Fade.color4 = CConversion.ColorToColor4(TJAPlayer3.Skin.DaniSelect_DanIcon_Color[Math.Min(count - 1, TJAPlayer3.Skin.DaniSelect_DanIcon_Color.Length - 1)]);
                 TJAPlayer3.Tx.Dani_DanIcon_Fade.t2D拡大率考慮描画(CTexture.RefPnt.Left, x - ((TJAPlayer3.Tx.Dani_DanIcon.szテクスチャサイズ.Width / 2) * scale), y);
                 TJAPlayer3.Tx.Dani_DanIcon_Fade.Opacity = 255;
             }
 
             TJAPlayer3.Tx.Dani_DanIcon.vc拡大縮小倍率 = new Vector3D<float>(scale, scale, 1.0f);
             TJAPlayer3.Tx.Dani_DanIcon.Opacity = opacity;
-            TJAPlayer3.Tx.Dani_DanIcon.color4 = C変換.ColorToColor4(TJAPlayer3.Skin.DaniSelect_DanIcon_Color[Math.Min(count - 1, TJAPlayer3.Skin.DaniSelect_DanIcon_Color.Length - 1)]);
+            TJAPlayer3.Tx.Dani_DanIcon.color4 = CConversion.ColorToColor4(TJAPlayer3.Skin.DaniSelect_DanIcon_Color[Math.Min(count - 1, TJAPlayer3.Skin.DaniSelect_DanIcon_Color.Length - 1)]);
             TJAPlayer3.Tx.Dani_DanIcon.t2D拡大率考慮中央基準描画(x, y);
             TJAPlayer3.Tx.Dani_DanIcon.Opacity = 255;
 
@@ -432,7 +432,7 @@ namespace TJAPlayer3
                         else
                         {
                             int unit = Dani_DanSides.szテクスチャサイズ.Width / 6;
-                            Dani_DanSides.color4 = C変換.ColorToColor4(danTickColor);
+                            Dani_DanSides.color4 = CConversion.ColorToColor4(danTickColor);
 
                             Dani_Bar_Center.t2D描画(scroll + Anime, 0);
 
@@ -862,7 +862,7 @@ namespace TJAPlayer3
             float width = TJAPlayer3.Tx.Dani_Level_Number.sz画像サイズ.Width / 10.0f;
             float height = TJAPlayer3.Tx.Dani_Level_Number.sz画像サイズ.Height;
 
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j;
@@ -896,7 +896,7 @@ namespace TJAPlayer3
                 }
             }*/
 
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
 
             float width = TJAPlayer3.Tx.Dani_Soul_Number.sz画像サイズ.Width / 10.0f;
             float height = TJAPlayer3.Tx.Dani_Soul_Number.sz画像サイズ.Height / 2.0f;
@@ -938,7 +938,7 @@ namespace TJAPlayer3
             */
 
 
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
 
             float width = TJAPlayer3.Tx.Dani_Exam_Number.sz画像サイズ.Width / 10.0f;
             float height = TJAPlayer3.Tx.Dani_Exam_Number.sz画像サイズ.Height / 2.0f;

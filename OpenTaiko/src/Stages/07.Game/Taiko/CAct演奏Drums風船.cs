@@ -253,7 +253,7 @@ namespace TJAPlayer3
 
         private void _nbDisplay(CTexture tx, int num, int x, int y)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - (nums.Length / 2.0f);
@@ -275,7 +275,7 @@ namespace TJAPlayer3
             int x = TJAPlayer3.Skin.Game_Kusudama_Number_X;
             int y = TJAPlayer3.Skin.Game_Kusudama_Number_Y;
 
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - ((nums.Length - 2) / 2.0f);
@@ -308,7 +308,7 @@ namespace TJAPlayer3
 
         public void tEnd()
         {
-            this.ct風船終了 = new CCounter(0, 80, 10, CSound管理.rc演奏用タイマ);
+            this.ct風船終了 = new CCounter(0, 80, 10, CSound管理.PlayTimer);
         }
     }
 }

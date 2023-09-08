@@ -182,7 +182,7 @@ namespace TJAPlayer3
 
 		private void t小文字表示( int x, int y, int num, int player )
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float _x = x - (TJAPlayer3.Skin.Game_Balloon_Combo_Number_Interval[0] * (j - nums.Length));

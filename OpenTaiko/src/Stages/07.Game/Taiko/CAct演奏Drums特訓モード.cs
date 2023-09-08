@@ -142,11 +142,11 @@ namespace TJAPlayer3
 							this.t譜面の表示位置を合わせる(true);
 							TJAPlayer3.Skin.sound特訓スクロール音.t再生する();
 						}
-						if (t配列の値interval以下か(ref this.LBlue, CSound管理.rc演奏用タイマ.nシステム時刻ms, TJAPlayer3.ConfigIni.TokkunMashInterval))
+						if (t配列の値interval以下か(ref this.LBlue, CSound管理.PlayTimer.nシステム時刻ms, TJAPlayer3.ConfigIni.TokkunMashInterval))
 						{
 							for (int index = this.JumpPointList.Count - 1; index >= 0; index--)
 							{
-								if (this.JumpPointList[index].Time <= CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
+								if (this.JumpPointList[index].Time <= CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
 								{
 									this.n現在の小節線 = this.JumpPointList[index].Measure;
 									TJAPlayer3.stage演奏ドラム画面.actPlayInfo.NowMeasure[0] = this.n現在の小節線;
@@ -184,11 +184,11 @@ namespace TJAPlayer3
 							this.t譜面の表示位置を合わせる(true);
 							TJAPlayer3.Skin.sound特訓スクロール音.t再生する();
 						}
-						if (t配列の値interval以下か(ref this.RBlue, CSound管理.rc演奏用タイマ.nシステム時刻ms, TJAPlayer3.ConfigIni.TokkunMashInterval))
+						if (t配列の値interval以下か(ref this.RBlue, CSound管理.PlayTimer.nシステム時刻ms, TJAPlayer3.ConfigIni.TokkunMashInterval))
 						{
 							for (int index = 0; index < this.JumpPointList.Count; index++)
 							{
-								if (this.JumpPointList[index].Time >= CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
+								if (this.JumpPointList[index].Time >= CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))
 								{
 									this.n現在の小節線 = this.JumpPointList[index].Measure;
 									TJAPlayer3.stage演奏ドラム画面.actPlayInfo.NowMeasure[0] = this.n現在の小節線;
@@ -270,14 +270,14 @@ namespace TJAPlayer3
 
 				if (this.bスクロール中)
 				{
-					CSound管理.rc演奏用タイマ.n現在時刻ms = easing.EaseOut(this.ctスクロールカウンター, (int)this.nスクロール前ms, (int)this.nスクロール後ms, Easing.CalcType.Circular);
+					CSound管理.PlayTimer.n現在時刻ms = easing.EaseOut(this.ctスクロールカウンター, (int)this.nスクロール前ms, (int)this.nスクロール後ms, Easing.CalcType.Circular);
 
 					this.ctスクロールカウンター.t進行();
 
-					if ((int)CSound管理.rc演奏用タイマ.n現在時刻ms == (int)this.nスクロール後ms)
+					if ((int)CSound管理.PlayTimer.n現在時刻ms == (int)this.nスクロール後ms)
 					{
 						this.bスクロール中 = false;
-						CSound管理.rc演奏用タイマ.n現在時刻ms = this.nスクロール後ms;
+						CSound管理.PlayTimer.n現在時刻ms = this.nスクロール後ms;
 					}
 				}
 				if (!this.b特訓PAUSE)
@@ -287,15 +287,15 @@ namespace TJAPlayer3
 						this.n現在の小節線 = TJAPlayer3.stage演奏ドラム画面.actPlayInfo.NowMeasure[0];
 					}
 
-					if (CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0) > this.n最終演奏位置ms)
+					if (CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0) > this.n最終演奏位置ms)
 					{
-						this.n最終演奏位置ms = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+						this.n最終演奏位置ms = (long)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 					}
 				}
 
 			}
 
-			var current = (double)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+			var current = (double)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 			var percentage = current / length;
 
 			var currentWhite = (double)(this.n最終演奏位置ms);
@@ -404,10 +404,10 @@ namespace TJAPlayer3
 		{
 			CDTX dTX = TJAPlayer3.DTX;
 
-			this.nスクロール後ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
+			this.nスクロール後ms = CSound管理.PlayTimer.n現在時刻ms;
 
 			TJAPlayer3.stage演奏ドラム画面.On活性化();
-			CSound管理.rc演奏用タイマ.t一時停止();
+			CSound管理.PlayTimer.t一時停止();
 
 			for (int i = 0; i < dTX.listChip.Count; i++)
 			{
@@ -433,7 +433,7 @@ namespace TJAPlayer3
 			CDTX dTX = TJAPlayer3.DTX;
 
 			this.bスクロール中 = false;
-			CSound管理.rc演奏用タイマ.n現在時刻ms = this.nスクロール後ms;
+			CSound管理.PlayTimer.n現在時刻ms = this.nスクロール後ms;
 
 			int n演奏開始Chip = TJAPlayer3.stage演奏ドラム画面.n現在のトップChip;
 			int finalStartBar;
@@ -486,7 +486,7 @@ namespace TJAPlayer3
 
 		public void t譜面の表示位置を合わせる(bool doScroll)
 		{
-			this.nスクロール前ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
+			this.nスクロール前ms = CSound管理.PlayTimer.n現在時刻ms;
 
 			CDTX dTX = TJAPlayer3.DTX;
 
@@ -521,8 +521,8 @@ namespace TJAPlayer3
 			}
 			else
 			{
-				CSound管理.rc演奏用タイマ.n現在時刻ms = (long)(dTX.listChip[TJAPlayer3.stage演奏ドラム画面.n現在のトップChip].n発声時刻ms / (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
-				this.nスクロール後ms = CSound管理.rc演奏用タイマ.n現在時刻ms;
+				CSound管理.PlayTimer.n現在時刻ms = (long)(dTX.listChip[TJAPlayer3.stage演奏ドラム画面.n現在のトップChip].n発声時刻ms / (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+				this.nスクロール後ms = CSound管理.PlayTimer.n現在時刻ms;
 			}
 		}
 
@@ -530,8 +530,8 @@ namespace TJAPlayer3
 		{
 			if (!this.bスクロール中 && this.b特訓PAUSE)
 			{
-				if (!JumpPointList.Contains(new STJUMPP() { Time = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), Measure = this.n現在の小節線 }))
-					JumpPointList.Add(new STJUMPP() { Time = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), Measure = this.n現在の小節線 });
+				if (!JumpPointList.Contains(new STJUMPP() { Time = (long)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), Measure = this.n現在の小節線 }))
+					JumpPointList.Add(new STJUMPP() { Time = (long)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), Measure = this.n現在の小節線 });
 				TJAPlayer3.Skin.sound特訓ジャンプポイント.t再生する();
 				JumpPointList.Sort((a, b) => a.Time.CompareTo(b.Time));
 			}

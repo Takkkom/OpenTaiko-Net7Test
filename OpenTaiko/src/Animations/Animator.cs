@@ -36,7 +36,7 @@ namespace TJAPlayer3.Animations
                     Counter.t開始((int)StartValue, (int)EndValue, (int)TickInterval, TJAPlayer3.Timer);
                     break;
                 case CounterType.Double:
-                    Counter.t開始((double)StartValue, (double)EndValue, (double)TickInterval, CSound管理.rc演奏用タイマ);
+                    Counter.t開始((double)StartValue, (double)EndValue, (double)TickInterval, CSound管理.PlayTimer);
                     break;
                 default:
                     break;

@@ -469,7 +469,7 @@ namespace TJAPlayer3
                     }
                     else
                     {
-                        nDuration = (wc.rSound[0] == null) ? 0 : wc.rSound[0].n総演奏時間ms;
+                        nDuration = (wc.rSound[0] == null) ? 0 : wc.rSound[0].TotalPlayTime;
                     }
                 }
                 else if (this.nチャンネル番号 == 0x54) // AVI
@@ -629,7 +629,7 @@ namespace TJAPlayer3
                     for (int i = 0; i < TJAPlayer3.ConfigIni.nPoliphonicSounds; i++) // 4
                     {
                         if (this.rSound[i] != null)
-                            TJAPlayer3.Sound管理.tサウンドを破棄する(this.rSound[i]);
+                            TJAPlayer3.Sound管理.tDisposeSound(this.rSound[i]);
                         this.rSound[i] = null;
 
                         if ((i == 0) && TJAPlayer3.ConfigIni.bLog作成解放ログ出力)
@@ -1461,13 +1461,13 @@ namespace TJAPlayer3
         }
         public void tWave再生位置自動補正(CWAV wc)
         {
-            if (wc.rSound[0] != null && wc.rSound[0].n総演奏時間ms >= 5000)
+            if (wc.rSound[0] != null && wc.rSound[0].TotalPlayTime >= 5000)
             {
                 for (int i = 0; i < nPolyphonicSounds; i++)
                 {
                     if ((wc.rSound[i] != null) && (wc.rSound[i].b再生中))
                     {
-                        long nCurrentTime = CSound管理.rc演奏用タイマ.nシステム時刻ms;
+                        long nCurrentTime = CSound管理.PlayTimer.nシステム時刻ms;
                         if (nCurrentTime > wc.n再生開始時刻[i])
                         {
                             long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[i];
@@ -1481,7 +1481,7 @@ namespace TJAPlayer3
                             if (!TJAPlayer3.stage演奏ドラム画面.bPAUSE)
                             {
                                 if (wc.rSound[i].b一時停止中) wc.rSound[i].t再生を再開する(nAbsTimeFromStartPlaying);
-                                else wc.rSound[i].t再生位置を変更する(nAbsTimeFromStartPlaying);
+                                else wc.rSound[i].tSetPositonToBegin(nAbsTimeFromStartPlaying);
                             }
                             else
                             {
@@ -1506,7 +1506,7 @@ namespace TJAPlayer3
                     {
                         if (bミキサーからも削除する)
                         {
-                            cwav.rSound[i].tサウンドを停止してMixerからも削除する();
+                            cwav.rSound[i].tStopSoundAndRemoveSoundFromMixer();
                         }
                         else
                         {
@@ -1543,7 +1543,7 @@ namespace TJAPlayer3
                 {
                     try
                     {
-                        cwav.rSound[i] = TJAPlayer3.Sound管理.tサウンドを生成する(str, ESoundGroup.SongPlayback);
+                        cwav.rSound[i] = TJAPlayer3.Sound管理.tCreateSound(str, ESoundGroup.SongPlayback);
 
                         if (!TJAPlayer3.ConfigIni.bDynamicBassMixerManagement)
                         {
@@ -1553,7 +1553,7 @@ namespace TJAPlayer3
                         if (TJAPlayer3.ConfigIni.bLog作成解放ログ出力)
                         {
                             Trace.TraceInformation("サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str,
-                                cwav.rSound[0].nサウンドバッファサイズ, cwav.rSound[0].bストリーム再生する ? "Stream" : "OnMemory");
+                                cwav.rSound[0].SoundBufferSize, cwav.rSound[0].IsStreamPlay ? "Stream" : "OnMemory");
                         }
                     }
                     catch (Exception e)
@@ -1870,14 +1870,14 @@ namespace TJAPlayer3
                 {
                     int index = wc.n現在再生中のサウンド番号 = (wc.n現在再生中のサウンド番号 + 1) % nPolyphonicSounds;
                     if ((wc.rSound[0] != null) &&
-                        (wc.rSound[0].bストリーム再生する || wc.rSound[index] == null))
+                        (wc.rSound[0].IsStreamPlay || wc.rSound[index] == null))
                     {
                         index = wc.n現在再生中のサウンド番号 = 0;
                     }
                     CSound sound = wc.rSound[index];
                     if (sound != null)
                     {
-                        sound.db再生速度 = ((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0;
+                        sound.PlaySpeed = ((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0;
                         // 再生速度によって、WASAPI/ASIOで使う使用mixerが決まるため、付随情報の設定(音量/PAN)は、再生速度の設定後に行う
 
                         // 2018-08-27 twopointzero - DON'T attempt to load (or queue scanning) loudness metadata here.
@@ -1932,7 +1932,7 @@ namespace TJAPlayer3
                     if ((cwav.rSound[i] != null) && cwav.rSound[i].b再生中)
                     {
                         cwav.rSound[i].t再生を一時停止する();
-                        cwav.n一時停止時刻[i] = CSound管理.rc演奏用タイマ.nシステム時刻ms;
+                        cwav.n一時停止時刻[i] = CSound管理.PlayTimer.nシステム時刻ms;
                     }
                 }
             }
@@ -1948,7 +1948,7 @@ namespace TJAPlayer3
                         //long num1 = cwav.n一時停止時刻[ i ];
                         //long num2 = cwav.n再生開始時刻[ i ];
                         cwav.rSound[i].t再生を再開する(cwav.n一時停止時刻[i] - cwav.n再生開始時刻[i]);
-                        cwav.n再生開始時刻[i] += CSound管理.rc演奏用タイマ.nシステム時刻ms - cwav.n一時停止時刻[i];
+                        cwav.n再生開始時刻[i] += CSound管理.PlayTimer.nシステム時刻ms - cwav.n一時停止時刻[i];
                     }
                 }
             }
@@ -7490,7 +7490,7 @@ namespace TJAPlayer3
             {
                 if (!string.IsNullOrEmpty(strCommandParam))
                 {
-                    this.EXPLICIT = C変換.bONorOFF(strCommandParam[0]);
+                    this.EXPLICIT = CConversion.bONorOFF(strCommandParam[0]);
                 }
             }
             else if (strCommandName.Equals("SELECTBG"))
@@ -8176,7 +8176,7 @@ namespace TJAPlayer3
                         if (listWAV.TryGetValue(pChip.n整数値_内部番号, out CDTX.CWAV wc))
                         {
                             double _db再生速度 = (TJAPlayer3.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
-                            duration = (wc.rSound[0] == null) ? 0 : (int)(wc.rSound[0].n総演奏時間ms / _db再生速度); // #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
+                            duration = (wc.rSound[0] == null) ? 0 : (int)(wc.rSound[0].TotalPlayTime / _db再生速度); // #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
                         }
                         //Debug.WriteLine("duration=" + duration );
                         int n新RemoveMixer時刻ms, n新RemoveMixer位置;
@@ -8991,7 +8991,7 @@ namespace TJAPlayer3
             {
                 #region [ (B) "#BPMzz:" の場合 → zz = 00 ～ ZZ ]
                 //-----------------
-                zz = C変換.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
+                zz = CConversion.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
                 if (zz < 0 || zz >= 36 * 36)
                 {
                     Trace.TraceError("BPM番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
@@ -9070,7 +9070,7 @@ namespace TJAPlayer3
 
             #region [ nWAV番号（36進数2桁）を取得。]
             //-----------------
-            int nWAV番号 = C変換.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
+            int nWAV番号 = CConversion.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
 
             if (nWAV番号 < 0 || nWAV番号 >= 36 * 36)
             {
@@ -9134,7 +9134,7 @@ namespace TJAPlayer3
 
             #region [ WAV番号 zz を取得する。]
             //-----------------
-            int zz = C変換.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
+            int zz = CConversion.n36進数2桁の文字列を数値に変換して返す(strコマンド.Substring(0, 2));
             if (zz < 0 || zz >= 36 * 36)
             {
                 Trace.TraceError("WAVPAN(PAN)のWAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
@@ -9174,7 +9174,7 @@ namespace TJAPlayer3
 
             #region [ n小節番号 を取得する。]
             //-----------------
-            int n小節番号 = C変換.n小節番号の文字列3桁を数値に変換して返す(strコマンド.Substring(0, 3));
+            int n小節番号 = CConversion.n小節番号の文字列3桁を数値に変換して返す(strコマンド.Substring(0, 3));
             if (n小節番号 < 0)
                 return false;
 
@@ -9189,7 +9189,7 @@ namespace TJAPlayer3
             // ファイルフォーマットによって処理が異なる。
             #region [ (B) その他の場合：チャンネル番号は16進数2桁。]
             //-----------------
-            nチャンネル番号 = C変換.n16進数2桁の文字列を数値に変換して返す(strコマンド.Substring(3, 2));
+            nチャンネル番号 = CConversion.n16進数2桁の文字列を数値に変換して返す(strコマンド.Substring(3, 2));
 
                 if (nチャンネル番号 < 0)
                     return false;
@@ -9289,7 +9289,7 @@ namespace TJAPlayer3
                 if (ce.Current == '_')      // '_' は無視。
                     continue;
 
-                if (C変換.str36進数文字.IndexOf(ce.Current) < 0)  // オブジェクト記述は36進数文字であること。
+                if (CConversion.str36進数文字.IndexOf(ce.Current) < 0)  // オブジェクト記述は36進数文字であること。
                 {
                     Trace.TraceError("不正なオブジェクト指定があります。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
                     return false;
@@ -9318,12 +9318,12 @@ namespace TJAPlayer3
                 if (nチャンネル番号 == 0x03)
                 {
                     // Ch.03 のみ 16進数2桁。
-                    nオブジェクト数値 = C変換.n16進数2桁の文字列を数値に変換して返す(strパラメータ.Substring(i * 2, 2));
+                    nオブジェクト数値 = CConversion.n16進数2桁の文字列を数値に変換して返す(strパラメータ.Substring(i * 2, 2));
                 }
                 else
                 {
                     // その他のチャンネルは36進数2桁。
-                    nオブジェクト数値 = C変換.n36進数2桁の文字列を数値に変換して返す(strパラメータ.Substring(i * 2, 2));
+                    nオブジェクト数値 = CConversion.n36進数2桁の文字列を数値に変換して返す(strパラメータ.Substring(i * 2, 2));
                 }
 
                 if (nオブジェクト数値 == 0x00)

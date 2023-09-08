@@ -208,7 +208,7 @@ namespace TJAPlayer3
 
 			if (this.sdDTXで指定されたフルコンボ音 != null)
 			{
-				TJAPlayer3.Sound管理.tサウンドを破棄する(this.sdDTXで指定されたフルコンボ音);
+				TJAPlayer3.Sound管理.tDisposeSound(this.sdDTXで指定されたフルコンボ音);
 				this.sdDTXで指定されたフルコンボ音 = null;
 			}
 			base.On非活性化();
@@ -1277,7 +1277,7 @@ namespace TJAPlayer3
 
 		public void t小文字表示(int x, int y, int num)
 		{
-			int[] nums = C変換.SeparateDigits(num);
+			int[] nums = CConversion.SeparateDigits(num);
 			for (int j = 0; j < nums.Length; j++)
 			{
 				float offset = j;
@@ -1323,7 +1323,7 @@ namespace TJAPlayer3
 
 		public void tスコア文字表示(int x, int y, int num)
 		{
-			int[] nums = C変換.SeparateDigits(num);
+			int[] nums = CConversion.SeparateDigits(num);
 			for (int j = 0; j < nums.Length; j++)
 			{
 				float offset = j;

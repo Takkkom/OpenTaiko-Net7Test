@@ -46,7 +46,7 @@ namespace FDK
 		//-----------------
 		public void Dispose()
 		{
-			C共通.tDisposeする( ref this.timer );
+			timer.Dispose();
 		}
 		//-----------------
 		#endregion

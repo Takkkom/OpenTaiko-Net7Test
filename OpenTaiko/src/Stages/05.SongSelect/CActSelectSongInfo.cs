@@ -96,7 +96,7 @@ namespace TJAPlayer3
 
         private void tBPMNumberDraw(float originx, float originy, int num)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
 
             for (int j = 0; j < nums.Length; j++)
             {

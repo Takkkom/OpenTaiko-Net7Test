@@ -1547,7 +1547,7 @@ namespace TJAPlayer3
 				if (!stバー情報[nパネル番号].BoxTypeChanged)
 					boxType = nStrジャンルtoNum(stバー情報[nパネル番号].strジャンル);
 
-				SongSelect_Bar_Genre[boxType].color4 = C変換.ColorToColor4(stバー情報[nパネル番号].BoxColor);
+				SongSelect_Bar_Genre[boxType].color4 = CConversion.ColorToColor4(stバー情報[nパネル番号].BoxColor);
 
 				SongSelect_Bar_Genre[boxType].vc拡大縮小倍率.X = 1.0f;
 				if (SongSelect_Bar_Genre_Overlap[boxType] != null)
@@ -2764,7 +2764,7 @@ namespace TJAPlayer3
 			{
                 if (changeColor)
                 {
-                    texture.color4 = C変換.ColorToColor4(r現在選択中の曲.BoxColor);
+                    texture.color4 = CConversion.ColorToColor4(r現在選択中の曲.BoxColor);
                 }
 
                 float texture_xoffset = ((texture.szテクスチャサイズ.Width / 3) * (1.0f - openAnime));
@@ -3570,7 +3570,7 @@ namespace TJAPlayer3
 
 		private void t小文字表示(int x, int y, int num, int diff, CDTX.ELevelIcon icon)
 		{
-			int[] nums = C変換.SeparateDigits(num);
+			int[] nums = CConversion.SeparateDigits(num);
             float[] icon_coords = new float[2] { -999, -999 };
             for (int j = 0; j < nums.Length; j++)
 			{
@@ -3592,7 +3592,7 @@ namespace TJAPlayer3
                 if (SongSelect_Level_Number_Colored != null)
                 {
                     SongSelect_Level_Number_Colored.vc拡大縮小倍率.X = _expand_ratio;
-                    SongSelect_Level_Number_Colored.color4 = C変換.ColorToColor4(TJAPlayer3.Skin.SongSelect_Difficulty_Colors[diff]);
+                    SongSelect_Level_Number_Colored.color4 = CConversion.ColorToColor4(TJAPlayer3.Skin.SongSelect_Difficulty_Colors[diff]);
                     SongSelect_Level_Number_Colored.t2D描画(_x, _y, new RectangleF(width * nums[j], 0, width, height));
                 }
             }
@@ -3607,7 +3607,7 @@ namespace TJAPlayer3
 			var icon = song.nLevelIcon[difficulty];
 
 			if (SongSelect_Level_Number_Big == null || num < 0) return;
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
 			float _ratio = 1f;
 			float[] icon_coords = new float[2] { -999, -999 };
             if (SongSelect_Level_Number != null)
@@ -3633,7 +3633,7 @@ namespace TJAPlayer3
                 if (SongSelect_Level_Number_Big_Colored != null)
 				{
                     SongSelect_Level_Number_Big_Colored.vc拡大縮小倍率.X = _expand_ratio;
-                    SongSelect_Level_Number_Big_Colored.color4 = C変換.ColorToColor4(TJAPlayer3.Skin.SongSelect_Difficulty_Colors[difficulty]);
+                    SongSelect_Level_Number_Big_Colored.color4 = CConversion.ColorToColor4(TJAPlayer3.Skin.SongSelect_Difficulty_Colors[difficulty]);
                     SongSelect_Level_Number_Big_Colored.t2D描画(_x, _y, new RectangleF(width * nums[j], 0, width, height));
                 }
                 

@@ -12,7 +12,7 @@ namespace FDK
 	{
 		// プロパティ
 
-		public ESoundDeviceType e出力デバイス
+		public ESoundDeviceType SoundDeviceType
 		{
 			get;
 			protected set;
@@ -22,7 +22,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public long n実バッファサイズms
+		public long BufferSize
 		{
 			get;
 			protected set;
@@ -46,7 +46,7 @@ namespace FDK
 			protected set;
 		}
 
-		public enum Eデバイスモード { 排他, 共有 }
+		public enum EWASAPIMode { Exclusion, Share }
 
 		public int nMasterVolume
 		{
@@ -109,13 +109,13 @@ namespace FDK
 		/// <param name="mode"></param>
 		/// <param name="n希望バッファサイズms">(未使用; 本メソッド内で自動設定する)</param>
 		/// <param name="n更新間隔ms">(未使用; 本メソッド内で自動設定する)</param>
-		public CSoundDeviceWASAPI( Eデバイスモード mode, long n希望バッファサイズms, long n更新間隔ms )
+		public CSoundDeviceWASAPI( EWASAPIMode mode, long n希望バッファサイズms, long n更新間隔ms )
 		{
 			// 初期化。
 
 			Trace.TraceInformation( "BASS (WASAPI) の初期化を開始します。" );
 
-			this.e出力デバイス = ESoundDeviceType.Unknown;
+			this.SoundDeviceType = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = 0;
 			this.n経過時間ms = 0;
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
@@ -232,16 +232,16 @@ namespace FDK
 			#endregion
 
 			//Retry:
-			var flags = ( mode == Eデバイスモード.排他 ) ? WasapiInitFlags.AutoFormat | WasapiInitFlags.Exclusive : WasapiInitFlags.Shared | WasapiInitFlags.AutoFormat;
+			var flags = ( mode == EWASAPIMode.Exclusion ) ? WasapiInitFlags.AutoFormat | WasapiInitFlags.Exclusive : WasapiInitFlags.Shared | WasapiInitFlags.AutoFormat;
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 			
 			if ( BassWasapi.Init( nデバイス, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
-				if( mode == Eデバイスモード.排他 )
+				if( mode == EWASAPIMode.Exclusion )
 				{
 					#region [ 排他モードで作成成功。]
 					//-----------------
-					this.e出力デバイス = ESoundDeviceType.ExclusiveWASAPI;
+					this.SoundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
 
 					nDevNo = BassWasapi.CurrentDevice;
 					deviceInfo = BassWasapi.GetDeviceInfo( nDevNo );
@@ -257,7 +257,7 @@ namespace FDK
 						case WasapiFormat.Unknown: throw new ArgumentOutOfRangeException($"WASAPI format error ({wasapiInfo.ToString()})");
 					}
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.Frequency;
-					this.n実バッファサイズms = (long) ( wasapiInfo.BufferLength * 1000.0f / n1秒のバイト数 );
+					this.BufferSize = (long) ( wasapiInfo.BufferLength * 1000.0f / n1秒のバイト数 );
 					this.n実出力遅延ms = 0;	// 初期値はゼロ
 					Trace.TraceInformation( "使用デバイス: #" + nDevNo + " : " + deviceInfo.Name );
 					Trace.TraceInformation( "BASS を初期化しました。(WASAPI排他モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms)",
@@ -265,7 +265,7 @@ namespace FDK
 						wasapiInfo.Channels,
 						wasapiInfo.Format.ToString(),
 						wasapiInfo.BufferLength,
-						n実バッファサイズms.ToString(),
+						BufferSize.ToString(),
 						n希望バッファサイズms.ToString(),
 						n更新間隔ms.ToString() );
 					Trace.TraceInformation( "デバイスの最小更新時間={0}ms, 既定の更新時間={1}ms", deviceInfo.MinimumUpdatePeriod * 1000, deviceInfo.DefaultUpdatePeriod * 1000 );
@@ -277,7 +277,7 @@ namespace FDK
 				{
 					#region [ 共有モードで作成成功。]
 					//-----------------
-					this.e出力デバイス = ESoundDeviceType.SharedWASAPI;
+					this.SoundDeviceType = ESoundDeviceType.SharedWASAPI;
 
 					var devInfo = BassWasapi.GetDeviceInfo(BassWasapi.CurrentDevice);
 					BassWasapi.GetInfo(out var wasapiInfo);
@@ -292,7 +292,7 @@ namespace FDK
 						case WasapiFormat.Unknown: throw new ArgumentOutOfRangeException($"WASAPI format error ({wasapiInfo.ToString()})");
 					}
                     int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.Frequency;
-                    this.n実バッファサイズms = (long)(wasapiInfo.BufferLength * 1000.0f / n1秒のバイト数);
+                    this.BufferSize = (long)(wasapiInfo.BufferLength * 1000.0f / n1秒のバイト数);
 
                     this.n実出力遅延ms = 0;	// 初期値はゼロ
 					
@@ -388,16 +388,16 @@ namespace FDK
 			BassWasapi.Start();
 		}
 		#region [ tサウンドを作成する() ]
-		public CSound tサウンドを作成する( string strファイル名, ESoundGroup soundGroup )
+		public CSound tCreateSound( string strファイル名, ESoundGroup soundGroup )
 		{
 			var sound = new CSound(soundGroup);
-			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.e出力デバイス );
+			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.SoundDeviceType );
 			return sound;
 		}
 
-		public void tサウンドを作成する( string strファイル名, CSound sound )
+		public void tCreateSound( string strファイル名, CSound sound )
 		{
-			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.e出力デバイス );
+			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.SoundDeviceType );
 		}
 		#endregion
 
@@ -410,20 +410,20 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
+			SoundDeviceType = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( hMixer != -1 )
 			{
-				Bass.StreamFree( this.hMixer );
+				Bass.StreamFree( hMixer );
 			}
-			if ( !this.bIsBASSFree )
+			if ( !bIsBASSFree )
 			{
 				BassWasapi.Free();	// システムタイマより先に呼び出すこと。（tWasapi処理() の中でシステムタイマを参照してるため）
 				Bass.Free();
 			}
 			if( bManagedDispose )
 			{
-				C共通.tDisposeする( this.tmシステムタイマ );
-				this.tmシステムタイマ = null;
+				tmシステムタイマ.Dispose();
+				tmシステムタイマ = null;
 			}
 		}
 		~CSoundDeviceWASAPI()

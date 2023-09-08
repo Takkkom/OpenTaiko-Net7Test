@@ -39,7 +39,7 @@ namespace FDK
 	{
 		// プロパティ
 
-		public ESoundDeviceType e出力デバイス
+		public ESoundDeviceType SoundDeviceType
 		{
 			get;
 			protected set;
@@ -49,7 +49,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public long n実バッファサイズms
+		public long BufferSize
 		{
 			get;
 			protected set;
@@ -121,7 +121,7 @@ namespace FDK
 			// 初期化。
 
 			Trace.TraceInformation( "BASS (ASIO) の初期化を開始します。" );
-			this.e出力デバイス = ESoundDeviceType.Unknown;
+			this.SoundDeviceType = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = 0;
 			this.n経過時間ms = 0;
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
@@ -169,7 +169,7 @@ namespace FDK
 			{
 				#region [ ASIO の初期化に成功。]
 				//-----------------
-				this.e出力デバイス = ESoundDeviceType.ASIO;
+				this.SoundDeviceType = ESoundDeviceType.ASIO;
 				BassAsio.GetInfo(out asioInfo);
 				this.n出力チャンネル数 = asioInfo.Outputs;
 				this.db周波数 = BassAsio.Rate;
@@ -332,20 +332,20 @@ namespace FDK
 			{
 				int n遅延sample = BassAsio.GetLatency( false );	// この関数は BASS_ASIO_Start() 後にしか呼び出せない。
 				int n希望遅延sample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
-				this.n実バッファサイズms = this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
+				this.BufferSize = this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
 				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, n希望遅延sample, this.n実出力遅延ms, n希望バッファサイズms );
 			}
 		}
 
 		#region [ tサウンドを作成する() ]
-		public CSound tサウンドを作成する( string strファイル名, ESoundGroup soundGroup )
+		public CSound tCreateSound( string strファイル名, ESoundGroup soundGroup )
 		{
 			var sound = new CSound(soundGroup);
 			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
 			return sound;
 		}
 
-		public void tサウンドを作成する( string strファイル名, CSound sound )
+		public void tCreateSound( string strファイル名, CSound sound )
 		{
 			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
 		}
@@ -361,12 +361,12 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
+			SoundDeviceType = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( hMixer != -1 )
 			{
-				Bass.StreamFree( this.hMixer );
+				Bass.StreamFree( hMixer );
 			}
-			if ( !this.bIsBASSFree )
+			if ( !bIsBASSFree )
 			{
 				BassAsio.Free();	// システムタイマより先に呼び出すこと。（tAsio処理() の中でシステムタイマを参照してるため）
 				Bass.Free();
@@ -374,8 +374,8 @@ namespace FDK
 
 			if( bManagedDispose )
 			{
-				C共通.tDisposeする( this.tmシステムタイマ );
-				this.tmシステムタイマ = null;
+				tmシステムタイマ.Dispose();
+				tmシステムタイマ = null;
 			}
 		}
 		~CSoundDeviceASIO()

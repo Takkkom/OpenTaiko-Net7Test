@@ -795,7 +795,7 @@ namespace TJAPlayer3
 		{
 			if (this.rResultSound != null)
 			{
-				TJAPlayer3.Sound管理.tサウンドを破棄する(this.rResultSound);
+				TJAPlayer3.Sound管理.tDisposeSound(this.rResultSound);
 				this.rResultSound = null;
 			}
 			base.On非活性化();

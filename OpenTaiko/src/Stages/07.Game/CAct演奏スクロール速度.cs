@@ -43,13 +43,13 @@ namespace TJAPlayer3
 					//this.n速度変更制御タイマ.Drums = this.n速度変更制御タイマ.Guitar = this.n速度変更制御タイマ.Bass = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 					for (int i = 0; i < 5; i++)
                     {
-						this.n速度変更制御タイマ[i] = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+						this.n速度変更制御タイマ[i] = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
 
 					}
 					
 					base.b初めての進行描画 = false;
 				}
-				long n現在時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
+				long n現在時刻 = CSound管理.PlayTimer.n現在時刻;
 				for( int i = 0; i < 5; i++ )
 				{
 					double db譜面スクロールスピード = (double) TJAPlayer3.ConfigIni.nScrollSpeed[ TJAPlayer3.GetActualPlayer(i) ];

@@ -710,7 +710,7 @@ namespace TJAPlayer3
 		{
 			// Sound管理?.t再生中の処理をする();
             Timer?.t更新();
-            CSound管理.rc演奏用タイマ?.t更新();
+            CSound管理.PlayTimer?.t更新();
             Input管理?.tポーリング( TJAPlayer3.ConfigIni.bバッファ入力を行う );
             FPS?.tカウンタ更新();
 
@@ -1430,7 +1430,7 @@ for (int i = 0; i < 3; i++) {
 								TJAPlayer3.stage演奏ドラム画面.t停止();
 								if ( previewSound != null )
 								{
-									this.previewSound.tサウンドを停止する();
+									this.previewSound.tStopSound();
 									this.previewSound.Dispose();
 									this.previewSound = null;
 								}
@@ -1908,9 +1908,9 @@ for (int i = 0; i < 3; i++) {
 
 				if (r現在のステージ != null && r現在のステージ.eステージID != CStage.Eステージ.起動 && TJAPlayer3.Tx.Network_Connection != null)
 				{
-					if (Math.Abs(CSound管理.rc演奏用タイマ.nシステム時刻ms - this.前回のシステム時刻ms) > 10000)
+					if (Math.Abs(CSound管理.PlayTimer.nシステム時刻ms - this.前回のシステム時刻ms) > 10000)
 					{
-						this.前回のシステム時刻ms = CSound管理.rc演奏用タイマ.nシステム時刻ms;
+						this.前回のシステム時刻ms = CSound管理.PlayTimer.nシステム時刻ms;
 						Task.Factory.StartNew(() =>
 						{
 							//IPv4 8.8.8.8にPingを送信する(timeout 5000ms)
@@ -2481,7 +2481,7 @@ for (int i = 0; i < 3; i++) {
 					SongGainController = new SongGainController();
 					ConfigIniToSongGainControllerBinder.Bind(ConfigIni, SongGainController);
 
-					SoundGroupLevelController = new SoundGroupLevelController(CSound.listインスタンス);
+					SoundGroupLevelController = new SoundGroupLevelController(CSound.SoundInstances);
 					ConfigIniToSoundGroupLevelControllerBinder.Bind(ConfigIni, SoundGroupLevelController);
 				}
 				finally

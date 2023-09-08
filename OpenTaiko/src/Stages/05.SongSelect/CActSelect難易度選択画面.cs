@@ -416,7 +416,7 @@ namespace TJAPlayer3
             TJAPlayer3.stage選曲.act曲リスト.SongSelect_ScoreRank.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
             Difficulty_Star.Opacity = (TJAPlayer3.stage選曲.act曲リスト.ctDifficultyIn.n現在の値 - 1255);
 
-            Difficulty_Back[boxType].color4 = C変換.ColorToColor4(TJAPlayer3.stage選曲.r現在選択中の曲.BoxColor);
+            Difficulty_Back[boxType].color4 = CConversion.ColorToColor4(TJAPlayer3.stage選曲.r現在選択中の曲.BoxColor);
 
             Difficulty_Back[boxType].t2D中心基準描画(TJAPlayer3.Skin.SongSelect_Difficulty_Back[0], TJAPlayer3.Skin.SongSelect_Difficulty_Back[1]);
 
@@ -668,7 +668,7 @@ namespace TJAPlayer3
 
         private void t小文字表示(int num, float x, float y, int diff, CDTX.ELevelIcon icon)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             float[] icon_coords = new float[2] { -999, -999 };
             for (int j = 0; j < nums.Length; j++)
             {
@@ -686,7 +686,7 @@ namespace TJAPlayer3
 
                 if (Difficulty_Number_Colored != null)
                 {
-                    Difficulty_Number_Colored.color4 = C変換.ColorToColor4(TJAPlayer3.Skin.SongSelect_Difficulty_Colors[diff]);
+                    Difficulty_Number_Colored.color4 = CConversion.ColorToColor4(TJAPlayer3.Skin.SongSelect_Difficulty_Colors[diff]);
                     Difficulty_Number_Colored.t2D描画(_x, _y, new RectangleF(width * nums[j], 0, width, height));
                 }
             }

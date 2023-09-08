@@ -71,7 +71,7 @@ namespace TJAPlayer3
             if (frame + 1 > textures.Length) return;
             if (tx == null) return;
 
-            tx.fZ軸中心回転 = C変換.DegreeToRadian(this.rotation);
+            tx.fZ軸中心回転 = CConversion.DegreeToRadian(this.rotation);
             tx.color4 = this.color;
             tx.Opacity = this.opacity;
 

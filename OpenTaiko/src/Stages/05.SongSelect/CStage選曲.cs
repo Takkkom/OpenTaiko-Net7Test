@@ -567,7 +567,7 @@ namespace TJAPlayer3
                             {
                                 if (txGenreBack != null)
                                 {
-                                    txGenreBack.color4 = C変換.ColorToColor4(this.NowBgColor);
+                                    txGenreBack.color4 = CConversion.ColorToColor4(this.NowBgColor);
                                     txGenreBack.Opacity = 255;
                                     txGenreBack.vc拡大縮小倍率.X = scale;
                                     txGenreBack.vc拡大縮小倍率.Y = scale;
@@ -582,7 +582,7 @@ namespace TJAPlayer3
                             {
                                 if (txOldGenreBack != null)
                                 {
-                                    txOldGenreBack.color4 = C変換.ColorToColor4(this.OldBgColor);
+                                    txOldGenreBack.color4 = CConversion.ColorToColor4(this.OldBgColor);
                                     txOldGenreBack.Opacity = 600 - ctBackgroundFade.n現在の値;
                                     txOldGenreBack.vc拡大縮小倍率.X = scale;
                                     txOldGenreBack.vc拡大縮小倍率.Y = scale;
@@ -993,7 +993,7 @@ namespace TJAPlayer3
                         if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.F3))
                         {
                             TJAPlayer3.Skin.sound変更音.t再生する();
-                            C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0]);
+                            CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[0]);
                         }
                         #endregion
                         #region [ F4 2PオートON/OFF ]
@@ -1002,7 +1002,7 @@ namespace TJAPlayer3
                             if (TJAPlayer3.ConfigIni.nPlayerCount > 1)
                             {
                                 TJAPlayer3.Skin.sound変更音.t再生する();
-                                C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[1]);
+                                CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[1]);
                             }
                         }
                         #endregion
@@ -1010,7 +1010,7 @@ namespace TJAPlayer3
                         if (TJAPlayer3.Input管理.Keyboard.bキーが押された((int)SlimDXKeys.Key.F5))
                         {
                             TJAPlayer3.Skin.sound変更音.t再生する();
-                            C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.bSuperHard);
+                            CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.bSuperHard);
                         }
                         #endregion
                         #region [ F6 SCROLL ]
@@ -1039,7 +1039,7 @@ namespace TJAPlayer3
                             if (TJAPlayer3.ConfigIni.nPlayerCount < 2)
                             {
                                 TJAPlayer3.Skin.sound変更音.t再生する();
-                                C共通.bToggleBoolian(ref TJAPlayer3.ConfigIni.bTokkunMode);
+                                CUtility.bToggleBoolian(ref TJAPlayer3.ConfigIni.bTokkunMode);
                             }
                         }
                         #endregion
@@ -1576,7 +1576,7 @@ namespace TJAPlayer3
 
         public void tBoardNumberDraw(int x, int y, int num)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - (nums.Length / 2.0f);
@@ -1592,7 +1592,7 @@ namespace TJAPlayer3
 
         private void tSongNumberDraw(int x, int y, int num)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - (nums.Length / 2.0f);
@@ -1610,7 +1610,7 @@ namespace TJAPlayer3
         {
             //int x = 1171, y = 57;
 
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
 
             for (int j = 0; j < nums.Length; j++)
             {

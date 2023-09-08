@@ -135,7 +135,7 @@ namespace TJAPlayer3
                     {
                         return 0;
                     }
-                    return sound.n総演奏時間ms;
+                    return sound.TotalPlayTime;
                 }
             }
             public int n長さ_次に鳴るサウンド
@@ -147,7 +147,7 @@ namespace TJAPlayer3
                     {
                         return 0;
                     }
-                    return sound.n総演奏時間ms;
+                    return sound.TotalPlayTime;
                 }
             }
 
@@ -212,7 +212,7 @@ namespace TJAPlayer3
                 {
                     try
                     {
-                        this.rSound[i] = TJAPlayer3.Sound管理?.tサウンドを生成する(CSkin.Path(this.strファイル名), _soundGroup);
+                        this.rSound[i] = TJAPlayer3.Sound管理?.tCreateSound(CSkin.Path(this.strファイル名), _soundGroup);
                     }
                     catch
                     {
@@ -288,7 +288,7 @@ namespace TJAPlayer3
                     {
                         if (this.rSound[i] != null)
                         {
-                            TJAPlayer3.Sound管理.tサウンドを破棄する(this.rSound[i]);
+                            TJAPlayer3.Sound管理.tDisposeSound(this.rSound[i]);
                             this.rSound[i] = null;
                         }
                     }
@@ -1124,36 +1124,36 @@ namespace TJAPlayer3
                             //-----------------------------
                             else if (strCommand == "ScrollFieldP1Y")
                             {
-                                this.nScrollFieldY[0] = C変換.n値を文字列から取得して返す(strParam, 192);
+                                this.nScrollFieldY[0] = CConversion.n値を文字列から取得して返す(strParam, 192);
                             }
                             else if (strCommand == "ScrollFieldP2Y")
                             {
-                                this.nScrollFieldY[1] = C変換.n値を文字列から取得して返す(strParam, 192);
+                                this.nScrollFieldY[1] = CConversion.n値を文字列から取得して返す(strParam, 192);
                             }
                             else if (strCommand == "SENotesP1Y")
                             {
-                                this.nSENotesY[0] = C変換.n値を文字列から取得して返す(strParam, this.nSENotesY[0]);
+                                this.nSENotesY[0] = CConversion.n値を文字列から取得して返す(strParam, this.nSENotesY[0]);
                             }
                             else if (strCommand == "SENotesP2Y")
                             {
-                                this.nSENotesY[1] = C変換.n値を文字列から取得して返す(strParam, this.nSENotesY[1]);
+                                this.nSENotesY[1] = CConversion.n値を文字列から取得して返す(strParam, this.nSENotesY[1]);
                             }
                             else if (strCommand == "JudgePointP1Y")
                             {
-                                this.nJudgePointY[0] = C変換.n値を文字列から取得して返す(strParam, this.nJudgePointY[0]);
+                                this.nJudgePointY[0] = CConversion.n値を文字列から取得して返す(strParam, this.nJudgePointY[0]);
                             }
                             else if (strCommand == "JudgePointP2Y")
                             {
-                                this.nJudgePointY[1] = C変換.n値を文字列から取得して返す(strParam, this.nJudgePointY[1]);
+                                this.nJudgePointY[1] = CConversion.n値を文字列から取得して返す(strParam, this.nJudgePointY[1]);
                             }
 
                             else if (strCommand == "DiffDispMode")
                             {
-                                this.eDiffDispMode = (E難易度表示タイプ)C変換.n値を文字列から取得して範囲内に丸めて返す(strParam, 0, 2, (int)this.eDiffDispMode);
+                                this.eDiffDispMode = (E難易度表示タイプ)CConversion.n値を文字列から取得して範囲内に丸めて返す(strParam, 0, 2, (int)this.eDiffDispMode);
                             }
                             else if (strCommand == "NowStageDisp")
                             {
-                                this.b現在のステージ数を表示しない = C変換.bONorOFF(strParam[0]);
+                                this.b現在のステージ数を表示しない = CConversion.bONorOFF(strParam[0]);
                             }
 
                             //-----------------------------
@@ -1163,27 +1163,27 @@ namespace TJAPlayer3
                             //-----------------------------
                             else if (strCommand == "ResultPanelP1X")
                             {
-                                this.nResultPanelP1X = C変換.n値を文字列から取得して返す(strParam, 515);
+                                this.nResultPanelP1X = CConversion.n値を文字列から取得して返す(strParam, 515);
                             }
                             else if (strCommand == "ResultPanelP1Y")
                             {
-                                this.nResultPanelP1Y = C変換.n値を文字列から取得して返す(strParam, 75);
+                                this.nResultPanelP1Y = CConversion.n値を文字列から取得して返す(strParam, 75);
                             }
                             else if (strCommand == "ResultPanelP2X")
                             {
-                                this.nResultPanelP2X = C変換.n値を文字列から取得して返す(strParam, 515);
+                                this.nResultPanelP2X = CConversion.n値を文字列から取得して返す(strParam, 515);
                             }
                             else if (strCommand == "ResultPanelP2Y")
                             {
-                                this.nResultPanelP2Y = C変換.n値を文字列から取得して返す(strParam, 75);
+                                this.nResultPanelP2Y = CConversion.n値を文字列から取得して返す(strParam, 75);
                             }
                             else if (strCommand == "ResultScoreP1X")
                             {
-                                this.nResultScoreP1X = C変換.n値を文字列から取得して返す(strParam, 582);
+                                this.nResultScoreP1X = CConversion.n値を文字列から取得して返す(strParam, 582);
                             }
                             else if (strCommand == "ResultScoreP1Y")
                             {
-                                this.nResultScoreP1Y = C変換.n値を文字列から取得して返す(strParam, 252);
+                                this.nResultScoreP1Y = CConversion.n値を文字列から取得して返す(strParam, 252);
                             }
                             //-----------------------------
                             #endregion
@@ -1518,11 +1518,11 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "Title_VerticalText")
                             {
-                                Title_VerticalText = C変換.bONorOFF(strParam[0]);
+                                Title_VerticalText = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "Title_VerticalBar")
                             {
-                                Title_VerticalBar = C変換.bONorOFF(strParam[0]);
+                                Title_VerticalBar = CConversion.bONorOFF(strParam[0]);
                             }
                             #endregion
 
@@ -1948,7 +1948,7 @@ namespace TJAPlayer3
 
                             else if (strCommand == "SongSelect_VerticalText")
                             {
-                                SongSelect_VerticalText = C変換.bONorOFF(strParam[0]);
+                                SongSelect_VerticalText = CConversion.bONorOFF(strParam[0]);
                             }
 
                             else if (strCommand == "SongSelect_Bar_Center_Move_X")
@@ -1966,15 +1966,15 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "SongSelect_Maker_Show")
                             {
-                                SongSelect_Maker_Show = C変換.bONorOFF(strParam[0]);
+                                SongSelect_Maker_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_Shorten_Frame_Fade")
                             {
-                                SongSelect_Shorten_Frame_Fade = C変換.bONorOFF(strParam[0]);
+                                SongSelect_Shorten_Frame_Fade = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_Bar_Select_Skip_Fade")
                             {
-                                SongSelect_Bar_Select_Skip_Fade = C変換.bONorOFF(strParam[0]);
+                                SongSelect_Bar_Select_Skip_Fade = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_Maker")
                             {
@@ -2191,7 +2191,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "SongSelect_Bpm_Show")
                             {
-                                SongSelect_Bpm_Show = C変換.bONorOFF(strParam[0]);
+                                SongSelect_Bpm_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_Bpm_X")
                             {
@@ -2219,7 +2219,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "SongSelect_BPM_Text_Show")
                             {
-                                SongSelect_BPM_Text_Show = C変換.bONorOFF(strParam[0]);
+                                SongSelect_BPM_Text_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_BPM_Text")
                             {
@@ -2247,7 +2247,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "SongSelect_FloorNum_Show")
                             {
-                                SongSelect_FloorNum_Show = C変換.bONorOFF(strParam[0]);
+                                SongSelect_FloorNum_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_FloorNum_X")
                             {
@@ -2267,7 +2267,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "SongSelect_DanInfo_Show")
                             {
-                                SongSelect_DanInfo_Show = C変換.bONorOFF(strParam[0]);
+                                SongSelect_DanInfo_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "SongSelect_DanInfo_Icon_X")
                             {
@@ -3533,7 +3533,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(SongLoading_Plate_ScreenBlend))
                             {
-                                SongLoading_Plate_ScreenBlend = C変換.bONorOFF(strParam[0]);
+                                SongLoading_Plate_ScreenBlend = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(DaniSelect_DanPlateTitle_Size))
                             {
@@ -3552,7 +3552,7 @@ namespace TJAPlayer3
                             #region Game
                             else if (strCommand == "Game_Notes_Anime")
                             {
-                                Game_Notes_Anime = C変換.bONorOFF(strParam[0]);
+                                Game_Notes_Anime = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "Game_ScrollField_X")
                             {
@@ -3736,7 +3736,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(Game_JudgeFrame_AddBlend))
                             {
-                                Game_JudgeFrame_AddBlend = C変換.bONorOFF(strParam[0]);
+                                Game_JudgeFrame_AddBlend = CConversion.bONorOFF(strParam[0]);
                             }
 
 
@@ -4446,7 +4446,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(Game_Taiko_Combo_Ex_IsJumping))
                             {
-                                Game_Taiko_Combo_Ex_IsJumping = C変換.bONorOFF(strParam[0]);
+                                Game_Taiko_Combo_Ex_IsJumping = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "Game_Taiko_LevelChange_X")
                             {
@@ -5220,7 +5220,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(Game_Effect_GoGoSplash_Rotate))
                             {
-                                Game_Effect_GoGoSplash_Rotate = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_GoGoSplash_Rotate = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(Game_Effect_GoGoSplash_Timer))
                             {
@@ -5256,7 +5256,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(Game_Effect_FlyingNotes_IsUsingEasing))
                             {
-                                Game_Effect_FlyingNotes_IsUsingEasing = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_FlyingNotes_IsUsingEasing = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(Game_Effect_FlyingNotes_Timer))
                             {
@@ -5308,11 +5308,11 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(Game_Effect_HitExplosion_AddBlend))
                             {
-                                Game_Effect_HitExplosion_AddBlend = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_HitExplosion_AddBlend = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(Game_Effect_HitExplosionBig_AddBlend))
                             {
-                                Game_Effect_HitExplosionBig_AddBlend = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_HitExplosionBig_AddBlend = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "Game_Effect_Fire_X")
                             {
@@ -5332,15 +5332,15 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == nameof(Game_Effect_FireWorks_AddBlend))
                             {
-                                Game_Effect_FireWorks_AddBlend = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_FireWorks_AddBlend = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(Game_Effect_Fire_AddBlend))
                             {
-                                Game_Effect_Fire_AddBlend = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_Fire_AddBlend = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(Game_Effect_GoGoSplash_AddBlend))
                             {
-                                Game_Effect_GoGoSplash_AddBlend = C変換.bONorOFF(strParam[0]);
+                                Game_Effect_GoGoSplash_AddBlend = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == nameof(Game_Effect_FireWorks_Timing))
                             {
@@ -6305,7 +6305,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "Result_ADLib_Show")
                             {
-                                Result_ADLib_Show = C変換.bONorOFF(strParam[0]);
+                                Result_ADLib_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "Result_ADLib_X")
                             {
@@ -6325,7 +6325,7 @@ namespace TJAPlayer3
                             }
                             else if (strCommand == "Result_Bomb_Show")
                             {
-                                Result_Bomb_Show = C変換.bONorOFF(strParam[0]);
+                                Result_Bomb_Show = CConversion.bONorOFF(strParam[0]);
                             }
                             else if (strCommand == "Result_Bomb_X")
                             {

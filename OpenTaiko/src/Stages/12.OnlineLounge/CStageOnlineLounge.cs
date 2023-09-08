@@ -203,13 +203,13 @@ namespace TJAPlayer3
 
                     if (_selector != i)
                     {
-                        tmpTex.color4 = C変換.ColorToColor4(Color.DarkGray);
-                        OnlineLounge_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
+                        tmpTex.color4 = CConversion.ColorToColor4(Color.DarkGray);
+                        OnlineLounge_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
                     }
                     else
                     {
-                        tmpTex.color4 = C変換.ColorToColor4(Color.White);
-                        OnlineLounge_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.White));
+                        tmpTex.color4 = CConversion.ColorToColor4(Color.White);
+                        OnlineLounge_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
                     }
 
                     OnlineLounge_Side_Menu?.t2D拡大率考慮上中央基準描画(baseX + TJAPlayer3.Skin.OnlineLounge_Side_Menu_Move[0] * i, 
@@ -239,16 +239,16 @@ namespace TJAPlayer3
                     CTexture tmpTex = TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(_ref[pos]);
                     CTexture tmpSubtitle = TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkCDNSongSubtitles[pos]);
 
-                    var _color = C変換.ColorToColor4(Color.DarkGray);
+                    var _color = CConversion.ColorToColor4(Color.DarkGray);
 
                     if (i == 0)
-                        _color = C変換.ColorToColor4(Color.White);
+                        _color = CConversion.ColorToColor4(Color.White);
                     if (pos > 0 && i != 0) {
                         var song = apiMethods.FetchedSongsList[pos - 1];
                         var downloadLink = GetDownloadLink(song);
 
                         if (CSongDict.tContainsSongUrl(downloadLink))
-                            _color = C変換.ColorToColor4(Color.DimGray);
+                            _color = CConversion.ColorToColor4(Color.DimGray);
                     }
 
 

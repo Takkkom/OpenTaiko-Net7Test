@@ -92,7 +92,7 @@ namespace TJAPlayer3
                             comboVoice.bFileFound = true;
                             comboVoice.nPlayer = i;
                             comboVoice.strFilePath = item;
-                            comboVoice.soundComboVoice = TJAPlayer3.Sound管理.tサウンドを生成する(item, ESoundGroup.Voice);
+                            comboVoice.soundComboVoice = TJAPlayer3.Sound管理.tCreateSound(item, ESoundGroup.Voice);
                             /*
                             if (TJAPlayer3.ConfigIni.nPlayerCount >= 2) //2020.05.06 Mr-Ojii 左右に出したかったから追加。
                             {
@@ -125,7 +125,7 @@ namespace TJAPlayer3
                             comboVoice.bFileFound = true;
                             comboVoice.nPlayer = i;
                             comboVoice.strFilePath = item;
-                            comboVoice.soundComboVoice = TJAPlayer3.Sound管理.tサウンドを生成する(item, ESoundGroup.Voice);
+                            comboVoice.soundComboVoice = TJAPlayer3.Sound管理.tCreateSound(item, ESoundGroup.Voice);
                             comboVoice.nCombo = int.Parse(Path.GetFileNameWithoutExtension(item));
                             ListFloor[i].Add(comboVoice);
                         }
@@ -149,13 +149,13 @@ namespace TJAPlayer3
                 {
                     foreach (var item in ListCombo[i])
                     {
-                        TJAPlayer3.Sound管理.tサウンドを破棄する(item.soundComboVoice);
+                        TJAPlayer3.Sound管理.tDisposeSound(item.soundComboVoice);
                     }
                     ListCombo[i].Clear();
 
                     foreach (var item in ListFloor[i])
                     {
-                        TJAPlayer3.Sound管理.tサウンドを破棄する(item.soundComboVoice);
+                        TJAPlayer3.Sound管理.tDisposeSound(item.soundComboVoice);
                     }
                     ListFloor[i].Clear();
                 }

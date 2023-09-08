@@ -28,7 +28,7 @@ namespace FDK
 		{
 			get; set;
 		}
-		public static CSoundTimer rc演奏用タイマ = null;
+		public static CSoundTimer PlayTimer = null;
 		public static bool bUseOSTimer = false;		// OSのタイマーを使うか、CSoundTimerを使うか。DTXCではfalse, DTXManiaではtrue。
 													// DTXC(DirectSound)でCSoundTimerを使うと、内部で無音のループサウンドを再生するため
 													// サウンドデバイスを占有してしまい、Viewerとして呼び出されるDTXManiaで、ASIOが使えなくなる。
@@ -185,7 +185,7 @@ namespace FDK
 		{
 			if ( SoundDevice != null )
 			{
-				return SoundDevice.n実バッファサイズms;
+				return SoundDevice.BufferSize;
 			}
 			else
 			{
@@ -209,7 +209,7 @@ namespace FDK
 			Window_ = window;
 			SoundDevice = null;
 			//bUseOSTimer = false;
-			t初期化( soundDeviceType, nSoundDelayBASS, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
+			tInitialize( soundDeviceType, nSoundDelayBASS, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
 		}
 		public void Dispose()
 		{
@@ -221,23 +221,23 @@ namespace FDK
 		//    t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
 		//}
 
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
+		public void tInitialize( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
 		{
 			//if ( !bInitialized )
 			{
-				t初期化( soundDeviceType, _nSoundDelayBASS, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice );
+				tInitialize( soundDeviceType, _nSoundDelayBASS, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice );
 				//bInitialized = true;
 			}
 		}
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
+		public void tInitialize( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
 		{
-			t初期化( soundDeviceType, _nSoundDelayBASS, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
+			tInitialize( soundDeviceType, _nSoundDelayBASS, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
 		}
 
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
+		public void tInitialize( ESoundDeviceType soundDeviceType, int _nSoundDelayBASS, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
 		{
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
-			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
+			PlayTimer = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
 
 			SoundDelayBASS = _nSoundDelayBASS;
@@ -256,37 +256,37 @@ namespace FDK
 				ESoundDeviceType.Unknown
 			};
 
-			int n初期デバイス;
+			int initialDevice;
 			switch ( soundDeviceType )
 			{
 				case ESoundDeviceType.Bass:
-					n初期デバイス = 0;
+					initialDevice = 0;
 					break;
 				case ESoundDeviceType.ExclusiveWASAPI:
-					n初期デバイス = 1;
+					initialDevice = 1;
 					break;
 				case ESoundDeviceType.SharedWASAPI:
-					n初期デバイス = 2;
+					initialDevice = 2;
 					break;
 				case ESoundDeviceType.ASIO:
-					n初期デバイス = 3;
+					initialDevice = 3;
 					break;
 				default:
-					n初期デバイス = 4;
+					initialDevice = 4;
 					break;
 			}
-			for ( SoundDeviceType = ESoundDeviceTypes[ n初期デバイス ]; ; SoundDeviceType = ESoundDeviceTypes[ ++n初期デバイス ] )
+			for ( SoundDeviceType = ESoundDeviceTypes[ initialDevice ]; ; SoundDeviceType = ESoundDeviceTypes[ ++initialDevice ] )
 			{
 				try
 				{
-					t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
+					tReloadSoundDeviceAndSound();
 					break;
 				}
 				catch ( Exception e )
 				{
 					Trace.TraceError( e.ToString() );
 					Trace.TraceError( "例外が発生しましたが処理を継続します。 (2609806d-23e8-45c2-9389-b427e80915bc)" );
-					if ( ESoundDeviceTypes[ n初期デバイス ] == ESoundDeviceType.Unknown )
+					if ( ESoundDeviceTypes[ initialDevice ] == ESoundDeviceType.Unknown )
 					{
 						Trace.TraceError( string.Format( "サウンドデバイスの初期化に失敗しました。" ) );
 						break;
@@ -318,12 +318,12 @@ namespace FDK
 
 		public static void t終了()
 		{
-			C共通.tDisposeする( SoundDevice ); SoundDevice = null;
-			C共通.tDisposeする( ref rc演奏用タイマ );	// Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
+			SoundDevice.Dispose();
+			PlayTimer.Dispose();	// Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
 		}
 
 
-		public static void t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する()
+		public static void tReloadSoundDeviceAndSound()
 		{
 			#region [ すでにサウンドデバイスと演奏タイマが構築されていれば解放する。]
 			//-----------------
@@ -331,13 +331,13 @@ namespace FDK
 			{
 				// すでに生成済みのサウンドがあれば初期状態に戻す。
 
-				CSound.tすべてのサウンドを初期状態に戻す();		// リソースは解放するが、CSoundのインスタンスは残す。
+				CSound.tResetAllSound();		// リソースは解放するが、CSoundのインスタンスは残す。
 
 
 				// サウンドデバイスと演奏タイマを解放する。
 
-				C共通.tDisposeする( SoundDevice ); SoundDevice = null;
-				C共通.tDisposeする( ref rc演奏用タイマ );	// Global.SoundDevice を解放した後に解放すること。（Global.SoundDevice で参照されているため）
+				SoundDevice.Dispose();
+				PlayTimer.Dispose();	// Global.SoundDevice を解放した後に解放すること。（Global.SoundDevice で参照されているため）
 			}
 			//-----------------
 			#endregion
@@ -351,11 +351,11 @@ namespace FDK
 					break;
 
 				case ESoundDeviceType.ExclusiveWASAPI:
-					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.排他, SoundDelayExclusiveWASAPI, SoundUpdatePeriodExclusiveWASAPI );
+					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.EWASAPIMode.Exclusion, SoundDelayExclusiveWASAPI, SoundUpdatePeriodExclusiveWASAPI );
 					break;
 
 				case ESoundDeviceType.SharedWASAPI:
-					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.共有, SoundDelaySharedWASAPI, SoundUpdatePeriodSharedWASAPI );
+					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.EWASAPIMode.Share, SoundDelaySharedWASAPI, SoundUpdatePeriodSharedWASAPI );
 					break;
 
 				case ESoundDeviceType.ASIO:
@@ -369,15 +369,15 @@ namespace FDK
 			#endregion
 			#region [ 新しい演奏タイマを構築する。]
 			//-----------------
-			rc演奏用タイマ = new CSoundTimer( SoundDevice );
+			PlayTimer = new CSoundTimer( SoundDevice );
 			//-----------------
 			#endregion
 
 			SoundDevice.nMasterVolume = _nMasterVolume;					// サウンドデバイスに対して、マスターボリュームを再設定する
 
-			CSound.tすべてのサウンドを再構築する( SoundDevice );		// すでに生成済みのサウンドがあれば作り直す。
+			CSound.tReloadSound( SoundDevice );		// すでに生成済みのサウンドがあれば作り直す。
 		}
-		public CSound tサウンドを生成する( string filename, ESoundGroup soundGroup )
+		public CSound tCreateSound( string filename, ESoundGroup soundGroup )
 		{
             if( !File.Exists( filename ) )
             {
@@ -389,14 +389,14 @@ namespace FDK
 			{
 				throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
 			}
-			return SoundDevice.tサウンドを作成する( filename, soundGroup );
+			return SoundDevice.tCreateSound( filename, soundGroup );
 		}
 
 		private static DateTime lastUpdateTime = DateTime.MinValue;
 
-		public void tサウンドを破棄する( CSound csound )
+		public void tDisposeSound( CSound csound )
 		{
-		    csound?.t解放する( true );			// インスタンスは存続→破棄にする。
+		    csound?.tDispose( true );			// インスタンスは存続→破棄にする。
 		}
 
 		public string GetCurrentSoundDeviceType()
@@ -419,12 +419,12 @@ namespace FDK
 		public void AddMixer( CSound cs, double db再生速度, bool _b演奏終了後も再生が続くチップである )
 		{
 			cs.b演奏終了後も再生が続くチップである = _b演奏終了後も再生が続くチップである;
-			cs.db再生速度 = db再生速度;
+			cs.PlaySpeed = db再生速度;
 			cs.tBASSサウンドをミキサーに追加する();
 		}
 		public void AddMixer( CSound cs, double db再生速度 )
 		{
-			cs.db再生速度 = db再生速度;
+			cs.PlaySpeed = db再生速度;
 			cs.tBASSサウンドをミキサーに追加する();
 		}
 		public void AddMixer( CSound cs )
@@ -433,7 +433,7 @@ namespace FDK
 		}
 		public void RemoveMixer( CSound cs )
 		{
-			cs.tBASSサウンドをミキサーから削除する();
+			cs.tRemoveSoundFromMixer();
 		}
 	}
 	#endregion
@@ -470,53 +470,53 @@ namespace FDK
 
 		#region [ DTXMania用拡張 ]
 
-		public int n総演奏時間ms
+		public int TotalPlayTime
 		{
 			get;
 			private set;
 		}
-		public int nサウンドバッファサイズ		// 取りあえず0固定★★★★★★★★★★★★★★★★★★★★
+		public int SoundBufferSize		// 取りあえず0固定★★★★★★★★★★★★★★★★★★★★
 		{
 			get { return 0; }
 		}
-		public bool bストリーム再生する			// 取りあえずfalse固定★★★★★★★★★★★★★★★★★★★★
+		public bool IsStreamPlay			// 取りあえずfalse固定★★★★★★★★★★★★★★★★★★★★
 												// trueにすると同一チップ音の多重再生で問題が出る(4POLY音源として動かない)
 		{
 			get { return false; }
 		}
-		public double db周波数倍率
+		public double Frequency
 		{
 			get
 			{
-				return _db周波数倍率;
+				return _Frequency;
 			}
 			set
 			{
-				if ( _db周波数倍率 != value )
+				if ( _Frequency != value )
 				{
-					_db周波数倍率 = value;
-					if ( bBASSサウンドである )
+					_Frequency = value;
+					if ( IsBassSound )
 					{
-						Bass.ChannelSetAttribute( this.hBassStream, ChannelAttribute.Frequency, ( float ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 ) );
+						Bass.ChannelSetAttribute( this.hBassStream, ChannelAttribute.Frequency, ( float ) ( _Frequency * _PlaySpeed * nオリジナルの周波数 ) );
 					}
 				}
 			}
 		}
-		public double db再生速度
+		public double PlaySpeed
 		{
 			get
 			{
-				return _db再生速度;
+				return _PlaySpeed;
 			}
 			set
 			{
-				if ( _db再生速度 != value )
+				if ( _PlaySpeed != value )
 				{
-					_db再生速度 = value;
-					bIs1倍速再生 = ( _db再生速度 == 1.000f );
-					if ( bBASSサウンドである )
+					_PlaySpeed = value;
+					IsNormalSpeed = ( _PlaySpeed == 1.000f );
+					if ( IsBassSound )
 					{
-						if ( _hTempoStream != 0 && !this.bIs1倍速再生 )	// 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
+						if ( _hTempoStream != 0 && !this.IsNormalSpeed )	// 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
 				        {
 							this.hBassStream = _hTempoStream;
 				        }
@@ -527,13 +527,13 @@ namespace FDK
 
 						if ( CSound管理.bIsTimeStretch )
 						{
-							Bass.ChannelSetAttribute( this.hBassStream, ChannelAttribute.Tempo, (float) ( db再生速度 * 100 - 100 ) );
+							Bass.ChannelSetAttribute( this.hBassStream, ChannelAttribute.Tempo, (float) ( PlaySpeed * 100 - 100 ) );
 							//double seconds = Bass.BASS_ChannelBytes2Seconds( this.hTempoStream, nBytes );
 							//this.n総演奏時間ms = (int) ( seconds * 1000 );
 						}
 						else
 						{
-							Bass.ChannelSetAttribute( this.hBassStream, ChannelAttribute.Frequency, ( float ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 ) );
+							Bass.ChannelSetAttribute( this.hBassStream, ChannelAttribute.Frequency, ( float ) ( _Frequency * _PlaySpeed * nオリジナルの周波数 ) );
 						}
 					}
 				}
@@ -684,7 +684,7 @@ namespace FDK
 	    {
 	        set
 	        {
-	            if (this.bBASSサウンドである)
+	            if (this.IsBassSound)
 	            {
 	                var db音量 = ((value.ToDouble() / 100.0) + 1.0).Clamp(0, 1);
 	                Bass.ChannelSetAttribute(this._hBassStream, ChannelAttribute.Volume, (float) db音量);
@@ -700,7 +700,7 @@ namespace FDK
 		{
 			get
 			{
-				if( this.bBASSサウンドである )
+				if( this.IsBassSound )
 				{
 					float f位置 = 0.0f;
 					if ( !Bass.ChannelGetAttribute( this.hBassStream, ChannelAttribute.Pan, out f位置 ) )
@@ -712,7 +712,7 @@ namespace FDK
 			}
 			set
 			{
-				if( this.bBASSサウンドである )
+				if( this.IsBassSound )
 				{
 					float f位置 = Math.Min( Math.Max( value, -100 ), 100 ) / 100.0f;	// -100～100 → -1.0～1.0
 					//var nodes = new BASS_MIXER_NODE[ 1 ] { new BASS_MIXER_NODE( 0, f位置 ) };
@@ -726,14 +726,14 @@ namespace FDK
 		/// <para>全インスタンスリスト。</para>
 		/// <para>～を作成する() で追加され、t解放する() or Dispose() で解放される。</para>
 		/// </summary>
-		public static readonly ObservableCollection<CSound> listインスタンス = new ObservableCollection<CSound>();
+		public static readonly ObservableCollection<CSound> SoundInstances = new ObservableCollection<CSound>();
 
 		public static void ShowAllCSoundFiles()
 		{
 			int i = 0;
-			foreach ( CSound cs in listインスタンス )
+			foreach ( CSound cs in SoundInstances )
 			{
-				Debug.WriteLine( i++.ToString( "d3" ) + ": " + Path.GetFileName( cs.strファイル名 ) );
+				Debug.WriteLine( i++.ToString( "d3" ) + ": " + Path.GetFileName( cs.FileName ) );
 			}
 		}
 
@@ -741,8 +741,8 @@ namespace FDK
 		{
 		    SoundGroup = soundGroup;
 			this.n位置 = 0;
-			this._db周波数倍率 = 1.0;
-			this._db再生速度 = 1.0;
+			this._Frequency = 1.0;
+			this._PlaySpeed = 1.0;
 //			this._cbRemoveMixerChannel = new WaitCallback( RemoveMixerChannelLater );
 			this._hBassStream = -1;
 			this._hTempoStream = 0;
@@ -768,17 +768,17 @@ namespace FDK
 
 		public void tサウンドを破棄する( CSound cs )
 		{
-			cs.t解放する();
+			cs.tDispose();
 		}
 		public void t再生を開始する()
 		{
-			t再生位置を先頭に戻す();
+			tSetPositonToBegin();
 			if (!b速度上げすぎ問題)
-				tサウンドを再生する(false);
+				tPlaySound(false);
 		}
 		public void t再生を開始する( bool bループする )
 		{
-			if ( bBASSサウンドである )
+			if ( IsBassSound )
 			{
 				if ( bループする )
 				{
@@ -789,31 +789,31 @@ namespace FDK
 					Bass.ChannelFlags( this.hBassStream, BassFlags.Default, BassFlags.Default );
 				}
 			}
-			t再生位置を先頭に戻す();
-			tサウンドを再生する( bループする );
+			tSetPositonToBegin();
+			tPlaySound( bループする );
 		}
 		public void t再生を停止する()
 		{
-			tサウンドを停止する();
-			t再生位置を先頭に戻す();
+			tStopSound();
+			tSetPositonToBegin();
 		}
 		public void t再生を一時停止する()
 		{
-			tサウンドを停止する(true);
+			tStopSound(true);
 			this.n一時停止回数++;
 		}
 		public void t再生を再開する( long t )	// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 		{
 			Debug.WriteLine( "t再生を再開する(long " + t + ")" );
-			t再生位置を変更する( t );
-			tサウンドを再生する();
+			tSetPositonToBegin( t );
+			tPlaySound();
 			this.n一時停止回数--;
 		}
 		public bool b一時停止中
 		{
 			get
 			{
-				if ( this.bBASSサウンドである )
+				if ( this.IsBassSound )
 				{
 					bool ret = ( !BassMixExtensions.ChannelIsPlaying( this.hBassStream ) ) &
 								( BassMix.ChannelGetPosition( this.hBassStream ) > 0 );
@@ -847,31 +847,30 @@ namespace FDK
 		#endregion
 
 
-		public void t解放する()
+		public void tDispose()
 		{
-			t解放する( false );
+			tDispose( false );
 		}
 
-		public void t解放する( bool _bインスタンス削除 )
+		public void tDispose( bool deleteInstance )
 		{
-			if ( this.bBASSサウンドである )		// stream数の削減用
+			if ( this.IsBassSound )		// stream数の削減用
 			{
-				tBASSサウンドをミキサーから削除する();
+				tRemoveSoundFromMixer();
 				//_cbStreamXA = null;
 				CSound管理.nStreams--;
 			}
-			bool bManagedも解放する = true;
-			bool bインスタンス削除 = _bインスタンス削除;	// CSoundの再初期化時は、インスタンスは存続する。
-			this.Dispose( bManagedも解放する, bインスタンス削除 );
+			bool disposeWithManaged = true;
+			this.Dispose( disposeWithManaged, deleteInstance );
 //Debug.WriteLine( "Disposed: " + _bインスタンス削除 + " : " + Path.GetFileName( this.strファイル名 ) );
 		}
-		public void tサウンドを再生する()
+		public void tPlaySound()
 		{
-			tサウンドを再生する( false );
+			tPlaySound( false );
 		}
-		private void tサウンドを再生する( bool bループする )
+		private void tPlaySound( bool bループする )
 		{
-			if ( this.bBASSサウンドである )			// BASSサウンド時のループ処理は、t再生を開始する()側に実装。ここでは「bループする」は未使用。
+			if ( this.IsBassSound )			// BASSサウンド時のループ処理は、t再生を開始する()側に実装。ここでは「bループする」は未使用。
 			{
 //Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				bool b = BassMixExtensions.ChannelPlay( this.hBassStream );
@@ -882,7 +881,7 @@ namespace FDK
 					bool bb = tBASSサウンドをミキサーに追加する();
 					if ( !bb )
 					{
-Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strファイル名 ) + ", ErrCode=" + Bass.LastError );
+Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.FileName ) + ", ErrCode=" + Bass.LastError );
 					}
 					else
 					{
@@ -893,7 +892,7 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 					bool bbb = BassMixExtensions.ChannelPlay( this.hBassStream );
 					if (!bbb)
 					{
-Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイル名) + ", ErrCode=" + Bass.LastError );
+Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.FileName) + ", ErrCode=" + Bass.LastError );
 					}
 					else
 					{
@@ -906,21 +905,21 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				}
 			}
 		}
-		public void tサウンドを停止してMixerからも削除する()
+		public void tStopSoundAndRemoveSoundFromMixer()
 		{
-			tサウンドを停止する( false );
-			if ( bBASSサウンドである )
+			tStopSound( false );
+			if ( IsBassSound )
 			{
-				tBASSサウンドをミキサーから削除する();
+				tRemoveSoundFromMixer();
 			}
 		}
-		public void tサウンドを停止する()
+		public void tStopSound()
 		{
-			tサウンドを停止する( false );
+			tStopSound( false );
 		}
-		public void tサウンドを停止する( bool pause )
+		public void tStopSound( bool pause )
 		{
-			if( this.bBASSサウンドである )
+			if( this.IsBassSound )
 			{
 //Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMixExtensions.ChannelPause( this.hBassStream );
@@ -932,34 +931,34 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			this.n一時停止回数 = 0;
 		}
 		
-		public void t再生位置を先頭に戻す()
+		public void tSetPositonToBegin()
 		{
-			if( this.bBASSサウンドである )
+			if( this.IsBassSound )
 			{
 				BassMix.ChannelSetPosition( this.hBassStream, 0 );
 				//pos = 0;
 			}
 		}
-		public void t再生位置を変更する( long n位置ms )
+		public void tSetPositonToBegin( long positionMs )
 		{
-			if( this.bBASSサウンドである )
+			if( this.IsBassSound )
 			{
 				bool b = true;
 				try
 				{
-					b = BassMix.ChannelSetPosition( this.hBassStream, Bass.ChannelSeconds2Bytes( this.hBassStream, n位置ms * this.db周波数倍率 * this.db再生速度 / 1000.0 ), PositionFlags.Bytes );
+					b = BassMix.ChannelSetPosition( this.hBassStream, Bass.ChannelSeconds2Bytes( this.hBassStream, positionMs * this.Frequency * this.PlaySpeed / 1000.0 ), PositionFlags.Bytes );
 				}
 				catch( Exception e )
 				{
 					Trace.TraceError( e.ToString() );
-					Trace.TraceInformation( Path.GetFileName( this.strファイル名 ) + ": Seek error: " + e.ToString() + ": " + n位置ms + "ms" );
+					Trace.TraceInformation( Path.GetFileName( this.FileName ) + ": Seek error: " + e.ToString() + ": " + positionMs + "ms" );
 				}
 				finally
 				{
 					if ( !b )
 					{
 						Errors be = Bass.LastError;
-						Trace.TraceInformation( Path.GetFileName( this.strファイル名 ) + ": Seek error: " + be.ToString() + ": " + n位置ms + "MS" );
+						Trace.TraceInformation( Path.GetFileName( this.FileName ) + ": Seek error: " + be.ToString() + ": " + positionMs + "MS" );
 					}
 				}
 				//if ( this.n総演奏時間ms > 5000 )
@@ -971,40 +970,40 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		/// <summary>
 		/// デバッグ用
 		/// </summary>
-		/// <param name="n位置byte"></param>
-		/// <param name="db位置ms"></param>
-		public void t再生位置を取得する( out long n位置byte, out double db位置ms )
+		/// <param name="positionByte"></param>
+		/// <param name="positionMs"></param>
+		public void tGetPlayPositon( out long positionByte, out double positionMs )
 		{
-			if ( this.bBASSサウンドである )
+			if ( this.IsBassSound )
 			{
-				n位置byte = BassMix.ChannelGetPosition( this.hBassStream );
-				db位置ms = Bass.ChannelBytes2Seconds( this.hBassStream, n位置byte );
+				positionByte = BassMix.ChannelGetPosition( this.hBassStream );
+				positionMs = Bass.ChannelBytes2Seconds( this.hBassStream, positionByte );
 			}
 			else
 			{
-				n位置byte = 0;
-				db位置ms = 0.0;
+				positionByte = 0;
+				positionMs = 0.0;
 			}
 		}
 
 
-		public static void tすべてのサウンドを初期状態に戻す()
+		public static void tResetAllSound()
 		{
-			foreach ( var sound in CSound.listインスタンス )
+			foreach ( var sound in CSound.SoundInstances )
 			{
-				sound.t解放する( false );
+				sound.tDispose( false );
 			}
 		}
-		internal static void tすべてのサウンドを再構築する( ISoundDevice device )
+		internal static void tReloadSound( ISoundDevice device )
 		{
-			if( CSound.listインスタンス.Count == 0 )
+			if( CSound.SoundInstances.Count == 0 )
 				return;
 
 
 			// サウンドを再生する際にインスタンスリストも更新されるので、配列にコピーを取っておき、リストはクリアする。
 
-			var sounds = CSound.listインスタンス.ToArray();
-			CSound.listインスタンス.Clear();
+			var sounds = CSound.SoundInstances.ToArray();
+			CSound.SoundInstances.Clear();
 			
 
 			// 配列に基づいて個々のサウンドを作成する。
@@ -1015,9 +1014,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				{
 					#region [ ファイルから ]
 					case E作成方法.ファイルから:
-						string strファイル名 = sounds[ i ].strファイル名;
+						string strファイル名 = sounds[ i ].FileName;
 						sounds[ i ].Dispose( true, false );
-						device.tサウンドを作成する( strファイル名, sounds[ i ] );
+						device.tCreateSound( strファイル名, sounds[ i ] );
 						break;
 					#endregion
 				}
@@ -1031,9 +1030,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			this.Dispose( true, true );
 			GC.SuppressFinalize( this );
 		}
-		private void Dispose( bool bManagedも解放する, bool bインスタンス削除 )
+		private void Dispose( bool deleteWithManaged, bool deleteInstance )
 		{
-			if( this.bBASSサウンドである )
+			if( this.IsBassSound )
 			{
 				#region [ ASIO, WASAPI の解放 ]
 				//-----------------
@@ -1051,7 +1050,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				#endregion
 			}
 
-			if( bManagedも解放する )
+			if( deleteWithManaged )
 			{
 				//int freeIndex = -1;
 
@@ -1063,14 +1062,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				//        Debug.WriteLine( "ERR: freeIndex==-1 : Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
 				//    }
 				//}
-				if ( this.byArrWAVファイルイメージ != null )
-				{
-					this.byArrWAVファイルイメージ = null;
-				}
 
 			    this.eデバイス種別 = ESoundDeviceType.Unknown;
 
-				if ( bインスタンス削除 )
+				if ( deleteInstance )
 				{
 					//try
 					//{
@@ -1080,10 +1075,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					//{
 					//    Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
 					//}
-					bool b = CSound.listインスタンス.Remove( this );	// これだと、Clone()したサウンドのremoveに失敗する
+					bool b = CSound.SoundInstances.Remove( this );	// これだと、Clone()したサウンドのremoveに失敗する
 					if ( !b )
 					{
-						Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
+						Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.SoundInstances.Count + ", filename=" + Path.GetFileName( this.FileName ) );
 					}
 
 				}
@@ -1101,8 +1096,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		protected enum E作成方法 { ファイルから, Unknown }
 		protected E作成方法 e作成方法 = E作成方法.Unknown;
 		protected ESoundDeviceType eデバイス種別 = ESoundDeviceType.Unknown;
-		public string strファイル名 = null;
-		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
+		public string FileName = null;
 		protected GCHandle hGC;
 		protected int _hTempoStream = 0;
 		protected int _hBassStream = -1;					// ASIO, WASAPI 用
@@ -1133,7 +1127,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 		#region [ private ]
 		//-----------------
-		private bool bBASSサウンドである
+		private bool IsBassSound
 		{
 			get
 			{
@@ -1153,14 +1147,14 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private long nBytes = 0;
 		private int n一時停止回数 = 0;
 		private int nオリジナルの周波数 = 0;
-		private double _db周波数倍率 = 1.0;
-		private double _db再生速度 = 1.0;
-		private bool bIs1倍速再生 = true;
+		private double _Frequency = 1.0;
+		private double _PlaySpeed = 1.0;
+		private bool IsNormalSpeed = true;
 
 		public void tBASSサウンドを作成する( string strファイル名, int hMixer, BassFlags flags )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
-			this.strファイル名 = strファイル名;
+			this.FileName = strファイル名;
 
 
 			// BASSファイルストリームを作成。
@@ -1194,7 +1188,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				}
 			}
 
-			if ( _hTempoStream != 0 && !this.bIs1倍速再生 )	// 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
+			if ( _hTempoStream != 0 && !this.IsNormalSpeed )	// 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
 			{
 				this.hBassStream = _hTempoStream;
 			}
@@ -1209,7 +1203,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 			// n総演奏時間の取得; DTXMania用に追加。
 			double seconds = Bass.ChannelBytes2Seconds( this._hBassStream, nBytes );
-			this.n総演奏時間ms = (int) ( seconds * 1000 );
+			this.TotalPlayTime = (int) ( seconds * 1000 );
 			//this.pos = 0;
 			this.hMixer = hMixer;
 			float freq = 0.0f;
@@ -1222,7 +1216,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 		    // インスタンスリストに登録。
 
-		    CSound.listインスタンス.Add( this );
+		    CSound.SoundInstances.Add( this );
 		}
 		//-----------------
 
@@ -1258,7 +1252,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 // mixerからの削除
 
-		public bool tBASSサウンドをミキサーから削除する()
+		public bool tRemoveSoundFromMixer()
 		{
 			return tBASSサウンドをミキサーから削除する( this.hBassStream );
 		}
@@ -1288,7 +1282,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 				bool b1 = BassMix.MixerAddChannel( this.hMixer, this.hBassStream, bf );
 				//bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
-				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
+				tSetPositonToBegin();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
 //Trace.TraceInformation( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
 				Bass.ChannelUpdate( this.hBassStream, 0 );	// pre-buffer
 				return b1;	// &b2;

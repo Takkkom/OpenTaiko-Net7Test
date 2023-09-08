@@ -19,7 +19,7 @@ namespace TJAPlayer3
 			if( this.sound != null )
 			{
 				this.sound.t再生を停止する();
-				TJAPlayer3.Sound管理.tサウンドを破棄する( this.sound );
+				TJAPlayer3.Sound管理.tDisposeSound( this.sound );
 				this.sound = null;
 			}
 		}
@@ -107,16 +107,16 @@ namespace TJAPlayer3
                     Cスコア cスコア = TJAPlayer3.stage選曲.r現在選択中のスコア;
                     if (long再生位置 == -1)
                     {
-                        this.long再生開始時のシステム時刻 = CSound管理.rc演奏用タイマ.nシステム時刻ms;
+                        this.long再生開始時のシステム時刻 = CSound管理.PlayTimer.nシステム時刻ms;
                         this.long再生位置 = cスコア.譜面情報.nデモBGMオフセット;
                         
-                        this.sound.t再生位置を変更する(cスコア.譜面情報.nデモBGMオフセット);
+                        this.sound.tSetPositonToBegin(cスコア.譜面情報.nデモBGMオフセット);
 
                     }
                     else
                     {
-						this.long再生位置 = CSound管理.rc演奏用タイマ.nシステム時刻ms - this.long再生開始時のシステム時刻;
-						if (this.long再生位置 >= this.sound.n総演奏時間ms - cスコア.譜面情報.nデモBGMオフセット) //2020.04.18 Mr-Ojii #DEMOSTARTから何度も再生するために追加
+						this.long再生位置 = CSound管理.PlayTimer.nシステム時刻ms - this.long再生開始時のシステム時刻;
+						if (this.long再生位置 >= this.sound.TotalPlayTime - cスコア.譜面情報.nデモBGMオフセット) //2020.04.18 Mr-Ojii #DEMOSTARTから何度も再生するために追加
 							this.long再生位置 = -1;
 					}
 					//if (this.long再生位置 >= (this.sound.n総演奏時間ms - cスコア.譜面情報.nデモBGMオフセット) - 1 && this.long再生位置 <= (this.sound.n総演奏時間ms - cスコア.譜面情報.nデモBGMオフセット) + 0)
@@ -170,7 +170,7 @@ namespace TJAPlayer3
                 {
                     strPreviewFilename = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.strBGMファイル名;
 					if(TJAPlayer3.ConfigIni.bBGM音を発声する)
-                    this.sound = TJAPlayer3.Sound管理.tサウンドを生成する( strPreviewFilename, ESoundGroup.SongPreview );
+                    this.sound = TJAPlayer3.Sound管理.tCreateSound( strPreviewFilename, ESoundGroup.SongPreview );
 					if (this.sound == null) return;
                     //this.sound.db再生速度 = ((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0;
 
@@ -189,10 +189,10 @@ namespace TJAPlayer3
 
                     if( long再生位置 == -1 )
                     {
-                        this.long再生開始時のシステム時刻 = CSound管理.rc演奏用タイマ.nシステム時刻ms;
+                        this.long再生開始時のシステム時刻 = CSound管理.PlayTimer.nシステム時刻ms;
                         this.long再生位置 = cスコア.譜面情報.nデモBGMオフセット;
-                        this.sound.t再生位置を変更する(cスコア.譜面情報.nデモBGMオフセット);
-                        this.long再生位置 = CSound管理.rc演奏用タイマ.nシステム時刻ms - this.long再生開始時のシステム時刻;
+                        this.sound.tSetPositonToBegin(cスコア.譜面情報.nデモBGMオフセット);
+                        this.long再生位置 = CSound管理.PlayTimer.nシステム時刻ms - this.long再生開始時のシステム時刻;
                     }
                     //if( long再生位置 == this.sound.n総演奏時間ms - 10 )
                     //    this.long再生位置 = -1;

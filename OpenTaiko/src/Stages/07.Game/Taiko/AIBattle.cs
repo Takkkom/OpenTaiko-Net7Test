@@ -36,9 +36,9 @@ namespace TJAPlayer3
 
             if (!base.b活性化してない)
             {
-                BarFlashCounter = new CCounter(0, 1000.0, 0.00035, CSound管理.rc演奏用タイマ);
+                BarFlashCounter = new CCounter(0, 1000.0, 0.00035, CSound管理.PlayTimer);
 
-                BatchAnimeCounter = new CCounter(0, 10000.0, 1.0 / 1000.0, CSound管理.rc演奏用タイマ);
+                BatchAnimeCounter = new CCounter(0, 10000.0, 1.0 / 1000.0, CSound管理.PlayTimer);
 
                 base.OnManagedリソースの作成();
             }
@@ -228,7 +228,7 @@ namespace TJAPlayer3
 
         private void DrawJudgeNumber(int x, int y, int num)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - (nums.Length / 2.0f);

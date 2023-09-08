@@ -59,8 +59,8 @@ namespace TJAPlayer3
                 }
             }
 
-            this.ar踊り子モーション番号 = C変換.ar配列形式のstringをint配列に変換して返す(TJAPlayer3.Skin.Game_Dancer_Motion);
-            if(this.ar踊り子モーション番号 == null) ar踊り子モーション番号 = C変換.ar配列形式のstringをint配列に変換して返す("0,0");
+            this.ar踊り子モーション番号 = CConversion.ar配列形式のstringをint配列に変換して返す(TJAPlayer3.Skin.Game_Dancer_Motion);
+            if(this.ar踊り子モーション番号 == null) ar踊り子モーション番号 = CConversion.ar配列形式のstringをint配列に変換して返す("0,0");
 
             nNowDancerCounter = 0;
             nNowDancerFrame = 0;

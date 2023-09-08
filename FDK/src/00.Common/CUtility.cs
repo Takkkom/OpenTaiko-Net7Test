@@ -7,33 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace FDK
 {
-	public class C共通
+	public class CUtility
 	{
-		// 解放
-
-		public static void tDisposeする<T>( ref T obj )
-		{
-			if( obj == null )
-				return;
-
-			var d = obj as IDisposable;
-
-			if( d != null )
-			{
-				d.Dispose();
-				obj = default( T );
-			}
-		}
-		public static void tDisposeする<T>( T obj )
-		{
-			if( obj == null )
-				return;
-
-			var d = obj as IDisposable;
-
-			if( d != null )
-				d.Dispose();
-		}
 
 		public static void t完全なガベージコレクションを実施する()
 		{

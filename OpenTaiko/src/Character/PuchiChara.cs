@@ -21,7 +21,7 @@ namespace TJAPlayer3
         public override void On活性化()
         {
             Counter = new CCounter(0, TJAPlayer3.Skin.Game_PuchiChara[2] - 1, TJAPlayer3.Skin.Game_PuchiChara_Timer * 0.5f, TJAPlayer3.Timer);
-            SineCounter = new CCounter(0, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer, CSound管理.rc演奏用タイマ);
+            SineCounter = new CCounter(0, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer, CSound管理.PlayTimer);
             SineCounterIdle = new CCounter(1, 360, (float)TJAPlayer3.Skin.Game_PuchiChara_SineTimer * 2f, TJAPlayer3.Timer);
             this.inGame = false;
             base.On活性化();
@@ -48,7 +48,7 @@ namespace TJAPlayer3
         public void ChangeBPM(double bpm)
         {
             Counter = new CCounter(0, TJAPlayer3.Skin.Game_PuchiChara[2] - 1, (int)(TJAPlayer3.Skin.Game_PuchiChara_Timer * bpm / TJAPlayer3.Skin.Game_PuchiChara[2]), TJAPlayer3.Timer);
-            SineCounter = new CCounter(1, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer * bpm / 180, CSound管理.rc演奏用タイマ);
+            SineCounter = new CCounter(1, 360, TJAPlayer3.Skin.Game_PuchiChara_SineTimer * bpm / 180, CSound管理.PlayTimer);
             this.inGame = true;
         }
 

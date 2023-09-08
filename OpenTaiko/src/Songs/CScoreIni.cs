@@ -713,41 +713,41 @@ namespace TJAPlayer3
 							}
 							else if( item.Equals( "PlayCountDrums" ) )
 							{
-								this.stファイル.PlayCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
+								this.stファイル.PlayCountDrums = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
 							}
 							else if( item.Equals( "PlayCountGuitars" ) )// #23596 11.2.5 changed ikanick
 							{
-								this.stファイル.PlayCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
+								this.stファイル.PlayCountGuitar = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
 							}
 							else if( item.Equals( "PlayCountBass" ) )
 							{
-								this.stファイル.PlayCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
+								this.stファイル.PlayCountBass = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
                             }
                             // #23596 10.11.16 add ikanick------------------------------------/
                             else if (item.Equals("ClearCountDrums"))
                             {
-                                this.stファイル.ClearCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                this.stファイル.ClearCountDrums = CConversion.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
                             }
                             else if (item.Equals("ClearCountGuitars"))// #23596 11.2.5 changed ikanick
                             {
-                                this.stファイル.ClearCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                this.stファイル.ClearCountGuitar = CConversion.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
                             }
                             else if (item.Equals("ClearCountBass"))
                             {
-                                this.stファイル.ClearCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
+                                this.stファイル.ClearCountBass = CConversion.n値を文字列から取得して範囲内に丸めて返す(para, 0, 99999999, 0);
                             }
                             // #24459 2011.2.24 yyagi-----------------------------------------/
 							else if ( item.Equals( "BestRankDrums" ) )
 							{
-								this.stファイル.BestRank.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
+								this.stファイル.BestRank.Drums = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
 							}
 							else if ( item.Equals( "BestRankGuitar" ) )
 							{
-								this.stファイル.BestRank.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
+								this.stファイル.BestRank.Guitar = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
 							}
 							else if ( item.Equals( "BestRankBass" ) )
 							{
-								this.stファイル.BestRank.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
+								this.stファイル.BestRank.Bass = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, (int) ERANK.SS, (int) ERANK.E, (int) ERANK.UNKNOWN );
 							}
 							//----------------------------------------------------------------/
 							else if ( item.Equals( "History0" ) )
@@ -772,11 +772,11 @@ namespace TJAPlayer3
 							}
 							else if( item.Equals( "HistoryCount" ) )
 							{
-								this.stファイル.HistoryCount = C変換.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
+								this.stファイル.HistoryCount = CConversion.n値を文字列から取得して範囲内に丸めて返す( para, 0, 99999999, 0 );
 							}
 							else if( item.Equals( "BGMAdjust" ) )
 							{
-								this.stファイル.BGMAdjust = C変換.n値を文字列から取得して返す( para, 0 );
+								this.stファイル.BGMAdjust = CConversion.n値を文字列から取得して返す( para, 0 );
 							}
 							continue;
 							#endregion
@@ -873,31 +873,31 @@ namespace TJAPlayer3
 							}
 							else if ( item.Equals( "TightDrums" ) )
 							{
-								c演奏記録.bTight = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bTight = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "SuddenDrums" ) )
 							{
-								c演奏記録.bSudden.Drums = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bSudden.Drums = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "SuddenGuitar" ) )
 							{
-								c演奏記録.bSudden.Guitar = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bSudden.Guitar = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "SuddenBass" ) )
 							{
-								c演奏記録.bSudden.Bass = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bSudden.Bass = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "HiddenDrums" ) )
 							{
-								c演奏記録.bHidden.Drums = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bHidden.Drums = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "HiddenGuitar" ) )
 							{
-								c演奏記録.bHidden.Guitar = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bHidden.Guitar = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "HiddenBass" ) )
 							{
-								c演奏記録.bHidden.Bass = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bHidden.Bass = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "InvisibleDrums" ) )
 							{
@@ -913,15 +913,15 @@ namespace TJAPlayer3
 							}
 							else if ( item.Equals( "ReverseDrums" ) )
 							{
-								c演奏記録.bReverse.Drums = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bReverse.Drums = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "ReverseGuitar" ) )
 							{
-								c演奏記録.bReverse.Guitar = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bReverse.Guitar = CConversion.bONorOFF( para[ 0 ] );
 							}
 							else if ( item.Equals( "ReverseBass" ) )
 							{
-								c演奏記録.bReverse.Bass = C変換.bONorOFF( para[ 0 ] );
+								c演奏記録.bReverse.Bass = CConversion.bONorOFF( para[ 0 ] );
 							}
 							#endregion
 							else
@@ -987,25 +987,25 @@ namespace TJAPlayer3
 								#region [ LightGuitar ]
 								if ( item.Equals( "LightGuitar" ) )
 								{
-									c演奏記録.bLight.Guitar = C変換.bONorOFF( para[ 0 ] );
+									c演奏記録.bLight.Guitar = CConversion.bONorOFF( para[ 0 ] );
 								}
 								#endregion
 								#region [ LightBass ]
 								else if ( item.Equals( "LightBass" ) )
 								{
-									c演奏記録.bLight.Bass = C変換.bONorOFF( para[ 0 ] );
+									c演奏記録.bLight.Bass = CConversion.bONorOFF( para[ 0 ] );
 								}
 								#endregion
 								#region [ LeftGuitar ]
 								else if ( item.Equals( "LeftGuitar" ) )
 								{
-									c演奏記録.bLeft.Guitar = C変換.bONorOFF( para[ 0 ] );
+									c演奏記録.bLeft.Guitar = CConversion.bONorOFF( para[ 0 ] );
 								}
 								#endregion
 								#region [ LeftBass ]
 								else if ( item.Equals( "LeftBass" ) )
 								{
-									c演奏記録.bLeft.Bass = C変換.bONorOFF( para[ 0 ] );
+									c演奏記録.bLeft.Bass = CConversion.bONorOFF( para[ 0 ] );
 								}
 								#endregion
 								else
@@ -1068,19 +1068,19 @@ namespace TJAPlayer3
 										#region [ Guitar ]
 										if ( item.Equals( "Guitar" ) )
 										{
-											c演奏記録.bGuitar有効 = C変換.bONorOFF( para[ 0 ] );
+											c演奏記録.bGuitar有効 = CConversion.bONorOFF( para[ 0 ] );
 										}
 										#endregion
 										#region [ Drums ]
 										else if ( item.Equals( "Drums" ) )
 										{
-											c演奏記録.bDrums有効 = C変換.bONorOFF( para[ 0 ] );
+											c演奏記録.bDrums有効 = CConversion.bONorOFF( para[ 0 ] );
 										}
 										#endregion
 										#region [ StageFailed ]
 										else if ( item.Equals( "StageFailed" ) )
 										{
-											c演奏記録.bSTAGEFAILED有効 = C変換.bONorOFF( para[ 0 ] );
+											c演奏記録.bSTAGEFAILED有効 = CConversion.bONorOFF( para[ 0 ] );
 										}
 										#endregion
 										else
@@ -1111,19 +1111,19 @@ namespace TJAPlayer3
 											#endregion
 											if ( item.Equals( "UseKeyboard" ) )
 											{
-												c演奏記録.b演奏にキーボードを使用した = C変換.bONorOFF( para[ 0 ] );
+												c演奏記録.b演奏にキーボードを使用した = CConversion.bONorOFF( para[ 0 ] );
 											}
 											else if ( item.Equals( "UseMIDIIN" ) )
 											{
-												c演奏記録.b演奏にMIDI入力を使用した = C変換.bONorOFF( para[ 0 ] );
+												c演奏記録.b演奏にMIDI入力を使用した = CConversion.bONorOFF( para[ 0 ] );
 											}
 											else if ( item.Equals( "UseJoypad" ) )
 											{
-												c演奏記録.b演奏にジョイパッドを使用した = C変換.bONorOFF( para[ 0 ] );
+												c演奏記録.b演奏にジョイパッドを使用した = CConversion.bONorOFF( para[ 0 ] );
 											}
 											else if ( item.Equals( "UseMouse" ) )
 											{
-												c演奏記録.b演奏にマウスを使用した = C変換.bONorOFF( para[ 0 ] );
+												c演奏記録.b演奏にマウスを使用した = CConversion.bONorOFF( para[ 0 ] );
 											}
 											else if ( item.Equals( "PerfectRange" ) )
 											{
@@ -1155,7 +1155,7 @@ namespace TJAPlayer3
 											}
 											else if ( item.Equals( "9LaneMode" ) )
 											{
-												c演奏記録.レーン9モード = C変換.bONorOFF( para[ 0 ] );
+												c演奏記録.レーン9モード = CConversion.bONorOFF( para[ 0 ] );
 											}
                                             else if ( item.Equals( "HiScore1" ) )
                                             {

@@ -122,15 +122,15 @@ namespace TJAPlayer3
 
                 if (i != 0)
                 {
-                    OpenEncyclopedia_Return_Box?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
-                    OpenEncyclopedia_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
-                    _menu.Item2?.tUpdateColor4(C変換.ColorToColor4(Color.DarkGray));
+                    OpenEncyclopedia_Return_Box?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                    OpenEncyclopedia_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                    _menu.Item2?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
                 }
                 else
                 {
-                    OpenEncyclopedia_Return_Box?.tUpdateColor4(C変換.ColorToColor4(Color.White));
-                    OpenEncyclopedia_Side_Menu?.tUpdateColor4(C変換.ColorToColor4(Color.White));
-                    _menu.Item2?.tUpdateColor4(C変換.ColorToColor4(Color.White));
+                    OpenEncyclopedia_Return_Box?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                    OpenEncyclopedia_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                    _menu.Item2?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
                 }
 
                 int x = TJAPlayer3.Skin.OpenEncyclopedia_Side_Menu[0] + TJAPlayer3.Skin.OpenEncyclopedia_Side_Menu_Move[0] * i;

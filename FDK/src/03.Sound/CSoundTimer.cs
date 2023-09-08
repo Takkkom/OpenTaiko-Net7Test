@@ -13,10 +13,10 @@ namespace FDK
 		{
 			get
 			{
-				if( this.Device.e出力デバイス == ESoundDeviceType.Bass || 
-					this.Device.e出力デバイス == ESoundDeviceType.ExclusiveWASAPI || 
-					this.Device.e出力デバイス == ESoundDeviceType.SharedWASAPI ||
-					this.Device.e出力デバイス == ESoundDeviceType.ASIO )
+				if( this.Device.SoundDeviceType == ESoundDeviceType.Bass || 
+					this.Device.SoundDeviceType == ESoundDeviceType.ExclusiveWASAPI || 
+					this.Device.SoundDeviceType == ESoundDeviceType.SharedWASAPI ||
+					this.Device.SoundDeviceType == ESoundDeviceType.ASIO )
 				{
 					// BASS 系の ISoundDevice.n経過時間ms はオーディオバッファの更新間隔ずつでしか更新されないため、単にこれを返すだけではとびとびの値になる。
 					// そこで、更新間隔の最中に呼ばれた場合は、システムタイマを使って補間する。

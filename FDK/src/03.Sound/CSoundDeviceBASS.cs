@@ -13,7 +13,7 @@ namespace FDK
 	{
 		// プロパティ
 
-		public ESoundDeviceType e出力デバイス
+		public ESoundDeviceType SoundDeviceType
 		{
 			get;
 			protected set;
@@ -23,7 +23,7 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public long n実バッファサイズms
+		public long BufferSize
 		{
 			get;
 			protected set;
@@ -77,7 +77,7 @@ namespace FDK
 		public CSoundDeviceBASS(int UpdatePeriod, int BufferSizems)
 		{
 			Trace.TraceInformation("Start initialization of BASS");
-			this.e出力デバイス = ESoundDeviceType.Unknown;
+			this.SoundDeviceType = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = 0;
 			this.n経過時間ms = 0;
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
@@ -151,7 +151,7 @@ namespace FDK
 				};
 			}
 
-			this.e出力デバイス = ESoundDeviceType.Bass;
+			this.SoundDeviceType = ESoundDeviceType.Bass;
 
 			// 出力を開始。
 
@@ -166,7 +166,7 @@ namespace FDK
 			{
 				Bass.GetInfo(out var info);
 
-				this.n実バッファサイズms = this.n実出力遅延ms = info.Latency + BufferSizems;//求め方があっているのだろうか…
+				this.BufferSize = this.n実出力遅延ms = info.Latency + BufferSizems;//求め方があっているのだろうか…
 
 				Trace.TraceInformation("BASS デバイス出力開始:[{0}ms]", this.n実出力遅延ms);
 			}
@@ -176,14 +176,14 @@ namespace FDK
 		}
 
 		#region [ tCreateSound() ]
-		public CSound tサウンドを作成する(string strFilename, ESoundGroup soundGroup)
+		public CSound tCreateSound(string strFilename, ESoundGroup soundGroup)
 		{
 			var sound = new CSound(soundGroup);
 			sound.tBASSサウンドを作成する(strFilename, this.hMixer);
 			return sound;
 		}
 
-		public void tサウンドを作成する(string strFilename, CSound sound)
+		public void tCreateSound(string strFilename, CSound sound)
 		{
 			sound.tBASSサウンドを作成する(strFilename, this.hMixer);
 		}
@@ -199,7 +199,7 @@ namespace FDK
 		}
 		protected void Dispose(bool bManagedDispose)
 		{
-			this.e出力デバイス = ESoundDeviceType.Unknown;      // まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
+			this.SoundDeviceType = ESoundDeviceType.Unknown;      // まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if (hMainStream != -1)
 			{
 				Bass.StreamFree(this.hMainStream);

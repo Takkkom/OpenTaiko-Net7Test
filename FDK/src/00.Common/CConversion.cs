@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FDK
 {
-	public class C変換
+	public class CConversion
 	{
 		// プロパティ
 
@@ -259,7 +259,7 @@ namespace FDK
 		//-----------------
 
 		// private コンストラクタでインスタンス生成を禁止する。
-		private C変換()
+		private CConversion()
 		{
 		}
 		//-----------------

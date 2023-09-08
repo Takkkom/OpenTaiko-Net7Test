@@ -84,7 +84,7 @@ namespace TJAPlayer3
 				case (int) EOrder.Continue:
                     TJAPlayer3.stage演奏ドラム画面.bPAUSE = false;
 
-                    CSound管理.rc演奏用タイマ.t再開();
+                    CSound管理.PlayTimer.t再開();
 					TJAPlayer3.Timer.t再開();
 					TJAPlayer3.DTX.t全チップの再生再開();
                     TJAPlayer3.stage演奏ドラム画面.actAVI.tPauseControl();
@@ -100,7 +100,7 @@ namespace TJAPlayer3
 					}
                     else
 					{
-						CSound管理.rc演奏用タイマ.t再開();
+						CSound管理.PlayTimer.t再開();
 						TJAPlayer3.Timer.t再開();
 						TJAPlayer3.stage演奏ドラム画面.t演奏中止();
 						CActSelectPopupMenu.b選択した = true;
@@ -109,7 +109,7 @@ namespace TJAPlayer3
 					break;
 
 				case (int) EOrder.Return:
-                    CSound管理.rc演奏用タイマ.t再開();
+                    CSound管理.PlayTimer.t再開();
 					TJAPlayer3.Timer.t再開();
                     TJAPlayer3.stage演奏ドラム画面.t演奏中止();
 					CActSelectPopupMenu.b選択した = true;

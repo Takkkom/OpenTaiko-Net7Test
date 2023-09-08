@@ -19,7 +19,7 @@ namespace TJAPlayer3
                 {
                     base.b初めての進行描画 = false;
                 }
-                long num = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
+                long num = FDK.CSound管理.PlayTimer.n現在時刻;
 
 
                 if( !this.ctTimer.b停止中 )

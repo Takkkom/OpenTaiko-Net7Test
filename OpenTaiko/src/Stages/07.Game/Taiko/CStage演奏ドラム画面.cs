@@ -339,10 +339,10 @@ namespace TJAPlayer3
                         //this.soundAdlib[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.adlib[actual]), ESoundGroup.SoundEffect);
                         //this.soundClap[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.clap[actual]), ESoundGroup.SoundEffect);
 
-                        this.soundRed[i] = TJAPlayer3.Sound管理.tサウンドを生成する((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.don[actual]), ESoundGroup.SoundEffect);
-                        this.soundBlue[i] = TJAPlayer3.Sound管理.tサウンドを生成する((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.ka[actual]), ESoundGroup.SoundEffect);
-                        this.soundAdlib[i] = TJAPlayer3.Sound管理.tサウンドを生成する((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.adlib[actual]), ESoundGroup.SoundEffect);
-                        this.soundClap[i] = TJAPlayer3.Sound管理.tサウンドを生成する((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.clap[actual]), ESoundGroup.SoundEffect);
+                        this.soundRed[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.don[actual]), ESoundGroup.SoundEffect);
+                        this.soundBlue[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.ka[actual]), ESoundGroup.SoundEffect);
+                        this.soundAdlib[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.adlib[actual]), ESoundGroup.SoundEffect);
+                        this.soundClap[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.clap[actual]), ESoundGroup.SoundEffect);
 
                         int _panning = TJAPlayer3.ConfigIni.nPanning[TJAPlayer3.ConfigIni.nPlayerCount - 1][i];
                         if (this.soundRed[i] != null) this.soundRed[i].n位置 = _panning;
@@ -385,13 +385,13 @@ namespace TJAPlayer3
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
                     if (this.soundRed[i] != null)
-                        this.soundRed[i].t解放する();
+                        this.soundRed[i].tDispose();
                     if (this.soundBlue[i] != null)
-                        this.soundBlue[i].t解放する();
+                        this.soundBlue[i].tDispose();
                     if (this.soundAdlib[i] != null)
-                        this.soundAdlib[i].t解放する();
+                        this.soundAdlib[i].tDispose();
                     if (this.soundClap[i] != null)
-                        this.soundClap[i].t解放する();
+                        this.soundClap[i].tDispose();
                 }
                 base.OnManagedリソースの解放();
 			}
@@ -407,7 +407,7 @@ namespace TJAPlayer3
 				#region [ 初めての進行描画 ]
 				if ( base.b初めての進行描画 )
 				{
-                    CSound管理.rc演奏用タイマ.tリセット();
+                    CSound管理.PlayTimer.tリセット();
 					TJAPlayer3.Timer.tリセット();
 					this.ctチップ模様アニメ.Drums = new CCounter( 0, 1, 500, TJAPlayer3.Timer );
 					this.ctチップ模様アニメ.Guitar = new CCounter( 0, 0x17, 20, TJAPlayer3.Timer );
@@ -577,7 +577,7 @@ namespace TJAPlayer3
 
                 this.t進行描画_演奏情報();
 
-                if (TJAPlayer3.DTX.listLyric2.Count > ShownLyric2 && TJAPlayer3.DTX.listLyric2[ShownLyric2].Time < (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)))
+                if (TJAPlayer3.DTX.listLyric2.Count > ShownLyric2 && TJAPlayer3.DTX.listLyric2[ShownLyric2].Time < (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)))
                 {
                     this.actPanel.t歌詞テクスチャを生成する(TJAPlayer3.DTX.listLyric2[ShownLyric2++].TextTex);
                 }
@@ -951,7 +951,7 @@ namespace TJAPlayer3
 					if( !inputEvent.b押された )
 						continue;
 
-                    long nTime = (long)(((CSound管理.rc演奏用タイマ.n現在時刻ms + nInputAdjustTimeMs) * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)));
+                    long nTime = (long)(((CSound管理.PlayTimer.n現在時刻ms + nInputAdjustTimeMs) * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)));
                     //int nPad09 = ( nPad == (int) Eパッド.HP ) ? (int) Eパッド.BD : nPad;		// #27029 2012.1.5 yyagi
 
                     bool bHitted = false;
@@ -1404,7 +1404,7 @@ namespace TJAPlayer3
                                 if (e判定 != E判定.Miss && ((_isBigNoteTaiko && TJAPlayer3.ConfigIni.b大音符判定) || _isPinkKonga))
                                 {
                                     double divided_songspeed = (double)TJAPlayer3.ConfigIni.n演奏速度 / 20.0;
-                                    float time = chipNoHit.n発声時刻ms - (float)(CSound管理.rc演奏用タイマ.n現在時刻ms * divided_songspeed);
+                                    float time = chipNoHit.n発声時刻ms - (float)(CSound管理.PlayTimer.n現在時刻ms * divided_songspeed);
                                     int nWaitTime = TJAPlayer3.ConfigIni.n両手判定の待ち時間;
 
                                     bool _timeB110 = time <= 110;
@@ -1413,7 +1413,7 @@ namespace TJAPlayer3
                                     {
                                         if (_timeB110)
                                         {
-                                            chipNoHit.nProcessTime = (int)(CSound管理.rc演奏用タイマ.n現在時刻ms * divided_songspeed);
+                                            chipNoHit.nProcessTime = (int)(CSound管理.PlayTimer.n現在時刻ms * divided_songspeed);
                                             chipNoHit.eNoteState = ENoteState.wait;
                                             //this.nWaitButton = waitInstr;
                                             this.nStoredHit[nUsePlayer] = (int)_pad;
@@ -1429,7 +1429,7 @@ namespace TJAPlayer3
                                         //   + nWaitTime > (int)(CSound管理.rc演奏用タイマ.n現在時刻ms * divided_songspeed))
 
                                         if (_isExpected && _timeB110 && chipNoHit.nProcessTime
-                                           + nWaitTime > (int)(CSound管理.rc演奏用タイマ.n現在時刻ms * divided_songspeed))
+                                           + nWaitTime > (int)(CSound管理.PlayTimer.n現在時刻ms * divided_songspeed))
                                         {
                                             this.tドラムヒット処理(nTime, _pad, chipNoHit, true, nUsePlayer);
                                             bHitted = true;
@@ -1441,7 +1441,7 @@ namespace TJAPlayer3
                                         // else if (this.nWaitButton == waitInstr && _timeB110 && chipNoHit.nProcessTime 
                                         //    + nWaitTime < (int)(CSound管理.rc演奏用タイマ.n現在時刻ms * divided_songspeed))
                                         else if (!_isExpected || (_timeB110 && chipNoHit.nProcessTime
-                                            + nWaitTime < (int)(CSound管理.rc演奏用タイマ.n現在時刻ms * divided_songspeed)))
+                                            + nWaitTime < (int)(CSound管理.PlayTimer.n現在時刻ms * divided_songspeed)))
                                         {
                                             if (!_isPinkKonga)
                                             {
@@ -1858,7 +1858,7 @@ namespace TJAPlayer3
             {
                 if (!pChip.bHit)
                 {
-                    long nPlayTime = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                    long nPlayTime = (long)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                     if ((!pChip.bHit) && (pChip.n発声時刻ms <= nPlayTime))
                     {
                         bool bAutoPlay = TJAPlayer3.ConfigIni.b太鼓パートAutoPlay[nPlayer];
@@ -1982,7 +1982,7 @@ namespace TJAPlayer3
 
 
                         double _scrollSpeed = pChip.dbSCROLL_Y * (this.act譜面スクロール速度.db現在の譜面スクロール速度[nPlayer] + 1.0) / 10.0;
-                        long __dbt = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                        long __dbt = (long)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                         long time = pChip.n発声時刻ms - __dbt;
                         float play_bpm_time = this.GetNowPBMTime(dTX, 0);
 
@@ -2184,7 +2184,7 @@ namespace TJAPlayer3
         {
             int nSenotesX = 0;
             int nSenotesY = 0;
-            long nowTime = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (double)(TJAPlayer3.ConfigIni.n演奏速度 / 20.0));
+            long nowTime = (long)(CSound管理.PlayTimer.n現在時刻ms * (double)(TJAPlayer3.ConfigIni.n演奏速度 / 20.0));
 
             switch (TJAPlayer3.ConfigIni.nPlayerCount)
             {
@@ -2515,7 +2515,7 @@ namespace TJAPlayer3
             if( pChip.dbSCROLL_Y != 0.0 )
             {
                 double _scrollSpeed = pChip.dbSCROLL_Y * (this.act譜面スクロール速度.db現在の譜面スクロール速度[nPlayer] + 1.0) / 10.0;
-                long __dbt = (long)(CSound管理.rc演奏用タイマ.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                long __dbt = (long)(CSound管理.PlayTimer.n現在時刻ms * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                 long time = pChip.n発声時刻ms - __dbt;
                 float play_bpm_time = this.GetNowPBMTime(dTX, 0);
                 y += NotesManager.GetNoteY(pChip, time * pChip.dbBPM, _scrollSpeed, TJAPlayer3.Skin.Game_Notes_Interval, play_bpm_time, configIni.eScrollMode, false);
@@ -2523,7 +2523,7 @@ namespace TJAPlayer3
                 //y += (int)(((pChip.n発声時刻ms - (CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0))) * pChip.dbBPM * pChip.dbSCROLL_Y * (this.act譜面スクロール速度.db現在の譜面スクロール速度[nPlayer] + 1.5)) / 628.7);
             }
 
-            if ( !pChip.bHit && pChip.n発声時刻ms > CSound管理.rc演奏用タイマ.n現在時刻 )
+            if ( !pChip.bHit && pChip.n発声時刻ms > CSound管理.PlayTimer.n現在時刻 )
 			{
 				//pChip.bHit = true;
 				//this.actPlayInfo.n小節番号 = n小節番号plus1 - 1;
@@ -2569,7 +2569,7 @@ namespace TJAPlayer3
         /// </summary>
         public void t全体制御メソッド()
         {
-            int t = (int)CSound管理.rc演奏用タイマ.n現在時刻ms;
+            int t = (int)CSound管理.PlayTimer.n現在時刻ms;
             //CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.白, t.ToString() );
 
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
@@ -2577,7 +2577,7 @@ namespace TJAPlayer3
                 var chkChip = this.chip現在処理中の連打チップ[i];
                 if (chkChip != null)
                 {
-                    long nowTime = (long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                    long nowTime = (long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                     //int n = this.chip現在処理中の連打チップ[i].nチャンネル番号;
                     if (NotesManager.IsGenericBalloon(chkChip) && (this.b連打中[i] == true)
                         || NotesManager.IsKusudama(chkChip))
@@ -2615,7 +2615,7 @@ namespace TJAPlayer3
             //CDTX.CChip chipNoHit = this.r指定時刻に一番近い未ヒットChip((int)CSound管理.rc演奏用タイマ.n現在時刻ms, 0);
             for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
             {
-                CDTX.CChip chipNoHit = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する((long)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), i);
+                CDTX.CChip chipNoHit = r指定時刻に一番近い未ヒットChipを過去方向優先で検索する((long)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)), i);
 
                 EGameType _gt = TJAPlayer3.ConfigIni.nGameType[TJAPlayer3.GetActualPlayer(i)];
                 bool _isBigKaTaiko = NotesManager.IsBigKaTaiko(chipNoHit, _gt);
@@ -2624,10 +2624,10 @@ namespace TJAPlayer3
 
                 if (chipNoHit != null && (_isBigDonTaiko || _isBigKaTaiko))
                 {
-                    float timeC = chipNoHit.n発声時刻ms - (float)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
+                    float timeC = chipNoHit.n発声時刻ms - (float)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0));
                     int nWaitTime = TJAPlayer3.ConfigIni.n両手判定の待ち時間;
                     if (chipNoHit.eNoteState == ENoteState.wait && timeC <= 110 
-                        && chipNoHit.nProcessTime + nWaitTime <= (int)(CSound管理.rc演奏用タイマ.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)))
+                        && chipNoHit.nProcessTime + nWaitTime <= (int)(CSound管理.PlayTimer.n現在時刻 * (((double)TJAPlayer3.ConfigIni.n演奏速度) / 20.0)))
                     {
                         if (!_isSwapNote)
                         {
@@ -2654,7 +2654,7 @@ namespace TJAPlayer3
                 {
                     TJAPlayer3.Skin.sound変更音.t再生する();
 
-                    CSound管理.rc演奏用タイマ.t一時停止();
+                    CSound管理.PlayTimer.t一時停止();
                     TJAPlayer3.Timer.t一時停止();
                     TJAPlayer3.DTX.t全チップの再生一時停止();
                     this.actAVI.tPauseControl();
@@ -2713,7 +2713,7 @@ namespace TJAPlayer3
             float width = Result_Number.sz画像サイズ.Width / 11.0f;
             float height = Result_Number.sz画像サイズ.Height / 2.0f;
 
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
 
             if (drawPercent)
             {
@@ -2735,7 +2735,7 @@ namespace TJAPlayer3
 
         private void t大文字表示( int x, int y, int num)
         {
-            int[] nums = C変換.SeparateDigits(num);
+            int[] nums = CConversion.SeparateDigits(num);
             for (int j = 0; j < nums.Length; j++)
             {
                 float offset = j - 1.5f;
