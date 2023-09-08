@@ -28,4 +28,7 @@
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.5"/>
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.5"/>
   </ItemGroup>
+  <ItemGroup Label="Resources">
+    <EmbeddedResource Include="mplus-1p-medium.ttf" />
+  </ItemGroup>
 </Project>
