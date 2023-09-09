@@ -336,7 +336,7 @@ namespace FDK
 				// サウンドデバイスと演奏タイマを解放する。
 
 				SoundDevice.Dispose();
-				PlayTimer.Dispose();	// Global.SoundDevice を解放した後に解放すること。（Global.SoundDevice で参照されているため）
+				PlayTimer?.Dispose();	// Global.SoundDevice を解放した後に解放すること。（Global.SoundDevice で参照されているため）
 			}
 			//-----------------
 			#endregion
