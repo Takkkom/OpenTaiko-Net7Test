@@ -157,6 +157,20 @@ namespace TJAPlayer3
             [97] = "Capture",
             [98] = "Capture key assign:\nTo assign key for screen capture.\n (You can use keyboard only. You can't\nuse pads to capture screenshot.",
             [99] = "LeftRed",
+
+            [9996] = "Drawing Method:\n" +
+                    "Select from either OpenGL,\n" +
+                    "Vulkan, DirectX11, or DirectX12.\n" +
+                    "OpenGL is slow, but compatible & stable.\n" +
+                    "Vulkan works fastest on Linux.\n" +
+                    "DirectX11 is fast and stable, but only\n" +
+                    "works on Windows.\n" +
+                    "DirectX12 is very fast but only works\n" +
+                    "on Windows.\n" +
+                    "\n" +
+                    "This wil take effect after game reboot.\n",
+            [9997] = "Graphics API",
+
             [9998] = "Buffer size when using Bass:\n" +
                     "Size can be between 0～99999ms.\n" +
                     "A value of 0 will make the OS\n" +
@@ -167,6 +181,7 @@ namespace TJAPlayer3
                     "※ NOTE: Exit CONFIGURATION to make the\n" +
                     "　      settings take effect.",
             [9999] = "Bass Buffer Size",
+
             [10000] = "Drums key assign:\nTo assign key/pads for LeftRed\n button.",
             [10001] = "RightRed",
             [10002] = "Drums key assign:\nTo assign key/pads for RightRed\n button.",
