@@ -141,8 +141,6 @@ namespace TJAPlayer3
         public override void CreateManagedResource()
         {
             OptionFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Option_Font_Scale);
-            Difficulty_Option = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select/Difficulty_Option.png"));
-            Difficulty_Option_Select = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select/Difficulty_Option_Select.png"));
 
             base.CreateManagedResource();
         }
@@ -150,8 +148,6 @@ namespace TJAPlayer3
         {
             OptionFont.Dispose();
             
-			TJAPlayer3.t安全にDisposeする(ref Difficulty_Option);
-			TJAPlayer3.t安全にDisposeする(ref Difficulty_Option_Select);
             
             base.ReleaseManagedResource();
         }
@@ -208,11 +204,11 @@ namespace TJAPlayer3
             };
 
             var pos = player % 2;
-            var _shift = pos == 1 ? (Difficulty_Option.szテクスチャサイズ.Width / 2) : 0;
-            var _rect = new Rectangle(_shift, 0, Difficulty_Option.szテクスチャサイズ.Width / 2, Difficulty_Option.szテクスチャサイズ.Height);
+            var _shift = pos == 1 ? (TJAPlayer3.Tx.Difficulty_Option.szテクスチャサイズ.Width / 2) : 0;
+            var _rect = new Rectangle(_shift, 0, TJAPlayer3.Tx.Difficulty_Option.szテクスチャサイズ.Width / 2, TJAPlayer3.Tx.Difficulty_Option.szテクスチャサイズ.Height);
 
-            Difficulty_Option.t2D描画(_shift, y, _rect);
-            Difficulty_Option_Select.t2D描画(_shift + TJAPlayer3.Skin.SongSelect_Option_Select_Offset[0] + NowCount * TJAPlayer3.Skin.SongSelect_Option_Interval[0], 
+            TJAPlayer3.Tx.Difficulty_Option.t2D描画(_shift, y, _rect);
+            TJAPlayer3.Tx.Difficulty_Option_Select.t2D描画(_shift + TJAPlayer3.Skin.SongSelect_Option_Select_Offset[0] + NowCount * TJAPlayer3.Skin.SongSelect_Option_Interval[0], 
                 TJAPlayer3.Skin.SongSelect_Option_Select_Offset[1] + y + NowCount * TJAPlayer3.Skin.SongSelect_Option_Interval[1], _rect);
 
             for (int i = 0; i < OptionType.Length; i++)
@@ -341,9 +337,6 @@ namespace TJAPlayer3
             return 0;
         }
         private CCachedFontRenderer OptionFont;
-
-        private CTexture Difficulty_Option;
-        private CTexture Difficulty_Option_Select;
 
         public int nOptionCount = 11;
 

@@ -57,8 +57,6 @@ namespace TJAPlayer3
             Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERSELECT}Script.lua"));
             Background.Init();
 
-            TowerSelect_Tower = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERSELECT}Tower.png"));
-
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerSelect_Title_Size);
             else
@@ -77,8 +75,6 @@ namespace TJAPlayer3
             // Ressource freeing
 
             TJAPlayer3.t安全にDisposeする(ref Background);
-
-            TJAPlayer3.t安全にDisposeする(ref TowerSelect_Tower);
 
             pfTitleFont.Dispose();
             pfSubTitleFont.Dispose();
@@ -334,16 +330,16 @@ namespace TJAPlayer3
             switch(barInfo.eノード種別)
             {
                 case C曲リストノード.Eノード種別.SCORE:
-                    TowerSelect_Tower.t2D中心基準描画(x, y);
+                    TJAPlayer3.Tx.TowerSelect_Tower.t2D中心基準描画(x, y);
                     break;
                 case C曲リストノード.Eノード種別.RANDOM:
-                    TowerSelect_Tower.t2D中心基準描画(x, y);
+                    TJAPlayer3.Tx.TowerSelect_Tower.t2D中心基準描画(x, y);
                     break;
                 case C曲リストノード.Eノード種別.BOX:
-                    TowerSelect_Tower.t2D中心基準描画(x, y);
+                    TJAPlayer3.Tx.TowerSelect_Tower.t2D中心基準描画(x, y);
                     break;
                 case C曲リストノード.Eノード種別.BACKBOX:
-                    TowerSelect_Tower.t2D中心基準描画(x, y);
+                    TJAPlayer3.Tx.TowerSelect_Tower.t2D中心基準描画(x, y);
                     break;
             }
 
@@ -392,8 +388,6 @@ namespace TJAPlayer3
         private List<C曲リストノード> listSongs;
 
         private ScriptBG Background;
-
-        public CTexture TowerSelect_Tower;
 
         private CCachedFontRenderer pfTitleFont;
         private CCachedFontRenderer pfSubTitleFont;

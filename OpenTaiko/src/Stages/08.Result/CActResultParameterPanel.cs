@@ -267,78 +267,12 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			Result_Panel = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel.png"));
-			Result_Panel_2P = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_2.png"));
-			Result_Diff_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}DifficultyBar.png"));
-			Result_Score_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Score_Number.png"));
-			Result_Dan = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Dan.png"));
-
-			Result_CrownEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}CrownEffect.png"));
-			Result_Shine = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Shine.png"));
-
-			Result_Flower = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Flower.png"));
-
-			Result_Speech_Bubble[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble.png"));
-			Result_Speech_Bubble[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble_2.png"));
-
-			for (int i = 0; i < 4; i++)
-				Result_Panel_4P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_4P_" + (i + 1).ToString() + ".png"));
-
-			for (int i = 0; i < 5; i++)
-				Result_Panel_5P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_5P_" + (i + 1).ToString() + ".png"));
-
-			for (int i = 1; i <= 5; i++)
-				Result_Flower_Rotate[i - 1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Rotate_" + i.ToString() + ".png"));
-
-			for (int i = 0; i < 3; i++)
-				Result_Crown[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Crown{Path.DirectorySeparatorChar}Crown_" + i.ToString() + ".png"));
-
-			Result_AIBattle_Panel_AI = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Panel_AI.png"));
-			Result_AIBattle_Batch = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Batch.png"));
-			Result_AIBattle_SectionPlate = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}SectionPlate.png"));
-			Result_AIBattle_WinFlag_Clear = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Win.png"));
-			Result_AIBattle_WinFlag_Lose = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Lose.png"));
-
-
 			pfAISectionText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Result_AIBattle_SectionText_Scale);
 				
 			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			TJAPlayer3.t安全にDisposeする(ref Result_Panel);
-			TJAPlayer3.t安全にDisposeする(ref Result_Panel_2P);
-			TJAPlayer3.t安全にDisposeする(ref Result_Diff_Bar);
-			TJAPlayer3.t安全にDisposeする(ref Result_Score_Number);
-			TJAPlayer3.t安全にDisposeする(ref Result_Dan);
-
-			TJAPlayer3.t安全にDisposeする(ref Result_CrownEffect);
-			TJAPlayer3.t安全にDisposeする(ref Result_Shine);
-
-			TJAPlayer3.t安全にDisposeする(ref Result_Flower);
-
-
-			TJAPlayer3.t安全にDisposeする(ref Result_Speech_Bubble[0]);
-			TJAPlayer3.t安全にDisposeする(ref Result_Speech_Bubble[1]);
-
-			for (int i = 0; i < 4; i++)
-				TJAPlayer3.t安全にDisposeする(ref Result_Panel_4P[i]);
-
-			for (int i = 0; i < 5; i++)
-				TJAPlayer3.t安全にDisposeする(ref Result_Panel_5P[i]);
-
-			for (int i = 1; i <= 5; i++)
-				TJAPlayer3.t安全にDisposeする(ref Result_Flower_Rotate[i - 1]);
-
-			for (int i = 0; i < 3; i++)
-				TJAPlayer3.t安全にDisposeする(ref Result_Crown[i]);
-
-			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_Panel_AI);
-			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_Batch);
-			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_SectionPlate);
-			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_WinFlag_Clear);
-			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_WinFlag_Lose);
-
 			TJAPlayer3.t安全にDisposeする(ref pfAISectionText);
 
 			base.ReleaseManagedResource();
@@ -423,19 +357,19 @@ namespace TJAPlayer3
 					if (TJAPlayer3.ConfigIni.nPlayerCount <= 2)
 					{
 						if (shiftPos == 0)
-							Result_Panel.t2D描画(0, 0);
+							TJAPlayer3.Tx.Result_Panel.t2D描画(0, 0);
 						else
-							Result_Panel_2P.t2D描画(0, 0);
+							TJAPlayer3.Tx.Result_Panel_2P.t2D描画(0, 0);
 					}
                     else
 					{
 						if (TJAPlayer3.ConfigIni.nPlayerCount == 5)
 						{
-							Result_Panel_5P[i].t2D描画(TJAPlayer3.Skin.Result_UIMove_5P_X[i], TJAPlayer3.Skin.Result_UIMove_5P_Y[i]);
+							TJAPlayer3.Tx.Result_Panel_5P[i].t2D描画(TJAPlayer3.Skin.Result_UIMove_5P_X[i], TJAPlayer3.Skin.Result_UIMove_5P_Y[i]);
 						}
 						else
 						{
-							Result_Panel_4P[i].t2D描画(TJAPlayer3.Skin.Result_UIMove_4P_X[i], TJAPlayer3.Skin.Result_UIMove_4P_Y[i]);
+							TJAPlayer3.Tx.Result_Panel_4P[i].t2D描画(TJAPlayer3.Skin.Result_UIMove_4P_X[i], TJAPlayer3.Skin.Result_UIMove_4P_Y[i]);
 						}
 					}
 
@@ -473,7 +407,7 @@ namespace TJAPlayer3
 							gauge_base_y = TJAPlayer3.Skin.Result_Gauge_Base_Y[pos];
 						}
 
-						Result_Diff_Bar.t2D描画(bar_x, bar_y,
+						TJAPlayer3.Tx.Result_Diff_Bar.t2D描画(bar_x, bar_y,
 						new RectangleF(0, TJAPlayer3.stage選曲.n確定された曲の難易度[i] * TJAPlayer3.Skin.Result_DifficultyBar_Size[1], TJAPlayer3.Skin.Result_DifficultyBar_Size[0], TJAPlayer3.Skin.Result_DifficultyBar_Size[1]));
 
 						_frame.t2D描画(gauge_base_x, gauge_base_y);
@@ -635,16 +569,16 @@ namespace TJAPlayer3
 							{
 								if (ct全体進行.CurrentValue >= AnimeCount + (Interval * k))
 								{
-									TJAPlayer3.stage結果.Result_Number.vc拡大縮小倍率.X = ct全体進行.CurrentValue <= AnimeCount + (Interval * k) + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - (AnimeCount + (Interval * k))) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f;
-									TJAPlayer3.stage結果.Result_Number.vc拡大縮小倍率.Y = ct全体進行.CurrentValue <= AnimeCount + (Interval * k) + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - (AnimeCount + (Interval * k))) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f;
+									TJAPlayer3.Tx.Result_Number.vc拡大縮小倍率.X = ct全体進行.CurrentValue <= AnimeCount + (Interval * k) + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - (AnimeCount + (Interval * k))) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f;
+									TJAPlayer3.Tx.Result_Number.vc拡大縮小倍率.Y = ct全体進行.CurrentValue <= AnimeCount + (Interval * k) + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - (AnimeCount + (Interval * k))) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f;
 
 									if ((k != 5 || TJAPlayer3.Skin.Result_ADLib_Show) && (k != 6 || TJAPlayer3.Skin.Result_Bomb_Show))
 									{
 										this.t小文字表示(num_x[k][pos], num_y[k][pos], scoresArr[k]);
 									}
 
-									TJAPlayer3.stage結果.Result_Number.vc拡大縮小倍率.X = 1f;
-									TJAPlayer3.stage結果.Result_Number.vc拡大縮小倍率.Y = 1f;
+									TJAPlayer3.Tx.Result_Number.vc拡大縮小倍率.X = 1f;
+									TJAPlayer3.Tx.Result_Number.vc拡大縮小倍率.Y = 1f;
 
 									if (!this.b音声再生[1 + k])
 									{
@@ -685,9 +619,9 @@ namespace TJAPlayer3
 
 								int AnimeCount1 = AnimeCount + Interval * 4 + 840;
 
-								Result_Score_Number.vc拡大縮小倍率.X = ct全体進行.CurrentValue <= AnimeCount1 + 270 ? 1.0f + (float)Math.Sin((ct全体進行.CurrentValue - AnimeCount1) / 1.5f * (Math.PI / 180)) * 0.65f :
+								TJAPlayer3.Tx.Result_Score_Number.vc拡大縮小倍率.X = ct全体進行.CurrentValue <= AnimeCount1 + 270 ? 1.0f + (float)Math.Sin((ct全体進行.CurrentValue - AnimeCount1) / 1.5f * (Math.PI / 180)) * 0.65f :
 																				  ct全体進行.CurrentValue <= AnimeCount1 + 360 ? 1.0f - (float)Math.Sin((ct全体進行.CurrentValue - AnimeCount1 - 270) * (Math.PI / 180)) * 0.1f : 1.0f;
-								Result_Score_Number.vc拡大縮小倍率.Y = ct全体進行.CurrentValue <= AnimeCount1 + 270 ? 1.0f + (float)Math.Sin((ct全体進行.CurrentValue - AnimeCount1) / 1.5f * (Math.PI / 180)) * 0.65f :
+								TJAPlayer3.Tx.Result_Score_Number.vc拡大縮小倍率.Y = ct全体進行.CurrentValue <= AnimeCount1 + 270 ? 1.0f + (float)Math.Sin((ct全体進行.CurrentValue - AnimeCount1) / 1.5f * (Math.PI / 180)) * 0.65f :
 																				  ct全体進行.CurrentValue <= AnimeCount1 + 360 ? 1.0f - (float)Math.Sin((ct全体進行.CurrentValue - AnimeCount1 - 270) * (Math.PI / 180)) * 0.1f : 1.0f;
 
 								this.tスコア文字表示(score_x, score_y, (int)TJAPlayer3.stage演奏ドラム画面.actScore.Get(E楽器パート.DRUMS, i));// TJAPlayer3.stage演奏ドラム画面.CChartScore[i].nScore.ToString()));
@@ -719,10 +653,10 @@ namespace TJAPlayer3
 
 				if (TJAPlayer3.ConfigIni.bAIBattleMode)
                 {
-					Result_AIBattle_Panel_AI.t2D描画(0, 0);
+					TJAPlayer3.Tx.Result_AIBattle_Panel_AI.t2D描画(0, 0);
 
-					int batch_width = Result_AIBattle_Batch.szテクスチャサイズ.Width / 3;
-					int batch_height = Result_AIBattle_Batch.szテクスチャサイズ.Height;
+					int batch_width = TJAPlayer3.Tx.Result_AIBattle_Batch.szテクスチャサイズ.Width / 3;
+					int batch_height = TJAPlayer3.Tx.Result_AIBattle_Batch.szテクスチャサイズ.Height;
 
 
 					for (int i = 0; i < TJAPlayer3.stage演奏ドラム画面.AIBattleSections.Count; i++)
@@ -743,34 +677,34 @@ namespace TJAPlayer3
 
 						if (nowIndex == nNowAISection)
 						{
-							Result_AIBattle_Batch.Opacity = opacityCounter;
-							Result_AIBattle_SectionPlate.Opacity = opacityCounter;
+							TJAPlayer3.Tx.Result_AIBattle_Batch.Opacity = opacityCounter;
+							TJAPlayer3.Tx.Result_AIBattle_SectionPlate.Opacity = opacityCounter;
 							if (TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkAISection[i]) != null)
 								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkAISection[i]).Opacity = opacityCounter;
 						}
 						else
 						{
-							Result_AIBattle_Batch.Opacity = 255 - opacityCounter;
-							Result_AIBattle_SectionPlate.Opacity = 255 - opacityCounter;
+							TJAPlayer3.Tx.Result_AIBattle_Batch.Opacity = 255 - opacityCounter;
+							TJAPlayer3.Tx.Result_AIBattle_SectionPlate.Opacity = 255 - opacityCounter;
 							if (TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkAISection[i]) != null)
 								TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkAISection[i]).Opacity = 255 - opacityCounter;
 						}
 
-						Result_AIBattle_Batch.t2D描画(x, y, new RectangleF(batch_width * 0, 0, batch_width, batch_height));
+						TJAPlayer3.Tx.Result_AIBattle_Batch.t2D描画(x, y, new RectangleF(batch_width * 0, 0, batch_width, batch_height));
 
 						switch (section.End)
 						{
 							case CStage演奏画面共通.AIBattleSection.EndType.Clear:
-								Result_AIBattle_Batch.t2D描画(x, y, new Rectangle(batch_width * 1, 0, batch_width, batch_height));
+								TJAPlayer3.Tx.Result_AIBattle_Batch.t2D描画(x, y, new Rectangle(batch_width * 1, 0, batch_width, batch_height));
 								break;
 							case CStage演奏画面共通.AIBattleSection.EndType.Lose:
-								Result_AIBattle_Batch.t2D描画(x, y, new Rectangle(batch_width * 2, 0, batch_width, batch_height));
+								TJAPlayer3.Tx.Result_AIBattle_Batch.t2D描画(x, y, new Rectangle(batch_width * 2, 0, batch_width, batch_height));
 								break;
 						}
 
-						Result_AIBattle_Batch.Opacity = 255;
+						TJAPlayer3.Tx.Result_AIBattle_Batch.Opacity = 255;
 
-						Result_AIBattle_SectionPlate.t2D描画(x + TJAPlayer3.Skin.Result_AIBattle_SectionPlate_Offset[0], y + TJAPlayer3.Skin.Result_AIBattle_SectionPlate_Offset[1]);
+						TJAPlayer3.Tx.Result_AIBattle_SectionPlate.t2D描画(x + TJAPlayer3.Skin.Result_AIBattle_SectionPlate_Offset[0], y + TJAPlayer3.Skin.Result_AIBattle_SectionPlate_Offset[1]);
 
 						TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(ttkAISection[i])?.t2D中心基準描画(x + TJAPlayer3.Skin.Result_AIBattle_SectionText_Offset[0], y + TJAPlayer3.Skin.Result_AIBattle_SectionText_Offset[1]);
 					}
@@ -779,7 +713,7 @@ namespace TJAPlayer3
 					{
 						float flagScale = 2.0f - (Math.Min(Math.Max(ct全体進行.CurrentValue - MountainAppearValue, 0), 200) / 200.0f);
 
-						CTexture tex = TJAPlayer3.stage結果.bClear[0] ? Result_AIBattle_WinFlag_Clear : Result_AIBattle_WinFlag_Lose;
+						CTexture tex = TJAPlayer3.stage結果.bClear[0] ? TJAPlayer3.Tx.Result_AIBattle_WinFlag_Clear : TJAPlayer3.Tx.Result_AIBattle_WinFlag_Lose;
 
 						tex.vc拡大縮小倍率.X = flagScale;
 						tex.vc拡大縮小倍率.Y = flagScale;
@@ -882,13 +816,13 @@ namespace TJAPlayer3
 
 						if (gaugeValues[p] >= 80.0f && TJAPlayer3.ConfigIni.nPlayerCount <= 2)
 						{
-							Result_Flower.vc拡大縮小倍率.X = 0.6f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
-							Result_Flower.vc拡大縮小倍率.Y = 0.6f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
+							TJAPlayer3.Tx.Result_Flower.vc拡大縮小倍率.X = 0.6f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
+							TJAPlayer3.Tx.Result_Flower.vc拡大縮小倍率.Y = 0.6f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
 
-							int flower_width = Result_Flower.szテクスチャサイズ.Width;
-							int flower_height = Result_Flower.szテクスチャサイズ.Height / 2;
+							int flower_width = TJAPlayer3.Tx.Result_Flower.szテクスチャサイズ.Width;
+							int flower_height = TJAPlayer3.Tx.Result_Flower.szテクスチャサイズ.Height / 2;
 
-							Result_Flower.t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.Result_Flower_X[pos], TJAPlayer3.Skin.Result_Flower_Y[pos], 
+							TJAPlayer3.Tx.Result_Flower.t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.Result_Flower_X[pos], TJAPlayer3.Skin.Result_Flower_Y[pos], 
 								new Rectangle(0, 0, flower_width, flower_height));
 						}
 
@@ -904,9 +838,9 @@ namespace TJAPlayer3
 							{
 
 								if ((int)FlowerTime < ApparitionTimeStamps[i] || (int)FlowerTime > ApparitionTimeStamps[i] + 2 * ApparitionFade + ApparitionDuration)
-									Result_Flower_Rotate[i].Opacity = 0;
+									TJAPlayer3.Tx.Result_Flower_Rotate[i].Opacity = 0;
 								else if ((int)FlowerTime <= ApparitionTimeStamps[i] + ApparitionDuration + ApparitionFade && (int)FlowerTime >= ApparitionTimeStamps[i] + ApparitionFade)
-									Result_Flower_Rotate[i].Opacity = 255;
+									TJAPlayer3.Tx.Result_Flower_Rotate[i].Opacity = 255;
 								else
 								{
 									int CurrentGradiant = 0;
@@ -916,14 +850,14 @@ namespace TJAPlayer3
 										CurrentGradiant = (int)FlowerTime - ApparitionTimeStamps[i];
 
 
-									Result_Flower_Rotate[i].Opacity = (255 * CurrentGradiant) / ApparitionFade;
+									TJAPlayer3.Tx.Result_Flower_Rotate[i].Opacity = (255 * CurrentGradiant) / ApparitionFade;
 								}
 
-								Result_Flower_Rotate[i].vc拡大縮小倍率.X = 0.6f;
-								Result_Flower_Rotate[i].vc拡大縮小倍率.Y = 0.6f;
-								Result_Flower_Rotate[i].fZ軸中心回転 = (float)(FlowerTime - ApparitionTimeStamps[i]) / (FlowerRotationSpeeds[i] * 360f);
+								TJAPlayer3.Tx.Result_Flower_Rotate[i].vc拡大縮小倍率.X = 0.6f;
+								TJAPlayer3.Tx.Result_Flower_Rotate[i].vc拡大縮小倍率.Y = 0.6f;
+								TJAPlayer3.Tx.Result_Flower_Rotate[i].fZ軸中心回転 = (float)(FlowerTime - ApparitionTimeStamps[i]) / (FlowerRotationSpeeds[i] * 360f);
 
-								Result_Flower_Rotate[i].t2D中心基準描画(TJAPlayer3.Skin.Result_Flower_Rotate_X[pos][i], TJAPlayer3.Skin.Result_Flower_Rotate_Y[pos][i]);
+								TJAPlayer3.Tx.Result_Flower_Rotate[i].t2D中心基準描画(TJAPlayer3.Skin.Result_Flower_Rotate_X[pos][i], TJAPlayer3.Skin.Result_Flower_Rotate_Y[pos][i]);
 							}
 
 						}
@@ -940,16 +874,16 @@ namespace TJAPlayer3
 							for (int i = 0; i < TJAPlayer3.Skin.Result_PlateShine_Count; i++)
 							{
 								if (i < 3 && ShineTime >= 500 || i >= 3 && ShineTime < 500)
-									Result_Shine.Opacity = 0;
+									TJAPlayer3.Tx.Result_Shine.Opacity = 0;
 								else if (Quadrant500 >= ShinePFade && Quadrant500 <= 500 - ShinePFade)
-									Result_Shine.Opacity = 255;
+									TJAPlayer3.Tx.Result_Shine.Opacity = 255;
 								else
-									Result_Shine.Opacity = (255 * Math.Min(Quadrant500, 500 - Quadrant500)) / ShinePFade;
+									TJAPlayer3.Tx.Result_Shine.Opacity = (255 * Math.Min(Quadrant500, 500 - Quadrant500)) / ShinePFade;
 
-								Result_Shine.vc拡大縮小倍率.X = 0.15f;
-								Result_Shine.vc拡大縮小倍率.Y = 0.15f;
+								TJAPlayer3.Tx.Result_Shine.vc拡大縮小倍率.X = 0.15f;
+								TJAPlayer3.Tx.Result_Shine.vc拡大縮小倍率.Y = 0.15f;
 
-								Result_Shine.t2D中心基準描画(TJAPlayer3.Skin.Result_PlateShine_X[pos][i], TJAPlayer3.Skin.Result_PlateShine_Y[pos][i]);
+								TJAPlayer3.Tx.Result_Shine.t2D中心基準描画(TJAPlayer3.Skin.Result_PlateShine_X[pos][i], TJAPlayer3.Skin.Result_PlateShine_Y[pos][i]);
 							}
 
 						}
@@ -971,12 +905,12 @@ namespace TJAPlayer3
 
 						if (TJAPlayer3.ConfigIni.nPlayerCount <= 2)
 						{
-							int speechBuddle_width = Result_Speech_Bubble[pos].szテクスチャサイズ.Width / 4;
-							int speechBuddle_height = Result_Speech_Bubble[pos].szテクスチャサイズ.Height / 3;
+							int speechBuddle_width = TJAPlayer3.Tx.Result_Speech_Bubble[pos].szテクスチャサイズ.Width / 4;
+							int speechBuddle_height = TJAPlayer3.Tx.Result_Speech_Bubble[pos].szテクスチャサイズ.Height / 3;
 
-							Result_Speech_Bubble[pos].vc拡大縮小倍率.X = 0.9f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
-							Result_Speech_Bubble[pos].vc拡大縮小倍率.Y = 0.9f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
-							Result_Speech_Bubble[pos].t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.Result_Speech_Bubble_X[pos], TJAPlayer3.Skin.Result_Speech_Bubble_Y[pos],
+							TJAPlayer3.Tx.Result_Speech_Bubble[pos].vc拡大縮小倍率.X = 0.9f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
+							TJAPlayer3.Tx.Result_Speech_Bubble[pos].vc拡大縮小倍率.Y = 0.9f * (ct全体進行.CurrentValue <= MountainAppearValue + AddCount ? 1.3f - (float)Math.Sin((ct全体進行.CurrentValue - MountainAppearValue) / (AddCount / 90) * (Math.PI / 180)) * 0.3f : 1.0f);
+							TJAPlayer3.Tx.Result_Speech_Bubble[pos].t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.Result_Speech_Bubble_X[pos], TJAPlayer3.Skin.Result_Speech_Bubble_Y[pos],
 								new Rectangle(Mood * speechBuddle_width, RandomText * speechBuddle_height, speechBuddle_width, speechBuddle_height));
 						}
 						if (!b音声再生[11])
@@ -1010,25 +944,25 @@ namespace TJAPlayer3
 						{
 							#region [Score rank apparition]
 
-							int scoreRank_width = TJAPlayer3.stage結果.Result_ScoreRankEffect.szテクスチャサイズ.Width / 7;
-							int scoreRank_height = TJAPlayer3.stage結果.Result_ScoreRankEffect.szテクスチャサイズ.Height / 4;
+							int scoreRank_width = TJAPlayer3.Tx.Result_ScoreRankEffect.szテクスチャサイズ.Width / 7;
+							int scoreRank_height = TJAPlayer3.Tx.Result_ScoreRankEffect.szテクスチャサイズ.Height / 4;
 
 							if (ct全体進行.CurrentValue <= ScoreApparitionTimeStamp + 1180)
 							{
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.Opacity = (int)((ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 1000)) / 180.0f * 255.0f);
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.vc拡大縮小倍率.X = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 910)) / 1.5f * (Math.PI / 180)) * 1.4f;
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.vc拡大縮小倍率.Y = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 910)) / 1.5f * (Math.PI / 180)) * 1.4f;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.Opacity = (int)((ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 1000)) / 180.0f * 255.0f);
+								TJAPlayer3.Tx.Result_ScoreRankEffect.vc拡大縮小倍率.X = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 910)) / 1.5f * (Math.PI / 180)) * 1.4f;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.vc拡大縮小倍率.Y = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 910)) / 1.5f * (Math.PI / 180)) * 1.4f;
 							}
 							else if (ct全体進行.CurrentValue <= ScoreApparitionTimeStamp + 1270)
 							{
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.vc拡大縮小倍率.X = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 1180)) * (Math.PI / 180)) * 0.5f;
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.vc拡大縮小倍率.Y = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 1180)) * (Math.PI / 180)) * 0.5f;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.vc拡大縮小倍率.X = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 1180)) * (Math.PI / 180)) * 0.5f;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.vc拡大縮小倍率.Y = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 1180)) * (Math.PI / 180)) * 0.5f;
 							}
 							else
 							{
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.Opacity = 255;
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.vc拡大縮小倍率.X = 1f;
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.vc拡大縮小倍率.Y = 1f;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.Opacity = 255;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.vc拡大縮小倍率.X = 1f;
+								TJAPlayer3.Tx.Result_ScoreRankEffect.vc拡大縮小倍率.Y = 1f;
 							}
 
 							if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] != (int)Difficulty.Dan && TJAPlayer3.stage結果.nスコアランク[p] > 0)
@@ -1062,7 +996,7 @@ namespace TJAPlayer3
 									scoreRankEffect_y = TJAPlayer3.Skin.Result_ScoreRankEffect_Y[pos];
 								}
 
-								TJAPlayer3.stage結果.Result_ScoreRankEffect.t2D拡大率考慮中央基準描画(scoreRankEffect_x, scoreRankEffect_y,
+								TJAPlayer3.Tx.Result_ScoreRankEffect.t2D拡大率考慮中央基準描画(scoreRankEffect_x, scoreRankEffect_y,
 									new Rectangle((TJAPlayer3.stage結果.nスコアランク[p] - 1) * scoreRank_width, CurrentFlash * scoreRank_height, scoreRank_width, scoreRank_height));
 
 								if (!b音声再生[9] && ct全体進行.CurrentValue >= ScoreApparitionTimeStamp + 1180)
@@ -1083,25 +1017,25 @@ namespace TJAPlayer3
 						{
 							#region [Crown apparition]
 
-							int crownEffect_width = Result_CrownEffect.szテクスチャサイズ.Width / 3;
-							int crownEffect_height = Result_CrownEffect.szテクスチャサイズ.Height / 4;
+							int crownEffect_width = TJAPlayer3.Tx.Result_CrownEffect.szテクスチャサイズ.Width / 3;
+							int crownEffect_height = TJAPlayer3.Tx.Result_CrownEffect.szテクスチャサイズ.Height / 4;
 
 							if (ct全体進行.CurrentValue <= ScoreApparitionTimeStamp + 2680)
 							{
-								Result_CrownEffect.Opacity = (int)((ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2500)) / 180.0f * 255.0f);
-								Result_CrownEffect.vc拡大縮小倍率.X = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2410)) / 1.5f * (Math.PI / 180)) * 1.4f;
-								Result_CrownEffect.vc拡大縮小倍率.Y = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2410)) / 1.5f * (Math.PI / 180)) * 1.4f;
+								TJAPlayer3.Tx.Result_CrownEffect.Opacity = (int)((ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2500)) / 180.0f * 255.0f);
+								TJAPlayer3.Tx.Result_CrownEffect.vc拡大縮小倍率.X = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2410)) / 1.5f * (Math.PI / 180)) * 1.4f;
+								TJAPlayer3.Tx.Result_CrownEffect.vc拡大縮小倍率.Y = 1.0f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2410)) / 1.5f * (Math.PI / 180)) * 1.4f;
 							}
 							else if (ct全体進行.CurrentValue <= ScoreApparitionTimeStamp + 2770)
 							{
-								Result_CrownEffect.vc拡大縮小倍率.X = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2680)) * (Math.PI / 180)) * 0.5f;
-								Result_CrownEffect.vc拡大縮小倍率.Y = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2680)) * (Math.PI / 180)) * 0.5f;
+								TJAPlayer3.Tx.Result_CrownEffect.vc拡大縮小倍率.X = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2680)) * (Math.PI / 180)) * 0.5f;
+								TJAPlayer3.Tx.Result_CrownEffect.vc拡大縮小倍率.Y = 0.5f + (float)Math.Sin((float)(ct全体進行.CurrentValue - (ScoreApparitionTimeStamp + 2680)) * (Math.PI / 180)) * 0.5f;
 							}
 							else
 							{
-								Result_CrownEffect.Opacity = 255;
-								Result_CrownEffect.vc拡大縮小倍率.X = 1f;
-								Result_CrownEffect.vc拡大縮小倍率.Y = 1f;
+								TJAPlayer3.Tx.Result_CrownEffect.Opacity = 255;
+								TJAPlayer3.Tx.Result_CrownEffect.vc拡大縮小倍率.X = 1f;
+								TJAPlayer3.Tx.Result_CrownEffect.vc拡大縮小倍率.Y = 1f;
 							}
 
 							int ClearType = TJAPlayer3.stage結果.nクリア[p] - 1;
@@ -1137,7 +1071,7 @@ namespace TJAPlayer3
 									crownEffect_y = TJAPlayer3.Skin.Result_CrownEffect_Y[pos];
 								}
 
-								Result_CrownEffect.t2D拡大率考慮中央基準描画(crownEffect_x, crownEffect_y,
+								TJAPlayer3.Tx.Result_CrownEffect.t2D拡大率考慮中央基準描画(crownEffect_x, crownEffect_y,
 									new Rectangle(ClearType * crownEffect_width, CurrentFlash * crownEffect_height, crownEffect_width, crownEffect_height));
 
 								if (!b音声再生[10] && ct全体進行.CurrentValue >= ScoreApparitionTimeStamp + 2680)
@@ -1178,27 +1112,6 @@ namespace TJAPlayer3
 			public char ch;
 			public Point pt;
 		}
-
-		private CTexture Result_Panel;
-		private CTexture Result_Panel_2P;
-		private CTexture Result_Diff_Bar;
-		private CTexture Result_Score_Number;
-		private CTexture Result_CrownEffect;
-		private CTexture Result_Flower;
-		private CTexture Result_Shine;
-		private CTexture Result_Dan;
-
-        private CTexture[] Result_Panel_5P = new CTexture[5];
-        private CTexture[] Result_Panel_4P = new CTexture[4];
-        private CTexture[] Result_Crown = new CTexture[3];
-        private CTexture[] Result_Flower_Rotate = new CTexture[5];
-        private CTexture[] Result_Speech_Bubble = new CTexture[2];
-
-        private CTexture Result_AIBattle_Panel_AI;
-        private CTexture Result_AIBattle_Batch;
-        private CTexture Result_AIBattle_SectionPlate;
-        private CTexture Result_AIBattle_WinFlag_Clear;
-        private CTexture Result_AIBattle_WinFlag_Lose;
 
 		public CCounter ct全体進行;
 		public CCounter[] ctゲージアニメ;
@@ -1275,13 +1188,13 @@ namespace TJAPlayer3
 			{
 				float offset = j;
 
-				float width = TJAPlayer3.stage結果.Result_Number.sz画像サイズ.Width / 11.0f;
-				float height = TJAPlayer3.stage結果.Result_Number.sz画像サイズ.Height / 2.0f;
+				float width = TJAPlayer3.Tx.Result_Number.sz画像サイズ.Width / 11.0f;
+				float height = TJAPlayer3.Tx.Result_Number.sz画像サイズ.Height / 2.0f;
 
 				float _x = x - (TJAPlayer3.Skin.Result_Number_Interval[0] * offset) + (width * 2);
 				float _y = y - (TJAPlayer3.Skin.Result_Number_Interval[1] * offset);
 
-				TJAPlayer3.stage結果.Result_Number.t2D拡大率考慮中央基準描画(_x + (width / 2), _y + (height / 2), 
+				TJAPlayer3.Tx.Result_Number.t2D拡大率考慮中央基準描画(_x + (width / 2), _y + (height / 2), 
 					new RectangleF(width * nums[j], 0, width, height));
 			}
 		}
@@ -1303,9 +1216,9 @@ namespace TJAPlayer3
 							rectangle.Width -= 2;
 							rectangle.Height -= 2;
 						}
-						if (TJAPlayer3.stage結果.Result_Number != null)
+						if (TJAPlayer3.Tx.Result_Number != null)
 						{
-							TJAPlayer3.stage結果.Result_Number.t2D描画(x, y, rectangle);
+							TJAPlayer3.Tx.Result_Number.t2D描画(x, y, rectangle);
 						}
 						break;
 					}
@@ -1323,10 +1236,10 @@ namespace TJAPlayer3
 				float _x = x - (TJAPlayer3.Skin.Result_Score_Number_Interval[0] * offset);
 				float _y = y - (TJAPlayer3.Skin.Result_Score_Number_Interval[1] * offset);
 
-				float width = Result_Score_Number.sz画像サイズ.Width / 10.0f;
-				float height = Result_Score_Number.sz画像サイズ.Height;
+				float width = TJAPlayer3.Tx.Result_Score_Number.sz画像サイズ.Width / 10.0f;
+				float height = TJAPlayer3.Tx.Result_Score_Number.sz画像サイズ.Height;
 
-				Result_Score_Number.t2D拡大率考慮中央基準描画(_x, _y + (height / 2), new RectangleF(width * nums[j], 0, width, height));
+				TJAPlayer3.Tx.Result_Score_Number.t2D拡大率考慮中央基準描画(_x, _y + (height / 2), new RectangleF(width * nums[j], 0, width, height));
 			}
 		}
 		//-----------------

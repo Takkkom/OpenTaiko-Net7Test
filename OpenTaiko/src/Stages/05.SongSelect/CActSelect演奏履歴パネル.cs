@@ -121,12 +121,6 @@ namespace TJAPlayer3
             //this.txスコアボード[3] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_3.png" ) );
             //this.tx文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_number.png" ) );
 
-            SongSelect_ScoreWindow_Text = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}ScoreWindow_Text.png"));
-
-            for (int i = 0; i < (int)Difficulty.Total; i++)
-            {
-                SongSelect_ScoreWindow[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}ScoreWindow_" + i.ToString() + ".png"));
-            }
 			this.t選択曲が変更された();
 			base.CreateManagedResource();
 		}
@@ -137,13 +131,6 @@ namespace TJAPlayer3
 				this.ft表示用フォント.Dispose();
 				this.ft表示用フォント = null;
 			}
-            
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow_Text);
-
-            for (int i = 0; i < (int)Difficulty.Total; i++)
-            {
-                TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow[i]);
-            }
 				//CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
 				//CDTXMania.tテクスチャの解放( ref this.tx文字列パネル );
     //            CDTXMania.tテクスチャの解放( ref this.txスコアボード[0] );
@@ -168,12 +155,12 @@ namespace TJAPlayer3
                 if (TJAPlayer3.stage選曲.r現在選択中のスコア != null && this.ct登場アニメ用.CurrentValue >= 2000 && TJAPlayer3.stage選曲.r現在選択中の曲.eノード種別 == C曲リストノード.Eノード種別.SCORE)
                 {
                     //CDTXMania.Tx.SongSelect_ScoreWindow_Text.n透明度 = ct登場アニメ用.n現在の値 - 1745;
-                    if (SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度] != null)
+                    if (TJAPlayer3.Tx.SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度] != null)
                     {
                         //CDTXMania.Tx.SongSelect_ScoreWindow[CDTXMania.stage選曲.n現在選択中の曲の難易度].n透明度 = ct登場アニメ用.n現在の値 - 1745;
-                        SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].t2D描画(x, y);
+                        TJAPlayer3.Tx.SongSelect_ScoreWindow[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].t2D描画(x, y);
                         this.t小文字表示(x + 56, y + 160, string.Format("{0,7:######0}", TJAPlayer3.stage選曲.r現在選択中のスコア.譜面情報.nハイスコア[TJAPlayer3.stage選曲.n現在選択中の曲の難易度].ToString()));
-                        SongSelect_ScoreWindow_Text.t2D描画(x + 236, y + 166, new Rectangle(0, 36, 32, 30));
+                        TJAPlayer3.Tx.SongSelect_ScoreWindow_Text.t2D描画(x + 236, y + 166, new Rectangle(0, 36, 32, 30));
                     }
                 }
 			}
@@ -191,8 +178,6 @@ namespace TJAPlayer3
 		private int n本体X;
 		private int n本体Y;
 		//private CTexture txパネル本体;
-        private CTexture SongSelect_ScoreWindow_Text;
-        private CTexture[] SongSelect_ScoreWindow = new CTexture[(int)Difficulty.Total];
 		private List<CTexture> tx文字列パネル = new();
   //      private CTexture[] txスコアボード = new CTexture[4];
   //      private CTexture tx文字;
@@ -214,9 +199,9 @@ namespace TJAPlayer3
                     if (this.st小文字位置[i].ch == ch)
                     {
                         Rectangle rectangle = new Rectangle( this.st小文字位置[i].pt.X, this.st小文字位置[i].pt.Y, 26, 36 );
-                        if (SongSelect_ScoreWindow_Text != null)
+                        if (TJAPlayer3.Tx.SongSelect_ScoreWindow_Text != null)
                         {
-                            SongSelect_ScoreWindow_Text.t2D描画(x, y, rectangle);
+                            TJAPlayer3.Tx.SongSelect_ScoreWindow_Text.t2D描画(x, y, rectangle);
                         }
                         break;
                     }

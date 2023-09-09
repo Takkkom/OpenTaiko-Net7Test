@@ -179,7 +179,7 @@ namespace TJAPlayer3
 			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Script.lua"));
 			Background.Init();
 
-			Config_Cursor = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Cursor.png"));
+			TJAPlayer3.Tx.Config_Cursor = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Cursor.png"));
 
 				//ctBackgroundAnime = new CCounter(0, TJAPlayer3.Tx.Config_Background.szテクスチャサイズ.Width, 20, TJAPlayer3.Timer);
 
@@ -223,7 +223,7 @@ namespace TJAPlayer3
 
 			TJAPlayer3.t安全にDisposeする(ref Background);
 
-			TJAPlayer3.t安全にDisposeする(ref Config_Cursor);
+			TJAPlayer3.t安全にDisposeする(ref TJAPlayer3.Tx.Config_Cursor);
 
 			TJAPlayer3.tテクスチャの解放( ref this.tx説明文パネル );
 			base.ReleaseManagedResource();
@@ -262,17 +262,17 @@ namespace TJAPlayer3
 
 			#region [ Menu Cursor ]
 			//---------------------
-			if ( Config_Cursor != null )
+			if ( TJAPlayer3.Tx.Config_Cursor != null )
 			{
 				#region Old
 				/*
 				Rectangle rectangle;
-                TJAPlayer3.Tx.Config_Cursor.Opacity = this.bメニューにフォーカス中 ? 255 : 128;
+                TJAPlayer3.Tx.TJAPlayer3.Tx.Config_Cursor.Opacity = this.bメニューにフォーカス中 ? 255 : 128;
 				int x = 110;
 				int y = (int)( 145.5 + ( this.n現在のメニュー番号 * 37.5 ) );
 				int num3 = 340;
-                TJAPlayer3.Tx.Config_Cursor.t2D描画( x, y, new Rectangle( 0, 0, 32, 48 ) );
-                TJAPlayer3.Tx.Config_Cursor.t2D描画( ( x + num3 ) - 32, y, new Rectangle( 20, 0, 32, 48 ) );
+                TJAPlayer3.Tx.TJAPlayer3.Tx.Config_Cursor.t2D描画( x, y, new Rectangle( 0, 0, 32, 48 ) );
+                TJAPlayer3.Tx.TJAPlayer3.Tx.Config_Cursor.t2D描画( ( x + num3 ) - 32, y, new Rectangle( 20, 0, 32, 48 ) );
 				x += 32;
 				for( num3 -= 64; num3 > 0; num3 -= rectangle.Width )
 				{
@@ -281,7 +281,7 @@ namespace TJAPlayer3
 					{
 						rectangle.Width -= 32 - num3;
 					}
-                    TJAPlayer3.Tx.Config_Cursor.t2D描画( x, y, rectangle );
+                    TJAPlayer3.Tx.TJAPlayer3.Tx.Config_Cursor.t2D描画( x, y, rectangle );
 					x += rectangle.Width;
 				}
 				*/
@@ -291,25 +291,25 @@ namespace TJAPlayer3
 				int x = TJAPlayer3.Skin.Config_Item_X[this.n現在のメニュー番号];
 				int y = TJAPlayer3.Skin.Config_Item_Y[this.n現在のメニュー番号];
 
-				int width = Config_Cursor.sz画像サイズ.Width / 3;
-				int height = Config_Cursor.sz画像サイズ.Height;
+				int width = TJAPlayer3.Tx.Config_Cursor.sz画像サイズ.Width / 3;
+				int height = TJAPlayer3.Tx.Config_Cursor.sz画像サイズ.Height;
 
 				int move = TJAPlayer3.Skin.Config_Item_Width;
 
 				//Left
-				Config_Cursor.t2D中心基準描画(x - (width / 2) - move, y, 
+				TJAPlayer3.Tx.Config_Cursor.t2D中心基準描画(x - (width / 2) - move, y, 
 					new Rectangle(0, 0, width, height));
 
 				//Right
-				Config_Cursor.t2D中心基準描画(x + (width / 2) + move, y, 
+				TJAPlayer3.Tx.Config_Cursor.t2D中心基準描画(x + (width / 2) + move, y, 
 					new Rectangle(width * 2, 0, width, height));
 
 				//Center
-				Config_Cursor.vc拡大縮小倍率.X = (move / (float)width) * 2.0f;
-				Config_Cursor.t2D拡大率考慮中央基準描画(x, y, 
+				TJAPlayer3.Tx.Config_Cursor.vc拡大縮小倍率.X = (move / (float)width) * 2.0f;
+				TJAPlayer3.Tx.Config_Cursor.t2D拡大率考慮中央基準描画(x, y, 
 					new Rectangle(width, 0, width, height));
 
-				Config_Cursor.vc拡大縮小倍率.X = 1.0f;
+				TJAPlayer3.Tx.Config_Cursor.vc拡大縮小倍率.X = 1.0f;
 			}
             //---------------------
             #endregion
@@ -572,11 +572,6 @@ namespace TJAPlayer3
 		private CTexture[ , ] txMenuItemLeft;
 
 		private ScriptBG Background;
-		
-        private CTexture 
-            /*Config_Background,
-            Config_Header,*/
-            Config_Cursor;
 
 		private void tカーソルを下へ移動する()
 		{

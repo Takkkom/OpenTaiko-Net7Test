@@ -129,14 +129,6 @@ namespace TJAPlayer3
             Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Script.lua"));
             Background.Init();
 
-            OnlineLounge_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Box.png"));
-            OnlineLounge_Center_Menu_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Center_Menu_Bar.png"));
-            OnlineLounge_Center_Menu_Box_Slot = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Center_Menu_Box_Slot.png"));
-            OnlineLounge_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Side_Menu.png"));
-            OnlineLounge_Context = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Context.png"));
-            OnlineLounge_Song_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Song_Box.png"));
-            OnlineLounge_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Return_Box.png"));
-
             base.CreateManagedResource();
         }
 
@@ -147,14 +139,6 @@ namespace TJAPlayer3
             this.pfOLFontLarge.Dispose();
 
             TJAPlayer3.t安全にDisposeする(ref Background);
-
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Box);
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Center_Menu_Bar);
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Center_Menu_Box_Slot);
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Side_Menu);
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Context);
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Song_Box);
-            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Return_Box);
 
             base.ReleaseManagedResource();
         }
@@ -200,15 +184,15 @@ namespace TJAPlayer3
                     if (_selector != i)
                     {
                         tmpTex.color4 = CConversion.ColorToColor4(Color.DarkGray);
-                        OnlineLounge_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                        TJAPlayer3.Tx.OnlineLounge_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
                     }
                     else
                     {
                         tmpTex.color4 = CConversion.ColorToColor4(Color.White);
-                        OnlineLounge_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                        TJAPlayer3.Tx.OnlineLounge_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
                     }
 
-                    OnlineLounge_Side_Menu?.t2D拡大率考慮上中央基準描画(baseX + TJAPlayer3.Skin.OnlineLounge_Side_Menu_Move[0] * i, 
+                    TJAPlayer3.Tx.OnlineLounge_Side_Menu?.t2D拡大率考慮上中央基準描画(baseX + TJAPlayer3.Skin.OnlineLounge_Side_Menu_Move[0] * i, 
                         baseY + TJAPlayer3.Skin.OnlineLounge_Side_Menu_Move[1] * i);
                     tmpTex.t2D拡大率考慮上中央基準描画(
                         baseX + TJAPlayer3.Skin.OnlineLounge_Side_Menu_Text_Offset[0] + TJAPlayer3.Skin.OnlineLounge_Side_Menu_Move[0] * i,
@@ -256,13 +240,13 @@ namespace TJAPlayer3
 
                     if (pos == 0)
                     {
-                        OnlineLounge_Return_Box?.tUpdateColor4(_color);
-                        OnlineLounge_Return_Box?.t2D拡大率考慮上中央基準描画(x, y);
+                        TJAPlayer3.Tx.OnlineLounge_Return_Box?.tUpdateColor4(_color);
+                        TJAPlayer3.Tx.OnlineLounge_Return_Box?.t2D拡大率考慮上中央基準描画(x, y);
                     }
                     else
                     {
-                        OnlineLounge_Song_Box?.tUpdateColor4(_color);
-                        OnlineLounge_Song_Box?.t2D拡大率考慮上中央基準描画(x, y);
+                        TJAPlayer3.Tx.OnlineLounge_Song_Box?.tUpdateColor4(_color);
+                        TJAPlayer3.Tx.OnlineLounge_Song_Box?.t2D拡大率考慮上中央基準描画(x, y);
                     }
                     
 
@@ -271,7 +255,7 @@ namespace TJAPlayer3
 
                     if (pos != 0 && i == 0)
                     {
-                        OnlineLounge_Context.t2D描画(0, 0);
+                        TJAPlayer3.Tx.OnlineLounge_Context.t2D描画(0, 0);
 
                         var song_ = apiMethods.FetchedSongsList[pos - 1];
 
@@ -342,7 +326,7 @@ namespace TJAPlayer3
 
             if (IsDownloading)
             {
-                OnlineLounge_Box.t2D描画(0, 0);
+                TJAPlayer3.Tx.OnlineLounge_Box.t2D描画(0, 0);
 
                 var text = TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(
                                     new TitleTextureKey("Downloading...", this.pfOLFontLarge, Color.White, Color.Black, 1000));
@@ -757,14 +741,6 @@ namespace TJAPlayer3
         #region [Private]
 
         private ScriptBG Background;
-
-        public CTexture OnlineLounge_Box;
-        public CTexture OnlineLounge_Center_Menu_Bar;
-        public CTexture OnlineLounge_Center_Menu_Box_Slot;
-        public CTexture OnlineLounge_Side_Menu;
-        public CTexture OnlineLounge_Context;
-        public CTexture OnlineLounge_Return_Box;
-        public CTexture OnlineLounge_Song_Box;
 
         private ECurrentMenu currentMenu;
         private ECurrentMenu menuPointer;

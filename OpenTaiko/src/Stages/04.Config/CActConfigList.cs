@@ -1008,8 +1008,6 @@ namespace TJAPlayer3
 			//this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_itembox.png" ), false );
 			//this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_itembox other.png" ), false );
 			//this.tx三角矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_triangle arrow.png" ), false );
-			Config_ItemBox = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}ItemBox.png"));
-			Config_Arrow = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Arrow.png"));
 			this.txSkinSample1 = null;		// スキン選択時に動的に設定するため、ここでは初期化しない
 			base.CreateManagedResource();
 		}
@@ -1017,8 +1015,6 @@ namespace TJAPlayer3
 		{
 			prvFont.Dispose();
 			
-			TJAPlayer3.t安全にDisposeする(ref Config_ItemBox);
-			TJAPlayer3.t安全にDisposeする(ref Config_Arrow);
 			TJAPlayer3.tテクスチャの解放( ref this.txSkinSample1 );
 			//CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
 			//CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
@@ -1204,8 +1200,8 @@ namespace TJAPlayer3
 				{
 					case CItemBase.Eパネル種別.通常:
                     case CItemBase.Eパネル種別.その他:
-                        if ( Config_ItemBox != null )
-                            Config_ItemBox.t2D描画( x, y );
+                        if ( TJAPlayer3.Tx.Config_ItemBox != null )
+                            TJAPlayer3.Tx.Config_ItemBox.t2D描画( x, y );
 						break;
 				}
 				//-----------------
@@ -1384,10 +1380,10 @@ namespace TJAPlayer3
 
 				// 描画。
 				
-				if( Config_Arrow != null )
+				if( TJAPlayer3.Tx.Config_Arrow != null )
 				{
-                    Config_Arrow.t2D描画( x_upper, y_upper, new Rectangle( 0, 0, Config_Arrow.sz画像サイズ.Width, Config_Arrow.sz画像サイズ.Height / 2) );
-                    Config_Arrow.t2D描画( x_lower, y_lower, new Rectangle( 0, Config_Arrow.sz画像サイズ.Height / 2, Config_Arrow.sz画像サイズ.Width, Config_Arrow.sz画像サイズ.Height / 2) );
+                    TJAPlayer3.Tx.Config_Arrow.t2D描画( x_upper, y_upper, new Rectangle( 0, 0, TJAPlayer3.Tx.Config_Arrow.sz画像サイズ.Width, TJAPlayer3.Tx.Config_Arrow.sz画像サイズ.Height / 2) );
+                    TJAPlayer3.Tx.Config_Arrow.t2D描画( x_lower, y_lower, new Rectangle( 0, TJAPlayer3.Tx.Config_Arrow.sz画像サイズ.Height / 2, TJAPlayer3.Tx.Config_Arrow.sz画像サイズ.Width, TJAPlayer3.Tx.Config_Arrow.sz画像サイズ.Height / 2) );
 				}
 			}
 			//-----------------
@@ -1409,10 +1405,6 @@ namespace TJAPlayer3
 			Unknown
 
 		}
-		
-        private CTexture 
-            Config_ItemBox,
-            Config_Arrow;
 
 		private bool b項目リスト側にフォーカスがある;
 		private bool b要素値にフォーカス中;

@@ -102,14 +102,12 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			Config_KeyAssign = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}KeyAssign.png"));
 			//this.txカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 			//this.txHitKeyダイアログ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig hit key to assign dialog.png" ), false );
 			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			TJAPlayer3.t安全にDisposeする(ref Config_KeyAssign);
 			base.ReleaseManagedResource();
 		}
 		public override int Draw()
@@ -193,9 +191,9 @@ namespace TJAPlayer3
 				y += num5;
 				TJAPlayer3.stageコンフィグ.actFont.t文字列描画( x + num5, y, "<< Returnto List", this.n現在の選択行 == 0x11, 0.75f );
 				y += num5;
-				if( this.bキー入力待ち && ( Config_KeyAssign != null ) )
+				if( this.bキー入力待ち && ( TJAPlayer3.Tx.Config_KeyAssign != null ) )
 				{
-                    Config_KeyAssign.t2D描画( TJAPlayer3.Skin.Config_KeyAssign[0], TJAPlayer3.Skin.Config_KeyAssign[1]);
+                    TJAPlayer3.Tx.Config_KeyAssign.t2D描画( TJAPlayer3.Skin.Config_KeyAssign[0], TJAPlayer3.Skin.Config_KeyAssign[1]);
 				}
 			}
 			return 0;
@@ -235,7 +233,6 @@ namespace TJAPlayer3
 		private EKeyConfigPart part;
 		private CConfigIni.CKeyAssign.STKEYASSIGN[] structReset用KeyAssign;
 		private string strパッド名;
-        private CTexture  Config_KeyAssign;
 		//private CTexture txHitKeyダイアログ;
 		//private CTexture txカーソル;
 

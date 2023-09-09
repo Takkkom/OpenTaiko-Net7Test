@@ -167,14 +167,6 @@ namespace TJAPlayer3
         {
             Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Script.lua"));
             Background.Init();
-                
-            Heya_Center_Menu_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Bar.png"));
-            Heya_Center_Menu_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Box.png"));
-            Heya_Center_Menu_Box_Slot = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Box_Slot.png"));
-            Heya_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Side_Menu.png"));
-            Heya_Render_Field = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Render_Field.png"));
-            Heya_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Box.png"));
-            Heya_Lock = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Lock.png"));
 
 
             base.CreateManagedResource();
@@ -183,14 +175,6 @@ namespace TJAPlayer3
         public override void ReleaseManagedResource()
         {
             TJAPlayer3.t安全にDisposeする(ref Background);
-                
-            TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Bar);
-            TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Box);
-            TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Box_Slot);
-            TJAPlayer3.t安全にDisposeする(ref Heya_Side_Menu);
-            TJAPlayer3.t安全にDisposeする(ref Heya_Render_Field);
-            TJAPlayer3.t安全にDisposeする(ref Heya_Box);
-            TJAPlayer3.t安全にDisposeする(ref Heya_Lock);
 
             base.ReleaseManagedResource();
         }
@@ -222,7 +206,7 @@ namespace TJAPlayer3
                 TJAPlayer3.Tx.Characters_Heya_Render[iCharacterCurrent].vc拡大縮小倍率.X = renderRatioX;
                 TJAPlayer3.Tx.Characters_Heya_Render[iCharacterCurrent].vc拡大縮小倍率.Y = renderRatioY;
             }
-            if (iCurrentMenu == 0 || iCurrentMenu == 1) Heya_Render_Field?.t2D描画(0, 0);
+            if (iCurrentMenu == 0 || iCurrentMenu == 1) TJAPlayer3.Tx.Heya_Render_Field?.t2D描画(0, 0);
             if (iCurrentMenu == 0) TJAPlayer3.Tx.Puchichara[iPuchiCharaCurrent].render?.t2D描画(0, 0);
             if (iCurrentMenu == 1) TJAPlayer3.Tx.Characters_Heya_Render[iCharacterCurrent]?.t2D描画(TJAPlayer3.Skin.Characters_Heya_Render_Offset[iCharacterCurrent][0] * renderRatioX, TJAPlayer3.Skin.Characters_Heya_Render_Offset[iCharacterCurrent][1] * renderRatioY);
 
@@ -239,15 +223,15 @@ namespace TJAPlayer3
                 if (iCurrentMenu != -1 || iMainMenuCurrent != i)
                 {
                     tmpTex.color4 = CConversion.ColorToColor4(Color.DarkGray);
-                    Heya_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                    TJAPlayer3.Tx.Heya_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
                 }
                 else
                 {
                     tmpTex.color4 = CConversion.ColorToColor4(Color.White);
-                    Heya_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                    TJAPlayer3.Tx.Heya_Side_Menu?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
                 }
 
-                Heya_Side_Menu?.t2D拡大率考慮上中央基準描画(TJAPlayer3.Skin.Heya_Main_Menu_X[i], TJAPlayer3.Skin.Heya_Main_Menu_Y[i]);
+                TJAPlayer3.Tx.Heya_Side_Menu?.t2D拡大率考慮上中央基準描画(TJAPlayer3.Skin.Heya_Main_Menu_X[i], TJAPlayer3.Skin.Heya_Main_Menu_Y[i]);
                 tmpTex.t2D拡大率考慮上中央基準描画(TJAPlayer3.Skin.Heya_Main_Menu_X[i] + TJAPlayer3.Skin.Heya_Main_Menu_Font_Offset[0], TJAPlayer3.Skin.Heya_Main_Menu_Y[i] + TJAPlayer3.Skin.Heya_Main_Menu_Font_Offset[1]);
             }
 
@@ -264,14 +248,14 @@ namespace TJAPlayer3
                     if (i != 0)
                     {
                         TJAPlayer3.Tx.Puchichara[pos].tx?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
-                        Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
-                        Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                        TJAPlayer3.Tx.Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                        TJAPlayer3.Tx.Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
                     }
                     else
                     {
                         TJAPlayer3.Tx.Puchichara[pos].tx?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
-                        Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
-                        Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                        TJAPlayer3.Tx.Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                        TJAPlayer3.Tx.Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
                     }
 
                     var scroll = DrawBox_Slot(i + (TJAPlayer3.Skin.Heya_Center_Menu_Box_Count / 2));
@@ -316,7 +300,7 @@ namespace TJAPlayer3
 
                     if (TJAPlayer3.Tx.Puchichara[pos].unlock != null
                         && !TJAPlayer3.SaveFileInstances[iPlayer].data.UnlockedPuchicharas.Contains(TJAPlayer3.Skin.Puchicharas_Name[pos]))
-                        Heya_Lock?.t2D拡大率考慮上中央基準描画(scroll.Item1, scroll.Item2);
+                        TJAPlayer3.Tx.Heya_Lock?.t2D拡大率考慮上中央基準描画(scroll.Item1, scroll.Item2);
 
                     #endregion
 
@@ -340,14 +324,14 @@ namespace TJAPlayer3
                     if (i != 0)
                     {
                         TJAPlayer3.Tx.Characters_Heya_Preview[pos]?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
-                        Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
-                        Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                        TJAPlayer3.Tx.Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
+                        TJAPlayer3.Tx.Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.DarkGray));
                     }
                     else
                     {
                         TJAPlayer3.Tx.Characters_Heya_Preview[pos]?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
-                        Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
-                        Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                        TJAPlayer3.Tx.Heya_Center_Menu_Box_Slot?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
+                        TJAPlayer3.Tx.Heya_Lock?.tUpdateColor4(CConversion.ColorToColor4(Color.White));
                     }
 
                     var scroll = DrawBox_Slot(i + (TJAPlayer3.Skin.Heya_Center_Menu_Box_Count / 2));
@@ -389,7 +373,7 @@ namespace TJAPlayer3
 
                     if (TJAPlayer3.Tx.Characters[pos].unlock != null
                         && !TJAPlayer3.SaveFileInstances[iPlayer].data.UnlockedCharacters.Contains(TJAPlayer3.Skin.Characters_DirName[pos]))
-                        Heya_Lock?.t2D拡大率考慮上中央基準描画(scroll.Item1, scroll.Item2);
+                        TJAPlayer3.Tx.Heya_Lock?.t2D拡大率考慮上中央基準描画(scroll.Item1, scroll.Item2);
 
                     #endregion
                 }
@@ -410,13 +394,13 @@ namespace TJAPlayer3
                     if (i != 0)
                     {
                         tmpTex.color4 = CConversion.ColorToColor4(Color.DarkGray);
-                        Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.DarkGray);
+                        TJAPlayer3.Tx.Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.DarkGray);
                         TJAPlayer3.Tx.NamePlateBase.color4 = CConversion.ColorToColor4(Color.DarkGray);
                     }
                     else
                     {
                         tmpTex.color4 = CConversion.ColorToColor4(Color.White);
-                        Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.White);
+                        TJAPlayer3.Tx.Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.White);
                         TJAPlayer3.Tx.NamePlateBase.color4 = CConversion.ColorToColor4(Color.White);
                     }
 
@@ -455,12 +439,12 @@ namespace TJAPlayer3
                     if (i != 0)
                     {
                         tmpTex.color4 = CConversion.ColorToColor4(Color.DarkGray);
-                        Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.DarkGray);
+                        TJAPlayer3.Tx.Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.DarkGray);
                     }
                     else
                     {
                         tmpTex.color4 = CConversion.ColorToColor4(Color.White);
-                        Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.White);
+                        TJAPlayer3.Tx.Heya_Side_Menu.color4 = CConversion.ColorToColor4(Color.White);
                     }
 
                     var scroll = DrawSide_Menu(i + (TJAPlayer3.Skin.Heya_Side_Menu_Count / 2));
@@ -495,7 +479,7 @@ namespace TJAPlayer3
             if (iCurrentMenu >= 0)
             {
                 if (this.ttkInfoSection != null && this.ttkInfoSection.str文字 != "")
-                    Heya_Box?.t2D描画(0, 0);
+                    TJAPlayer3.Tx.Heya_Box?.t2D描画(0, 0);
 
                 if (this.ttkInfoSection != null)
                     TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(this.ttkInfoSection)
@@ -850,7 +834,7 @@ namespace TJAPlayer3
             int x = TJAPlayer3.Skin.Heya_Center_Menu_Box_X[i] + (int)((TJAPlayer3.Skin.Heya_Center_Menu_Box_X[nextIndex] - TJAPlayer3.Skin.Heya_Center_Menu_Box_X[i]) * value);
             int y = TJAPlayer3.Skin.Heya_Center_Menu_Box_Y[i] + (int)((TJAPlayer3.Skin.Heya_Center_Menu_Box_Y[nextIndex] - TJAPlayer3.Skin.Heya_Center_Menu_Box_Y[i]) * value);
 
-            Heya_Center_Menu_Box_Slot?.t2D拡大率考慮上中央基準描画(x, y);
+            TJAPlayer3.Tx.Heya_Center_Menu_Box_Slot?.t2D拡大率考慮上中央基準描画(x, y);
             return (x, y);
         }
 
@@ -865,7 +849,7 @@ namespace TJAPlayer3
             int x = TJAPlayer3.Skin.Heya_Side_Menu_X[i] + (int)((TJAPlayer3.Skin.Heya_Side_Menu_X[nextIndex] - TJAPlayer3.Skin.Heya_Side_Menu_X[i]) * value);
             int y = TJAPlayer3.Skin.Heya_Side_Menu_Y[i] + (int)((TJAPlayer3.Skin.Heya_Side_Menu_Y[nextIndex] - TJAPlayer3.Skin.Heya_Side_Menu_Y[i]) * value);
 
-            Heya_Side_Menu.t2D拡大率考慮上中央基準描画(x, y);
+            TJAPlayer3.Tx.Heya_Side_Menu.t2D拡大率考慮上中央基準描画(x, y);
             return (x, y);
         }
 
@@ -973,14 +957,6 @@ namespace TJAPlayer3
         #endregion
 
         private ScriptBG Background;
-        
-        private CTexture Heya_Center_Menu_Bar;
-        private CTexture Heya_Center_Menu_Box;
-        private CTexture Heya_Center_Menu_Box_Slot;
-        private CTexture Heya_Side_Menu;
-        private CTexture Heya_Box;
-        private CTexture Heya_Render_Field;
-        private CTexture Heya_Lock;
 
         private TitleTextureKey[] ttkMainMenuOpt;
         private CCachedFontRenderer pfHeyaFont;

@@ -39,7 +39,6 @@ namespace TJAPlayer3
         {
 
             // Ressource allocation
-            SongSelect_Floor_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Floor_Number.png"));
 
             base.CreateManagedResource();
         }
@@ -48,7 +47,6 @@ namespace TJAPlayer3
         {
 
             // Ressource freeing
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Floor_Number);
 
             base.ReleaseManagedResource();
         }
@@ -62,24 +60,22 @@ namespace TJAPlayer3
 
         #region [Private]
 
-        private CTexture SongSelect_Floor_Number;
-
         private void tFloorNumberDraw(float originx, float originy, int num)
         {
             int[] nums = CConversion.SeparateDigits(num);
 
             for (int j = 0; j < nums.Length; j++)
             {
-                if (TJAPlayer3.Skin.SongSelect_FloorNum_Show && SongSelect_Floor_Number != null)
+                if (TJAPlayer3.Skin.SongSelect_FloorNum_Show && TJAPlayer3.Tx.SongSelect_Floor_Number != null)
                 {
                     float offset = j;
                     float x = originx - (TJAPlayer3.Skin.SongSelect_FloorNum_Interval[0] * offset);
                     float y = originy - (TJAPlayer3.Skin.SongSelect_FloorNum_Interval[1] * offset);
 
-                    float width = SongSelect_Floor_Number.sz画像サイズ.Width / 10.0f;
-                    float height = SongSelect_Floor_Number.sz画像サイズ.Height;
+                    float width = TJAPlayer3.Tx.SongSelect_Floor_Number.sz画像サイズ.Width / 10.0f;
+                    float height = TJAPlayer3.Tx.SongSelect_Floor_Number.sz画像サイズ.Height;
 
-                    SongSelect_Floor_Number.t2D描画(x, y, new RectangleF(width * nums[j], 0, width, height));
+                    TJAPlayer3.Tx.SongSelect_Floor_Number.t2D描画(x, y, new RectangleF(width * nums[j], 0, width, height));
                 }
             }
         }

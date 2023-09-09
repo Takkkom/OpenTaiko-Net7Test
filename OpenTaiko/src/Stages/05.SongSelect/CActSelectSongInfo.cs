@@ -38,8 +38,6 @@ namespace TJAPlayer3
         public override void CreateManagedResource()
         {
             // Ressource allocation
-            SongSelect_Bpm_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Bpm_Number.png"));
-            SongSelect_Explicit = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Explicit.png"));
 
             base.CreateManagedResource();
         }
@@ -47,8 +45,6 @@ namespace TJAPlayer3
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Bpm_Number);
-            TJAPlayer3.t安全にDisposeする(ref SongSelect_Explicit);
 
             base.ReleaseManagedResource();
         }
@@ -76,7 +72,7 @@ namespace TJAPlayer3
                     TJAPlayer3.stage選曲.act曲リスト.ResolveTitleTexture(TJAPlayer3.stage選曲.act曲リスト.ttkSelectedSongBPM).t2D拡大率考慮描画(CTexture.RefPnt.Left, TJAPlayer3.Skin.SongSelect_BPM_Text[0], TJAPlayer3.Skin.SongSelect_BPM_Text[1]);
                 }
                 if (TJAPlayer3.stage選曲.r現在選択中の曲.bExplicit == true)
-                    SongSelect_Explicit?.t2D描画(TJAPlayer3.Skin.SongSelect_Explicit[0], TJAPlayer3.Skin.SongSelect_Explicit[1]);
+                    TJAPlayer3.Tx.SongSelect_Explicit?.t2D描画(TJAPlayer3.Skin.SongSelect_Explicit[0], TJAPlayer3.Skin.SongSelect_Explicit[1]);
             }
 
 
@@ -85,25 +81,22 @@ namespace TJAPlayer3
 
         #region [Private]
 
-        public CTexture SongSelect_Explicit;
-        public CTexture SongSelect_Bpm_Number;
-
         private void tBPMNumberDraw(float originx, float originy, int num)
         {
             int[] nums = CConversion.SeparateDigits(num);
 
             for (int j = 0; j < nums.Length; j++)
             {
-                if (TJAPlayer3.Skin.SongSelect_Bpm_Show && SongSelect_Bpm_Number != null)
+                if (TJAPlayer3.Skin.SongSelect_Bpm_Show && TJAPlayer3.Tx.SongSelect_Bpm_Number != null)
                 {
                     float offset = j;
                     float x = originx - (TJAPlayer3.Skin.SongSelect_Bpm_Interval[0] * offset);
                     float y = originy - (TJAPlayer3.Skin.SongSelect_Bpm_Interval[1] * offset);
 
-                    float width = SongSelect_Bpm_Number.sz画像サイズ.Width / 10.0f;
-                    float height = SongSelect_Bpm_Number.sz画像サイズ.Height;
+                    float width = TJAPlayer3.Tx.SongSelect_Bpm_Number.sz画像サイズ.Width / 10.0f;
+                    float height = TJAPlayer3.Tx.SongSelect_Bpm_Number.sz画像サイズ.Height;
 
-                    SongSelect_Bpm_Number.t2D描画(x, y, new RectangleF(width * nums[j], 0, width, height));
+                    TJAPlayer3.Tx.SongSelect_Bpm_Number.t2D描画(x, y, new RectangleF(width * nums[j], 0, width, height));
                 }
             }
         }

@@ -187,20 +187,188 @@ namespace TJAPlayer3
 
             #region 1_タイトル画面
             //Title_Background = TxC(TITLE + @$"Background.png");
+            Entry_Bar = TxC(TITLE + @$"Entry_Bar.png");
+            Entry_Bar_Text = TxC(TITLE + @$"Entry_Bar_Text.png");
+
+            Banapas_Load[0] = TxC(TITLE + @$"Banapas_Load.png");
+            Banapas_Load[1] = TxC(TITLE + @$"Banapas_Load_Text.png");
+            Banapas_Load[2] = TxC(TITLE + @$"Banapas_Load_Anime.png");
+
+            Banapas_Load_Clear[0] = TxC(TITLE + @$"Banapas_Load_Clear.png");
+            Banapas_Load_Clear[1] = TxC(TITLE + @$"Banapas_Load_Clear_Anime.png");
+
+            Banapas_Load_Failure[0] = TxC(TITLE + @$"Banapas_Load_Failure.png");
+            Banapas_Load_Failure[1] = TxC(TITLE + @$"Banapas_Load_Clear_Anime.png");
+
+            Entry_Player[0] = TxC(TITLE + @$"Entry_Player.png");
+            Entry_Player[1] = TxC(TITLE + @$"Entry_Player_Select_Bar.png");
+            Entry_Player[2] = TxC(TITLE + @$"Entry_Player_Select.png");
+
+            ModeSelect_Bar = new CTexture[CMainMenuTab.__MenuCount + 1];
+            ModeSelect_Bar_Chara = new CTexture[CMainMenuTab.__MenuCount];
+
+            for (int i = 0; i < CMainMenuTab.__MenuCount; i++)
+            {
+                ModeSelect_Bar[i] = TxC(TITLE + @$"ModeSelect_Bar_" + i.ToString() + ".png");
+            }
+            
+            for(int i = 0; i < CMainMenuTab.__MenuCount; i++)
+            {
+                ModeSelect_Bar_Chara[i] = TxC(TITLE + @$"ModeSelect_Bar_Chara_" + i.ToString() + ".png");
+            }
+
+            ModeSelect_Bar[CMainMenuTab.__MenuCount] = TxC(TITLE + @$"ModeSelect_Bar_Overlay.png");
 
             #endregion
 
             #region 2_コンフィグ画面
             //Config_Background = TxC(CONFIG + @$"Background.png");
             //Config_Header = TxC(CONFIG + @$"Header.png");
+            Config_Cursor = TxC(CONFIG + @$"Cursor.png");
+            Config_ItemBox = TxC(CONFIG + @$"ItemBox.png");
+            Config_Arrow = TxC(CONFIG + @$"Arrow.png");
+            Config_KeyAssign = TxC(CONFIG + @$"KeyAssign.png");
             Config_Font = TxC(CONFIG + @$"Font.png");
             Config_Font_Bold = TxC(CONFIG + @$"Font_Bold.png");
             Config_Enum_Song = TxC(CONFIG + @$"Enum_Song.png");
             #endregion
 
             #region 3_選曲画面
+            SongSelect_Background = TxC(SONGSELECT + @$"Background.png");
+            SongSelect_Header = TxC(SONGSELECT + @$"Header.png");
+            SongSelect_Footer = TxC(SONGSELECT + @$"Footer.png");
+            SongSelect_Coin_Slot[0] = TxC(SONGSELECT + @$"Coin_Slot.png");
+            SongSelect_Coin_Slot[1] = TxC(SONGSELECT + @$"Coin_Slot_3P.png");
+            SongSelect_Coin_Slot[2] = TxC(SONGSELECT + @$"Coin_Slot_4P.png");
+            SongSelect_Coin_Slot[3] = TxC(SONGSELECT + @$"Coin_Slot_5P.png");
+
+            SongSelect_Auto = TxC(SONGSELECT + @$"Auto.png");
+            SongSelect_Level = TxC(SONGSELECT + @$"Level.png");
+            SongSelect_Branch = TxC(SONGSELECT + @$"Branch.png");
+            SongSelect_Branch_Text = TxC(SONGSELECT + @$"Branch_Text.png");
+            SongSelect_Bar_Center = TxC(SONGSELECT + @$"Bar_Center.png");
+            SongSelect_Lock = TxC(SONGSELECT + @$"Lock.png");
+
+            SongSelect_Frame_Score[0] = TxC(SONGSELECT + @$"Frame_Score.png");
+            SongSelect_Frame_Score[1] = TxC(SONGSELECT + @$"Frame_Score_Tower.png");
+            SongSelect_Frame_Score[2] = TxC(SONGSELECT + @$"Frame_Score_Dan.png");
+
+            SongSelect_Tower_Side = TxC(SONGSELECT + @$"Tower_Side.png");
+
+            SongSelect_Frame_Box = TxC(SONGSELECT + @$"Frame_Box.png");
+            SongSelect_Frame_BackBox = TxC(SONGSELECT + @$"Frame_BackBox.png");
+            SongSelect_Frame_Random = TxC(SONGSELECT + @$"Frame_Random.png");
+            SongSelect_Bar_Genre_Back = TxC(SONGSELECT + @$"Bar_Genre_Back.png");
+            SongSelect_Bar_Genre_Locked = TxC(SONGSELECT + @$"Bar_Genre_Locked.png");
+            SongSelect_Bar_Genre_Random = TxC(SONGSELECT + @$"Bar_Genre_Random.png");
+            SongSelect_Bar_Genre_RecentryPlaySong = TxC(SONGSELECT + @$"Bar_Genre_RecentryPlaySong.png");
+            SongSelect_Bar_Select = TxC(SONGSELECT + @$"Bar_Select.png");
+            SongSelect_Level_Number = TxC(SONGSELECT + @$"Level_Number.png");
+            SongSelect_Level_Number_Big = TxC(SONGSELECT + @$"Level_Number_Big.png");
+            SongSelect_Level_Number_Big_Colored = TxC(SONGSELECT + @$"Level_Number_Big_Colored.png");
+            SongSelect_Level_Number_Colored = TxC(SONGSELECT + @$"Level_Number_Colored.png");
+            SongSelect_Level_Number_Big_Icon = TxC(SONGSELECT + @$"Level_Number_Big_Icon.png");
+            SongSelect_Level_Number_Icon = TxC(SONGSELECT + @$"Level_Number_Icon.png");
+            SongSelect_Bpm_Number = TxC(SONGSELECT + @$"Bpm_Number.png");
+            SongSelect_Floor_Number = TxC(SONGSELECT + @$"Floor_Number.png");
+            SongSelect_Credit = TxC(SONGSELECT + @$"Credit.png");
+            SongSelect_Timer = TxC(SONGSELECT + @$"Timer.png");
+            SongSelect_Explicit = TxC(SONGSELECT + @$"Explicit.png");
+            SongSelect_Song_Number = TxC(SONGSELECT + @$"Song_Number.png");
+            SongSelect_Bar_Genre_Overlay = TxC(SONGSELECT + @$"Bar_Genre_Overlay.png");
+            SongSelect_Crown = TxC(SONGSELECT + @$"SongSelect_Crown.png");
+            SongSelect_ScoreRank = TxC(SONGSELECT + @$"ScoreRank.png");
+            SongSelect_BoardNumber = TxC(SONGSELECT + @$"BoardNumber.png");
+            SongSelect_Difficulty_Cymbol = TxC(SONGSELECT + "Difficulty_Cymbol.png");
+
+            SongSelect_Favorite = TxC(SONGSELECT + @$"Favorite.png");
+            SongSelect_High_Score = TxC(SONGSELECT + @$"High_Score.png");
+
+            SongSelect_Level_Icons = TxC(SONGSELECT + @$"Level_Icons.png");
+            SongSelect_Search_Arrow = TxC(SONGSELECT + @$"Search{Path.DirectorySeparatorChar}Search_Arrow.png");
+            SongSelect_Search_Arrow_Glow = TxC(SONGSELECT + @$"Search{Path.DirectorySeparatorChar}Search_Arrow_Glow.png");
+            SongSelect_Search_Window = TxC(SONGSELECT + @$"Search{Path.DirectorySeparatorChar}Search_Window.png");
+
+            for (int i = 0; i < (int)Difficulty.Total; i++)
+            {
+                SongSelect_ScoreWindow[i] = TxC(SONGSELECT + @$"ScoreWindow_" + i.ToString() + ".png");
+            }
+
+            SongSelect_ScoreWindow_Text = TxC(SONGSELECT + @$"ScoreWindow_Text.png");
+
+            TJAPlayer3.Skin.SongSelect_Bar_Genre_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + SONGSELECT + @$"Bar_Genre{Path.DirectorySeparatorChar}"), "Bar_Genre_");
+
+            if (TJAPlayer3.Skin.SongSelect_Bar_Genre_Count != 0)
+            {
+                SongSelect_Bar_Genre = new CTexture[TJAPlayer3.Skin.SongSelect_Bar_Genre_Count];
+                SongSelect_Bar_Genre_Overlap = new CTexture[TJAPlayer3.Skin.SongSelect_Bar_Genre_Count];
+                for (int i = 0; i < SongSelect_Bar_Genre.Length; i++)
+                {
+                    SongSelect_Bar_Genre[i] = TxC(SONGSELECT + @$"Bar_Genre{Path.DirectorySeparatorChar}Bar_Genre_" + i.ToString() + ".png");
+                    SongSelect_Bar_Genre_Overlap[i] = TxC(SONGSELECT + @$"Bar_Genre{Path.DirectorySeparatorChar}Bar_Genre_Overlap_" + i.ToString() + ".png");
+                }
+            }
+
+            TJAPlayer3.Skin.SongSelect_Genre_Background_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + SONGSELECT + @$"Genre_Background{Path.DirectorySeparatorChar}"), "GenreBackground_");
+
+            if (TJAPlayer3.Skin.SongSelect_Genre_Background_Count != 0)
+            {
+                SongSelect_GenreBack = new CTexture[TJAPlayer3.Skin.SongSelect_Genre_Background_Count];
+                for (int i = 0; i < SongSelect_GenreBack.Length; i++)
+                {
+                    SongSelect_GenreBack[i] = TxC(SONGSELECT + @$"Genre_Background{Path.DirectorySeparatorChar}GenreBackground_" + i.ToString() + ".png");
+                }
+            }
+
+            TJAPlayer3.Skin.SongSelect_Box_Chara_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + SONGSELECT + @$"Box_Chara{Path.DirectorySeparatorChar}"), "Box_Chara_");
+
+            if (TJAPlayer3.Skin.SongSelect_Box_Chara_Count != 0)
+            {
+                SongSelect_Box_Chara = new CTexture[TJAPlayer3.Skin.SongSelect_Box_Chara_Count];
+                for (int i = 0; i < SongSelect_Box_Chara.Length; i++)
+                {
+                    SongSelect_Box_Chara[i] = TxC(SONGSELECT + @$"Box_Chara{Path.DirectorySeparatorChar}Box_Chara_" + i.ToString() + ".png");
+                }
+            }
+
+            for (int i = 0; i < SongSelect_Table.Length; i++)
+            {
+                SongSelect_Table[i] = TxC(SONGSELECT + @$"Table{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
+            }
+
+            SongSelect_Song_Panel[0] = TxC(SONGSELECT + @$"Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Box.png");
+            SongSelect_Song_Panel[1] = TxC(SONGSELECT + @$"Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Song.png");
+            SongSelect_Song_Panel[2] = TxC(SONGSELECT + @$"Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Dan.png");
+            SongSelect_Song_Panel[3] = TxC(SONGSELECT + @$"Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Tower.png");
+            SongSelect_Song_Panel[4] = TxC(SONGSELECT + @$"Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Locked_Song.png");
+            SongSelect_Song_Panel[5] = TxC(SONGSELECT + @$"Song_Panel{Path.DirectorySeparatorChar}Song_Panel_Locked_Asset.png");
 
             #region [ 難易度選択画面 ]
+            Difficulty_Bar = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Bar.png");
+            Difficulty_Number = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number.png");
+            Difficulty_Number_Colored = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number_Colored.png");
+            Difficulty_Number_Icon = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number_Icon.png");
+            Difficulty_Star = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Star.png");
+            Difficulty_Crown = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Crown.png");
+            Difficulty_Option = TxC($"{SONGSELECT}Difficulty_Select/Difficulty_Option.png");
+            Difficulty_Option_Select = TxC($"{SONGSELECT}Difficulty_Select/Difficulty_Option_Select.png");
+
+            Difficulty_Select_Bar[0] = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar.png");
+            Difficulty_Select_Bar[1] = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar2.png");
+            Difficulty_Select_Bar[2] = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar3.png");
+            Difficulty_Select_Bar[3] = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar4.png");
+            Difficulty_Select_Bar[4] = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Select_Bar5.png");
+
+            TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Back{Path.DirectorySeparatorChar}"), "Difficulty_Back_");
+
+            if (TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count != 0)
+            {
+                Difficulty_Back = new CTexture[TJAPlayer3.Skin.SongSelect_Difficulty_Background_Count];
+                for (int i = 0; i < Difficulty_Back.Length; i++)
+                {
+                    Difficulty_Back[i] = TxC(SONGSELECT + @$"Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Back{Path.DirectorySeparatorChar}Difficulty_Back_" + i.ToString() + ".png");
+                }
+            }
             #endregion
 
             #endregion
@@ -208,10 +376,15 @@ namespace TJAPlayer3
             #region 3_段位選択画面
 
             //Dani_Background = TxC(DANISELECT + "Background.png");
+            Dani_Difficulty_Cymbol = TxC(DANISELECT + "Difficulty_Cymbol.png");
             Dani_Level_Number = TxC(DANISELECT + "Level_Number.png");
             Dani_Soul_Number = TxC(DANISELECT + "SoulNumber.png");
             Dani_Exam_Number = TxC(DANISELECT + "ExamNumber.png");
+            Dani_Bar_Center = TxC(DANISELECT + "Bar_Center.png");
             Dani_Plate = TxC(DANISELECT + "Plate.png");
+
+            for (int i = 0; i < Challenge_Select.Length; i++)
+                Challenge_Select[i] = TxC(DANISELECT + "Challenge_Select_" + i.ToString() + ".png");
 
             //Dani_Dan_In = TxC(DANISELECT + "Dan_In.png");
             //Dani_Dan_Text = TxC(DANISELECT + "Dan_Text.png");
@@ -219,6 +392,7 @@ namespace TJAPlayer3
             Dani_DanPlates = TxC(DANISELECT + "DanPlates.png");
             Dani_DanIcon = TxC(DANISELECT + "DanIcon.png");
             Dani_DanIcon_Fade = TxC(DANISELECT + "DanIcon_Fade.png");
+            Dani_DanSides = TxC(DANISELECT + "DanSides.png");
 
             for (int i = 0; i < Dani_Bloc.Length; i++)
                 Dani_Bloc[i] = TxC(DANISELECT + "Bloc" + i.ToString() + ".png");
@@ -862,8 +1036,6 @@ namespace TJAPlayer3
 
             #region 6_結果発表
             Result_FadeIn = TxC(RESULT + @$"FadeIn.png");
-            Result_Soul_Text = TxC(RESULT + @$"Soul_Text.png");
-            Result_Soul_Fire = TxC(RESULT + @$"Result_Soul_Fire.png");
 
             Result_Gauge[0] = TxC(RESULT + @$"Gauge.png");
             Result_Gauge_Base[0] = TxC(RESULT + @$"Gauge_Base.png");
@@ -881,8 +1053,50 @@ namespace TJAPlayer3
             Result_Gauge_Clear_Base = TxC(RESULT + @$"Gauge_Clear_Base.png");
             Result_Gauge_Killzone = TxC(RESULT + @$"Gauge_Killzone.png");
 
+            Result_Header = TxC(RESULT + @$"Header.png");
+            Result_Number = TxC(RESULT + @$"Number.png");
+            Result_Panel = TxC(RESULT + @$"Panel.png");
+            Result_Panel_2P = TxC(RESULT + @$"Panel_2.png");
+            Result_Soul_Text = TxC(RESULT + @$"Soul_Text.png");
+            Result_Soul_Fire = TxC(RESULT + @$"Result_Soul_Fire.png");
+            Result_Diff_Bar = TxC(RESULT + @$"DifficultyBar.png");
+            Result_Score_Number = TxC(RESULT + @$"Score_Number.png");
+            Result_Dan = TxC(RESULT + @$"Dan.png");
+
+            Result_CrownEffect = TxC(RESULT + @$"CrownEffect.png");
+            Result_ScoreRankEffect = TxC(RESULT + @$"ScoreRankEffect.png");
+            //Result_Cloud = TxC(RESULT + @$"Cloud.png");
+            Result_Shine = TxC(RESULT + @$"Shine.png");
+
+            Result_Speech_Bubble[0] = TxC(RESULT + @$"Speech_Bubble.png");
+            Result_Speech_Bubble[1] = TxC(RESULT + @$"Speech_Bubble_2.png");
+
+            Result_Flower = TxC(RESULT + @$"Flower{Path.DirectorySeparatorChar}Flower.png");
+
+            for (int i = 0; i < 4; i++)
+                Result_Panel_4P[i] = TxC(RESULT + @$"Panel_4P_" + (i + 1).ToString() + ".png");
+
+            for (int i = 0; i < 5; i++)
+                Result_Panel_5P[i] = TxC(RESULT + @$"Panel_5P_" + (i + 1).ToString() + ".png");
+
+            for (int i = 1; i <= 5; i++)
+                Result_Flower_Rotate[i - 1] = TxC(RESULT + @$"Flower{Path.DirectorySeparatorChar}Rotate_" + i.ToString() + ".png");
+
+            //for (int i = 0; i < 3; i++)
+                //Result_Work[i] = TxC(RESULT + @$"Work{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
+
+
             for (int i = 0; i < 41; i++)
                 Result_Rainbow[i] = TxC(RESULT + @$"Rainbow{Path.DirectorySeparatorChar}" + i.ToString() + ".png");
+
+            //for (int i = 0; i < 6; i++)
+                //Result_Background[i] = TxC(RESULT + @$"Background_" + i.ToString() + ".png");
+
+            //for (int i = 0; i < 4; i++)
+                //Result_Mountain[i] = TxC(RESULT + @$"Background_Mountain_" + i.ToString() + ".png");
+
+            for (int i = 0; i < 3; i++)
+                Result_Crown[i] = TxC(RESULT + @$"Crown{Path.DirectorySeparatorChar}Crown_" + i.ToString() + ".png");
 
             #endregion
 
@@ -892,20 +1106,34 @@ namespace TJAPlayer3
 
             #region 7_AIResults
 
+            Result_AIBattle_Panel_AI = TxC(RESULT + @$"AIBattle{Path.DirectorySeparatorChar}Panel_AI.png");
+            Result_AIBattle_Batch = TxC(RESULT + @$"AIBattle{Path.DirectorySeparatorChar}Batch.png");
+            Result_AIBattle_SectionPlate = TxC(RESULT + @$"AIBattle{Path.DirectorySeparatorChar}SectionPlate.png");
+            Result_AIBattle_WinFlag_Clear = TxC(RESULT + @$"AIBattle{Path.DirectorySeparatorChar}WinFlag_Win.png");
+            Result_AIBattle_WinFlag_Lose = TxC(RESULT + @$"AIBattle{Path.DirectorySeparatorChar}WinFlag_Lose.png");
+
             #endregion
 
             #region [7_DanResults]
 
             //DanResult_Background = TxC(DANRESULT + @$"Background.png");
+            DanResult_Rank = TxC(DANRESULT + @$"Rank.png");
+            DanResult_SongPanel_Base = TxC(DANRESULT + @$"SongPanel_Base.png");
+            DanResult_StatePanel_Base = TxC(DANRESULT + @$"StatePanel_Base.png");
+            DanResult_SongPanel_Main = TxC(DANRESULT + @$"SongPanel_Main.png");
+            DanResult_StatePanel_Main = TxC(DANRESULT + @$"StatePanel_Main.png");
 
             #endregion
 
             #region [8_TowerResults]
 
-            TowerResult_Background = TxC(TOWERRESULT + @$"Background.png");
-
             TJAPlayer3.Skin.Game_Tower_Ptn_Result = TJAPlayer3.t連番画像の枚数を数える(CSkin.Path(BASE + TOWERRESULT + @$"Tower{Path.DirectorySeparatorChar}"));
             TowerResult_Tower = new CTexture[TJAPlayer3.Skin.Game_Tower_Ptn_Result];
+
+            TowerResult_Background = TxC(TOWERRESULT + @$"Background.png");
+            TowerResult_Panel = TxC(TOWERRESULT + @$"Panel.png");
+
+            TowerResult_ScoreRankEffect = TxC(TOWERRESULT + @$"ScoreRankEffect.png");
 
             for (int i = 0; i < TJAPlayer3.Skin.Game_Tower_Ptn_Result; i++)
             {
@@ -917,6 +1145,14 @@ namespace TJAPlayer3
             #region [10_Heya]
 
             //Heya_Background = TxC(HEYA + @$"Background.png");
+            Heya_Center_Menu_Bar = TxC(HEYA + @$"Center_Menu_Bar.png");
+            Heya_Center_Menu_Box = TxC(HEYA + @$"Center_Menu_Box.png");
+            Heya_Center_Menu_Box_Slot = TxC(HEYA + @$"Center_Menu_Box_Slot.png");
+            Heya_Side_Menu = TxC(HEYA + @$"Side_Menu.png");
+            Heya_Render_Field = TxC(HEYA + @$"Render_Field.png");
+            Heya_Box = TxC(HEYA + @$"Box.png");
+            Heya_Lock = TxC(HEYA + @$"Lock.png");
+
             #endregion
 
             #region [11_Characters]
@@ -1110,13 +1346,29 @@ namespace TJAPlayer3
 
             #region [12_OnlineLounge]
 
+            //OnlineLounge_Background = TxC(ONLINELOUNGE + @"Background.png");
+            OnlineLounge_Box = TxC(ONLINELOUNGE + @"Box.png");
+            OnlineLounge_Center_Menu_Bar = TxC(ONLINELOUNGE + @"Center_Menu_Bar.png");
+            OnlineLounge_Center_Menu_Box_Slot = TxC(ONLINELOUNGE + @"Center_Menu_Box_Slot.png");
+            OnlineLounge_Side_Menu = TxC(ONLINELOUNGE + @"Side_Menu.png");
+            OnlineLounge_Context = TxC(ONLINELOUNGE + @"Context.png");
+            OnlineLounge_Song_Box = TxC(ONLINELOUNGE + @"Song_Box.png");
+            OnlineLounge_Return_Box = TxC(ONLINELOUNGE + @"Return_Box.png");
+
             #endregion
 
             #region [13_TowerSelect]
 
+            TowerSelect_Tower = TxC(TOWERSELECT + @"Tower.png");
+
             #endregion
 
             #region [15_OpenEncyclopedia]
+
+            //OpenEncyclopedia_Background = TxC(OPENENCYCLOPEDIA + @"Background.png");
+            OpenEncyclopedia_Context = TxC(OPENENCYCLOPEDIA + @"Context.png");
+            OpenEncyclopedia_Side_Menu = TxC(OPENENCYCLOPEDIA + @"Side_Menu.png");
+            OpenEncyclopedia_Return_Box = TxC(OPENENCYCLOPEDIA + @"Return_Box.png");
 
             #endregion
 
@@ -1895,19 +2147,103 @@ namespace TJAPlayer3
 
         #region 1_タイトル画面
 
+        public CTexture 
+            //Title_Background,
+            Entry_Bar,
+            Entry_Bar_Text;
+
+        public CTexture[] Banapas_Load = new CTexture[3];
+        public CTexture[] Banapas_Load_Clear = new CTexture[2];
+        public CTexture[] Banapas_Load_Failure = new CTexture[2];
+        public CTexture[] Entry_Player = new CTexture[3];
+        public CTexture[] ModeSelect_Bar;
+        public CTexture[] ModeSelect_Bar_Chara;
+
         #endregion
 
         #region 2_コンフィグ画面
         public CTexture 
+            /*Config_Background,
+            Config_Header,*/
+            Config_Cursor,
+            Config_ItemBox,
+            Config_Arrow,
+            Config_KeyAssign,
             Config_Font,
             Config_Font_Bold,
             Config_Enum_Song;
         #endregion
 
         #region 3_選曲画面
-        public CTexture[] SongSelect_NamePlate = new CTexture[1];
+
+        public CTexture SongSelect_Background,
+            SongSelect_Header,
+            SongSelect_Footer,
+            SongSelect_Auto,
+            SongSelect_Level,
+            SongSelect_Branch,
+            SongSelect_Branch_Text,
+            SongSelect_Lock,
+            SongSelect_Frame_Box,
+            SongSelect_Frame_BackBox,
+            SongSelect_Frame_Random,
+            SongSelect_Bar_Center,
+            SongSelect_Bar_Genre_Back, 
+            SongSelect_Bar_Genre_Locked,
+            SongSelect_Bar_Genre_Random,
+            SongSelect_Bar_Genre_RecentryPlaySong,
+            SongSelect_Level_Number,
+            SongSelect_Level_Number_Colored,
+            SongSelect_Level_Number_Icon,
+            SongSelect_Level_Number_Big,
+            SongSelect_Level_Number_Big_Colored,
+            SongSelect_Level_Number_Big_Icon,
+            SongSelect_Bpm_Number,
+            SongSelect_Floor_Number,
+            SongSelect_Bar_Select,
+            SongSelect_Bar_Genre_Overlay,
+            SongSelect_Credit,
+            SongSelect_Timer,
+            SongSelect_Explicit,
+            SongSelect_Crown,
+            SongSelect_ScoreRank,
+            SongSelect_Song_Number,
+            SongSelect_BoardNumber,
+            SongSelect_Difficulty_Cymbol,
+            SongSelect_Tower_Side,
+
+            SongSelect_Favorite,
+            SongSelect_High_Score,
+
+            SongSelect_Level_Icons,
+            SongSelect_Search_Arrow,
+            SongSelect_Search_Arrow_Glow,
+            SongSelect_Search_Window,
+
+            SongSelect_ScoreWindow_Text;
+        public CTexture[] SongSelect_GenreBack,
+            SongSelect_Bar_Genre,
+            SongSelect_Bar_Genre_Overlap,
+            SongSelect_Box_Chara,
+            SongSelect_ScoreWindow = new CTexture[(int)Difficulty.Total],
+            SongSelect_Frame_Score = new CTexture[3],
+            SongSelect_NamePlate = new CTexture[1],
+            SongSelect_Song_Panel = new CTexture[6],
+            SongSelect_Coin_Slot = new CTexture[4],
+            SongSelect_Table = new CTexture[6];
 
         #region [ 難易度選択画面 ]
+        public CTexture Difficulty_Bar;
+        public CTexture Difficulty_Number;
+        public CTexture Difficulty_Number_Colored;
+        public CTexture Difficulty_Number_Icon;
+        public CTexture Difficulty_Star;
+        public CTexture Difficulty_Crown;
+        public CTexture Difficulty_Option;
+        public CTexture Difficulty_Option_Select;
+
+        public CTexture[] Difficulty_Select_Bar = new CTexture[5];
+        public CTexture[] Difficulty_Back;
         #endregion
 
         #endregion
@@ -1915,11 +2251,14 @@ namespace TJAPlayer3
         #region 3_段位選択画面
 
         //public CTexture Dani_Background;
+        public CTexture Dani_Difficulty_Cymbol;
         public CTexture Dani_Level_Number;
         public CTexture Dani_Soul_Number;
         public CTexture Dani_Exam_Number;
         public CTexture Dani_Bar_Center;
         public CTexture Dani_Plate;
+
+        public CTexture[] Challenge_Select = new CTexture[3];
 
         //public CTexture Dani_Dan_In;
         //public CTexture Dani_Dan_Text;
@@ -1927,6 +2266,7 @@ namespace TJAPlayer3
         public CTexture Dani_DanPlates;
         public CTexture Dani_DanIcon;
         public CTexture Dani_DanIcon_Fade;
+        public CTexture Dani_DanSides;
         public CTexture[] Dani_Bloc = new CTexture[4];
 
         #endregion
@@ -2185,36 +2525,91 @@ namespace TJAPlayer3
 
         #region 6_結果発表
         public CTexture Result_FadeIn,
+            Result_Header,
+            Result_Number,
+            Result_Panel,
+            Result_Panel_2P,
             Result_Soul_Text,
             Result_Soul_Fire,
+            Result_Diff_Bar,
+            Result_Score_Number,
+
+            Result_CrownEffect,
+            Result_ScoreRankEffect,
+
+            //Result_Cloud,
+            Result_Flower,
+            Result_Shine,
             Result_Gauge_Frame,
             Result_Gauge_Clear,
             Result_Gauge_Clear_Base,
-            Result_Gauge_Killzone;
+            Result_Gauge_Killzone,
+
+            Result_Dan;
             
         public CTexture[]
+            Result_Panel_5P = new CTexture[5],
+            Result_Panel_4P = new CTexture[4],
             Result_Rainbow = new CTexture[41],
+            //Result_Background = new CTexture[6],
+            Result_Crown = new CTexture[3],
+
+            Result_Flower_Rotate = new CTexture[5],
+            //Result_Work = new CTexture[3],
 
             Result_Gauge = new CTexture[5],
-            Result_Gauge_Base = new CTexture[5];
+            Result_Gauge_Base = new CTexture[5],
+            Result_Speech_Bubble = new CTexture[2]
+/*,
+Result_Mountain = new CTexture[4]*/;
         #endregion
 
         #region 7_AIResults
+        public CTexture Result_AIBattle_Panel_AI,
+            Result_AIBattle_Batch,
+            Result_AIBattle_SectionPlate,
+            Result_AIBattle_WinFlag_Clear,
+            Result_AIBattle_WinFlag_Lose;
         #endregion
 
         #region 7_終了画面
+        //public CTexture Exit_Background/* , */
+        /*Exit_Text; */
         #endregion
 
         #region [7_DanResults]
+
+        public CTexture 
+            //DanResult_Background,
+            DanResult_Rank,
+            DanResult_SongPanel_Base,
+            DanResult_StatePanel_Base,
+            DanResult_SongPanel_Main,
+            DanResult_StatePanel_Main;
 
         #endregion
 
         #region [8_TowerResults]
 
+        public CTexture TowerResult_Background,
+            TowerResult_ScoreRankEffect,
+            TowerResult_Panel;
+        public CTexture[]
+            TowerResult_Tower;
+
         #endregion
 
         #region [10_Heya]
 
+        public CTexture 
+            //Heya_Background,
+            Heya_Center_Menu_Bar,
+            Heya_Center_Menu_Box,
+            Heya_Center_Menu_Box_Slot,
+            Heya_Side_Menu,
+            Heya_Box,
+            Heya_Render_Field,
+            Heya_Lock;
 
         #endregion
 
@@ -2264,16 +2659,32 @@ namespace TJAPlayer3
 
         #region [12_OnlineLounge]
 
+        public CTexture 
+            //OnlineLounge_Background,
+            OnlineLounge_Box,
+            OnlineLounge_Center_Menu_Bar,
+            OnlineLounge_Center_Menu_Box_Slot,
+            OnlineLounge_Side_Menu,
+            OnlineLounge_Context,
+            OnlineLounge_Return_Box,
+            OnlineLounge_Song_Box;
+
         #endregion
 
         #region [13_TowerSelect]
 
-        public CTexture TowerResult_Background;
-        public CTexture[] TowerResult_Tower;
+        public CTexture
+            TowerSelect_Tower;
 
         #endregion
 
         #region [15_OpenEncyclopedia]
+
+        public CTexture 
+            //OpenEncyclopedia_Background,
+            OpenEncyclopedia_Context,
+            OpenEncyclopedia_Return_Box,
+            OpenEncyclopedia_Side_Menu;
 
         #endregion
 

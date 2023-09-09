@@ -26,6 +26,12 @@ namespace TJAPlayer3
             ctStep = new CCounter(0, 1000, 2, TJAPlayer3.Timer);
             ctStepFade = new CCounter(0, 255, 0.5, TJAPlayer3.Timer);
 
+            ttkExams = new CActSelect曲リスト.TitleTextureKey[(int)Exam.Type.Total];
+            for (int i = 0; i < ttkExams.Length; i++)
+            {
+                ttkExams[i] = new CActSelect曲リスト.TitleTextureKey(CLangManager.LangInstance.GetString(1010 + i), pfExamFont, Color.Black, Color.Transparent, 700);
+            }
+
             base.Activate();
         }
 
@@ -39,7 +45,6 @@ namespace TJAPlayer3
         public override void CreateManagedResource()
         {
             // Ressource allocation
-            Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
 
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_DanInfo_Title_Size);
@@ -51,20 +56,12 @@ namespace TJAPlayer3
             else
                 pfExamFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_DanInfo_Exam_Size);
 
-            ttkExams = new CActSelect曲リスト.TitleTextureKey[(int)Exam.Type.Total];
-            for (int i = 0; i < ttkExams.Length; i++)
-            {
-                ttkExams[i] = new CActSelect曲リスト.TitleTextureKey(CLangManager.LangInstance.GetString(1010 + i), pfExamFont, Color.Black, Color.Transparent, 700);
-            }
-
             base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
-            TJAPlayer3.t安全にDisposeする(ref Dani_Difficulty_Cymbol);
-
             TJAPlayer3.t安全にDisposeする(ref pfTitleFont);
             TJAPlayer3.t安全にDisposeする(ref pfExamFont);
 
@@ -107,16 +104,16 @@ namespace TJAPlayer3
                     int pos = i % 3;
                     CActSelect段位リスト.tDisplayDanIcon(i + 1, TJAPlayer3.Skin.SongSelect_DanInfo_Icon_X[pos], TJAPlayer3.Skin.SongSelect_DanInfo_Icon_Y[pos], opacity, TJAPlayer3.Skin.SongSelect_DanInfo_Icon_Scale, false);
 
-                    int difficulty_cymbol_width = Dani_Difficulty_Cymbol.szテクスチャサイズ.Width / 5;
-                    int difficulty_cymbol_height = Dani_Difficulty_Cymbol.szテクスチャサイズ.Height;
+                    int difficulty_cymbol_width = TJAPlayer3.Tx.Dani_Difficulty_Cymbol.szテクスチャサイズ.Width / 5;
+                    int difficulty_cymbol_height = TJAPlayer3.Tx.Dani_Difficulty_Cymbol.szテクスチャサイズ.Height;
 
-                    Dani_Difficulty_Cymbol.Opacity = opacity;
-                    Dani_Difficulty_Cymbol.vc拡大縮小倍率.X = TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_Scale;
-                    Dani_Difficulty_Cymbol.vc拡大縮小倍率.Y = TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_Scale;
-                    Dani_Difficulty_Cymbol.t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_X[pos], TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_Y[pos], new Rectangle(dan.Difficulty * difficulty_cymbol_width, 0, difficulty_cymbol_width, difficulty_cymbol_height));
-                    Dani_Difficulty_Cymbol.Opacity = 255;
-                    Dani_Difficulty_Cymbol.vc拡大縮小倍率.X = 1;
-                    Dani_Difficulty_Cymbol.vc拡大縮小倍率.Y = 1;
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.Opacity = opacity;
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.vc拡大縮小倍率.X = TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_Scale;
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.vc拡大縮小倍率.Y = TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_Scale;
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.t2D拡大率考慮中央基準描画(TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_X[pos], TJAPlayer3.Skin.SongSelect_DanInfo_Difficulty_Cymbol_Y[pos], new Rectangle(dan.Difficulty * difficulty_cymbol_width, 0, difficulty_cymbol_width, difficulty_cymbol_height));
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.Opacity = 255;
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.vc拡大縮小倍率.X = 1;
+                    TJAPlayer3.Tx.Dani_Difficulty_Cymbol.vc拡大縮小倍率.Y = 1;
 
                     TJAPlayer3.Tx.Dani_Level_Number.Opacity = opacity;
                     TJAPlayer3.stage段位選択.段位リスト.tLevelNumberDraw(TJAPlayer3.Skin.SongSelect_DanInfo_Level_Number_X[pos], TJAPlayer3.Skin.SongSelect_DanInfo_Level_Number_Y[pos], dan.Level, TJAPlayer3.Skin.SongSelect_DanInfo_Level_Number_Scale);
@@ -196,8 +193,6 @@ namespace TJAPlayer3
 
         #region [Private]
         
-        public CTexture Dani_Difficulty_Cymbol;
-
         private CActSelect曲リスト.TitleTextureKey[] ttkTitles;
         private CActSelect曲リスト.TitleTextureKey[] ttkExams;
         private CCachedFontRenderer pfTitleFont;
