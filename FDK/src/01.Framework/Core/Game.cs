@@ -33,7 +33,6 @@ namespace SampleFramework
     {
         OpenGL,
         Vulkan,
-        DirectX9,
         DirectX11,
         DirectX12
     }
@@ -343,9 +342,6 @@ namespace SampleFramework
                 case GraphicsDeviceType.Vulkan:
                     GraphicsDevice = new VulkanDevice(Window_);
                     break;
-                case GraphicsDeviceType.DirectX9:
-                    GraphicsDevice = new DirectX9Device(Window_);
-                    break;
                 case GraphicsDeviceType.DirectX11:
                     GraphicsDevice = new DirectX11Device(Window_);
                     break;
@@ -364,16 +360,10 @@ namespace SampleFramework
                 Polygon_ = GraphicsDevice.GenPolygon(
                     new float[]
                     {
-                        /*
                         1, 1 * VerticalFix, 0.0f,
                         1, -1 * VerticalFix, 0.0f,
                         -1, -1 * VerticalFix, 0.0f,
                         -1, 1 * VerticalFix, 0.0f
-                        */
-                        0.5f, 0.5f * VerticalFix, 0.0f,
-                        0.5f, -0.5f * VerticalFix, 0.0f,
-                        -0.5f, -0.5f * VerticalFix, 0.0f,
-                        -0.5f, 0.5f * VerticalFix, 0.0f
                     }
                     ,
                     new uint[]

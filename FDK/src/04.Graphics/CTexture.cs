@@ -479,28 +479,19 @@ namespace FDK
             void translation()
             {
                 float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
-                float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * Game.VerticalFix;
+                float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * -1;
 
                 Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
                 Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation(
                     (rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
-                    (rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * Game.VerticalFix, 
+                    (rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * -1, 
                     0.0f);
                 mvp *= translation * translation2;
             }
 
-            if (Game.VerticalFix == 1 && false)
-            {
-                translation();
-                rotation();
-                scaling();
-            }
-            else 
-            {
-                scaling();
-                rotation();
-                translation();
-            }
+            scaling();
+            rotation();
+            translation();
 
             Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
             Vector4D<float> rect = new(

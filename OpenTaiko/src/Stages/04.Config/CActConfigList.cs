@@ -109,6 +109,11 @@ namespace TJAPlayer3
 				CLangManager.LangInstance.GetString(18));
 			this.list項目リスト.Add( this.iSystemTimeStretch );
 
+			this.iSystemSoundType = new CItemList(CLangManager.LangInstance.GetString(9997), CItemList.Eパネル種別.通常, TJAPlayer3.ConfigIni.nGraphicsDeviceType,
+				CLangManager.LangInstance.GetString(9996),
+				new string[] { "OpenGL", "Vulkan", "DirectX11", "DirectX12" });
+			this.list項目リスト.Add(this.iSystemSoundType);
+
 			this.iSystemFullscreen = new CItemToggle(CLangManager.LangInstance.GetString(10019), TJAPlayer3.ConfigIni.b全画面モード,
 				CLangManager.LangInstance.GetString(19));
 			this.list項目リスト.Add( this.iSystemFullscreen );

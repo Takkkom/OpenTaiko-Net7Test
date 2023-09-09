@@ -238,7 +238,6 @@ namespace SampleFramework
         {
             ImmediateContext.OMSetRenderTargets(1, ref RenderTargetView, DepthStencilView);
             ImmediateContext.ClearRenderTargetView(RenderTargetView, CurrnetClearColor);
-            ImmediateContext.ClearDepthStencilView(DepthStencilView, (uint)ClearFlag.Depth | (uint)ClearFlag.Stencil, 1.0f, 0);
             
             ImmediateContext.RSSetViewports(1, in Viewport_);
         }
@@ -287,7 +286,7 @@ namespace SampleFramework
                     vs_out output = (vs_out)0;
 
                     float4 position = float4(input.position_local, 1.0);
-                    position = mul(position, Projection);
+                    position = mul(Projection, position);
 
                     output.position_clip = position;
 
@@ -303,10 +302,6 @@ namespace SampleFramework
                 float4 ps_main(vs_out input) : SV_TARGET {
                     float4 totalcolor = float4(1.0, 1.0, 1.0, 1.0);
 
-                    /*
-                    totalcolor = float4(input.uvposition_clip.x, input.uvposition_clip.y, 0.0, 1.0);
-                    */
-                    
                     totalcolor = g_texture.Sample(g_sampler, input.uvposition_clip);
 
                     totalcolor.rgba *= Color.rgba;
@@ -348,6 +343,8 @@ namespace SampleFramework
 
             ImmediateContext.PSSetShaderResources(0, 1, dx11texture.TextureView);
             ImmediateContext.PSSetSamplers(0, 1, dx11texture.SamplerState);
+
+            ImmediateContext.ClearDepthStencilView(DepthStencilView, (uint)ClearFlag.Depth | (uint)ClearFlag.Stencil, 1.0f, 0);
 
             // Draw the quad.
             ImmediateContext.DrawIndexed(polygon.IndiceCount, 0, 0);

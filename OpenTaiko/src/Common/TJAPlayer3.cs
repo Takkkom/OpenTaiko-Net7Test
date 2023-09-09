@@ -595,10 +595,10 @@ namespace TJAPlayer3
 			// END #23629 2010.11.13 from
 			//-----------------
 			#endregion
-
-			GraphicsDeviceType_ = GraphicsDeviceType.OpenGL;
 			
 			ConfigIni = new CConfigIni();
+
+			GraphicsDeviceType_ = (GraphicsDeviceType)ConfigIni.nGraphicsDeviceType;
 			
 			string path = strEXEのあるフォルダ + "Config.ini";
 			if( File.Exists( path ) )
