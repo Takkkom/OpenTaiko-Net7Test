@@ -8,6 +8,7 @@ namespace SampleFramework
 {
     public class DirectX11Texture : ITexture
     {
+        internal bool IsWrongPixels;
         internal ComPtr<ID3D11Texture2D> Texture;
         internal ComPtr<ID3D11ShaderResourceView> TextureView;
         internal ComPtr<ID3D11SamplerState> SamplerState;
@@ -17,11 +18,11 @@ namespace SampleFramework
             switch(rgbaType)
             {
                 case RgbaType.Rgba:
-                return Format.FormatR32G32B32A32Uint;
+                return Format.FormatR8G8B8A8Unorm;
                 case RgbaType.Bgra:
                 return Format.FormatB8G8R8A8Unorm;
                 default:
-                return Format.FormatR32G32B32A32Uint;
+                return Format.FormatR8G8B8A8Unorm;
             }
         }
 
@@ -50,6 +51,11 @@ namespace SampleFramework
                 SysMemPitch = (uint)(width * 4),
                 SysMemSlicePitch = 0
             };
+
+            if (data == null || width <= 0 || height <= 0)
+            {
+                IsWrongPixels = true;
+            }
             
             SilkMarshal.ThrowHResult(
                 DirectX11Device.Device.CreateTexture2D(texture2DDesc, subresourceData, ref Texture)
@@ -61,9 +67,9 @@ namespace SampleFramework
             SamplerDesc samplerDesc = new()
             {
                 Filter = Filter.MinMagMipLinear,
-                AddressU = TextureAddressMode.Clamp,
-                AddressV = TextureAddressMode.Clamp,
-                AddressW = TextureAddressMode.Clamp
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap
             };
             
             SilkMarshal.ThrowHResult(

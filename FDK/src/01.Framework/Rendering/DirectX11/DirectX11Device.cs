@@ -10,6 +10,8 @@ namespace SampleFramework
 {
     unsafe class DirectX11Device : IGraphicsDevice
     {
+        const bool FORCE_DXVK = false;
+
         internal static D3D11 D3d11;
 
         internal static DXGI DxGi;
@@ -92,8 +94,8 @@ namespace SampleFramework
         public DirectX11Device(IWindow window)
         {
             Window_ = window;
-            D3d11 = D3D11.GetApi(window, false);
-            DxGi = DXGI.GetApi(window, false);
+            D3d11 = D3D11.GetApi(window, FORCE_DXVK);
+            DxGi = DXGI.GetApi(window, FORCE_DXVK);
             D3dCompiler = D3DCompiler.GetApi();
 
 
@@ -322,6 +324,9 @@ namespace SampleFramework
             DirectX11Polygon dx11polygon = (DirectX11Polygon)polygon;
             DirectX11Shader dx11shader = (DirectX11Shader)shader;
             DirectX11Texture dx11texture = (DirectX11Texture)texture;
+
+            if (dx11texture == null || dx11texture.IsWrongPixels) return;
+
             ImmediateContext.IASetInputLayout(dx11shader.InputLayout);
             ImmediateContext.IASetVertexBuffers(0, 1, dx11polygon.VertexBuffer, dx11polygon.VertexStride, 0);
             ImmediateContext.IASetIndexBuffer(dx11polygon.IndexBuffer, Format.FormatR32Uint, 0);
