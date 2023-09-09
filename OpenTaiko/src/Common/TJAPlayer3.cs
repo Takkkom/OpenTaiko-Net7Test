@@ -597,8 +597,6 @@ namespace TJAPlayer3
 			#endregion
 			
 			ConfigIni = new CConfigIni();
-
-			GraphicsDeviceType_ = (GraphicsDeviceType)ConfigIni.nGraphicsDeviceType;
 			
 			string path = strEXEのあるフォルダ + "Config.ini";
 			if( File.Exists( path ) )
@@ -616,6 +614,8 @@ namespace TJAPlayer3
 				}
 			}
 			
+
+			GraphicsDeviceType_ = (GraphicsDeviceType)ConfigIni.nGraphicsDeviceType;
 			WindowPosition = new Silk.NET.Maths.Vector2D<int>(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);
 			WindowSize = new Silk.NET.Maths.Vector2D<int>(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);
 			FullScreen = ConfigIni.b全画面モード;
