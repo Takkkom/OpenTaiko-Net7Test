@@ -22,6 +22,7 @@
     <Content Include="BGScriptAPI.lua" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
   <PropertyGroup>
+    <Version>0.6.0</Version>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
