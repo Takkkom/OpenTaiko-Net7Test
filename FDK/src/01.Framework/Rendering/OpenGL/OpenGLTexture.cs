@@ -16,10 +16,10 @@ namespace SampleFramework
             switch(rgbaType)
             {
                 case RgbaType.Rgba:
-                OpenGLDevice.Gl.TexImage2D(GLEnum.Texture2D, 0, (int)InternalFormat.Rgba32f, (uint)width, (uint)height, 0, GLEnum.Rgba, GLEnum.UnsignedByte, data);
+                OpenGLDevice.Gl.TexImage2D(GLEnum.Texture2D, 0, (int)InternalFormat.Rgba8, (uint)width, (uint)height, 0, GLEnum.Rgba, GLEnum.UnsignedByte, data);
                 break;
                 case RgbaType.Bgra:
-                OpenGLDevice.Gl.TexImage2D(GLEnum.Texture2D, 0, (int)InternalFormat.Rgba32f, (uint)width, (uint)height, 0, GLEnum.Bgra, GLEnum.UnsignedByte, data);
+                OpenGLDevice.Gl.TexImage2D(GLEnum.Texture2D, 0, (int)InternalFormat.Rgba8, (uint)width, (uint)height, 0, GLEnum.Bgra, GLEnum.UnsignedByte, data);
                 break;
             }
             
