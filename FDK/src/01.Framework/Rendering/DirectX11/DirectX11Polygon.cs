@@ -9,6 +9,8 @@ namespace SampleFramework
     {
         public uint IndiceCount { get; set; }
 
+        public uint VertexStride;
+
         public ComPtr<ID3D11Buffer> VertexBuffer = default;
 
         public ComPtr<ID3D11Buffer> IndexBuffer = default;
@@ -17,6 +19,7 @@ namespace SampleFramework
         public unsafe DirectX11Polygon(float[] vertices, uint[] indices, float[] uvs)
         {
             IndiceCount = (uint)indices.Length;
+            VertexStride = 5U * sizeof(float);
 
             List<float> mergedArray = new();
             for(int i = 0; i < vertices.Length / 3; i++)
@@ -29,13 +32,11 @@ namespace SampleFramework
                 mergedArray.Add(uvs[pos_uv]);
                 mergedArray.Add(uvs[pos_uv + 1]);
             }
-            //Array.Copy(vertices, mergedArray, vertices.Length);
-            //Array.Copy(uvs, 0, mergedArray, vertices.Length, uvs.Length);
 
             // Create our vertex buffer.
-            var bufferDesc = new BufferDesc
+            var vertexBufferDesc = new BufferDesc
             {
-                ByteWidth = (uint)(mergedArray.Count * sizeof(float)),
+                ByteWidth = (uint)(sizeof(float) * mergedArray.Count),
                 Usage = Usage.Default,
                 BindFlags = (uint)BindFlag.VertexBuffer
             };
@@ -45,14 +46,16 @@ namespace SampleFramework
             {
                 var subresourceData = new SubresourceData
                 {
-                    PSysMem = vertexData
+                    PSysMem = vertexData,
+                    SysMemPitch = 0,
+                    SysMemSlicePitch = 0
                 };
 
-                SilkMarshal.ThrowHResult(DirectX11Device.Device.CreateBuffer(in bufferDesc, in subresourceData, ref VertexBuffer));
+                SilkMarshal.ThrowHResult(DirectX11Device.Device.CreateBuffer(in vertexBufferDesc, in subresourceData, ref VertexBuffer));
             }
 
             // Create our index buffer.
-            bufferDesc = new BufferDesc
+            var indexBufferDesc = new BufferDesc
             {
                 ByteWidth = (uint)(indices.Length * sizeof(uint)),
                 Usage = Usage.Default,
@@ -66,7 +69,7 @@ namespace SampleFramework
                     PSysMem = indexData
                 };
 
-                SilkMarshal.ThrowHResult(DirectX11Device.Device.CreateBuffer(in bufferDesc, in subresourceData, ref IndexBuffer));
+                SilkMarshal.ThrowHResult(DirectX11Device.Device.CreateBuffer(in indexBufferDesc, in subresourceData, ref IndexBuffer));
             }
         }
 

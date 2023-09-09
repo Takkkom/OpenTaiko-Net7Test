@@ -47,8 +47,8 @@ namespace SampleFramework
             SubresourceData subresourceData = new()
             {
                 PSysMem = data,
-                SysMemPitch = sizeof(uint) * 4,
-                SysMemSlicePitch = sizeof(uint) * 4 * 4
+                SysMemPitch = (uint)(width * 4),
+                SysMemSlicePitch = 0
             };
             
             SilkMarshal.ThrowHResult(

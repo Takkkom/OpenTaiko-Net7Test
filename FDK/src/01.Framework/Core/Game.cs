@@ -208,7 +208,11 @@ namespace SampleFramework
             options.WindowState = FullScreen ? WindowState.Fullscreen : WindowState.Normal;
             options.VSync = VSync;
             options.API = GetGraphicsAPI();
+            options.WindowBorder = WindowBorder.Resizable;
             options.Title = Text;
+            
+            Silk.NET.Windowing.Glfw.GlfwWindowing.Use();
+            //Silk.NET.Windowing.Sdl.SdlWindowing.Use();
 
             Window_ = Window.Create(options);
             Window_.Load += Window_Load;
@@ -360,10 +364,16 @@ namespace SampleFramework
                 Polygon_ = GraphicsDevice.GenPolygon(
                     new float[]
                     {
+                        /*
                         1, 1 * VerticalFix, 0.0f,
                         1, -1 * VerticalFix, 0.0f,
                         -1, -1 * VerticalFix, 0.0f,
                         -1, 1 * VerticalFix, 0.0f
+                        */
+                        0.5f, 0.5f * VerticalFix, 0.0f,
+                        0.5f, -0.5f * VerticalFix, 0.0f,
+                        -0.5f, -0.5f * VerticalFix, 0.0f,
+                        -0.5f, 0.5f * VerticalFix, 0.0f
                     }
                     ,
                     new uint[]

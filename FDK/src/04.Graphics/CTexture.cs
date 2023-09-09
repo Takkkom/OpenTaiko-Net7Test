@@ -457,42 +457,50 @@ namespace FDK
             Matrix4X4<float> mvp = Matrix4X4<float>.Identity;
 
 
+            void scaling()
+            {
+                Matrix4X4<float> resizeMatrix2 = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
+                Matrix4X4<float> scaleMatrix = Matrix4X4.CreateScale(vc拡大縮小倍率.X, vc拡大縮小倍率.Y, vc拡大縮小倍率.Z);
+                mvp *= resizeMatrix2 * scaleMatrix;
+            }
 
-            //Scaling------
+            void rotation()
+            {
+                Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f * aspect, 1.0f, 1.0f);
+                rotationMatrix *= 
+                Matrix4X4.CreateRotationX(0.0f) * 
+                Matrix4X4.CreateRotationY(0.0f) * 
+                Matrix4X4.CreateRotationZ(fZ軸中心回転);
+                rotationMatrix *= Matrix4X4.CreateScale(1.0f / aspect, 1.0f, 1.0f);
+                
+                mvp *= rotationMatrix;
+            }
 
-            Matrix4X4<float> resizeMatrix2 = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
-            Matrix4X4<float> scaleMatrix = Matrix4X4.CreateScale(vc拡大縮小倍率.X, vc拡大縮小倍率.Y, vc拡大縮小倍率.Z);
-            mvp *= resizeMatrix2 * scaleMatrix;
-            
-            //-----------------
+            void translation()
+            {
+                float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
+                float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * Game.VerticalFix;
 
+                Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
+                Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation(
+                    (rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
+                    (rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * Game.VerticalFix, 
+                    0.0f);
+                mvp *= translation * translation2;
+            }
 
-            //Rotation--------------------------
-
-            Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f * aspect, 1.0f, 1.0f);
-            rotationMatrix *= 
-            Matrix4X4.CreateRotationX(0.0f) * 
-            Matrix4X4.CreateRotationY(0.0f) * 
-            Matrix4X4.CreateRotationZ(fZ軸中心回転);
-            rotationMatrix *= Matrix4X4.CreateScale(1.0f / aspect, 1.0f, 1.0f);
-            
-            mvp *= rotationMatrix;
-
-            //---------------------------
-
-            //Translation------
-
-            float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
-            float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * Game.VerticalFix;
-
-            Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
-            Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation(
-                (rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
-                (rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * Game.VerticalFix, 
-                0.0f);
-            mvp *= translation * translation2;
-
-            //-----------------
+            if (Game.VerticalFix == 1 && false)
+            {
+                translation();
+                rotation();
+                scaling();
+            }
+            else 
+            {
+                scaling();
+                rotation();
+                translation();
+            }
 
             Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
             Vector4D<float> rect = new(

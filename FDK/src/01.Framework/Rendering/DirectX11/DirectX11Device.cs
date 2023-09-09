@@ -26,7 +26,11 @@ namespace SampleFramework
 
         internal static ComPtr<ID3D11RenderTargetView> RenderTargetView;
 
+        internal static ComPtr<ID3D11Texture2D> DepthStencilTexture;
+
         internal static ComPtr<ID3D11DepthStencilView> DepthStencilView;
+
+        internal static ComPtr<ID3D11BlendState>[] BlendStates = new ComPtr<ID3D11BlendState>[5];
 
         internal static float[] CurrnetClearColor;
 
@@ -39,13 +43,13 @@ namespace SampleFramework
 
 
 
-        uint vertexStride = 5U * sizeof(float);
-        uint vertexOffset = 0U;
-
 
         private void CreateRenderTargetView()
         {
-            var backBuffer = SwapChain.GetBuffer<ID3D11Texture2D>(0);
+            SilkMarshal.ThrowHResult
+            (
+                SwapChain.GetBuffer(0, out ComPtr<ID3D11Texture2D> backBuffer)
+            );
             SilkMarshal.ThrowHResult
             (
                 Device.CreateRenderTargetView(backBuffer, null, ref RenderTargetView)
@@ -67,10 +71,10 @@ namespace SampleFramework
             texture2DDesc.BindFlags = (uint)BindFlag.DepthStencil;
             texture2DDesc.CPUAccessFlags = 0;
             texture2DDesc.MiscFlags = 0;
-            ComPtr<ID3D11Texture2D> depthTex = default;
+
             SilkMarshal.ThrowHResult
             (
-                Device.CreateTexture2D(texture2DDesc, null, ref depthTex)
+                Device.CreateTexture2D(texture2DDesc, null, ref DepthStencilTexture)
             );
 
 
@@ -81,9 +85,8 @@ namespace SampleFramework
             depthStencilDesc.Texture2D = new Tex2DDsv(0);
             SilkMarshal.ThrowHResult
             (
-                Device.CreateDepthStencilView(depthTex, depthStencilDesc, ref DepthStencilView)
+                Device.CreateDepthStencilView(DepthStencilTexture, depthStencilDesc, ref DepthStencilView)
             );
-            depthTex.Dispose();
         }
 
         public DirectX11Device(IWindow window)
@@ -159,6 +162,44 @@ namespace SampleFramework
 
             CreateRenderTargetView();
             CreateDepthStencilView((uint)window.FramebufferSize.X, (uint)window.FramebufferSize.X);
+            
+            for(BlendType i = 0; i < BlendType.Screen + 1; i++)
+            {
+                BlendDesc blendDesc = new(false, false);
+                blendDesc.RenderTarget[0].BlendEnable = true;
+                switch (i)
+                {
+                    case BlendType.Normal:
+                    blendDesc.RenderTarget[0].SrcBlend = Blend.SrcAlpha;
+                    blendDesc.RenderTarget[0].DestBlend = Blend.InvSrcAlpha;
+                    break;
+                    case BlendType.Add:
+                    blendDesc.RenderTarget[0].SrcBlend = Blend.One;
+                    blendDesc.RenderTarget[0].DestBlend = Blend.One;
+                    break;
+                    case BlendType.Multi:
+                    blendDesc.RenderTarget[0].SrcBlend = Blend.SrcAlpha;
+                    blendDesc.RenderTarget[0].DestBlend = Blend.One;
+                    break;
+                    case BlendType.Sub:
+                    blendDesc.RenderTarget[0].SrcBlend = Blend.Zero;
+                    blendDesc.RenderTarget[0].DestBlend = Blend.InvSrcColor;
+                    break;
+                    case BlendType.Screen:
+                    blendDesc.RenderTarget[0].SrcBlend = Blend.InvDestColor;
+                    blendDesc.RenderTarget[0].DestBlend = Blend.One;
+                    break;
+                }
+
+                blendDesc.RenderTarget[0].BlendOp = BlendOp.Add;
+                blendDesc.RenderTarget[0].SrcBlendAlpha = Blend.One;
+                blendDesc.RenderTarget[0].DestBlendAlpha = Blend.Zero;
+                blendDesc.RenderTarget[0].BlendOpAlpha = BlendOp.Add;
+                blendDesc.RenderTarget[0].RenderTargetWriteMask = (byte)ColorWriteEnable.All;
+
+                Device.CreateBlendState(blendDesc, ref BlendStates[(int)i]);
+            }
+
 
             SetViewPort(0, 0, (uint)window.Size.X, (uint)window.Size.Y);
         }
@@ -170,12 +211,18 @@ namespace SampleFramework
 
         public void SetViewPort(int x, int y, uint width, uint height)
         {
+            if (width <= 0 || height <= 0) return;
+            
             Viewport_ = new Viewport(0, 0, width, height, 0.0f, 1.0f);
         }
 
         public void SetFrameBuffer(uint width, uint height)
         {
+            if (width <= 0 || height <= 0) return;
+
             RenderTargetView.Dispose();
+
+            DepthStencilTexture.Dispose();
             DepthStencilView.Dispose();
 
             SilkMarshal.ThrowHResult
@@ -240,18 +287,13 @@ namespace SampleFramework
                     vs_out output = (vs_out)0;
 
                     float4 position = float4(input.position_local, 1.0);
-                    /*
                     position = mul(position, Projection);
-                    */
 
                     output.position_clip = position;
 
-                    /*
                     float2 texcoord = float2(TextureRect.x, TextureRect.y);
                     texcoord.x += input.uvposition_local.x * TextureRect.z;
                     texcoord.y += input.uvposition_local.y * TextureRect.w;
-                    */
-                    float2 texcoord = float2(position.x, position.y);
 
                     output.uvposition_clip = texcoord;
 
@@ -259,12 +301,15 @@ namespace SampleFramework
                 }
 
                 float4 ps_main(vs_out input) : SV_TARGET {
-                    float2 texcoord = float2(input.uvposition_clip.x, input.uvposition_clip.y);
-                    float4 totalcolor = g_texture.Sample(g_sampler, texcoord);
+                    float4 totalcolor = float4(1.0, 1.0, 1.0, 1.0);
 
                     /*
-                    totalcolor = mul(totalcolor, Color);
+                    totalcolor = float4(input.uvposition_clip.x, input.uvposition_clip.y, 0.0, 1.0);
                     */
+                    
+                    totalcolor = g_texture.Sample(g_sampler, input.uvposition_clip);
+
+                    totalcolor.rgba *= Color.rgba;
 
                     return totalcolor;
                 }
@@ -283,7 +328,7 @@ namespace SampleFramework
             DirectX11Shader dx11shader = (DirectX11Shader)shader;
             DirectX11Texture dx11texture = (DirectX11Texture)texture;
             ImmediateContext.IASetInputLayout(dx11shader.InputLayout);
-            ImmediateContext.IASetVertexBuffers(0, 1, dx11polygon.VertexBuffer, in vertexStride, in vertexOffset);
+            ImmediateContext.IASetVertexBuffers(0, 1, dx11polygon.VertexBuffer, dx11polygon.VertexStride, 0);
             ImmediateContext.IASetIndexBuffer(dx11polygon.IndexBuffer, Format.FormatR32Uint, 0);
             ImmediateContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
 
@@ -292,6 +337,11 @@ namespace SampleFramework
             // Bind our shaders.
             ImmediateContext.VSSetShader(dx11shader.VertexShader, default(ComPtr<ID3D11ClassInstance>), 0);
             ImmediateContext.VSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
+
+
+            float[] blendFactors = new float[] { 1, 1, 1, 1 };
+            ImmediateContext.OMSetBlendState(BlendStates[(int)blendType], blendFactors, 0xffffffff);
+
 
             ImmediateContext.PSSetShader(dx11shader.PixelShader, default(ComPtr<ID3D11ClassInstance>), 0);
             ImmediateContext.PSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
@@ -310,6 +360,12 @@ namespace SampleFramework
 
         public void Dispose()
         {
+            for(int i = 0; i < 5; i++)
+            {
+                BlendStates[i].Dispose();
+            }
+
+            DepthStencilTexture.Dispose();
             DepthStencilView.Dispose();
             RenderTargetView.Dispose();
             ImmediateContext.Dispose();

@@ -145,6 +145,7 @@ namespace SampleFramework
                             SemanticIndex = 0,
                             Format = Format.FormatR32G32B32Float,
                             InputSlot = 0,
+                            AlignedByteOffset = 0,
                             InputSlotClass = InputClassification.PerVertexData,
                             InstanceDataStepRate = 0
                         }
@@ -155,7 +156,7 @@ namespace SampleFramework
                             SemanticIndex = 0,
                             Format = Format.FormatR32G32Float,
                             InputSlot = 0,
-                            AlignedByteOffset = (uint)(sizeof(float) * 3),
+                            AlignedByteOffset = sizeof(float) * 3,
                             InputSlotClass = InputClassification.PerVertexData,
                             InstanceDataStepRate = 0
                         }
@@ -197,6 +198,7 @@ namespace SampleFramework
         public void SetMVP(Matrix4X4<float> mvp)
         {
             ConstantBufferStruct_.Projection = mvp;
+            //ConstantBufferStruct_.Projection = mvp;
         }
 
         public void SetColor(Vector4D<float> color)
