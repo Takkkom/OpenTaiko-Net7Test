@@ -459,9 +459,9 @@ namespace FDK
 
             void scaling()
             {
-                Matrix4X4<float> resizeMatrix2 = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
+                Matrix4X4<float> resizeMatrix = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
                 Matrix4X4<float> scaleMatrix = Matrix4X4.CreateScale(vc拡大縮小倍率.X, vc拡大縮小倍率.Y, vc拡大縮小倍率.Z);
-                mvp *= resizeMatrix2 * scaleMatrix;
+                mvp *= resizeMatrix * scaleMatrix;
             }
 
             void rotation()

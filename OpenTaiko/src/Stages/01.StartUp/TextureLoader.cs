@@ -1063,7 +1063,7 @@ namespace TJAPlayer3
                 var _str = "";
                 TJAPlayer3.Skin.LoadSkinConfigFromFile(charaDirs[i] + @$"{Path.DirectorySeparatorChar}CharaConfig.txt", ref _str);
 
-                string[] delimiter = { "{Path.DirectorySeparatorChar}n", "{Path.DirectorySeparatorChar}r" };
+                string[] delimiter = { "\n", "\r" };
                 string[] strSingleLine = _str.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string line in strSingleLine)
