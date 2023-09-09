@@ -168,7 +168,7 @@ namespace TJAPlayer3
                     "DirectX12 is very fast but only works\n" +
                     "on Windows.\n" +
                     "\n" +
-                    "This wil take effect after game reboot.\n",
+                    "This will take effect after game reboot.\n",
             [9997] = "Graphics API",
 
             [9998] = "Buffer size when using Bass:\n" +
