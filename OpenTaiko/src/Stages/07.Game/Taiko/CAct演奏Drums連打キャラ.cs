@@ -121,8 +121,6 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
                 //this.nTex枚数 = 4;
                 //this.txChara = new CTexture[ this.nTex枚数 ];
 
@@ -130,19 +128,15 @@ namespace TJAPlayer3
                 //{
                 //    this.txChara[ i ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\RollEffect\00\" + i.ToString() + ".png" ) );
                 //}
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
         //        for (int i = 0; i < this.nTex枚数; i++)
         //        {
 				    //CDTXMania.tテクスチャの解放( ref this.txChara[ i ] );
         //        }
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

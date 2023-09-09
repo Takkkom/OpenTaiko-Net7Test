@@ -37,11 +37,13 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				//this.tx白タイル64x64 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ), false );
-				base.CreateManagedResource();
-			}
+			//this.tx白タイル64x64 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ), false );
+			base.CreateManagedResource();
+		}
+
+		public override void ReleaseUnmanagedResource()
+		{
+			base.ReleaseUnmanagedResource();
 		}
 		public override int Draw()
 		{

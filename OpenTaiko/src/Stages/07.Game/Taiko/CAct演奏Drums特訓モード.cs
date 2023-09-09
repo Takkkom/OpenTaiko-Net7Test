@@ -77,6 +77,8 @@ namespace TJAPlayer3
 			}
 
 			this.n小節の総数 = measureCount;
+			
+			if (TJAPlayer3.Tx.Tokkun_Background_Up != null) this.ct背景スクロールタイマー = new CCounter(1, TJAPlayer3.Tx.Tokkun_Background_Up.szテクスチャサイズ.Width, 16, TJAPlayer3.Timer);
 		}
 
 		public override void DeActivate()
@@ -84,26 +86,20 @@ namespace TJAPlayer3
 			length = 1;
 			gogoXList = null;
 			JumpPointList = null;
+
+			this.ctスクロールカウンター = null;
+			this.ct背景スクロールタイマー = null;
 			base.DeActivate();
 		}
 
 		public override void CreateManagedResource()
 		{
-			if (!base.IsDeActivated)
-			{
-				if (TJAPlayer3.Tx.Tokkun_Background_Up != null) this.ct背景スクロールタイマー = new CCounter(1, TJAPlayer3.Tx.Tokkun_Background_Up.szテクスチャサイズ.Width, 16, TJAPlayer3.Timer);
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 
 		public override void ReleaseManagedResource()
 		{
-			if (!base.IsDeActivated)
-			{
-				this.ctスクロールカウンター = null;
-				this.ct背景スクロールタイマー = null;
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 
 		public override int Draw()

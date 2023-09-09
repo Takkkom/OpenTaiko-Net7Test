@@ -62,20 +62,24 @@ namespace TJAPlayer3
 				TJAPlayer3.Skin.bgmコンフィグ画面.t再生する();
 
 				this.n現在のメニュー番号 = 0;                                                    //
-                if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-                {
-                    this.ftフォント = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
-                }
-                else
-                {
-                    this.ftフォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
-                }
 				for( int i = 0; i < 4; i++ )													//
 				{																				//
 					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, TJAPlayer3.Timer );			//
 				}																				//
 				this.bメニューにフォーカス中 = true;											// ここまでOPTIONと共通
 				this.eItemPanelモード = EItemPanelモード.パッド一覧;
+				
+				ReloadMenus();
+				
+
+				if( this.bメニューにフォーカス中 )
+				{
+					this.t説明文パネルに現在選択されているメニューの説明を描画する();
+				}
+				else
+				{
+					this.t説明文パネルに現在選択されている項目の説明を描画する();
+				}
 			}
 			finally
 			{
@@ -93,15 +97,20 @@ namespace TJAPlayer3
 				TJAPlayer3.Skin.bgmコンフィグ画面.t停止する();
 
 				TJAPlayer3.ConfigIni.t書き出し( TJAPlayer3.strEXEのあるフォルダ + "Config.ini" );	// CONFIGだけ
-				if( this.ftフォント != null )													// 以下OPTIONと共通
-				{
-					this.ftフォント.Dispose();
-					this.ftフォント = null;
-				}
 				for( int i = 0; i < 4; i++ )
 				{
 					this.ctキー反復用[ i ] = null;
 				}
+					
+				for ( int i = 0; i < txMenuItemLeft.GetLength( 0 ); i++ )
+				{
+					txMenuItemLeft[ i, 0 ].Dispose();
+					txMenuItemLeft[ i, 0 ] = null;
+					txMenuItemLeft[ i, 1 ].Dispose();
+					txMenuItemLeft[ i, 1 ] = null;
+				}
+				txMenuItemLeft = null;
+
 				base.DeActivate();
 			}
 			catch ( UnauthorizedAccessException e )
@@ -158,16 +167,21 @@ namespace TJAPlayer3
 
 		public override void CreateManagedResource()											// OPTIONと画像以外共通
 		{
-			if( !base.IsDeActivated )
-			{
-				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Script.lua"));
-				Background.Init();
+            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+            {
+                this.ftフォント = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
+            }
+            else
+            {
+                this.ftフォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
+            }
 
-				Config_Cursor = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Cursor.png"));
+			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Script.lua"));
+			Background.Init();
+
+			Config_Cursor = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Cursor.png"));
 
 				//ctBackgroundAnime = new CCounter(0, TJAPlayer3.Tx.Config_Background.szテクスチャサイズ.Width, 20, TJAPlayer3.Timer);
-
-				ReloadMenus();
 
 				/*
 				string[] strMenuItem = {
@@ -193,42 +207,26 @@ namespace TJAPlayer3
 			        }
 			    }
 				*/
-
-			    if( this.bメニューにフォーカス中 )
-				{
-					this.t説明文パネルに現在選択されているメニューの説明を描画する();
-				}
-				else
-				{
-					this.t説明文パネルに現在選択されている項目の説明を描画する();
-				}
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()											// OPTIONと同じ(COnfig.iniの書き出しタイミングのみ異なるが、無視して良い)
 		{
-			if( !base.IsDeActivated )
+			if( this.ftフォント != null )
 			{
+				this.ftフォント.Dispose();
+				this.ftフォント = null;
+			}
 				//CDTXMania.tテクスチャの解放( ref this.tx背景 );
 				//CDTXMania.tテクスチャの解放( ref this.tx上部パネル );
 				//CDTXMania.tテクスチャの解放( ref this.tx下部パネル );
 				//CDTXMania.tテクスチャの解放( ref this.txMenuカーソル );
 
-				TJAPlayer3.t安全にDisposeする(ref Background);
+			TJAPlayer3.t安全にDisposeする(ref Background);
 
-				TJAPlayer3.t安全にDisposeする(ref Config_Cursor);
+			TJAPlayer3.t安全にDisposeする(ref Config_Cursor);
 
-				TJAPlayer3.tテクスチャの解放( ref this.tx説明文パネル );
-				for ( int i = 0; i < txMenuItemLeft.GetLength( 0 ); i++ )
-				{
-					txMenuItemLeft[ i, 0 ].Dispose();
-					txMenuItemLeft[ i, 0 ] = null;
-					txMenuItemLeft[ i, 1 ].Dispose();
-					txMenuItemLeft[ i, 1 ] = null;
-				}
-				txMenuItemLeft = null;
-				base.ReleaseManagedResource();
-			}
+			TJAPlayer3.tテクスチャの解放( ref this.tx説明文パネル );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

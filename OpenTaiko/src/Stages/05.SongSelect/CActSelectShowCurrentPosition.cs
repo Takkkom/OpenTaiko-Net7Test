@@ -32,30 +32,24 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if ( !base.IsDeActivated )
+			string pathScrollBar = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_scrollbar.png" );
+			string pathScrollPosition = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_scrollbar.png" );
+			if ( File.Exists( pathScrollBar ) )
 			{
-				string pathScrollBar = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_scrollbar.png" );
-				string pathScrollPosition = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_scrollbar.png" );
-				if ( File.Exists( pathScrollBar ) )
-				{
-					this.txScrollBar = TJAPlayer3.tテクスチャの生成( pathScrollBar, false );
-				}
-				if ( File.Exists( pathScrollPosition ) )
-				{
-					this.txScrollPosition = TJAPlayer3.tテクスチャの生成( pathScrollPosition, false );
-				}
-				base.CreateManagedResource();
+				this.txScrollBar = TJAPlayer3.tテクスチャの生成( pathScrollBar, false );
 			}
+			if ( File.Exists( pathScrollPosition ) )
+			{
+				this.txScrollPosition = TJAPlayer3.tテクスチャの生成( pathScrollPosition, false );
+			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				TJAPlayer3.t安全にDisposeする( ref this.txScrollBar );
-				TJAPlayer3.t安全にDisposeする( ref this.txScrollPosition );
+			TJAPlayer3.t安全にDisposeする( ref this.txScrollBar );
+			TJAPlayer3.t安全にDisposeする( ref this.txScrollPosition );
 
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

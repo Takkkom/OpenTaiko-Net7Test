@@ -222,29 +222,23 @@ namespace TJAPlayer3
 		public override void DeActivate()
 		{
 			this.ct進行用 = null;
+			TJAPlayer3.t安全にDisposeする( ref this.txPanel );
+			TJAPlayer3.t安全にDisposeする( ref this.txMusicName );
+            TJAPlayer3.t安全にDisposeする( ref this.txGENRE );
+            TJAPlayer3.t安全にDisposeする(ref this.pfGENRE);
+            TJAPlayer3.t安全にDisposeする(ref this.txPanel);
+            TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
+            TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
+            TJAPlayer3.t安全にDisposeする(ref this.tx歌詞テクスチャ);
 			base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.t安全にDisposeする( ref this.txPanel );
-				TJAPlayer3.t安全にDisposeする( ref this.txMusicName );
-                TJAPlayer3.t安全にDisposeする( ref this.txGENRE );
-                TJAPlayer3.t安全にDisposeする(ref this.pfGENRE);
-                TJAPlayer3.t安全にDisposeする(ref this.txPanel);
-                TJAPlayer3.t安全にDisposeする(ref this.tx歌詞テクスチャ);
-                TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
-                TJAPlayer3.t安全にDisposeする(ref this.pf歌詞フォント);
-                base.ReleaseManagedResource();
-			}
+            base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

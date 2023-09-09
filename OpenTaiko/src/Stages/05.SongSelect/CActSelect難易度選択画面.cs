@@ -110,17 +110,6 @@ namespace TJAPlayer3
 
 		public void t選択画面初期化()
         {
-            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-            {
-                this.pfTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_MusicName_Scale);
-                this.pfSubTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
-            }
-            else
-            {
-                this.pfTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_MusicName_Scale);
-                this.pfSubTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
-            }
-
             this.txTitle = TJAPlayer3.tテクスチャの生成(pfTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strタイトル, Color.White, Color.Black, null, 30 ));
             this.txSubTitle = TJAPlayer3.tテクスチャの生成(pfSubTitle.DrawText(TJAPlayer3.stage選曲.r現在選択中の曲.strサブタイトル, Color.White, Color.Black, null, 30));
             
@@ -162,8 +151,16 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
+            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+            {
+                this.pfTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_MusicName_Scale);
+                this.pfSubTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
+            }
+            else
+            {
+                this.pfTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_MusicName_Scale);
+                this.pfSubTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongSelect_Subtitle_Scale);
+            }
 
             Difficulty_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Bar.png"));
             Difficulty_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select{Path.DirectorySeparatorChar}Difficulty_Number.png"));
@@ -194,8 +191,8 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
+			pfTitle.Dispose();
+			pfSubTitle.Dispose();
 
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Bar);
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Number);

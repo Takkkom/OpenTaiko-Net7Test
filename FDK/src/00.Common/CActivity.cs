@@ -53,8 +53,8 @@ namespace FDK
 			this.IsActivated = true;		// このフラグは、以下の処理をする前にセットする。
 
 			// 自身のリソースを作成する。
-			this.CreateManagedResource();
-			this.CreateUnmanagedResource();
+			//this.CreateManagedResource();
+			//this.CreateUnmanagedResource();
 
 			// すべての子 Activity を活性化する。
 			foreach( CActivity activity in this.ChildActivities )
@@ -70,8 +70,8 @@ namespace FDK
 				return;
 
 			// 自身のリソースを解放する。
-			this.ReleaseUnmanagedResource();
-			this.ReleaseManagedResource();
+			//this.ReleaseUnmanagedResource();
+			//this.ReleaseManagedResource();
 
 			// すべての 子Activity を非活性化する。
 			foreach( CActivity activity in this.ChildActivities )
@@ -89,10 +89,6 @@ namespace FDK
 		/// </summary>
 		public virtual void CreateManagedResource()
 		{
-			// 活性化してないなら何もしない。
-			if( this.IsDeActivated )
-				return;
-
 			// すべての 子Activity の Managed リソースを作成する。
 			foreach( CActivity activity in this.ChildActivities )
 				activity.CreateManagedResource();
@@ -107,10 +103,6 @@ namespace FDK
 		/// </summary>
 		public virtual void CreateUnmanagedResource()
 		{
-			// 活性化してないなら何もしない。
-			if( this.IsDeActivated )
-				return;
-
 			// すべての 子Activity の Unmanaged リソースを作成する。
 			foreach( CActivity activity in this.ChildActivities )
 				activity.CreateUnmanagedResource();

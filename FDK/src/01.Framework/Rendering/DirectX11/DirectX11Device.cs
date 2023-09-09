@@ -33,6 +33,8 @@ namespace SampleFramework
         internal static ComPtr<ID3D11DepthStencilView> DepthStencilView;
 
         internal static ComPtr<ID3D11BlendState>[] BlendStates = new ComPtr<ID3D11BlendState>[5];
+        
+        internal ComPtr<ID3D11SamplerState> SamplerState;
 
         internal static float[] CurrnetClearColor;
 
@@ -201,6 +203,18 @@ namespace SampleFramework
 
                 Device.CreateBlendState(blendDesc, ref BlendStates[(int)i]);
             }
+            
+            SamplerDesc samplerDesc = new()
+            {
+                Filter = Filter.MinMagMipLinear,
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap
+            };
+            
+            SilkMarshal.ThrowHResult(
+                DirectX11Device.Device.CreateSamplerState(samplerDesc, ref SamplerState)
+            );
 
 
             SetViewPort(0, 0, (uint)window.Size.X, (uint)window.Size.Y);
@@ -347,7 +361,7 @@ namespace SampleFramework
             ImmediateContext.PSSetConstantBuffers(0, 1, dx11shader.ConstantBuffer);
 
             ImmediateContext.PSSetShaderResources(0, 1, dx11texture.TextureView);
-            ImmediateContext.PSSetSamplers(0, 1, dx11texture.SamplerState);
+            ImmediateContext.PSSetSamplers(0, 1, SamplerState);
 
             ImmediateContext.ClearDepthStencilView(DepthStencilView, (uint)ClearFlag.Depth | (uint)ClearFlag.Stencil, 1.0f, 0);
 
@@ -357,11 +371,19 @@ namespace SampleFramework
 
         public unsafe SKBitmap GetScreenPixels()
         {  
+            ComPtr<ID3D11Texture2D> backBuffer = default;
+            var iid = ID3D11Texture2D.Guid;
+            void* ptr = backBuffer;
+            SwapChain.GetBuffer(0, &iid, &ptr);
+
+
             return null;
         }
 
         public void Dispose()
         {
+            SamplerState.Dispose();
+
             for(int i = 0; i < 5; i++)
             {
                 BlendStates[i].Dispose();

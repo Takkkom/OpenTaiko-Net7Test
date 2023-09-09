@@ -29,14 +29,6 @@ namespace TJAPlayer3
 
 		public override void Activate()
 		{
-            if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName) )
-            {
-                this.pfMusicName = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Result_MusicName_FontSize);
-            }
-            else
-            {
-                this.pfMusicName = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Result_MusicName_FontSize);
-            }
 
 		    // After performing calibration, inform the player that
 		    // calibration has been completed, rather than
@@ -62,24 +54,26 @@ namespace TJAPlayer3
 			{
 				this.ct登場用 = null;
 			}
+			
+            TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
 			base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				base.CreateManagedResource();
-			}
+            if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName) )
+            {
+                this.pfMusicName = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Result_MusicName_FontSize);
+            }
+            else
+            {
+                this.pfMusicName = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Result_MusicName_FontSize);
+            }
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-                TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
-                TJAPlayer3.tテクスチャの解放( ref this.txMusicName );
-
-                base.ReleaseManagedResource();
-			}
+            TJAPlayer3.t安全にDisposeする(ref this.pfMusicName);
+            base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

@@ -57,23 +57,17 @@ namespace TJAPlayer3
 
         public override void CreateManagedResource()
         {
-            if (!base.IsDeActivated)
-            {
-                Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Script.lua"));
-                Background.Init();
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Script.lua"));
+            Background.Init();
 
-                base.CreateManagedResource();
-            }
+            base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            if (!base.IsDeActivated)
-            {
-                TJAPlayer3.t安全にDisposeする(ref Background);
+            TJAPlayer3.t安全にDisposeする(ref Background);
 
-                base.ReleaseManagedResource();
-            }
+            base.ReleaseManagedResource();
         }
 
         public override int Draw()

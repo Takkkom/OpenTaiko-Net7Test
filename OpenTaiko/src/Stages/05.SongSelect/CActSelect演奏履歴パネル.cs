@@ -103,23 +103,17 @@ namespace TJAPlayer3
 		{
 			this.n本体X = 810;
 			this.n本体Y = 558;
-			this.ft表示用フォント = new CCachedFontRenderer( "Arial", 30, CFontRenderer.FontStyle.Bold);
 			base.Activate();
 		}
 		public override void DeActivate()
 		{
-			if( this.ft表示用フォント != null )
-			{
-				this.ft表示用フォント.Dispose();
-				this.ft表示用フォント = null;
-			}
 			this.ct登場アニメ用 = null;
 			base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-            if (base.IsDeActivated)
-                return;
+			this.ft表示用フォント = new CCachedFontRenderer( "Arial", 30, CFontRenderer.FontStyle.Bold);
+
 			//this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_play history panel.png" ) );
             //this.txスコアボード[0] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_0.png" ) );
             //this.txスコアボード[1] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\5_scoreboard_1.png" ) );
@@ -138,9 +132,12 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-            if (base.IsDeActivated)
-                return;
-
+			if( this.ft表示用フォント != null )
+			{
+				this.ft表示用フォント.Dispose();
+				this.ft表示用フォント = null;
+			}
+            
             TJAPlayer3.t安全にDisposeする(ref SongSelect_ScoreWindow_Text);
 
             for (int i = 0; i < (int)Difficulty.Total; i++)

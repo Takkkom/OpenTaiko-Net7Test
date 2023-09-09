@@ -211,6 +211,12 @@ namespace TJAPlayer3
             this.ttkKai = new TitleTextureKey(CLangManager.LangInstance.GetString(1001), pfTowerText, Color.White, Color.Black, 700);
 
             this.ct炎 = new CCounter(0, 6, 50, TJAPlayer3.Timer);
+            
+
+            this.ctSlideAnimation = new CCounter();
+            this.ctClimbAnimation = new CCounter();
+            this.ctDonAnimation = new CCounter(0, 1000, 24000f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
+
 
             base.Activate();
         }
@@ -230,20 +236,12 @@ namespace TJAPlayer3
 
         public override void CreateManagedResource()
         {
-            if (!base.IsDeActivated)
-            {
-                this.ctSlideAnimation = new CCounter();
-                this.ctClimbAnimation = new CCounter();
-                this.ctDonAnimation = new CCounter(0, 1000, 24000f / ((float)TJAPlayer3.stage演奏ドラム画面.actPlayInfo.dbBPM[0] * TJAPlayer3.ConfigIni.n演奏速度 / 20), TJAPlayer3.Timer);
-
-                base.CreateManagedResource();
-            }
+            base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            if (!base.IsDeActivated)
-                base.ReleaseManagedResource();
+            base.ReleaseManagedResource();
         }
 
         public override int Draw()

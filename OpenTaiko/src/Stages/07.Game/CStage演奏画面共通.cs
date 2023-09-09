@@ -512,6 +512,8 @@ namespace TJAPlayer3
             this.IsDanFailed = false;
 
             this.objHandlers = new Dictionary<CDTX.CChip, CCounter>();
+            
+			this.t背景テクスチャの生成();
         }
 
 
@@ -590,25 +592,18 @@ namespace TJAPlayer3
 			    TJAPlayer3.ConfigIni.nInputAdjustTimeMs = newInputAdjustTimeMs;
 			}
             this.actDan.IsAnimating = false;// IsAnimating=trueのときにそのまま選曲画面に戻ると、文字列が描画されない問題修正用。
+			TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
 
             base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				this.t背景テクスチャの生成();
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-                Trace.TraceInformation("CStage演奏画面共通 リソースの開放");
-                base.ReleaseManagedResource();
-			}
+            Trace.TraceInformation("CStage演奏画面共通 リソースの開放");
+            base.ReleaseManagedResource();
 		}
 
 		// その他

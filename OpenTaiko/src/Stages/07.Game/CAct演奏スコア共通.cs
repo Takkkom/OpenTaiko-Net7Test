@@ -326,21 +326,15 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				//this.txScore = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_Score_number.png" ) );
-    //            this.txScore_1P = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\7_Score_number_1P.png"));
-				base.CreateManagedResource();
-			}
+			//this.txScore = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_Score_number.png" ) );
+    //      this.txScore_1P = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\7_Score_number_1P.png"));
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				//CDTXMania.tテクスチャの解放( ref this.txScore );
-    //            CDTXMania.tテクスチャの解放(ref this.txScore_1P);
-				base.ReleaseManagedResource();
-			}
+			//CDTXMania.tテクスチャの解放( ref this.txScore );
+    //      CDTXMania.tテクスチャの解放(ref this.txScore_1P);
+			base.ReleaseManagedResource();
 		}
 
         protected void t小文字表示( int x, int y, string str, int mode , int alpha, int player )

@@ -37,8 +37,6 @@ namespace TJAPlayer3
 
         public override void CreateManagedResource()
         {
-            if (base.IsDeActivated)
-                return;
 
             // Ressource allocation
             SongSelect_Floor_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Floor_Number.png"));
@@ -48,8 +46,6 @@ namespace TJAPlayer3
 
         public override void ReleaseManagedResource()
         {
-            if (base.IsDeActivated)
-                return;
 
             // Ressource freeing
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Floor_Number);

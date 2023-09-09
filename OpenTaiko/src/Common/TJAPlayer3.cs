@@ -101,6 +101,8 @@ namespace TJAPlayer3
 				if( ( dtx[ 0 ] != null ) && ( app != null ) )
 				{
 					dtx[ 0 ].DeActivate();
+					dtx[ 0 ].ReleaseManagedResource();
+					dtx[ 0 ].ReleaseUnmanagedResource();
 					app.listトップレベルActivities.Remove( dtx[ 0 ] );
 				}
 				dtx[ 0 ] = value;
@@ -121,6 +123,8 @@ namespace TJAPlayer3
 				if( ( dtx[ 1 ] != null ) && ( app != null ) )
 				{
 					dtx[ 1 ].DeActivate();
+					dtx[ 1 ].ReleaseManagedResource();
+					dtx[ 1 ].ReleaseUnmanagedResource();
 					app.listトップレベルActivities.Remove( dtx[ 1 ] );
 				}
 				dtx[ 1 ] = value;
@@ -141,6 +145,8 @@ namespace TJAPlayer3
 				if ((dtx[2] != null) && (app != null))
 				{
 					dtx[2].DeActivate();
+					dtx[2].ReleaseManagedResource();
+					dtx[2].ReleaseUnmanagedResource();
 					app.listトップレベルActivities.Remove(dtx[2]);
 				}
 				dtx[2] = value;
@@ -161,6 +167,8 @@ namespace TJAPlayer3
 				if ((dtx[3] != null) && (app != null))
 				{
 					dtx[3].DeActivate();
+					dtx[3].ReleaseManagedResource();
+					dtx[3].ReleaseUnmanagedResource();
 					app.listトップレベルActivities.Remove(dtx[3]);
 				}
 				dtx[3] = value;
@@ -181,6 +189,8 @@ namespace TJAPlayer3
 				if ((dtx[4] != null) && (app != null))
 				{
 					dtx[4].DeActivate();
+					dtx[4].ReleaseManagedResource();
+					dtx[4].ReleaseUnmanagedResource();
 					app.listトップレベルActivities.Remove(dtx[4]);
 				}
 				dtx[4] = value;
@@ -815,6 +825,11 @@ namespace TJAPlayer3
 								 !EnumSongs.IsSongListEnumStarted )
 							{
 								actEnumSongs.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									actEnumSongs.CreateManagedResource();
+									actEnumSongs.CreateUnmanagedResource();
+								}
 								TJAPlayer3.stage選曲.bIsEnumeratingSongs = true;
 								EnumSongs.Init();	// 取得した曲数を、新インスタンスにも与える
 								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動_開始
@@ -830,11 +845,21 @@ namespace TJAPlayer3
 										EnumSongs.Resume();
 										EnumSongs.IsSlowdown = false;
 										actEnumSongs.Activate();
+										if (!ConfigIni.PreAssetsLoading) 
+										{
+											actEnumSongs.CreateManagedResource();
+											actEnumSongs.CreateUnmanagedResource();
+										}
 										break;
 
 									case 2:		// 曲決定
 										EnumSongs.Suspend();						// #27060 バックグラウンドの曲検索を一時停止
 										actEnumSongs.DeActivate();
+										if (!ConfigIni.PreAssetsLoading) 
+										{
+											actEnumSongs.ReleaseManagedResource();
+											actEnumSongs.ReleaseUnmanagedResource();
+										}
 										break;
 								}
 							}
@@ -853,6 +878,11 @@ namespace TJAPlayer3
 							if ( EnumSongs.IsSongListEnumerated )
 							{
 								actEnumSongs.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									actEnumSongs.ReleaseManagedResource();
+									actEnumSongs.ReleaseUnmanagedResource();
+								}
 								TJAPlayer3.stage選曲.bIsEnumeratingSongs = false;
 
 								bool bRemakeSongTitleBar = ( r現在のステージ.eステージID == CStage.Eステージ.選曲 ) ? true : false;
@@ -878,18 +908,38 @@ namespace TJAPlayer3
 							if( !bコンパクトモード )
 							{
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ タイトル" );
 								stageタイトル.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageタイトル.CreateManagedResource();
+									stageタイトル.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 							}
 							else
 							{
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 曲読み込み" );
 								stage曲読み込み.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage曲読み込み.CreateManagedResource();
+									stage曲読み込み.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 							}
@@ -915,9 +965,19 @@ namespace TJAPlayer3
 								#region [ 選曲処理へ ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 選曲" );
 								stage選曲.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage選曲.CreateManagedResource();
+									stage選曲.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
 
@@ -930,9 +990,19 @@ namespace TJAPlayer3
 								#region [ 段位選択処理へ ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 段位選択" );
-								stage段位選択.Activate();								
+								stage段位選択.Activate();	
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage段位選択.CreateManagedResource();
+									stage段位選択.CreateUnmanagedResource();
+								}							
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage段位選択;
 								TJAPlayer3.latestSongSelect = stage段位選択;
@@ -944,9 +1014,19 @@ namespace TJAPlayer3
 								#region [Online Lounge]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Online Lounge");
 								stageTowerSelect.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageTowerSelect.CreateManagedResource();
+									stageTowerSelect.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageTowerSelect;
 								//-----------------------------
@@ -957,9 +1037,19 @@ namespace TJAPlayer3
 								#region [Heya menu]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Taiko Heya");
 								stageHeya.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageHeya.CreateManagedResource();
+									stageHeya.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageHeya;
 								//-----------------------------
@@ -970,9 +1060,19 @@ namespace TJAPlayer3
 								#region [Online Lounge]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Online Lounge");
 								stageOnlineLounge.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageOnlineLounge.CreateManagedResource();
+									stageOnlineLounge.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageOnlineLounge;
 								//-----------------------------
@@ -983,9 +1083,19 @@ namespace TJAPlayer3
 								#region [Online Lounge]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Open Encyclopedia");
 								stageOpenEncyclopedia.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageOpenEncyclopedia.CreateManagedResource();
+									stageOpenEncyclopedia.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageOpenEncyclopedia;
 								//-----------------------------
@@ -996,9 +1106,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ コンフィグ" );
 								stageコンフィグ.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageコンフィグ.CreateManagedResource();
+									stageコンフィグ.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageコンフィグ;
 								//-----------------------------
@@ -1009,9 +1129,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 終了" );
 								stage終了.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage終了.CreateManagedResource();
+									stage終了.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage終了;
 								//-----------------------------
@@ -1022,9 +1152,19 @@ namespace TJAPlayer3
 								#region [ 選曲処理へ ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 選曲");
 								stage選曲.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage選曲.CreateManagedResource();
+									stage選曲.CreateUnmanagedResource();
+								}		
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
 
@@ -1061,9 +1201,19 @@ namespace TJAPlayer3
 									#region [ *** ]
 									//-----------------------------
 									r現在のステージ.DeActivate();
+									if (!ConfigIni.PreAssetsLoading) 
+									{
+										r現在のステージ.ReleaseManagedResource();
+										r現在のステージ.ReleaseUnmanagedResource();
+									}
 									Trace.TraceInformation( "----------------------" );
 									Trace.TraceInformation( "■ タイトル" );
 									stageタイトル.Activate();
+									if (!ConfigIni.PreAssetsLoading) 
+									{
+										stageタイトル.CreateManagedResource();
+										stageタイトル.CreateUnmanagedResource();
+									}
 									stageタイトル.tReloadMenus();
 									r直前のステージ = r現在のステージ;
 									r現在のステージ = stageタイトル;
@@ -1084,9 +1234,19 @@ namespace TJAPlayer3
 									#region [ *** ]
 									//-----------------------------
 									r現在のステージ.DeActivate();
+									if (!ConfigIni.PreAssetsLoading) 
+									{
+										r現在のステージ.ReleaseManagedResource();
+										r現在のステージ.ReleaseUnmanagedResource();
+									}
 									Trace.TraceInformation( "----------------------" );
 									Trace.TraceInformation( "■ 選曲" );
 									stage選曲.Activate();
+									if (!ConfigIni.PreAssetsLoading) 
+									{
+										stage選曲.CreateManagedResource();
+										stage選曲.CreateUnmanagedResource();
+									}
 									r直前のステージ = r現在のステージ;
 									r現在のステージ = stage選曲;
 
@@ -1117,9 +1277,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ タイトル" );
 								stageタイトル.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageタイトル.CreateManagedResource();
+									stageタイトル.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1152,9 +1322,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 曲読み込み" );
 								stage曲読み込み.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage曲読み込み.CreateManagedResource();
+									stage曲読み込み.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
@@ -1203,9 +1383,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ コンフィグ" );
 								stageコンフィグ.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageコンフィグ.CreateManagedResource();
+									stageコンフィグ.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageコンフィグ;
 
@@ -1229,6 +1419,11 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ スキン切り替え" );
 								stageChangeSkin.Activate();
@@ -1250,9 +1445,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
 								stageタイトル.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageタイトル.CreateManagedResource();
+									stageタイトル.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1280,9 +1485,19 @@ namespace TJAPlayer3
 								//-----------------------------
 
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 曲読み込み");
 								stage曲読み込み.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage曲読み込み.CreateManagedResource();
+									stage曲読み込み.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
@@ -1309,9 +1524,19 @@ namespace TJAPlayer3
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
 								stageタイトル.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageタイトル.CreateManagedResource();
+									stageタイトル.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1341,12 +1566,21 @@ namespace TJAPlayer3
 						{
 							TJAPlayer3.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
 							r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 							#region [ ESC押下時は、曲の読み込みを中止して選曲画面に戻る ]
 							if ( this.n進行描画の戻り値 == (int) E曲読込画面の戻り値.読込中止 )
 							{
 								//DTX.t全チップの再生停止();
 								if( DTX != null )
-                                    DTX.DeActivate();
+                                {
+									DTX.DeActivate();
+									DTX.ReleaseManagedResource();
+									DTX.ReleaseUnmanagedResource();
+								}
 
 								// ???
 
@@ -1372,6 +1606,11 @@ namespace TJAPlayer3
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ Return to song select menu");
 								TJAPlayer3.latestSongSelect.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									TJAPlayer3.latestSongSelect.CreateManagedResource();
+									TJAPlayer3.latestSongSelect.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 
 								// Seek latest registered song select screen
@@ -1494,8 +1733,20 @@ for (int i = 0; i < 3; i++) {
 								#region [ DTXファイルを再読み込みして、再演奏 ]
 								DTX.t全チップの再生停止();
 								DTX.DeActivate();
+								DTX.ReleaseManagedResource();
+								DTX.ReleaseUnmanagedResource();
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								stage曲読み込み.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage曲読み込み.CreateManagedResource();
+									stage曲読み込み.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 								this.tガベージコレクションを実行する();
@@ -1528,7 +1779,14 @@ for (int i = 0; i < 3; i++) {
 
 								DTX.t全チップの再生停止();
 								DTX.DeActivate();
+								DTX.ReleaseManagedResource();
+								DTX.ReleaseUnmanagedResource();
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 
 									// Play cancelled return screen
 
@@ -1554,6 +1812,11 @@ for (int i = 0; i < 3; i++) {
 									Trace.TraceInformation("----------------------");
 									Trace.TraceInformation("■ Return to song select menu");
 									TJAPlayer3.latestSongSelect.Activate();
+									if (!ConfigIni.PreAssetsLoading) 
+									{
+										TJAPlayer3.latestSongSelect.CreateManagedResource();
+										TJAPlayer3.latestSongSelect.CreateUnmanagedResource();
+									}
 									r直前のステージ = r現在のステージ;
 
 									// Seek latest registered song select screen
@@ -1594,11 +1857,23 @@ for (int i = 0; i < 3; i++) {
 
 								DTX.t全チップの再生停止();
 								DTX.DeActivate();
+								DTX.ReleaseManagedResource();
+								DTX.ReleaseUnmanagedResource();
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 選曲");
 								stage選曲.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage選曲.CreateManagedResource();
+									stage選曲.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage選曲;
 
@@ -1679,10 +1954,20 @@ for (int i = 0; i < 3; i++) {
 								#endregion
 
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 結果" );
 								stage結果.st演奏記録.Drums = c演奏記録_Drums;
 								stage結果.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage結果.CreateManagedResource();
+									stage結果.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage結果;
 
@@ -1713,7 +1998,14 @@ for (int i = 0; i < 3; i++) {
 							//DTX.t全チップの再生一時停止();
                             DTX.t全チップの再生停止とミキサーからの削除();
                             DTX.DeActivate();
+							DTX.ReleaseManagedResource();
+							DTX.ReleaseUnmanagedResource();
 							r現在のステージ.DeActivate();
+							if (!ConfigIni.PreAssetsLoading) 
+							{
+								r現在のステージ.ReleaseManagedResource();
+								r現在のステージ.ReleaseUnmanagedResource();
+							}
                             this.tガベージコレクションを実行する();
 
 
@@ -1741,6 +2033,11 @@ for (int i = 0; i < 3; i++) {
 							Trace.TraceInformation("----------------------");
 							Trace.TraceInformation("■ Return to song select menu");
 							TJAPlayer3.latestSongSelect.Activate();
+							if (!ConfigIni.PreAssetsLoading) 
+							{
+								TJAPlayer3.latestSongSelect.CreateManagedResource();
+								TJAPlayer3.latestSongSelect.CreateUnmanagedResource();
+							}
 							r直前のステージ = r現在のステージ;
 
 							// Seek latest registered song select screen
@@ -1770,6 +2067,11 @@ for (int i = 0; i < 3; i++) {
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
 								stageタイトル.Activate();
@@ -1800,9 +2102,19 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								latestSongSelect = stageTowerSelect;
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 曲読み込み");
 								stage曲読み込み.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stage曲読み込み.CreateManagedResource();
+									stage曲読み込み.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage曲読み込み;
 
@@ -1827,9 +2139,19 @@ for (int i = 0; i < 3; i++) {
 						if ( this.n進行描画の戻り値 != 0 )
 						{
 							r現在のステージ.DeActivate();
+							if (!ConfigIni.PreAssetsLoading) 
+							{
+								r現在のステージ.ReleaseManagedResource();
+								r現在のステージ.ReleaseUnmanagedResource();
+							}
 							Trace.TraceInformation( "----------------------" );
 							Trace.TraceInformation( "■ 選曲" );
 							stage選曲.Activate();
+							if (!ConfigIni.PreAssetsLoading) 
+							{
+								stage選曲.CreateManagedResource();
+								stage選曲.CreateUnmanagedResource();
+							}
 							r直前のステージ = r現在のステージ;
 							r現在のステージ = stage選曲;
 							this.tガベージコレクションを実行する();
@@ -1858,9 +2180,19 @@ for (int i = 0; i < 3; i++) {
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.DeActivate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									r現在のステージ.ReleaseManagedResource();
+									r現在のステージ.ReleaseUnmanagedResource();
+								}
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ タイトル");
 								stageタイトル.Activate();
+								if (!ConfigIni.PreAssetsLoading) 
+								{
+									stageタイトル.CreateManagedResource();
+									stageタイトル.CreateUnmanagedResource();
+								}
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stageタイトル;
 
@@ -1941,7 +2273,17 @@ for (int i = 0; i < 3; i++) {
 						{
 							RefleshSkin();
 							r現在のステージ.DeActivate();
+							if (!ConfigIni.PreAssetsLoading) 
+							{
+								r現在のステージ.ReleaseManagedResource();
+								r現在のステージ.ReleaseUnmanagedResource();
+							}
 							r現在のステージ.Activate();
+							if (!ConfigIni.PreAssetsLoading) 
+							{
+								r現在のステージ.CreateManagedResource();
+								r現在のステージ.CreateUnmanagedResource();
+							}
 						}
 					}
 					else
@@ -2169,7 +2511,7 @@ for (int i = 0; i < 3; i++) {
 
         public static TextureLoader Tx = new TextureLoader();
 
-		private List<CActivity> listトップレベルActivities;
+		public List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
 		private string strWindowTitle
 		{
@@ -2348,6 +2690,11 @@ for (int i = 0; i < 3; i++) {
 				act文字コンソール = new C文字コンソール();
 				Trace.TraceInformation( "文字コンソールを生成しました。" );
 				act文字コンソール.Activate();
+				//if (!ConfigIni.PreAssetsLoading) 
+				{
+					act文字コンソール.CreateManagedResource();
+					act文字コンソール.CreateUnmanagedResource();
+				}
 				Trace.TraceInformation( "文字コンソールを活性化しました。" );
 				Trace.TraceInformation( "文字コンソールの初期化を完了しました。" );
 			}
@@ -2474,6 +2821,11 @@ for (int i = 0; i < 3; i++) {
 				{
 				    actScanningLoudness = new CActScanningLoudness();
 				    actScanningLoudness.Activate();
+					if (!ConfigIni.PreAssetsLoading) 
+					{
+						actScanningLoudness.CreateManagedResource();
+						actScanningLoudness.CreateUnmanagedResource();
+					}
 				    LoudnessMetadataScanner.ScanningStateChanged +=
 				        (_, args) => actScanningLoudness.bIsActivelyScanning = args.IsActivelyScanning;
 				    LoudnessMetadataScanner.StartBackgroundScanning();
@@ -2659,6 +3011,11 @@ for (int i = 0; i < 3; i++) {
 				r現在のステージ = stage起動;
 			}
 			r現在のステージ.Activate();
+			if (!ConfigIni.PreAssetsLoading) 
+			{
+				r現在のステージ.CreateManagedResource();
+				r現在のステージ.CreateUnmanagedResource();
+			}
 
 			//---------------------
 			#endregion
@@ -2714,6 +3071,11 @@ for (int i = 0; i < 3; i++) {
 					try
 					{
 						r現在のステージ.DeActivate();
+						if (!ConfigIni.PreAssetsLoading) 
+						{
+							r現在のステージ.ReleaseManagedResource();
+							r現在のステージ.ReleaseUnmanagedResource();
+						}
 						Trace.TraceInformation( "現在のステージの終了処理を完了しました。" );
 					}
 					finally
@@ -2882,6 +3244,11 @@ for (int i = 0; i < 3; i++) {
 					try
 					{
 						act文字コンソール.DeActivate();
+						//if (!ConfigIni.PreAssetsLoading) 
+						{
+							act文字コンソール.ReleaseManagedResource();
+							act文字コンソール.ReleaseUnmanagedResource();
+						}
 						act文字コンソール = null;
 						Trace.TraceInformation( "文字コンソールの終了処理を完了しました。" );
 					}
@@ -2975,6 +3342,11 @@ for (int i = 0; i < 3; i++) {
 			        SongGainController = null;
 			        LoudnessMetadataScanner.StopBackgroundScanning(joinImmediately: true);
                     actScanningLoudness.DeActivate();
+					if (!ConfigIni.PreAssetsLoading) 
+					{
+						actScanningLoudness.ReleaseManagedResource();
+						actScanningLoudness.ReleaseUnmanagedResource();
+					}
 			        actScanningLoudness = null;
 			    }
 			    finally
@@ -3100,6 +3472,8 @@ for (int i = 0; i < 3; i++) {
             Trace.TraceInformation("スキン変更:" + TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName(false));
 
             TJAPlayer3.act文字コンソール.DeActivate();
+			act文字コンソール.ReleaseManagedResource();
+			act文字コンソール.ReleaseUnmanagedResource();
 
             TJAPlayer3.Skin.Dispose();
             TJAPlayer3.Skin = null;
@@ -3112,6 +3486,8 @@ for (int i = 0; i < 3; i++) {
 			TJAPlayer3.Tx.LoadTexture();
 
             TJAPlayer3.act文字コンソール.Activate();
+			act文字コンソール.CreateManagedResource();
+			act文字コンソール.CreateUnmanagedResource();
 			TJAPlayer3.NamePlate.RefleshSkin();
 			CActSelectPopupMenu.RefleshSkin();
 			CActSelect段位リスト.RefleshSkin();

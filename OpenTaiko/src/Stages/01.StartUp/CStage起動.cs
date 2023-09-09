@@ -66,19 +66,13 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				this.tx背景 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}1_Title{Path.DirectorySeparatorChar}Background.png" ), false );
-				base.CreateManagedResource();
-			}
+			this.tx背景 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}1_Title{Path.DirectorySeparatorChar}Background.png" ), false );
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-				base.ReleaseManagedResource();
-			}
+			TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

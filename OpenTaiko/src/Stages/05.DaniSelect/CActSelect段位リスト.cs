@@ -53,16 +53,6 @@ namespace TJAPlayer3
 
             ctExamConditionsAnim = new CCounter(0, 4000, 1, TJAPlayer3.Timer);
 
-            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-                pfDanSong = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
-            else
-                pfDanSong = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
-
-            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-                this.pfExamFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
-            else
-                this.pfExamFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
-
             this.ttkExams = new TitleTextureKey[(int)Exam.Type.Total];
             for (int i = 0; i < this.ttkExams.Length; i++)
             {
@@ -77,14 +67,22 @@ namespace TJAPlayer3
 
         public override void DeActivate()
         {
-            TJAPlayer3.t安全にDisposeする(ref pfDanSong);
-            TJAPlayer3.t安全にDisposeする(ref pfExamFont);
             
             base.DeActivate();
         }
 
         public override void CreateManagedResource()
         {
+            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+                pfDanSong = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
+            else
+                pfDanSong = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DaniSelect_Font_DanSong_Size);
+
+            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+                this.pfExamFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
+            else
+                this.pfExamFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DaniSelect_Font_Exam_Size);
+
             Dani_Bar_Center = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Bar_Center.png"));
             Dani_DanSides = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}DanSides.png"));
             Dani_Difficulty_Cymbol = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANISELECT}Difficulty_Cymbol.png"));
@@ -94,6 +92,9 @@ namespace TJAPlayer3
 
         public override void ReleaseManagedResource()
         {
+            TJAPlayer3.t安全にDisposeする(ref pfDanSong);
+            TJAPlayer3.t安全にDisposeする(ref pfExamFont);
+            
 			TJAPlayer3.t安全にDisposeする(ref Dani_Bar_Center);
 			TJAPlayer3.t安全にDisposeする(ref Dani_DanSides);
             TJAPlayer3.t安全にDisposeする(ref Dani_Difficulty_Cymbol);

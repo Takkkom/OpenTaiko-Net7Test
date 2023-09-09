@@ -129,7 +129,6 @@ namespace TJAPlayer3
 
 		public override void Activate()
 		{
-			this.ft描画用フォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, 26, CFontRenderer.FontStyle.Regular );
 			this.txArtist = null;
 			this.txComment = null;
 			this.strArtist = "";
@@ -138,36 +137,32 @@ namespace TJAPlayer3
 			this.nComment行数 = 0;
 			this.nテクスチャの最大幅 = 0;
 			this.ctComment = new CCounter();
+			this.t選択曲が変更された();
 			base.Activate();
 		}
 		public override void DeActivate()
 		{
 			TJAPlayer3.tテクスチャの解放( ref this.txArtist );
 			TJAPlayer3.tテクスチャの解放( ref this.txComment );
-			if( this.ft描画用フォント != null )
-			{
-				this.ft描画用フォント.Dispose();
-				this.ft描画用フォント = null;
-			}
 			this.ctComment = null;
 			base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				this.t選択曲が変更された();
-				base.CreateManagedResource();
-			}
+			this.ft描画用フォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, 26, CFontRenderer.FontStyle.Regular );
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
+			if( this.ft描画用フォント != null )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txArtist );
-				TJAPlayer3.tテクスチャの解放( ref this.txComment );
-				base.ReleaseManagedResource();
+				this.ft描画用フォント.Dispose();
+				this.ft描画用フォント = null;
 			}
+			
+			TJAPlayer3.tテクスチャの解放( ref this.txArtist );
+			TJAPlayer3.tテクスチャの解放( ref this.txComment );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

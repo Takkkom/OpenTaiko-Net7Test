@@ -107,9 +107,6 @@ namespace TJAPlayer3
 
 		public override void CreateManagedResource()
 		{
-			if (base.IsDeActivated)
-				return;
-
 			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Script.lua"));
 			Background.Init();
 
@@ -162,9 +159,6 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			if (base.IsDeActivated)
-				return;
-
 			TJAPlayer3.t安全にDisposeする(ref Background);
 			TJAPlayer3.t安全にDisposeする(ref Entry_Bar);
 			TJAPlayer3.t安全にDisposeする(ref Entry_Bar_Text);

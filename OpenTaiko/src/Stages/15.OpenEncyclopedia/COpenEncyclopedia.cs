@@ -51,33 +51,27 @@ namespace TJAPlayer3
         {
             // Ressource allocation
 
-            if (!base.IsDeActivated)
-            {
-                Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Script.lua"));
-                Background.Init();
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Script.lua"));
+            Background.Init();
 
-                OpenEncyclopedia_Context = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Context.png"));
-                OpenEncyclopedia_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Side_Menu.png"));
-                OpenEncyclopedia_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Return_Box.png"));
+            OpenEncyclopedia_Context = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Context.png"));
+            OpenEncyclopedia_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Side_Menu.png"));
+            OpenEncyclopedia_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Return_Box.png"));
 
-                base.CreateManagedResource();
-            }
+            base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
 
-            if (!base.IsDeActivated)
-            {
-                TJAPlayer3.t安全にDisposeする(ref Background);
+            TJAPlayer3.t安全にDisposeする(ref Background);
 
-                TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Context);
-                TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Side_Menu);
-                TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Return_Box);
+            TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Context);
+            TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Side_Menu);
+            TJAPlayer3.t安全にDisposeする(ref OpenEncyclopedia_Return_Box);
 
-                base.ReleaseManagedResource();
-            }
+            base.ReleaseManagedResource();
         }
 
         public override int Draw()

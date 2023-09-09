@@ -140,9 +140,7 @@ namespace TJAPlayer3
         }
         public override void CreateManagedResource()
         {
-            if (this.IsDeActivated)
-                return;
-                
+            OptionFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Option_Font_Scale);
             Difficulty_Option = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select/Difficulty_Option.png"));
             Difficulty_Option_Select = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Difficulty_Select/Difficulty_Option_Select.png"));
 
@@ -150,9 +148,8 @@ namespace TJAPlayer3
         }
         public override void ReleaseManagedResource()
         {
-            if (this.IsDeActivated)
-                return;
-
+            OptionFont.Dispose();
+            
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Option);
 			TJAPlayer3.t安全にDisposeする(ref Difficulty_Option_Select);
             
@@ -343,7 +340,8 @@ namespace TJAPlayer3
 
             return 0;
         }
-        
+        private CCachedFontRenderer OptionFont;
+
         private CTexture Difficulty_Option;
         private CTexture Difficulty_Option_Select;
 
@@ -400,7 +398,7 @@ namespace TJAPlayer3
 
         public CTexture OptionTypeTx(string str文字, Color forecolor, Color backcolor)
         {
-            using (var bmp = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.SongSelect_Option_Font_Scale).DrawText(str文字, forecolor, backcolor, null, 30))
+            using (var bmp = OptionFont.DrawText(str文字, forecolor, backcolor, null, 30))
             {
                 return TJAPlayer3.tテクスチャの生成(bmp);
             }

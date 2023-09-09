@@ -288,19 +288,89 @@ namespace TJAPlayer3
 					LargeImageText = TJAPlayer3.LargeImageText,
 				}
 			});
+
+            
+
+			// When performing calibration, reduce audio distraction from user input.
+			// For users who play primarily by listening to the music,
+			// you might think that we want them to hear drum sound effects during
+			// calibration, but we do not. Humans are remarkably good at adjusting
+			// the timing of their own physical movement, even without realizing it.
+			// We are calibrating their input timing for the purposes of judgment.
+			// We do not want them subconsciously playing early so as to line up
+			// their drum sound effects with the sounds of the input calibration file.
+			// Instead, we want them focused on the sounds of their keyboard, tatacon,
+			// other controller, etc. and the sounds of the input calibration audio file.
+			if (!TJAPlayer3.IsPerformingCalibration)
+            {
+                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+                {
+                    int actual = TJAPlayer3.GetActualPlayer(i);
+
+                    var hs = TJAPlayer3.Skin.hsHitSoundsInformations;
+
+                    //this.soundRed[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.don[actual]), ESoundGroup.SoundEffect);
+                    //this.soundBlue[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.ka[actual]), ESoundGroup.SoundEffect);
+                    //this.soundAdlib[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.adlib[actual]), ESoundGroup.SoundEffect);
+                    //this.soundClap[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.clap[actual]), ESoundGroup.SoundEffect);
+
+                    this.soundRed[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.don[actual]), ESoundGroup.SoundEffect);
+                    this.soundBlue[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.ka[actual]), ESoundGroup.SoundEffect);
+                    this.soundAdlib[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.adlib[actual]), ESoundGroup.SoundEffect);
+                    this.soundClap[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.clap[actual]), ESoundGroup.SoundEffect);
+
+                    int _panning = TJAPlayer3.ConfigIni.nPanning[TJAPlayer3.ConfigIni.nPlayerCount - 1][i];
+                    if (this.soundRed[i] != null) this.soundRed[i].SoundPosition = _panning;
+                    if (this.soundBlue[i] != null) this.soundBlue[i].SoundPosition = _panning;
+                    if (this.soundAdlib[i] != null) this.soundAdlib[i].SoundPosition = _panning;
+                    if (this.soundClap[i] != null) this.soundClap[i].SoundPosition = _panning;
+                }
+                /*
+                this.soundRed = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds\Taiko\dong.ogg" ), ESoundGroup.SoundEffect );
+			    this.soundBlue = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds\Taiko\ka.ogg" ), ESoundGroup.SoundEffect );
+			    this.soundAdlib = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path(@"Sounds\Taiko\Adlib.ogg"), ESoundGroup.SoundEffect );
+
+                this.soundRed2 = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Taiko\dong.ogg"), ESoundGroup.SoundEffect);
+                this.soundBlue2 = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Taiko\ka.ogg"), ESoundGroup.SoundEffect);
+                this.soundAdlib2 = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Taiko\Adlib.ogg"), ESoundGroup.SoundEffect);
+                */
+
+                /*
+                if (TJAPlayer3.ConfigIni.nPlayerCount == 2)//2020.05.06 Mr-Ojii左右に出したかったから、追加。
+                {
+                    this.soundRed[0].n位置 = -100;
+                    this.soundBlue[0].n位置 = -100;
+                    this.soundAdlib[0].n位置 = -100;
+                    this.soundRed[1].n位置 = 100;
+                    this.soundBlue[1].n位置 = 100;
+                    this.soundAdlib[1].n位置 = 100;
+                }
+                */
+            }
         }
 		public override void DeActivate()
 		{
             this.ct手つなぎ = null;
+
+            for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+            {
+                if (this.soundRed[i] != null)
+                    this.soundRed[i].tDispose();
+                if (this.soundBlue[i] != null)
+                    this.soundBlue[i].tDispose();
+                if (this.soundAdlib[i] != null)
+                    this.soundAdlib[i].tDispose();
+                if (this.soundClap[i] != null)
+                    this.soundClap[i].tDispose();
+            }
+
 			base.DeActivate();
 
             LoudnessMetadataScanner.StartBackgroundScanning();
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				Result_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Number.png"));
+			Result_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Number.png"));
 
 				//this.t背景テクスチャの生成();
 				//this.tx太鼓ノーツ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_taiko_notes.png" ) );
@@ -316,85 +386,13 @@ namespace TJAPlayer3
 
     //            this.tx判定数表示パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_Paramater Panel.png" ) );
 
-			    // When performing calibration, reduce audio distraction from user input.
-			    // For users who play primarily by listening to the music,
-			    // you might think that we want them to hear drum sound effects during
-			    // calibration, but we do not. Humans are remarkably good at adjusting
-			    // the timing of their own physical movement, even without realizing it.
-			    // We are calibrating their input timing for the purposes of judgment.
-			    // We do not want them subconsciously playing early so as to line up
-			    // their drum sound effects with the sounds of the input calibration file.
-			    // Instead, we want them focused on the sounds of their keyboard, tatacon,
-			    // other controller, etc. and the sounds of the input calibration audio file.
-			    if (!TJAPlayer3.IsPerformingCalibration)
-                {
-                    for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
-                    {
-                        int actual = TJAPlayer3.GetActualPlayer(i);
-
-                        var hs = TJAPlayer3.Skin.hsHitSoundsInformations;
-
-                        //this.soundRed[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.don[actual]), ESoundGroup.SoundEffect);
-                        //this.soundBlue[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.ka[actual]), ESoundGroup.SoundEffect);
-                        //this.soundAdlib[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.adlib[actual]), ESoundGroup.SoundEffect);
-                        //this.soundClap[i] = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(hs.clap[actual]), ESoundGroup.SoundEffect);
-
-                        this.soundRed[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.don[actual]), ESoundGroup.SoundEffect);
-                        this.soundBlue[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.ka[actual]), ESoundGroup.SoundEffect);
-                        this.soundAdlib[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.adlib[actual]), ESoundGroup.SoundEffect);
-                        this.soundClap[i] = TJAPlayer3.Sound管理.tCreateSound((@$"Global{Path.DirectorySeparatorChar}HitSounds{Path.DirectorySeparatorChar}" + hs.clap[actual]), ESoundGroup.SoundEffect);
-
-                        int _panning = TJAPlayer3.ConfigIni.nPanning[TJAPlayer3.ConfigIni.nPlayerCount - 1][i];
-                        if (this.soundRed[i] != null) this.soundRed[i].SoundPosition = _panning;
-                        if (this.soundBlue[i] != null) this.soundBlue[i].SoundPosition = _panning;
-                        if (this.soundAdlib[i] != null) this.soundAdlib[i].SoundPosition = _panning;
-                        if (this.soundClap[i] != null) this.soundClap[i].SoundPosition = _panning;
-                    }
-                    /*
-                    this.soundRed = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds\Taiko\dong.ogg" ), ESoundGroup.SoundEffect );
-			        this.soundBlue = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path( @"Sounds\Taiko\ka.ogg" ), ESoundGroup.SoundEffect );
-			        this.soundAdlib = TJAPlayer3.Sound管理.tサウンドを生成する( CSkin.Path(@"Sounds\Taiko\Adlib.ogg"), ESoundGroup.SoundEffect );
-
-                    this.soundRed2 = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Taiko\dong.ogg"), ESoundGroup.SoundEffect);
-                    this.soundBlue2 = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Taiko\ka.ogg"), ESoundGroup.SoundEffect);
-                    this.soundAdlib2 = TJAPlayer3.Sound管理.tサウンドを生成する(CSkin.Path(@"Sounds\Taiko\Adlib.ogg"), ESoundGroup.SoundEffect);
-                    */
-
-                    /*
-                    if (TJAPlayer3.ConfigIni.nPlayerCount == 2)//2020.05.06 Mr-Ojii左右に出したかったから、追加。
-                    {
-                        this.soundRed[0].n位置 = -100;
-                        this.soundBlue[0].n位置 = -100;
-                        this.soundAdlib[0].n位置 = -100;
-                        this.soundRed[1].n位置 = 100;
-                        this.soundBlue[1].n位置 = 100;
-                        this.soundAdlib[1].n位置 = 100;
-                    }
-                    */
-                }
-
-			    base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-            {
-				TJAPlayer3.t安全にDisposeする(ref Result_Number);
+			TJAPlayer3.t安全にDisposeする(ref Result_Number);
 
-                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
-                {
-                    if (this.soundRed[i] != null)
-                        this.soundRed[i].tDispose();
-                    if (this.soundBlue[i] != null)
-                        this.soundBlue[i].tDispose();
-                    if (this.soundAdlib[i] != null)
-                        this.soundAdlib[i].tDispose();
-                    if (this.soundClap[i] != null)
-                        this.soundClap[i].tDispose();
-                }
-                base.ReleaseManagedResource();
-			}
+            base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

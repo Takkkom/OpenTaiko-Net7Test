@@ -33,18 +33,12 @@ namespace TJAPlayer3
 		//}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.txDANGER );
-				base.ReleaseManagedResource();
-			}
+			TJAPlayer3.tテクスチャの解放( ref this.txDANGER );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

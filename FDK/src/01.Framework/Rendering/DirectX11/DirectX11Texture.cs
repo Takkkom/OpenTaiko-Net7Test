@@ -11,7 +11,6 @@ namespace SampleFramework
         internal bool IsWrongPixels;
         internal ComPtr<ID3D11Texture2D> Texture;
         internal ComPtr<ID3D11ShaderResourceView> TextureView;
-        internal ComPtr<ID3D11SamplerState> SamplerState;
 
         private Format RgbaTypeToFormat(RgbaType rgbaType)
         {
@@ -63,25 +62,12 @@ namespace SampleFramework
             SilkMarshal.ThrowHResult(
                 DirectX11Device.Device.CreateShaderResourceView(Texture, null, ref TextureView)
             );
-
-            SamplerDesc samplerDesc = new()
-            {
-                Filter = Filter.MinMagMipLinear,
-                AddressU = TextureAddressMode.Wrap,
-                AddressV = TextureAddressMode.Wrap,
-                AddressW = TextureAddressMode.Wrap
-            };
-            
-            SilkMarshal.ThrowHResult(
-                DirectX11Device.Device.CreateSamplerState(samplerDesc, ref SamplerState)
-            );
         }
 
         public void Dispose()
         {
             Texture.Dispose();
             TextureView.Dispose();
-            SamplerState.Dispose();
         }
     }
 }

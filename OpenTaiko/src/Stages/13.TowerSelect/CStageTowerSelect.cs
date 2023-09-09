@@ -38,6 +38,7 @@ namespace TJAPlayer3
             if (listSongs == null)
                 listSongs = TJAPlayer3.Songs管理.list曲ルート_Tower;
 
+            tUpdateBarInfos();
 
             base.Activate();
         }
@@ -67,7 +68,6 @@ namespace TJAPlayer3
                 pfSubTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerSelect_SubTitle_Size);
             else
                 pfSubTitleFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerSelect_SubTitle_Size);
-            tUpdateBarInfos();
 
             base.CreateManagedResource();
         }

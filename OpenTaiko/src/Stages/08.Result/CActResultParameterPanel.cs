@@ -192,6 +192,58 @@ namespace TJAPlayer3
 		{
 			this.sdDTXで指定されたフルコンボ音 = null;
 
+			ttkAISection = new CActSelect曲リスト.TitleTextureKey[TJAPlayer3.stage演奏ドラム画面.AIBattleSections.Count];
+            for (int i = 0; i < ttkAISection.Length; i++)
+            {
+				ttkAISection[i] = new CActSelect曲リスト.TitleTextureKey($"{i + 1}区", pfAISectionText, Color.White, Color.Black, 1280);
+
+			}
+			
+			ct全体進行 = new CCounter(0, 50000, 1, TJAPlayer3.Timer);
+
+			ctゲージアニメ = new CCounter[5];
+			for (int i = 0; i < 5; i++)
+				ctゲージアニメ[i] = new CCounter();
+
+			ct虹ゲージアニメ = new CCounter();
+
+			ctSoul = new CCounter();
+
+			ctEndAnime = new CCounter();
+			ctBackgroundAnime = new CCounter(0, 1000, 1, TJAPlayer3.Timer);
+			ctBackgroundAnime_Clear = new CCounter(0, 1000, 1, TJAPlayer3.Timer);
+			ctMountain_ClearIn = new CCounter();
+
+			RandomText = TJAPlayer3.Random.Next(3);
+
+			ctFlash_Icon = new CCounter(0, 3000, 1, TJAPlayer3.Timer);
+			ctRotate_Flowers = new CCounter(0, 1500, 1, TJAPlayer3.Timer);
+			ctShine_Plate = new CCounter(0, 1000, 1, TJAPlayer3.Timer);
+
+			ctAISectionChange = new CCounter(0, 2000, 1, TJAPlayer3.Timer);
+			ctAISectionChange.CurrentValue = 255;
+
+			for (int i = 0; i < 5; i++)
+            {
+				CResultCharacter.tMenuResetTimer(CResultCharacter.ECharacterResult.NORMAL);
+				CResultCharacter.tDisableCounter(CResultCharacter.ECharacterResult.CLEAR);
+				CResultCharacter.tDisableCounter(CResultCharacter.ECharacterResult.FAILED);
+				CResultCharacter.tDisableCounter(CResultCharacter.ECharacterResult.FAILED_IN);
+			}
+
+			gaugeValues = new int[5];
+			for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+            {
+				gaugeValues[i] = (int)TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i];
+			}
+
+			// Replace by max between 2 gauges if 2p
+			GaugeFactor = Math.Max(Math.Max(Math.Max(Math.Max(gaugeValues[0], gaugeValues[1]), gaugeValues[2]), gaugeValues[3]), gaugeValues[4]) / 2;
+				
+			MountainAppearValue = 10275 + (66 * GaugeFactor);
+
+			this.PuchiChara.IdleAnimation();
+
 			base.Activate();
 		}
 		public override void DeActivate()
@@ -215,140 +267,81 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if (!base.IsDeActivated)
-			{
+			Result_Panel = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel.png"));
+			Result_Panel_2P = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_2.png"));
+			Result_Diff_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}DifficultyBar.png"));
+			Result_Score_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Score_Number.png"));
+			Result_Dan = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Dan.png"));
 
-				Result_Panel = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel.png"));
-				Result_Panel_2P = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_2.png"));
-				Result_Diff_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}DifficultyBar.png"));
-				Result_Score_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Score_Number.png"));
-				Result_Dan = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Dan.png"));
+			Result_CrownEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}CrownEffect.png"));
+			Result_Shine = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Shine.png"));
 
-				Result_CrownEffect = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}CrownEffect.png"));
-				Result_Shine = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Shine.png"));
+			Result_Flower = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Flower.png"));
 
-				Result_Flower = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Flower.png"));
+			Result_Speech_Bubble[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble.png"));
+			Result_Speech_Bubble[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble_2.png"));
 
-				Result_Speech_Bubble[0] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble.png"));
-				Result_Speech_Bubble[1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Speech_Bubble_2.png"));
+			for (int i = 0; i < 4; i++)
+				Result_Panel_4P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_4P_" + (i + 1).ToString() + ".png"));
 
-				for (int i = 0; i < 4; i++)
-					Result_Panel_4P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_4P_" + (i + 1).ToString() + ".png"));
+			for (int i = 0; i < 5; i++)
+				Result_Panel_5P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_5P_" + (i + 1).ToString() + ".png"));
 
-				for (int i = 0; i < 5; i++)
-					Result_Panel_5P[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Panel_5P_" + (i + 1).ToString() + ".png"));
+			for (int i = 1; i <= 5; i++)
+				Result_Flower_Rotate[i - 1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Rotate_" + i.ToString() + ".png"));
 
-				for (int i = 1; i <= 5; i++)
-					Result_Flower_Rotate[i - 1] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Flower{Path.DirectorySeparatorChar}Rotate_" + i.ToString() + ".png"));
+			for (int i = 0; i < 3; i++)
+				Result_Crown[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Crown{Path.DirectorySeparatorChar}Crown_" + i.ToString() + ".png"));
 
-				for (int i = 0; i < 3; i++)
-					Result_Crown[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Crown{Path.DirectorySeparatorChar}Crown_" + i.ToString() + ".png"));
+			Result_AIBattle_Panel_AI = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Panel_AI.png"));
+			Result_AIBattle_Batch = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Batch.png"));
+			Result_AIBattle_SectionPlate = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}SectionPlate.png"));
+			Result_AIBattle_WinFlag_Clear = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Win.png"));
+			Result_AIBattle_WinFlag_Lose = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Lose.png"));
 
-				Result_AIBattle_Panel_AI = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Panel_AI.png"));
-				Result_AIBattle_Batch = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Batch.png"));
-				Result_AIBattle_SectionPlate = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}SectionPlate.png"));
-				Result_AIBattle_WinFlag_Clear = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Win.png"));
-				Result_AIBattle_WinFlag_Lose = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}WinFlag_Lose.png"));
 
-				ct全体進行 = new CCounter(0, 50000, 1, TJAPlayer3.Timer);
-
-				ctゲージアニメ = new CCounter[5];
-				for (int i = 0; i < 5; i++)
-					ctゲージアニメ[i] = new CCounter();
-
-				ct虹ゲージアニメ = new CCounter();
-
-				ctSoul = new CCounter();
-
-				ctEndAnime = new CCounter();
-				ctBackgroundAnime = new CCounter(0, 1000, 1, TJAPlayer3.Timer);
-				ctBackgroundAnime_Clear = new CCounter(0, 1000, 1, TJAPlayer3.Timer);
-				ctMountain_ClearIn = new CCounter();
-
-				RandomText = TJAPlayer3.Random.Next(3);
-
-				ctFlash_Icon = new CCounter(0, 3000, 1, TJAPlayer3.Timer);
-				ctRotate_Flowers = new CCounter(0, 1500, 1, TJAPlayer3.Timer);
-				ctShine_Plate = new CCounter(0, 1000, 1, TJAPlayer3.Timer);
-
-				ctAISectionChange = new CCounter(0, 2000, 1, TJAPlayer3.Timer);
-				ctAISectionChange.CurrentValue = 255;
-
-				pfAISectionText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Result_AIBattle_SectionText_Scale);
-
-				ttkAISection = new CActSelect曲リスト.TitleTextureKey[TJAPlayer3.stage演奏ドラム画面.AIBattleSections.Count];
-                for (int i = 0; i < ttkAISection.Length; i++)
-                {
-					ttkAISection[i] = new CActSelect曲リスト.TitleTextureKey($"{i + 1}区", pfAISectionText, Color.White, Color.Black, 1280);
-
-				}
-
-				for (int i = 0; i < 5; i++)
-                {
-					CResultCharacter.tMenuResetTimer(CResultCharacter.ECharacterResult.NORMAL);
-					CResultCharacter.tDisableCounter(CResultCharacter.ECharacterResult.CLEAR);
-					CResultCharacter.tDisableCounter(CResultCharacter.ECharacterResult.FAILED);
-					CResultCharacter.tDisableCounter(CResultCharacter.ECharacterResult.FAILED_IN);
-				}
+			pfAISectionText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Result_AIBattle_SectionText_Scale);
 				
-
-				gaugeValues = new int[5];
-				for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
-                {
-					gaugeValues[i] = (int)TJAPlayer3.stage演奏ドラム画面.actGauge.db現在のゲージ値[i];
-				}
-
-				// Replace by max between 2 gauges if 2p
-				GaugeFactor = Math.Max(Math.Max(Math.Max(Math.Max(gaugeValues[0], gaugeValues[1]), gaugeValues[2]), gaugeValues[3]), gaugeValues[4]) / 2;
-				
-				MountainAppearValue = 10275 + (66 * GaugeFactor);
-
-				this.PuchiChara.IdleAnimation();
-
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if (!base.IsDeActivated)
-			{
-				TJAPlayer3.t安全にDisposeする(ref Result_Panel);
-				TJAPlayer3.t安全にDisposeする(ref Result_Panel_2P);
-				TJAPlayer3.t安全にDisposeする(ref Result_Diff_Bar);
-				TJAPlayer3.t安全にDisposeする(ref Result_Score_Number);
-				TJAPlayer3.t安全にDisposeする(ref Result_Dan);
+			TJAPlayer3.t安全にDisposeする(ref Result_Panel);
+			TJAPlayer3.t安全にDisposeする(ref Result_Panel_2P);
+			TJAPlayer3.t安全にDisposeする(ref Result_Diff_Bar);
+			TJAPlayer3.t安全にDisposeする(ref Result_Score_Number);
+			TJAPlayer3.t安全にDisposeする(ref Result_Dan);
 
-				TJAPlayer3.t安全にDisposeする(ref Result_CrownEffect);
-				TJAPlayer3.t安全にDisposeする(ref Result_Shine);
+			TJAPlayer3.t安全にDisposeする(ref Result_CrownEffect);
+			TJAPlayer3.t安全にDisposeする(ref Result_Shine);
 
-				TJAPlayer3.t安全にDisposeする(ref Result_Flower);
+			TJAPlayer3.t安全にDisposeする(ref Result_Flower);
 
 
-				TJAPlayer3.t安全にDisposeする(ref Result_Speech_Bubble[0]);
-				TJAPlayer3.t安全にDisposeする(ref Result_Speech_Bubble[1]);
+			TJAPlayer3.t安全にDisposeする(ref Result_Speech_Bubble[0]);
+			TJAPlayer3.t安全にDisposeする(ref Result_Speech_Bubble[1]);
 
-				for (int i = 0; i < 4; i++)
-					TJAPlayer3.t安全にDisposeする(ref Result_Panel_4P[i]);
+			for (int i = 0; i < 4; i++)
+				TJAPlayer3.t安全にDisposeする(ref Result_Panel_4P[i]);
 
-				for (int i = 0; i < 5; i++)
-					TJAPlayer3.t安全にDisposeする(ref Result_Panel_5P[i]);
+			for (int i = 0; i < 5; i++)
+				TJAPlayer3.t安全にDisposeする(ref Result_Panel_5P[i]);
 
-				for (int i = 1; i <= 5; i++)
-					TJAPlayer3.t安全にDisposeする(ref Result_Flower_Rotate[i - 1]);
+			for (int i = 1; i <= 5; i++)
+				TJAPlayer3.t安全にDisposeする(ref Result_Flower_Rotate[i - 1]);
 
-				for (int i = 0; i < 3; i++)
-					TJAPlayer3.t安全にDisposeする(ref Result_Crown[i]);
+			for (int i = 0; i < 3; i++)
+				TJAPlayer3.t安全にDisposeする(ref Result_Crown[i]);
 
-				TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_Panel_AI);
-				TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_Batch);
-				TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_SectionPlate);
-				TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_WinFlag_Clear);
-				TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_WinFlag_Lose);
+			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_Panel_AI);
+			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_Batch);
+			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_SectionPlate);
+			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_WinFlag_Clear);
+			TJAPlayer3.t安全にDisposeする(ref Result_AIBattle_WinFlag_Lose);
 
-				TJAPlayer3.t安全にDisposeする(ref pfAISectionText);
+			TJAPlayer3.t安全にDisposeする(ref pfAISectionText);
 
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

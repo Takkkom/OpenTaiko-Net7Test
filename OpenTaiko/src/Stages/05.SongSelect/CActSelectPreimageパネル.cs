@@ -36,41 +36,35 @@ namespace TJAPlayer3
 			this.r表示するプレビュー画像 = this.txプレビュー画像がないときの画像;
 			this.str現在のファイル名 = "";
 			this.b新しいプレビューファイルを読み込んだ = false;
+			this.txプレビュー画像 = null;
+			this.n前回描画したフレーム番号 = -1;
+			this.b動画フレームを作成した = false;
+			this.pAVIBmp = IntPtr.Zero;
+			this.tプレビュー画像_動画の変更();
 			base.Activate();
 		}
 		public override void DeActivate()
 		{
+			TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
 			this.ct登場アニメ用 = null;
 			this.ct遅延表示 = null;
 			base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				this.txパネル本体 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_preimage panel.png" ), false );
-				this.txセンサ = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor.png" ), false );
-				//this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor light.png" ), false );
-				this.txプレビュー画像 = null;
-				this.txプレビュー画像がないときの画像 = TJAPlayer3.tテクスチャの生成( CSkin.Path(@$"Graphics{Path.DirectorySeparatorChar}3_SongSelect{Path.DirectorySeparatorChar}PreImageDefault.png"), false );
-				this.n前回描画したフレーム番号 = -1;
-				this.b動画フレームを作成した = false;
-				this.pAVIBmp = IntPtr.Zero;
-				this.tプレビュー画像_動画の変更();
-				base.CreateManagedResource();
-			}
+			this.txパネル本体 = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_preimage panel.png" ), false );
+			this.txセンサ = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor.png" ), false );
+			//this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_sensor light.png" ), false );
+			this.txプレビュー画像がないときの画像 = TJAPlayer3.tテクスチャの生成( CSkin.Path(@$"Graphics{Path.DirectorySeparatorChar}3_SongSelect{Path.DirectorySeparatorChar}PreImageDefault.png"), false );
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
-				TJAPlayer3.tテクスチャの解放( ref this.txセンサ );
-				TJAPlayer3.tテクスチャの解放( ref this.txセンサ光 );
-				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像 );
-				TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
-				base.ReleaseManagedResource();
-			}
+			TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
+			TJAPlayer3.tテクスチャの解放( ref this.txセンサ );
+			TJAPlayer3.tテクスチャの解放( ref this.txセンサ光 );
+			TJAPlayer3.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

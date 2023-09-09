@@ -46,19 +46,11 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override unsafe int Draw()
 		{

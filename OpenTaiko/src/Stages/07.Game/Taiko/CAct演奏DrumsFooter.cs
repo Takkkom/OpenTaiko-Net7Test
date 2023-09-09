@@ -19,16 +19,6 @@ namespace TJAPlayer3
 
         public override void Activate()
         {
-            base.Activate();
-        }
-
-        public override void DeActivate()
-        {
-            base.DeActivate();
-        }
-
-        public override void CreateManagedResource()
-        {
             var footerDir = CSkin.Path($"{TextureLoader.BASE}{TextureLoader.GAME}{TextureLoader.FOOTER}");
 
             if (System.IO.Directory.Exists(footerDir))
@@ -44,13 +34,23 @@ namespace TJAPlayer3
                 }
             }
 
+            base.Activate();
+        }
+
+        public override void DeActivate()
+        {
+            TJAPlayer3.t安全にDisposeする(ref Mob_Footer);
+
+            base.DeActivate();
+        }
+
+        public override void CreateManagedResource()
+        {
             base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            TJAPlayer3.t安全にDisposeする(ref Mob_Footer);
-
             base.ReleaseManagedResource();
         }
 

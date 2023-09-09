@@ -138,25 +138,19 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
+			string pathパネル本体 = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}ScreenSelect popup auto settings.png" );
+			if ( File.Exists( pathパネル本体 ) )
 			{
-				string pathパネル本体 = CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}ScreenSelect popup auto settings.png" );
-				if ( File.Exists( pathパネル本体 ) )
-				{
-					this.txパネル本体 = TJAPlayer3.tテクスチャの生成( pathパネル本体, true );
-				}
-
-				base.CreateManagedResource();
+				this.txパネル本体 = TJAPlayer3.tテクスチャの生成( pathパネル本体, true );
 			}
+
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
-				TJAPlayer3.tテクスチャの解放( ref this.tx文字列パネル );
-				base.ReleaseManagedResource();
-			}
+			TJAPlayer3.tテクスチャの解放( ref this.txパネル本体 );
+			TJAPlayer3.tテクスチャの解放( ref this.tx文字列パネル );
+			base.ReleaseManagedResource();
 		}
 
 		#region [ private ]

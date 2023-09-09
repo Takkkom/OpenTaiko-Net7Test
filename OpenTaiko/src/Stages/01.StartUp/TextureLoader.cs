@@ -1120,6 +1120,14 @@ namespace TJAPlayer3
 
             #endregion
 
+			if (TJAPlayer3.ConfigIni.PreAssetsLoading) 
+			{
+				foreach(var act in TJAPlayer3.app.listトップレベルActivities)
+				{
+					act.CreateManagedResource();
+					act.CreateUnmanagedResource();
+				}
+			}
         }
 
         public int[] CreateNumberedArrayFromInt(int total)
@@ -1852,6 +1860,15 @@ namespace TJAPlayer3
                 texture = null;
             }
             listTexture.Clear();
+            
+			//if (TJAPlayer3.ConfigIni.PreAssetsLoading) 
+			{
+				foreach(var act in TJAPlayer3.app.listトップレベルActivities)
+				{
+					act.ReleaseManagedResource();
+					act.ReleaseUnmanagedResource();
+				}
+			}
         }
 
         #region 共通

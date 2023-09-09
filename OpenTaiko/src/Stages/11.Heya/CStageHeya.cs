@@ -165,40 +165,34 @@ namespace TJAPlayer3
 
         public override void CreateManagedResource()
         {
-            if (!base.IsDeActivated)
-            {
-                Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Script.lua"));
-                Background.Init();
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Script.lua"));
+            Background.Init();
                 
-                Heya_Center_Menu_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Bar.png"));
-                Heya_Center_Menu_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Box.png"));
-                Heya_Center_Menu_Box_Slot = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Box_Slot.png"));
-                Heya_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Side_Menu.png"));
-                Heya_Render_Field = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Render_Field.png"));
-                Heya_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Box.png"));
-                Heya_Lock = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Lock.png"));
+            Heya_Center_Menu_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Bar.png"));
+            Heya_Center_Menu_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Box.png"));
+            Heya_Center_Menu_Box_Slot = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Center_Menu_Box_Slot.png"));
+            Heya_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Side_Menu.png"));
+            Heya_Render_Field = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Render_Field.png"));
+            Heya_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Box.png"));
+            Heya_Lock = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Lock.png"));
 
 
-                base.CreateManagedResource();
-            }
+            base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            if (!base.IsDeActivated)
-            {
-                TJAPlayer3.t安全にDisposeする(ref Background);
+            TJAPlayer3.t安全にDisposeする(ref Background);
                 
-                TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Bar);
-                TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Box);
-                TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Box_Slot);
-                TJAPlayer3.t安全にDisposeする(ref Heya_Side_Menu);
-                TJAPlayer3.t安全にDisposeする(ref Heya_Render_Field);
-                TJAPlayer3.t安全にDisposeする(ref Heya_Box);
-                TJAPlayer3.t安全にDisposeする(ref Heya_Lock);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Bar);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Box);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Center_Menu_Box_Slot);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Side_Menu);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Render_Field);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Box);
+            TJAPlayer3.t安全にDisposeする(ref Heya_Lock);
 
-                base.ReleaseManagedResource();
-            }
+            base.ReleaseManagedResource();
         }
 
         public override int Draw()

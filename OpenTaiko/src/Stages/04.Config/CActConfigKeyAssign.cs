@@ -102,9 +102,6 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
-
 			Config_KeyAssign = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}KeyAssign.png"));
 			//this.txカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 			//this.txHitKeyダイアログ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig hit key to assign dialog.png" ), false );
@@ -112,9 +109,6 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
-
 			TJAPlayer3.t安全にDisposeする(ref Config_KeyAssign);
 			base.ReleaseManagedResource();
 		}

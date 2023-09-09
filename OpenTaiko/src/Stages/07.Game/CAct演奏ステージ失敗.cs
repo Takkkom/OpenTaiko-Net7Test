@@ -101,28 +101,22 @@ namespace TJAPlayer3
 		public override void CreateManagedResource()
 		{
 			this.failedSongPlayed = false;
-			if( !base.IsDeActivated )
-			{
-				//            this.txBlack = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile black 64x64.png" ) );
-				//this.txStageFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_stage_failed.jpg" ) );
-				//this.txGameFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_GameFailed.png" ) );
-				//            this.tx数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_RollNumber.png" ) );
-				this.soundFailed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
-				base.CreateManagedResource();
-			}
+			//            this.txBlack = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile black 64x64.png" ) );
+			//this.txStageFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_stage_failed.jpg" ) );
+			//this.txGameFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_GameFailed.png" ) );
+			//            this.tx数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_RollNumber.png" ) );
+			this.soundFailed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				//CDTXMania.tテクスチャの解放( ref this.txStageFailed );
-				//CDTXMania.tテクスチャの解放( ref this.txGameFailed );
-				//            CDTXMania.tテクスチャの解放( ref this.txBlack );
-				//            CDTXMania.tテクスチャの解放( ref this.tx数字 );
-				if (this.soundFailed != null)
-					this.soundFailed.tDispose();
-				base.ReleaseManagedResource();
-			}
+			//CDTXMania.tテクスチャの解放( ref this.txStageFailed );
+			//CDTXMania.tテクスチャの解放( ref this.txGameFailed );
+			//            CDTXMania.tテクスチャの解放( ref this.txBlack );
+			//            CDTXMania.tテクスチャの解放( ref this.tx数字 );
+			if (this.soundFailed != null)
+				this.soundFailed.tDispose();
+			base.ReleaseManagedResource();
 		}
 
 		#region [Effect]

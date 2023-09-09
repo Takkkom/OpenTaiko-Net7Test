@@ -919,11 +919,6 @@ namespace TJAPlayer3
 			nSkinSampleIndex = -1;
 			#endregion
 
-            if ( !string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-			    this.prvFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Config_Font_Scale);	// t項目リストの設定 の前に必要
-            else
-                this.prvFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Config_Font_Scale);
-
             //			this.listMenu = new List<stMenuItemRight>();
 
 			this.t項目リストの設定_Drums();	// 
@@ -951,7 +946,6 @@ namespace TJAPlayer3
 			this.list項目リスト.Clear();
 			this.ct三角矢印アニメ = null;
             
-			prvFont.Dispose();
 			base.DeActivate();
 			#region [ Skin変更 ]
 			if ( TJAPlayer3.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
@@ -1006,8 +1000,10 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
+            if ( !string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+			    this.prvFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Config_Font_Scale);	// t項目リストの設定 の前に必要
+            else
+                this.prvFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Config_Font_Scale);
 
 			//this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_itembox.png" ), false );
 			//this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\4_itembox other.png" ), false );
@@ -1019,9 +1015,8 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
-
+			prvFont.Dispose();
+			
 			TJAPlayer3.t安全にDisposeする(ref Config_ItemBox);
 			TJAPlayer3.t安全にDisposeする(ref Config_Arrow);
 			TJAPlayer3.tテクスチャの解放( ref this.txSkinSample1 );

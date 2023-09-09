@@ -28,16 +28,7 @@ namespace TJAPlayer3
 				stパッド状態.n明るさ = 0;
 				this.stパッド状態[ i ] = stパッド状態;
 			}
-            base.Activate();
-        }
 
-        public override void DeActivate()
-        {
-            base.DeActivate();
-        }
-
-        public override void CreateManagedResource()
-        {
              this.ctレベルアップダウン = new CCounter[ 5 ];
             ctSymbolFlash = new CCounter[5];
             this.After = new CDTX.ECourse[ 5 ];
@@ -48,14 +39,23 @@ namespace TJAPlayer3
                 BackSymbolEvent(i);
             }
 
+            base.Activate();
+        }
 
+        public override void DeActivate()
+        {
+            this.ctレベルアップダウン = null;
+
+            base.DeActivate();
+        }
+
+        public override void CreateManagedResource()
+        {
             base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            this.ctレベルアップダウン = null;
-
             base.ReleaseManagedResource();
         }
 

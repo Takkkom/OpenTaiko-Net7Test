@@ -21,17 +21,7 @@ namespace TJAPlayer3
         public override void Activate()
         {
             //this.ct踊り子モーション = new CCounter();
-            base.Activate();
-        }
-
-        public override void DeActivate()
-        {
-            //this.ct踊り子モーション = null;
-            base.DeActivate();
-        }
-
-        public override void CreateManagedResource()
-        {
+            
             Random random = new Random();
             Dancer = new CTexture[5][];
 
@@ -65,16 +55,28 @@ namespace TJAPlayer3
             nNowDancerCounter = 0;
             nNowDancerFrame = 0;
 
-            base.CreateManagedResource();
+            base.Activate();
         }
 
-        public override void ReleaseManagedResource()
+        public override void DeActivate()
         {
+            //this.ct踊り子モーション = null;
+
             for (int i = 0; i < 5; i++)
             {
                 TJAPlayer3.t安全にDisposeする(ref Dancer[i]);
             }
 
+            base.DeActivate();
+        }
+
+        public override void CreateManagedResource()
+        {
+            base.CreateManagedResource();
+        }
+
+        public override void ReleaseManagedResource()
+        {
             base.ReleaseManagedResource();
         }
 

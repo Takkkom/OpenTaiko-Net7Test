@@ -212,8 +212,6 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
     //            this.txアタックエフェクトUpper = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\7_explosion_upper.png" ) );
     //            this.txアタックエフェクトUpper_big = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_explosion_upper_big.png" ) );
 				//if( this.txアタックエフェクトUpper != null )
@@ -225,20 +223,16 @@ namespace TJAPlayer3
     //            this.tx大音符花火[1] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\7_explosion_bignotes_blue.png" ) );
     //            this.tx大音符花火[1].b加算合成 = true;
                 //this.tx紙吹雪 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_particle paper.png" ) );
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
 				//CDTXMania.tテクスチャの解放( ref this.txアタックエフェクトUpper );
 				//CDTXMania.tテクスチャの解放( ref this.txアタックエフェクトUpper_big );
     //            CDTXMania.tテクスチャの解放( ref this.tx大音符花火[ 0 ] );
     //            CDTXMania.tテクスチャの解放( ref this.tx大音符花火[ 1 ] );
                 //CDTXMania.tテクスチャの解放( ref this.tx紙吹雪 );
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

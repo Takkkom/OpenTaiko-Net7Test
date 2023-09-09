@@ -82,24 +82,22 @@ namespace TJAPlayer3
 		{
 			base.Activate();
 		}
+		public override void DeActivate()
+		{
+			if ( this.tx描画用 != null )
+			{
+				this.tx描画用.Dispose();
+				this.tx描画用 = null;
+			}
+			base.DeActivate();
+		}
 		public override void CreateManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				if ( this.tx描画用 != null )
-				{
-					this.tx描画用.Dispose();
-					this.tx描画用 = null;
-				}
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

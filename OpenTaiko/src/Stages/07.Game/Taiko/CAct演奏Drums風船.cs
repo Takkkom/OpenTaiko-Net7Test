@@ -72,6 +72,8 @@ namespace TJAPlayer3
             {
                 this.ct風船アニメ[i] = new CCounter();
             }
+            
+            this.ct風船ふきだしアニメ = new CCounter(0, 1, 100, TJAPlayer3.Timer);
             base.Activate();
         }
 
@@ -84,7 +86,6 @@ namespace TJAPlayer3
 
         public override void CreateManagedResource()
         {
-            this.ct風船ふきだしアニメ = new CCounter(0, 1, 100, TJAPlayer3.Timer);
             base.CreateManagedResource();
         }
 

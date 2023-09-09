@@ -74,23 +74,17 @@ namespace TJAPlayer3
 
 		public override void CreateManagedResource()
 		{
-			if (!base.IsDeActivated)
-			{
-				this.tx数値 = TJAPlayer3.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect level numbers.png"));
-				base.CreateManagedResource();
-			}
+			this.tx数値 = TJAPlayer3.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect level numbers.png"));
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if (!base.IsDeActivated)
+			if ( this.tx数値 != null )
 			{
-				if ( this.tx数値 != null )
-				{
-					this.tx数値.Dispose();
-					this.tx数値 = null;
-				}
-				base.ReleaseManagedResource();
+				this.tx数値.Dispose();
+				this.tx数値 = null;
 			}
+			base.ReleaseManagedResource();
 		}
 
 

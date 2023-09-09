@@ -944,9 +944,6 @@ namespace TJAPlayer3
 
 			// フォント作成。
 			// 曲リスト文字は２倍（面積４倍）でテクスチャに描画してから縮小表示するので、フォントサイズは２倍とする。
-
-			CFontRenderer.FontStyle regular = CFontRenderer.FontStyle.Regular;
-			this.ft曲リスト用フォント = new CCachedFontRenderer( TJAPlayer3.ConfigIni.FontName, 40, regular );
 			
 			// 現在選択中の曲がない（＝はじめての活性化）なら、現在選択中の曲をルートの先頭ノードに設定する。
 
@@ -982,6 +979,11 @@ namespace TJAPlayer3
 				strBoxText = "null";
 			}
 
+			for( int i = 0; i < TJAPlayer3.Skin.SongSelect_Bar_Count; i++ )
+            {
+                this.stバー情報[ i ].ttkタイトル = this.ttk曲名テクスチャを生成する( this.stバー情報[ i ].strタイトル文字列, this.stバー情報[i].ForeColor, this.stバー情報[i].BackColor, stバー情報[i].eバー種別 == Eバー種別.Box ? this.pfBoxName : this.pfMusicName);
+            }
+
 			base.Activate();
 
 			this.t選択曲が変更された(true);		// #27648 2012.3.31 yyagi 選曲画面に入った直後の 現在位置/全アイテム数 の表示を正しく行うため
@@ -997,9 +999,8 @@ namespace TJAPlayer3
 			TJAPlayer3.t安全にDisposeする(ref pfMaker);
             TJAPlayer3.t安全にDisposeする(ref pfBPM);
 
-            TJAPlayer3.t安全にDisposeする( ref this.ft曲リスト用フォント );
-
 			tResetTitleKey();
+		    ClearTitleTextureCache();
 
 			this.ct三角矢印アニメ = null;
 
@@ -1007,8 +1008,8 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
+			CFontRenderer.FontStyle regular = CFontRenderer.FontStyle.Regular;
+			this.ft曲リスト用フォント = new CCachedFontRenderer( TJAPlayer3.ConfigIni.FontName, 40, regular );
 
             SongSelect_Level = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Level.png"));
 			
@@ -1075,11 +1076,6 @@ namespace TJAPlayer3
                 {
                     SongSelect_Box_Chara[i] = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}Box_Chara{Path.DirectorySeparatorChar}Box_Chara_" + i.ToString() + ".png"));
                 }
-            }
-
-			for( int i = 0; i < TJAPlayer3.Skin.SongSelect_Bar_Count; i++ )
-            {
-                this.stバー情報[ i ].ttkタイトル = this.ttk曲名テクスチャを生成する( this.stバー情報[ i ].strタイトル文字列, this.stバー情報[i].ForeColor, this.stバー情報[i].BackColor, stバー情報[i].eバー種別 == Eバー種別.Box ? this.pfBoxName : this.pfMusicName);
             }
 
 			int c = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ) ? 0 : 1;
@@ -1154,8 +1150,7 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( this.IsDeActivated )
-				return;
+            TJAPlayer3.t安全にDisposeする( ref this.ft曲リスト用フォント );
 
             TJAPlayer3.t安全にDisposeする(ref SongSelect_Level);
 			
@@ -1215,8 +1210,6 @@ namespace TJAPlayer3
                 TJAPlayer3.tテクスチャの解放( ref this.stバー情報[ i ].txタイトル名 );
                 this.stバー情報[ i ].ttkタイトル = null;
             }
-
-		    ClearTitleTextureCache();
 
             TJAPlayer3.tテクスチャの解放( ref this.txEnumeratingSongs );
             TJAPlayer3.tテクスチャの解放( ref this.txSongNotFound );

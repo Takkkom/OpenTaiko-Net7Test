@@ -204,40 +204,34 @@ namespace TJAPlayer3
 
 		public override void Activate()
 		{
-			this.ft表示用フォント = new CCachedFontRenderer( "Arial", 26, CFontRenderer.FontStyle.Bold );
 			base.Activate();
 			this.bGotoDetailConfig = false;
 		}
 		public override void DeActivate()
+		{
+			base.DeActivate();
+		}
+		public override void CreateManagedResource()
+		{
+			this.ft表示用フォント = new CCachedFontRenderer( "Arial", 26, CFontRenderer.FontStyle.Bold );
+			//string pathパネル本体 = CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" );
+			//if ( File.Exists( pathパネル本体 ) )
+			//{
+			//	this.txパネル本体 = CDTXMania.tテクスチャの生成( pathパネル本体, true );
+			//}
+
+			base.CreateManagedResource();
+		}
+		public override void ReleaseManagedResource()
 		{
 			if ( this.ft表示用フォント != null )
 			{
 				this.ft表示用フォント.Dispose();
                 this.ft表示用フォント = null;
 			}
-			base.DeActivate();
-		}
-		public override void CreateManagedResource()
-		{
-			if( !base.IsDeActivated )
-			{
-				//string pathパネル本体 = CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" );
-				//if ( File.Exists( pathパネル本体 ) )
-				//{
-				//	this.txパネル本体 = CDTXMania.tテクスチャの生成( pathパネル本体, true );
-				//}
-
-				base.CreateManagedResource();
-			}
-		}
-		public override void ReleaseManagedResource()
-		{
-			if ( !base.IsDeActivated )
-			{
-				//CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
-				TJAPlayer3.tテクスチャの解放( ref this.tx文字列パネル );
-				base.ReleaseManagedResource();
-			}
+			//CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
+			TJAPlayer3.tテクスチャの解放( ref this.tx文字列パネル );
+			base.ReleaseManagedResource();
 		}
 
 		#region [ private ]

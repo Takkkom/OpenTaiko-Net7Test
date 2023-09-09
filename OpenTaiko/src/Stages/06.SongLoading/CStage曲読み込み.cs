@@ -37,16 +37,6 @@ namespace TJAPlayer3
 			{
 				this.str曲タイトル = "";
 				this.strSTAGEFILE = "";
-                if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName ) )
-                {
-                    this.pfTITLE = new CCachedFontRenderer( TJAPlayer3.ConfigIni.FontName , TJAPlayer3.Skin.SongLoading_Title_FontSize );
-                    this.pfSUBTITLE = new CCachedFontRenderer( TJAPlayer3.ConfigIni.FontName , TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
-                }
-                else
-                {
-                    this.pfTITLE = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongLoading_Title_FontSize);
-                    this.pfSUBTITLE = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
-                }
 				this.nBGM再生開始時刻 = -1;
 				this.nBGMの総再生時間ms = 0;
 				if( this.sd読み込み音 != null )
@@ -103,6 +93,65 @@ namespace TJAPlayer3
 			        strサブタイトル == "TJAPlayer3 Developers";
 
 				this.strSTAGEFILE = CSkin.Path(@$"Graphics{Path.DirectorySeparatorChar}4_SongLoading{Path.DirectorySeparatorChar}Background.png");
+				
+
+				float wait = 600f;
+				if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
+					wait = 1000f;
+				else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
+					wait = 1200f;
+
+				this.ct待機 = new CCounter( 0, wait, 5, TJAPlayer3.Timer );
+				this.ct曲名表示 = new CCounter( 1, 30, 30, TJAPlayer3.Timer );
+				try
+				{
+					// When performing calibration, inform the player that
+					// calibration is about to begin, rather than
+					// displaying the song title and subtitle as usual.
+
+					var タイトル = TJAPlayer3.IsPerformingCalibration
+						? "Input calibration is about to begin."
+						: this.str曲タイトル;
+
+					var サブタイトル = TJAPlayer3.IsPerformingCalibration
+						? "Please play as accurately as possible."
+						: this.strサブタイトル;
+
+					if( !string.IsNullOrEmpty(タイトル) )
+					{
+						//this.txタイトル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+						//this.txタイトル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
+
+
+						using (var bmpSongTitle = this.pfTITLE.DrawText( タイトル, TJAPlayer3.Skin.SongLoading_Title_ForeColor, TJAPlayer3.Skin.SongLoading_Title_BackColor, null, 30 ))
+
+						{
+							this.txタイトル = new CTexture( bmpSongTitle );
+								txタイトル.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref txタイトル, 710);
+						}
+
+						using (var bmpSongSubTitle = this.pfSUBTITLE.DrawText( サブタイトル, TJAPlayer3.Skin.SongLoading_SubTitle_ForeColor, TJAPlayer3.Skin.SongLoading_SubTitle_BackColor, null, 30 ))
+
+
+						{
+								this.txサブタイトル = new CTexture( bmpSongSubTitle );
+						}
+					}
+					else
+					{
+						this.txタイトル = null;
+						this.txサブタイトル = null;
+					}
+
+				}
+				catch ( CTextureCreateFailedException e )
+				{
+					Trace.TraceError( e.ToString() );
+					Trace.TraceError( "テクスチャの生成に失敗しました。({0})", new object[] { this.strSTAGEFILE } );
+					this.txタイトル = null;
+					this.txサブタイトル = null;
+					this.tx背景 = null;
+				}
 
 				base.Activate();
 			}
@@ -118,8 +167,9 @@ namespace TJAPlayer3
 			Trace.Indent();
 			try
 			{
-                TJAPlayer3.t安全にDisposeする(ref this.pfTITLE);
-                TJAPlayer3.t安全にDisposeする(ref this.pfSUBTITLE);
+				TJAPlayer3.tテクスチャの解放( ref this.txタイトル );
+				//CDTXMania.tテクスチャの解放( ref this.txSongnamePlate );
+				TJAPlayer3.tテクスチャの解放( ref this.txサブタイトル );
                 base.DeActivate();
 			}
 			finally
@@ -130,81 +180,42 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
-				//this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}6_SongnamePlate.png" ) );
+            if( !string.IsNullOrEmpty( TJAPlayer3.ConfigIni.FontName ) )
+            {
+                this.pfTITLE = new CCachedFontRenderer( TJAPlayer3.ConfigIni.FontName , TJAPlayer3.Skin.SongLoading_Title_FontSize );
+                this.pfSUBTITLE = new CCachedFontRenderer( TJAPlayer3.ConfigIni.FontName , TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
+            }
+            else
+            {
+                this.pfTITLE = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongLoading_Title_FontSize);
+                this.pfSUBTITLE = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
+            }
+			
+            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+            {
+                pfDanTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Game_DanC_Title_Size);
+                pfDanSubTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
+            }
+            else
+            {
+                pfDanTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_DanC_Title_Size);
+                pfDanSubTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
+            }
 
-				float wait = 600f;
-				if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
-					wait = 1000f;
-				else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
-					wait = 1200f;
-
-                this.ct待機 = new CCounter( 0, wait, 5, TJAPlayer3.Timer );
-                this.ct曲名表示 = new CCounter( 1, 30, 30, TJAPlayer3.Timer );
-				try
-				{
-				    // When performing calibration, inform the player that
-				    // calibration is about to begin, rather than
-				    // displaying the song title and subtitle as usual.
-
-				    var タイトル = TJAPlayer3.IsPerformingCalibration
-				        ? "Input calibration is about to begin."
-				        : this.str曲タイトル;
-
-				    var サブタイトル = TJAPlayer3.IsPerformingCalibration
-				        ? "Please play as accurately as possible."
-				        : this.strサブタイトル;
-
-				    if( !string.IsNullOrEmpty(タイトル) )
-					{
-                        //this.txタイトル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
-                        //this.txタイトル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
-
-
-					    using (var bmpSongTitle = this.pfTITLE.DrawText( タイトル, TJAPlayer3.Skin.SongLoading_Title_ForeColor, TJAPlayer3.Skin.SongLoading_Title_BackColor, null, 30 ))
-
-					    {
-					        this.txタイトル = new CTexture( bmpSongTitle );
-					        txタイトル.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref txタイトル, 710);
-					    }
-
-					    using (var bmpSongSubTitle = this.pfSUBTITLE.DrawText( サブタイトル, TJAPlayer3.Skin.SongLoading_SubTitle_ForeColor, TJAPlayer3.Skin.SongLoading_SubTitle_BackColor, null, 30 ))
-
-
-					    {
-					        this.txサブタイトル = new CTexture( bmpSongSubTitle );
-					    }
-                    }
-					else
-					{
-						this.txタイトル = null;
-                        this.txサブタイトル = null;
-                    }
-
-                }
-                catch ( CTextureCreateFailedException e )
-				{
-					Trace.TraceError( e.ToString() );
-					Trace.TraceError( "テクスチャの生成に失敗しました。({0})", new object[] { this.strSTAGEFILE } );
-					this.txタイトル = null;
-                    this.txサブタイトル = null;
-                    this.tx背景 = null;
-				}
-				base.CreateManagedResource();
-			}
+			this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
+			//this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}6_SongnamePlate.png" ) );
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
-				TJAPlayer3.tテクスチャの解放( ref this.txタイトル );
-				//CDTXMania.tテクスチャの解放( ref this.txSongnamePlate );
-                TJAPlayer3.tテクスチャの解放( ref this.txサブタイトル );
-				base.ReleaseManagedResource();
-			}
+            TJAPlayer3.t安全にDisposeする(ref this.pfTITLE);
+            TJAPlayer3.t安全にDisposeする(ref this.pfSUBTITLE);
+
+            pfDanTitle?.Dispose();
+            pfDanSubTitle?.Dispose();
+
+			TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{
@@ -520,18 +531,6 @@ namespace TJAPlayer3
 							#region [dan setup]
 							if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan && TJAPlayer3.DTX.List_DanSongs != null)
                             {
-                                CCachedFontRenderer pfTitle = null;
-                                CCachedFontRenderer pfSubTitle = null;
-                                if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-                                {
-                                    pfTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Game_DanC_Title_Size);
-                                    pfSubTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
-                                }
-                                else
-                                {
-                                    pfTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_DanC_Title_Size);
-                                    pfSubTitle = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
-                                }
 
                                 var titleForeColor = TJAPlayer3.Skin.Game_DanC_Title_ForeColor;
                                 var titleBackColor = TJAPlayer3.Skin.Game_DanC_Title_BackColor;
@@ -542,7 +541,7 @@ namespace TJAPlayer3
                                 {
                                     if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[i].Title))
                                     {
-                                        using (var bmpSongTitle = pfTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].Title, titleForeColor, titleBackColor, null, 30))
+                                        using (var bmpSongTitle = pfDanTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].Title, titleForeColor, titleBackColor, null, 30))
                                         {
                                             TJAPlayer3.DTX.List_DanSongs[i].TitleTex = TJAPlayer3.tテクスチャの生成(bmpSongTitle, false);
                                             TJAPlayer3.DTX.List_DanSongs[i].TitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].TitleTex, TJAPlayer3.Skin.Game_DanC_Title_MaxWidth);
@@ -551,7 +550,7 @@ namespace TJAPlayer3
 
                                     if (!string.IsNullOrEmpty(TJAPlayer3.DTX.List_DanSongs[i].SubTitle))
                                     {
-                                        using (var bmpSongSubTitle = pfSubTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].SubTitle, subtitleForeColor, subtitleBackColor, null, 30))
+                                        using (var bmpSongSubTitle = pfDanSubTitle.DrawText(TJAPlayer3.DTX.List_DanSongs[i].SubTitle, subtitleForeColor, subtitleBackColor, null, 30))
                                         {
                                             TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex = TJAPlayer3.tテクスチャの生成(bmpSongSubTitle, false);
                                             TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex.vc拡大縮小倍率.X = TJAPlayer3.GetSongNameXScaling(ref TJAPlayer3.DTX.List_DanSongs[i].SubTitleTex, TJAPlayer3.Skin.Game_DanC_SubTitle_MaxWidth);
@@ -559,9 +558,6 @@ namespace TJAPlayer3
                                     }
 
                                 }
-
-                                pfTitle?.Dispose();
-                                pfSubTitle?.Dispose();
                             }
 							#endregion
 						}
@@ -712,6 +708,9 @@ namespace TJAPlayer3
 
         private CCachedFontRenderer pfTITLE;
         private CCachedFontRenderer pfSUBTITLE;
+
+        private CCachedFontRenderer pfDanTitle = null;
+        private CCachedFontRenderer pfDanSubTitle = null;
 		//-----------------
 		#endregion
 	}

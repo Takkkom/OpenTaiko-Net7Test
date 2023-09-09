@@ -37,23 +37,17 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-                this.txInfo_Back = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_information_BG.png" ) );
-                this.txInfo[ 0 ] = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_information.png" ) );
-                this.txInfo[ 1 ] = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_information2.png" ) );
-				base.CreateManagedResource();
-			}
+            this.txInfo_Back = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_information_BG.png" ) );
+            this.txInfo[ 0 ] = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_information.png" ) );
+            this.txInfo[ 1 ] = TJAPlayer3.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}5_information2.png" ) );
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo_Back );
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 0 ] );
-				TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 1 ] );
-				base.ReleaseManagedResource();
-			}
+			TJAPlayer3.tテクスチャの解放( ref this.txInfo_Back );
+			TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 0 ] );
+			TJAPlayer3.tテクスチャの解放( ref this.txInfo[ 1 ] );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

@@ -1362,6 +1362,7 @@ namespace TJAPlayer3
 		public int nMasterVolume;
         public bool ShinuchiMode; // 真打モード
         public bool FastRender; // 事前画像描画モード
+        public bool PreAssetsLoading; // 事前画像描画モード
         public int MusicPreTimeMs; // 音源再生前の待機時間ms
 
 		public bool TJAP3FolderMode { get; private set; }
@@ -1956,6 +1957,7 @@ namespace TJAPlayer3
             ShinuchiMode = true; // Enable gen-4 score by default
 			TJAP3FolderMode = false;
 			FastRender = true;
+			PreAssetsLoading = true;
             MusicPreTimeMs = 1000; // 一秒
             SendDiscordPlayingInformation = true;
             #region[ Ver.K追加 ]
@@ -2057,6 +2059,10 @@ namespace TJAPlayer3
 			sw.WriteLine( "; e.g. System\\Default\\Graphics\\... -> Set SkinPath=.\\Default\\" );
 			sw.WriteLine( "SkinPath={0}", relPath );
 			sw.WriteLine();
+            sw.WriteLine("; 事前画像読み込み機能を使うかどうか。(0: OFF, 1: ON)");
+            sw.WriteLine("; Use pre-textures load.");
+            sw.WriteLine("{0}={1}", nameof(PreAssetsLoading), PreAssetsLoading ? 1 : 0);
+            sw.WriteLine();
             sw.WriteLine("; 事前画像描画機能を使うかどうか。(0: OFF, 1: ON)");
             sw.WriteLine("; Use pre-textures render.");
             sw.WriteLine("{0}={1}", nameof(FastRender), FastRender ? 1 : 0);
@@ -2916,6 +2922,10 @@ namespace TJAPlayer3
 												}
 												this.strSystemSkinSubfolderFullName = absSkinPath;
 											}
+                                            else if (str3.Equals(nameof(PreAssetsLoading)))
+                                            {
+                                                PreAssetsLoading = CConversion.bONorOFF(str4[0]);
+                                            }
                                             else if (str3.Equals(nameof(FastRender)))
                                             {
                                                 FastRender = CConversion.bONorOFF(str4[0]);

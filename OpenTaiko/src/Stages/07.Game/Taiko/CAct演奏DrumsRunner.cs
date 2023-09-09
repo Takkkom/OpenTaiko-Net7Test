@@ -63,22 +63,7 @@ namespace TJAPlayer3
                 stRunners[i].b使用中 = false;
                 stRunners[i].ct進行 = new CCounter();
             }
-
-            // フィールド上で代入してたためこちらへ移動。
-            base.Activate();
-        }
-
-        public override void DeActivate()
-        {
-            for (int i = 0; i < 128; i++)
-            {
-                stRunners[i].ct進行 = null;
-            }
-            base.DeActivate();
-        }
-
-        public override void CreateManagedResource()
-        {
+            
             Random random = new Random();
 
             var dancerOrigindir = CSkin.Path($"{TextureLoader.BASE}{TextureLoader.GAME}{TextureLoader.RUNNER}");
@@ -93,12 +78,30 @@ namespace TJAPlayer3
                     Runner = TJAPlayer3.tテクスチャの生成($@"{path}{Path.DirectorySeparatorChar}Runner.png");
                 }
             }
+
+            // フィールド上で代入してたためこちらへ移動。
+            base.Activate();
+        }
+
+        public override void DeActivate()
+        {
+            for (int i = 0; i < 128; i++)
+            {
+                stRunners[i].ct進行 = null;
+            }
+            
+            TJAPlayer3.t安全にDisposeする(ref Runner);
+            
+            base.DeActivate();
+        }
+
+        public override void CreateManagedResource()
+        {
             base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            TJAPlayer3.t安全にDisposeする(ref Runner);
             base.ReleaseManagedResource();
         }
 

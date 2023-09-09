@@ -268,12 +268,9 @@ namespace TJAPlayer3
 
 		public override void ReleaseManagedResource()
 		{
-			if ( !base.IsDeActivated )
-			{
-				//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
-				//CDTXMania.tテクスチャの解放( ref this.txCursor );
-                TJAPlayer3.t安全にDisposeする( ref this.prvFont );
-			}
+			//CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
+			//CDTXMania.tテクスチャの解放( ref this.txCursor );
+            TJAPlayer3.t安全にDisposeする( ref this.prvFont );
 			base.ReleaseManagedResource();
 		}
 

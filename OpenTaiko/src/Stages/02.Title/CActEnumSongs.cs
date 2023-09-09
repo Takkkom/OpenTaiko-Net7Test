@@ -64,8 +64,6 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if ( this.IsDeActivated )
-				return;
 			//string pathNowEnumeratingSongs = CSkin.Path( @"Graphics\ScreenTitle NowEnumeratingSongs.png" );
 			//if ( File.Exists( pathNowEnumeratingSongs ) )
 			//{
@@ -119,9 +117,6 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			if ( this.IsDeActivated )
-				return;
-
 			//CDTXMania.t安全にDisposeする( ref this.txDialogNowEnumeratingSongs );
 			//CDTXMania.t安全にDisposeする( ref this.txNowEnumeratingSongs );
 			TJAPlayer3.t安全にDisposeする( ref this.txMessage );

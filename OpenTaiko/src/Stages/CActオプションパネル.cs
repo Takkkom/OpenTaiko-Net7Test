@@ -14,17 +14,18 @@ namespace TJAPlayer3
 		{
 			if( !base.IsDeActivated )
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txオプションパネル );
 				base.DeActivate();
 			}
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				this.txオプションパネル = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ), false );
-				base.CreateManagedResource();
-			}
+			this.txオプションパネル = TJAPlayer3.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ), false );
+			base.CreateManagedResource();
+		}
+		public override void ReleaseManagedResource()
+		{
+			TJAPlayer3.tテクスチャの解放( ref this.txオプションパネル );
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

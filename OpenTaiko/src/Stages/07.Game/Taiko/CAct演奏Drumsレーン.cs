@@ -15,18 +15,6 @@ namespace TJAPlayer3
 
         public override void Activate()
         {
-            base.Activate();
-        }
-
-        public override void DeActivate()
-        {
-            TJAPlayer3.t安全にDisposeする( ref this.ct分岐アニメ進行 );
-            base.DeActivate();
-        }
-
-        public override void CreateManagedResource()
-        {
-
             this.ct分岐アニメ進行 = new CCounter[ 5 ];
             this.nBefore = new CDTX.ECourse[ 5 ];
             this.nAfter = new CDTX.ECourse[ 5 ];
@@ -40,6 +28,17 @@ namespace TJAPlayer3
             if (TJAPlayer3.Tx.Lane_Base[0] != null)
                 TJAPlayer3.Tx.Lane_Base[0].Opacity = 255;
 
+            base.Activate();
+        }
+
+        public override void DeActivate()
+        {
+            TJAPlayer3.t安全にDisposeする( ref this.ct分岐アニメ進行 );
+            base.DeActivate();
+        }
+
+        public override void CreateManagedResource()
+        {
             base.CreateManagedResource();
         }
 

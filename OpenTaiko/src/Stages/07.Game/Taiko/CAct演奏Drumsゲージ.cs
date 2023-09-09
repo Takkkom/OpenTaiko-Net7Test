@@ -90,6 +90,15 @@ namespace TJAPlayer3
                     this.st花火状態[player][i].ct進行 = new CCounter();
                 }
             }
+
+            if(TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer <= 1)
+            {
+                throw new DivideByZeroException("SkinConfigの設定\"Game_Gauge_Rainbow_Timer\"を1以下にすることは出来ません。");
+            }
+            this.ct虹アニメ = new CCounter( 0, TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn -1, TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer, TJAPlayer3.Timer );
+            this.ct虹透明度 = new CCounter(0, TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer-1, 1, TJAPlayer3.Timer);
+            this.ctGaugeFlash = new CCounter(0, 532, 1, TJAPlayer3.Timer);
+                
 			base.Activate();
 		}
 		public override void DeActivate()
@@ -102,31 +111,17 @@ namespace TJAPlayer3
                 }
             }
             this.ct炎 = null;
+            
+            this.ct虹アニメ = null;
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				
-                if(TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer <= 1)
-                {
-                    throw new DivideByZeroException("SkinConfigの設定\"Game_Gauge_Rainbow_Timer\"を1以下にすることは出来ません。");
-                }
-                this.ct虹アニメ = new CCounter( 0, TJAPlayer3.Skin.Game_Gauge_Rainbow_Ptn -1, TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer, TJAPlayer3.Timer );
-                this.ct虹透明度 = new CCounter(0, TJAPlayer3.Skin.Game_Gauge_Rainbow_Timer-1, 1, TJAPlayer3.Timer);
-                this.ctGaugeFlash = new CCounter(0, 532, 1, TJAPlayer3.Timer);
-                //this.tx音符 = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\7_taiko_notes.png"));
-                base.CreateManagedResource();
-			}
+            //this.tx音符 = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\7_taiko_notes.png"));
+            base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-                this.ct虹アニメ = null;
-
-                base.ReleaseManagedResource();
-			}
+            base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

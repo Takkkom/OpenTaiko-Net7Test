@@ -44,18 +44,6 @@ namespace TJAPlayer3
 
             for (int i = 0; i < (int)ECurrentMenu.TOTAL; i++)
                 this.menus[i] = new CMenuInfo(CLangManager.LangInstance.GetString(400 + i));
-
-
-            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-            {
-                this.pfOLFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFont);
-                this.pfOLFontLarge = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
-            }
-            else
-            {
-                this.pfOLFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFont);
-                this.pfOLFontLarge = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
-            }
                 
 
 
@@ -126,41 +114,49 @@ namespace TJAPlayer3
         {
             // Ressource allocation
 
-            if (!base.IsDeActivated)
+
+            if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
             {
-                Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Script.lua"));
-                Background.Init();
-
-                OnlineLounge_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Box.png"));
-                OnlineLounge_Center_Menu_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Center_Menu_Bar.png"));
-                OnlineLounge_Center_Menu_Box_Slot = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Center_Menu_Box_Slot.png"));
-                OnlineLounge_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Side_Menu.png"));
-                OnlineLounge_Context = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Context.png"));
-                OnlineLounge_Song_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Song_Box.png"));
-                OnlineLounge_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Return_Box.png"));
-
-                base.CreateManagedResource();
+                this.pfOLFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFont);
+                this.pfOLFontLarge = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
             }
+            else
+            {
+                this.pfOLFont = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFont);
+                this.pfOLFontLarge = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
+            }
+
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Script.lua"));
+            Background.Init();
+
+            OnlineLounge_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Box.png"));
+            OnlineLounge_Center_Menu_Bar = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Center_Menu_Bar.png"));
+            OnlineLounge_Center_Menu_Box_Slot = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Center_Menu_Box_Slot.png"));
+            OnlineLounge_Side_Menu = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Side_Menu.png"));
+            OnlineLounge_Context = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Context.png"));
+            OnlineLounge_Song_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Song_Box.png"));
+            OnlineLounge_Return_Box = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Return_Box.png"));
+
+            base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
+            this.pfOLFont.Dispose();
+            this.pfOLFontLarge.Dispose();
 
-            if (!base.IsDeActivated)
-            {
-                TJAPlayer3.t安全にDisposeする(ref Background);
+            TJAPlayer3.t安全にDisposeする(ref Background);
 
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Box);
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Center_Menu_Bar);
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Center_Menu_Box_Slot);
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Side_Menu);
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Context);
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Song_Box);
-                TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Return_Box);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Box);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Center_Menu_Bar);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Center_Menu_Box_Slot);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Side_Menu);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Context);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Song_Box);
+            TJAPlayer3.t安全にDisposeする(ref OnlineLounge_Return_Box);
 
-                base.ReleaseManagedResource();
-            }
+            base.ReleaseManagedResource();
         }
 
         public override int Draw()

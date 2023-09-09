@@ -51,10 +51,8 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.EXIT}Script.lua"));
-				Background.Init();
+			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.EXIT}Script.lua"));
+			Background.Init();
 
 				//            this.tx文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\9_text.png" ) );
 				//            this.tx文字2 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\9_text.png" ) );
@@ -62,14 +60,11 @@ namespace TJAPlayer3
 				//this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\9_background.jpg" ), false );
 				//            this.tx白 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ), false );
 				//            this.ds背景 = CDTXMania.t失敗してもスキップ可能なDirectShowを生成する( CSkin.Path( @"Graphics\9_background.mp4" ), CDTXMania.app.WindowHandle, true );
-				base.CreateManagedResource();
-			}
+			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
-				TJAPlayer3.t安全にDisposeする(ref Background);
+			TJAPlayer3.t安全にDisposeする(ref Background);
 
 				//CDTXMania.tテクスチャの解放( ref this.tx背景 );
 				//            CDTXMania.tテクスチャの解放( ref this.tx文字 );
@@ -77,8 +72,7 @@ namespace TJAPlayer3
 				//            CDTXMania.tテクスチャの解放( ref this.tx文字3 );
 				//            CDTXMania.tテクスチャの解放( ref this.tx白 );
 				//            CDTXMania.t安全にDisposeする( ref this.ds背景 );
-				base.ReleaseManagedResource();
-			}
+			base.ReleaseManagedResource();
 		}
 		public override int Draw()
 		{

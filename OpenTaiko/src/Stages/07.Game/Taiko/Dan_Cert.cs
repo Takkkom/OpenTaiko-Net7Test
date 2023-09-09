@@ -149,6 +149,9 @@ namespace TJAPlayer3
             IsEnded = new bool[TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count];
 
             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan) IsAnimating = true;
+            
+            Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
+            
             base.Activate();
         }
 
@@ -364,13 +367,14 @@ namespace TJAPlayer3
                 IsEnded[i] = false;
 
             TJAPlayer3.t安全にDisposeする(ref this.pfExamFont);
+            
+            Dan_Plate?.Dispose();
 
             base.DeActivate();
         }
 
         public override void CreateManagedResource()
         {
-            Dan_Plate = TJAPlayer3.tテクスチャの生成(Path.GetDirectoryName(TJAPlayer3.DTX.strファイル名の絶対パス) + @$"{Path.DirectorySeparatorChar}Dan_Plate.png");
             Sound_Section = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section.ogg"), ESoundGroup.SoundEffect);
             Sound_Section_First = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Section_First.wav"), ESoundGroup.SoundEffect);
             Sound_Failed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
@@ -379,7 +383,6 @@ namespace TJAPlayer3
 
         public override void ReleaseManagedResource()
         {
-            Dan_Plate?.Dispose();
             Sound_Section_First?.Dispose();
             Sound_Section?.tDispose();
             Sound_Failed?.tDispose();

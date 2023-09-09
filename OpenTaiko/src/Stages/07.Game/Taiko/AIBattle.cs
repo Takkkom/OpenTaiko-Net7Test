@@ -20,6 +20,10 @@ namespace TJAPlayer3
         {
             // On activation
 
+            BarFlashCounter = new CCounter(0, 1000.0, 0.00035, SoundManager.PlayTimer);
+
+            BatchAnimeCounter = new CCounter(0, 10000.0, 1.0 / 1000.0, SoundManager.PlayTimer);
+
             base.Activate();
         }
 
@@ -34,25 +38,14 @@ namespace TJAPlayer3
         {
             // Ressource allocation
 
-            if (!base.IsDeActivated)
-            {
-                BarFlashCounter = new CCounter(0, 1000.0, 0.00035, SoundManager.PlayTimer);
-
-                BatchAnimeCounter = new CCounter(0, 10000.0, 1.0 / 1000.0, SoundManager.PlayTimer);
-
-                base.CreateManagedResource();
-            }
+            base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
 
-            if (!base.IsDeActivated)
-            {
-
-                base.ReleaseManagedResource();
-            }
+            base.ReleaseManagedResource();
         }
 
         public override int Draw()

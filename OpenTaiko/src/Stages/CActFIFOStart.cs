@@ -55,20 +55,14 @@ namespace TJAPlayer3
 
 		public override void DeActivate()
 		{
-			if (!base.IsDeActivated)
-			{
-				//CDTXMania.tテクスチャの解放( ref this.tx幕 );
-				base.DeActivate();
-			}
+			//CDTXMania.tテクスチャの解放( ref this.tx幕 );
+			base.DeActivate();
 		}
 		public override void CreateManagedResource()
 		{
-			if (!base.IsDeActivated)
-			{
-				//this.tx幕 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_FO.png" ) );
-				//	this.tx幕2 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_FI.png" ) );
-				base.CreateManagedResource();
-			}
+			//this.tx幕 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_FO.png" ) );
+			//	this.tx幕2 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\6_FI.png" ) );
+			base.CreateManagedResource();
 		}
 		public override int Draw()
 		{
