@@ -19,27 +19,22 @@ namespace TJAPlayer3
 
         public override void Activate()
         {
-			JudgeAnimes = new JudgeAnime[5, 512];
-			for (int i = 0; i < 512; i++)
+			JudgeAnimes = new List<JudgeAnime>[5];
+			for (int i = 0; i < 5; i++)
 			{
-				JudgeAnimes[0, i] = new JudgeAnime();
-				JudgeAnimes[1, i] = new JudgeAnime();
-				JudgeAnimes[2, i] = new JudgeAnime();
-				JudgeAnimes[3, i] = new JudgeAnime();
-				JudgeAnimes[4, i] = new JudgeAnime();
+				JudgeAnimes[i] = new List<JudgeAnime>();
 			}
             base.Activate();
         }
 
         public override void DeActivate()
         {
-			for (int i = 0; i < 512; i++)
+			for (int i = 0; i < 5; i++)
             {
-				JudgeAnimes[0, i] = null;
-				JudgeAnimes[1, i] = null;
-				JudgeAnimes[2, i] = null;
-				JudgeAnimes[3, i] = null;
-				JudgeAnimes[4, i] = null;
+				for (int j = 0; j < JudgeAnimes[i].Count; j++)
+				{
+					JudgeAnimes[i][j] = null;
+				}
 			}
             base.DeActivate();
         }
@@ -49,16 +44,21 @@ namespace TJAPlayer3
 		{
 			if (!base.IsDeActivated)
 			{
-				for (int i = 0; i < 512; i++)
+				for(int j = 0; j < 5; j++)
 				{
-					for(int j = 0; j < 5; j++)
+					for (int i = 0; i < JudgeAnimes[j].Count; i++)
 					{
-						if (JudgeAnimes[j, i].counter.IsStoped) continue;
-						JudgeAnimes[j, i].counter.Tick();
+						var judgeC = JudgeAnimes[j][i];
+						if (judgeC.counter.CurrentValue == judgeC.counter.EndValue)
+						{
+							JudgeAnimes[j].Remove(judgeC);
+							continue;
+						}
+						judgeC.counter.Tick();
 
 						if (TJAPlayer3.Tx.Judge != null)
 						{
-							float moveValue = CubicEaseOut(JudgeAnimes[j, i].counter.CurrentValue / 410.0f) - 1.0f;
+							float moveValue = CubicEaseOut(judgeC.counter.CurrentValue / 410.0f) - 1.0f;
 
 							float x = 0;
 							float y = 0;
@@ -81,10 +81,9 @@ namespace TJAPlayer3
 							x += (moveValue * TJAPlayer3.Skin.Game_Judge_Move[0]) + TJAPlayer3.stage演奏ドラム画面.GetJPOSCROLLX(j);
 							y += (moveValue * TJAPlayer3.Skin.Game_Judge_Move[1]) + TJAPlayer3.stage演奏ドラム画面.GetJPOSCROLLY(j);
 
-							TJAPlayer3.Tx.Judge.Opacity = (int)(255f - (JudgeAnimes[j, i].counter.CurrentValue >= 360 ? ((JudgeAnimes[j, i].counter.CurrentValue - 360) / 50.0f) * 255f : 0f));
-							TJAPlayer3.Tx.Judge.t2D描画(x, y, JudgeAnimes[j, i].rc);
+							TJAPlayer3.Tx.Judge.Opacity = (int)(255f - (judgeC.counter.CurrentValue >= 360 ? ((judgeC.counter.CurrentValue - 360) / 50.0f) * 255f : 0f));
+							TJAPlayer3.Tx.Judge.t2D描画(x, y, judgeC.rc);
                         }
-						
 					}
 				}
 			}
@@ -93,8 +92,9 @@ namespace TJAPlayer3
 
 		public void Start(int player, E判定 judge)
 		{
-			JudgeAnimes[player, JudgeAnime.Index].counter.Start(0, 410, 1, TJAPlayer3.Timer);
-			JudgeAnimes[player, JudgeAnime.Index].Judge = judge;
+			JudgeAnime judgeAnime = new();
+			judgeAnime.counter.Start(0, 410, 1, TJAPlayer3.Timer);
+			judgeAnime.Judge = judge;
 
 			//int njudge = judge == E判定.Perfect ? 0 : judge == E判定.Good ? 1 : judge == E判定.ADLIB ? 3 : judge == E判定.Auto ? 0 : 2;
 
@@ -105,9 +105,9 @@ namespace TJAPlayer3
             }
 
 			int height = TJAPlayer3.Tx.Judge.szテクスチャサイズ.Height / 5;
-			JudgeAnimes[player, JudgeAnime.Index].rc = new Rectangle(0, (int)njudge * height, TJAPlayer3.Tx.Judge.szテクスチャサイズ.Width, height);
-			JudgeAnime.Index++;
-			if (JudgeAnime.Index >= 511) JudgeAnime.Index = 0;
+			judgeAnime.rc = new Rectangle(0, (int)njudge * height, TJAPlayer3.Tx.Judge.szテクスチャサイズ.Width, height);
+
+			JudgeAnimes[player].Add(judgeAnime);
 		}
 
 		// その他
@@ -126,10 +126,9 @@ namespace TJAPlayer3
 			[E判定.Mine] = 4,
 		};
 
-		private JudgeAnime[,] JudgeAnimes;
+		private List<JudgeAnime>[] JudgeAnimes = new List<JudgeAnime>[5];
 		private class JudgeAnime
         {
-			public static int Index;
 			public E判定 Judge;
 			public Rectangle rc;
 			public CCounter counter = new CCounter();

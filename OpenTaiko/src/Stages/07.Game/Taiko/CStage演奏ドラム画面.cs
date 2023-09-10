@@ -370,8 +370,6 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			Result_Number = TJAPlayer3.tテクスチャの生成(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}Number.png"));
-
 				//this.t背景テクスチャの生成();
 				//this.tx太鼓ノーツ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_taiko_notes.png" ) );
 				//this.txHand = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\7_taiko_notes_arm.png" ) );
@@ -390,8 +388,6 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			TJAPlayer3.t安全にDisposeする(ref Result_Number);
-
             base.ReleaseManagedResource();
 		}
 		public override int Draw()
@@ -717,8 +713,6 @@ namespace TJAPlayer3
         //private CTexture txNamePlate; //ちょっと描画順で都合が悪くなるので移動。
         //private CTexture txNamePlate2P; //ちょっと描画順で都合が悪くなるので移動。
         //private CTexture txPlayerNumber;
-        public CTexture Result_Number;
-
         private CTexture txMovie; //2016.08.30 kairera0467 ウィンドウ表示
 
         public float nGauge = 0.0f; 
@@ -862,8 +856,6 @@ namespace TJAPlayer3
 
                 int nFly = ChannelNumToFlyNoteNum(pChip, nPlayer, b両手入力, nInput);
 
-
-                //this.actChipFireTaiko.Start( nFly, nPlayer );
                 this.actTaikoLaneFlash.PlayerLane[nPlayer].Start(PlayerLane.FlashType.Hit);
                 this.FlyingNotes.Start(nFly, nPlayer);
 			}
@@ -2166,10 +2158,6 @@ namespace TJAPlayer3
                             //CDTXMania.act文字コンソール.tPrint( x + 60, y + 160, C文字コンソール.Eフォント種別.白, pChip.nPlayerSide.ToString() );
                         }
                     }
-                    else if( x < -1000 )
-                    {
-                        //pChip.bHit = true;
-                    }
                 }
             }
             else
@@ -2288,7 +2276,7 @@ namespace TJAPlayer3
                 //if( CDTXMania.ConfigIni.eScrollMode != EScrollMode.Normal )
                 //x -= 10;
 
-                if ((TJAPlayer3.Skin.Resolution[0] + TJAPlayer3.Skin.Game_Notes_Size[0] > x))
+                if(x末端 > 0 - TJAPlayer3.Skin.Game_Notes_Size[0] && x < TJAPlayer3.Skin.Resolution[0])
                 {
                     if (TJAPlayer3.Tx.Notes[(int)_gt] != null)
                     {
@@ -2710,14 +2698,14 @@ namespace TJAPlayer3
 
         private void t小文字表示( int x, int y, int num, bool bOrange, bool drawPercent )
         {
-            float width = Result_Number.sz画像サイズ.Width / 11.0f;
-            float height = Result_Number.sz画像サイズ.Height / 2.0f;
+            float width = TJAPlayer3.Tx.Result_Number.sz画像サイズ.Width / 11.0f;
+            float height = TJAPlayer3.Tx.Result_Number.sz画像サイズ.Height / 2.0f;
 
             int[] nums = CConversion.SeparateDigits(num);
 
             if (drawPercent)
             {
-                Result_Number.t2D拡大率考慮中央基準描画(x + (TJAPlayer3.Skin.Result_Number_Interval[0] * 3.0f) + (width / 2),
+                TJAPlayer3.Tx.Result_Number.t2D拡大率考慮中央基準描画(x + (TJAPlayer3.Skin.Result_Number_Interval[0] * 3.0f) + (width / 2),
                     y + (TJAPlayer3.Skin.Result_Number_Interval[1] * 3.0f) + (height / 2),
                     new System.Drawing.RectangleF(width * 10, 0, width, height));
             }
@@ -2728,7 +2716,7 @@ namespace TJAPlayer3
                 float _x = x - (TJAPlayer3.Skin.Result_Number_Interval[0] * offset);
                 float _y = y - (TJAPlayer3.Skin.Result_Number_Interval[1] * offset);
 
-                Result_Number.t2D拡大率考慮中央基準描画(_x + (width / 2), _y + (height / 2),
+                TJAPlayer3.Tx.Result_Number.t2D拡大率考慮中央基準描画(_x + (width / 2), _y + (height / 2),
                     new System.Drawing.RectangleF(width * nums[j], 0, width, height));
             }
         }
@@ -2742,10 +2730,10 @@ namespace TJAPlayer3
                 float _x = x - ((TJAPlayer3.Skin.Result_Number_Interval[0] * 1.27f) * offset);
                 float _y = y - ((TJAPlayer3.Skin.Result_Number_Interval[1] * 1.27f) * offset);
 
-                float width = Result_Number.sz画像サイズ.Width / 11.0f;
-                float height = Result_Number.sz画像サイズ.Height / 2.0f;
+                float width = TJAPlayer3.Tx.Result_Number.sz画像サイズ.Width / 11.0f;
+                float height = TJAPlayer3.Tx.Result_Number.sz画像サイズ.Height / 2.0f;
 
-                Result_Number.t2D拡大率考慮中央基準描画(_x + (width / 2), _y + (height / 2),
+                TJAPlayer3.Tx.Result_Number.t2D拡大率考慮中央基準描画(_x + (width / 2), _y + (height / 2),
                     new System.Drawing.RectangleF(width * nums[j], height, width, height));
             }
         }

@@ -1916,6 +1916,11 @@ namespace TJAPlayer3
                 }
             }
 
+
+
+
+            
+
             var chara = TJAPlayer3.Tx.Characters[TJAPlayer3.SaveFileInstances[TJAPlayer3.GetActualPlayer(nPlayer)].data.Character];
             bool cleared = HGaugeMethods.UNSAFE_FastNormaCheck(nPlayer);
 
@@ -2006,6 +2011,7 @@ namespace TJAPlayer3
                 }
             }
 
+            
 			switch ( pChip.e楽器パート )
 			{
 				case E楽器パート.DRUMS:
