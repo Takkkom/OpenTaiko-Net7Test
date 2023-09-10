@@ -2531,6 +2531,7 @@ namespace TJAPlayer3
 					dTX.tWave再生位置自動補正();
 				}
 			}
+            /*
             if (configIni.b演奏情報を表示する || TJAPlayer3.ConfigIni.bTokkunMode)
             {
                 var nowMeasure = pChip.n整数値_内部番号;
@@ -2539,9 +2540,10 @@ namespace TJAPlayer3
 				    TJAPlayer3.act文字コンソール.tPrint(x + 8, y - 26, C文字コンソール.Eフォント種別.白, nowMeasure.ToString());
                 }
 			}
+            */
 			if ( (pChip.b可視 && !pChip.bHideBarLine) && (TJAPlayer3.Tx.Bar != null ) )
 			{
-                if( x >= 0 )
+                if( x >= 0 && x <= SampleFramework.GameWindowSize.Width )
                 {
                     if( pChip.bBranch )
                     {
