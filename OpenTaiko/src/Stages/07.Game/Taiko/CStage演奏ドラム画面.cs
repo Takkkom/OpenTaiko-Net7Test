@@ -2004,7 +2004,7 @@ namespace TJAPlayer3
                         this.actGame.st叩ききりまショー.b最初のチップが叩かれた = true;
                     }
 
-                    if((TJAPlayer3.Skin.Resolution[0] + TJAPlayer3.Skin.Game_Notes_Size[0] > x ))
+                    if(x > 0 - TJAPlayer3.Skin.Game_Notes_Size[0] && x < TJAPlayer3.Skin.Resolution[0])
                     {
                         if( TJAPlayer3.Tx.Notes[(int)_gt] != null )
                         {
