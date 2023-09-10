@@ -82,8 +82,6 @@ namespace TJAPlayer3
 
 		public override void CreateManagedResource()
 		{
-			if( !base.IsDeActivated )
-			{
 				//this.tx通常文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp.png" ), false );
 				//this.tx強調文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp em.png" ), false );
 
@@ -572,7 +570,6 @@ namespace TJAPlayer3
 
 				this.st文字領域 = st文字領域Array;
 				base.CreateManagedResource();
-			}
 		}
 		public override void ReleaseManagedResource()
 		{

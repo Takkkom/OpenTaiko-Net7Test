@@ -70,6 +70,9 @@ namespace TJAPlayer3
 				this.eItemPanelモード = EItemPanelモード.パッド一覧;
 				
 				ReloadMenus();
+
+				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Script.lua"));
+				Background.Init();
 				
 
 				if( this.bメニューにフォーカス中 )
@@ -110,6 +113,8 @@ namespace TJAPlayer3
 					txMenuItemLeft[ i, 1 ] = null;
 				}
 				txMenuItemLeft = null;
+
+				TJAPlayer3.t安全にDisposeする(ref Background);
 
 				base.DeActivate();
 			}
@@ -176,9 +181,6 @@ namespace TJAPlayer3
                 this.ftフォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, (int)TJAPlayer3.Skin.Config_Font_Scale_Description, CFontRenderer.FontStyle.Bold);
             }
 
-			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Script.lua"));
-			Background.Init();
-
 			TJAPlayer3.Tx.Config_Cursor = TJAPlayer3.tテクスチャの生成(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.CONFIG}Cursor.png"));
 
 				//ctBackgroundAnime = new CCounter(0, TJAPlayer3.Tx.Config_Background.szテクスチャサイズ.Width, 20, TJAPlayer3.Timer);
@@ -220,8 +222,6 @@ namespace TJAPlayer3
 				//CDTXMania.tテクスチャの解放( ref this.tx上部パネル );
 				//CDTXMania.tテクスチャの解放( ref this.tx下部パネル );
 				//CDTXMania.tテクスチャの解放( ref this.txMenuカーソル );
-
-			TJAPlayer3.t安全にDisposeする(ref Background);
 
 			TJAPlayer3.t安全にDisposeする(ref TJAPlayer3.Tx.Config_Cursor);
 

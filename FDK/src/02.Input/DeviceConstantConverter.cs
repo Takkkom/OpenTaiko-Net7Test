@@ -13,7 +13,7 @@ namespace FDK
 
 		public static Key DIKtoKey( Silk.NET.Input.Key key )
 		{
-			return _DIKtoKey[(Silk.NET.Input.Key)key];
+			return _DIKtoKey[key];
 		}
 
 

@@ -372,6 +372,9 @@ namespace TJAPlayer3
 
                 if(r現在選択中の曲 != null)
                     NowGenre = r現在選択中の曲.strジャンル;
+                    
+                AI_Background = new ScriptBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}{Path.DirectorySeparatorChar}AIBattle{Path.DirectorySeparatorChar}Script.lua"));
+                AI_Background.Init();
             }
             finally
             {
@@ -391,6 +394,9 @@ namespace TJAPlayer3
                 {
                     this.ctキー反復用[i] = null;
                 }
+
+                TJAPlayer3.t安全にDisposeする(ref AI_Background);
+                
                 base.DeActivate();
             }
             finally
@@ -403,8 +409,6 @@ namespace TJAPlayer3
         {
             this.ftフォント = new CCachedFontRenderer(CFontRenderer.DefaultFontName, 26, CFontRenderer.FontStyle.Regular);
 
-            AI_Background = new ScriptBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.SONGSELECT}{Path.DirectorySeparatorChar}AIBattle{Path.DirectorySeparatorChar}Script.lua"));
-            AI_Background.Init();
             base.CreateManagedResource();
         }
         public override void ReleaseManagedResource()
@@ -415,7 +419,6 @@ namespace TJAPlayer3
                 this.ftフォント = null;
             }
 
-            TJAPlayer3.t安全にDisposeする(ref AI_Background);
             base.ReleaseManagedResource();
         }
         public override int Draw()

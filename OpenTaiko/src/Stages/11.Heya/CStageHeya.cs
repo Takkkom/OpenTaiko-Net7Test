@@ -154,19 +154,22 @@ namespace TJAPlayer3
             this.tResetOpts();
 
             this.PuchiChara.IdleAnimation();
+            
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Script.lua"));
+            Background.Init();
 
             base.Activate();
         }
 
         public override void DeActivate()
         {
+            TJAPlayer3.t安全にDisposeする(ref Background);
+            
             base.DeActivate();
         }
 
         public override void CreateManagedResource()
         {
-            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.HEYA}Script.lua"));
-            Background.Init();
 
 
             base.CreateManagedResource();
@@ -174,7 +177,6 @@ namespace TJAPlayer3
 
         public override void ReleaseManagedResource()
         {
-            TJAPlayer3.t安全にDisposeする(ref Background);
 
             base.ReleaseManagedResource();
         }

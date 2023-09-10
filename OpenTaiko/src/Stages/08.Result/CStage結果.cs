@@ -800,17 +800,48 @@ namespace TJAPlayer3
 				ctDanSongInfoChange = new CCounter(0, 3000, 1, TJAPlayer3.Timer);
 				ctDanSongInfoChange.CurrentValue = 255;
 				
-				this.ttkMaxFloors = new TitleTextureKey("/" + TJAPlayer3.stage選曲.r確定された曲.arスコア[5].譜面情報.nTotalFloor.ToString() + CLangManager.LangInstance.GetString(1001), pfTowerText48, Color.Black, Color.Transparent, 700);
-				this.ttkToutatsu = new TitleTextureKey(CLangManager.LangInstance.GetString(1000), pfTowerText48, Color.White, Color.Black, 700);
-				this.ttkTen = new TitleTextureKey(CLangManager.LangInstance.GetString(1002), pfTowerText, Color.Black, Color.Transparent, 700);
-				this.ttkReachedFloor = new TitleTextureKey(CFloorManagement.LastRegisteredFloor.ToString(), pfTowerText72, Color.Orange, Color.Black, 700);
-				this.ttkScore = new TitleTextureKey(CLangManager.LangInstance.GetString(1003), pfTowerText, Color.Black, Color.Transparent, 700);
-				this.ttkRemaningLifes = new TitleTextureKey(CFloorManagement.CurrentNumberOfLives.ToString() + " / " + CFloorManagement.MaxNumberOfLives.ToString(), pfTowerText, Color.Black, Color.Transparent, 700);
-				this.ttkScoreCount = new TitleTextureKey(TJAPlayer3.stage結果.st演奏記録.Drums.nスコア.ToString(), pfTowerText, Color.Black, Color.Transparent, 700);
-				
 				b音声再生 = false;
 				this.EndAnime = false;
-				
+
+				if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
+				{
+					this.ttkMaxFloors = new TitleTextureKey("/" + TJAPlayer3.stage選曲.r確定された曲.arスコア[5].譜面情報.nTotalFloor.ToString() + CLangManager.LangInstance.GetString(1001), pfTowerText48, Color.Black, Color.Transparent, 700);
+					this.ttkToutatsu = new TitleTextureKey(CLangManager.LangInstance.GetString(1000), pfTowerText48, Color.White, Color.Black, 700);
+					this.ttkTen = new TitleTextureKey(CLangManager.LangInstance.GetString(1002), pfTowerText, Color.Black, Color.Transparent, 700);
+					this.ttkReachedFloor = new TitleTextureKey(CFloorManagement.LastRegisteredFloor.ToString(), pfTowerText72, Color.Orange, Color.Black, 700);
+					this.ttkScore = new TitleTextureKey(CLangManager.LangInstance.GetString(1003), pfTowerText, Color.Black, Color.Transparent, 700);
+					this.ttkRemaningLifes = new TitleTextureKey(CFloorManagement.CurrentNumberOfLives.ToString() + " / " + CFloorManagement.MaxNumberOfLives.ToString(), pfTowerText, Color.Black, Color.Transparent, 700);
+					this.ttkScoreCount = new TitleTextureKey(TJAPlayer3.stage結果.st演奏記録.Drums.nスコア.ToString(), pfTowerText, Color.Black, Color.Transparent, 700);
+				}
+				else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
+				{
+					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANRESULT}Script.lua"));
+					Background.Init();
+				}
+				else if (TJAPlayer3.ConfigIni.bAIBattleMode)
+				{
+					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Script.lua"));
+					Background.Init();
+				}
+				else
+				{
+					//Luaに移植する時にコメントアウトを解除
+					Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}{Path.DirectorySeparatorChar}Script.lua"));
+					Background.Init();
+				}
+
+				this.ttkDanTitles = new TitleTextureKey[TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count];
+
+				for (int i = 0; i < TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count; i++)
+				{
+					this.ttkDanTitles[i] = new TitleTextureKey(TJAPlayer3.stage選曲.r確定された曲.DanSongs[i].bTitleShow
+						? "???" 
+						: TJAPlayer3.stage選曲.r確定された曲.DanSongs[i].Title, 
+						pfDanTitles, 
+						Color.White, 
+						Color.Black, 
+						700);
+				}
 			}
 			finally
 			{
@@ -820,6 +851,8 @@ namespace TJAPlayer3
 		}
 		public override void DeActivate()
 		{
+			TJAPlayer3.t安全にDisposeする(ref Background);
+
 			if (this.rResultSound != null)
 			{
 				TJAPlayer3.Sound管理.tDisposeSound(this.rResultSound);
@@ -836,67 +869,32 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-
-			if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
-            {
-				if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-				{
-					this.pfTowerText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerResult_Font_TowerText);
-					this.pfTowerText48 = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerResult_Font_TowerText48);
-					this.pfTowerText72 = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerResult_Font_TowerText72);
-				}
-				else
-				{
-					this.pfTowerText = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText);
-					this.pfTowerText48 = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText48);
-					this.pfTowerText72 = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText72);
-				}
-			}
-			else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
+			if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
 			{
-				Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.DANRESULT}Script.lua"));
-				Background.Init();
-
-				if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
-				{
-					this.pfDanTitles = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DanResult_Font_DanTitles_Size);
-				}
-				else
-				{
-					this.pfDanTitles = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DanResult_Font_DanTitles_Size);
-				}
-
-				this.ttkDanTitles = new TitleTextureKey[TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count];
-
-				for (int i = 0; i < TJAPlayer3.stage選曲.r確定された曲.DanSongs.Count; i++)
-				{
-					this.ttkDanTitles[i] = new TitleTextureKey(TJAPlayer3.stage選曲.r確定された曲.DanSongs[i].bTitleShow
-						? "???" 
-						: TJAPlayer3.stage選曲.r確定された曲.DanSongs[i].Title, 
-						pfDanTitles, 
-						Color.White, 
-						Color.Black, 
-						700);
-				}
-			}
-            else if (TJAPlayer3.ConfigIni.bAIBattleMode)
-			{
-				Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}AIBattle{Path.DirectorySeparatorChar}Script.lua"));
-				Background.Init();
+				this.pfTowerText = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerResult_Font_TowerText);
+				this.pfTowerText48 = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerResult_Font_TowerText48);
+				this.pfTowerText72 = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerResult_Font_TowerText72);
 			}
 			else
 			{
-				//Luaに移植する時にコメントアウトを解除
-				Background = new ResultBG(CSkin.Path($@"{TextureLoader.BASE}{TextureLoader.RESULT}{Path.DirectorySeparatorChar}Script.lua"));
-				Background.Init();
+				this.pfTowerText = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText);
+				this.pfTowerText48 = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText48);
+				this.pfTowerText72 = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.TowerResult_Font_TowerText72);
+			}
+
+			if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
+			{
+				this.pfDanTitles = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.DanResult_Font_DanTitles_Size);
+			}
+			else
+			{
+				this.pfDanTitles = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.DanResult_Font_DanTitles_Size);
 			}
 
 			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-
-			TJAPlayer3.t安全にDisposeする(ref Background);
 
 			if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
 			{

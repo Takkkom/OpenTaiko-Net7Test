@@ -46,26 +46,28 @@ namespace TJAPlayer3
             bInSongPlayed = false;
             
             this.PuchiChara.IdleAnimation();
+            
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Script.lua"));
+            Background.Init();
 
             base.Activate();
         }
 
         public override void DeActivate()
         {
+            TJAPlayer3.t安全にDisposeする(ref Background);
+            
             base.DeActivate();
         }
 
         public override void CreateManagedResource()
         {
-            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.DANISELECT}Script.lua"));
-            Background.Init();
 
             base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
-            TJAPlayer3.t安全にDisposeする(ref Background);
 
             base.ReleaseManagedResource();
         }

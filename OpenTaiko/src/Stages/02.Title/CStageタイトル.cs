@@ -72,6 +72,9 @@ namespace TJAPlayer3
 				// Init Menus
 				tReloadMenus();
 
+				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Script.lua"));
+				Background.Init();
+
 
 				b音声再生 = false;
 				if (bSaveFileLoaded == false)
@@ -92,7 +95,7 @@ namespace TJAPlayer3
 			Trace.Indent();
 			try
 			{
-
+				TJAPlayer3.t安全にDisposeする(ref Background);
 			}
 			finally
 			{
@@ -110,9 +113,6 @@ namespace TJAPlayer3
 
 		public override void CreateManagedResource()
 		{
-			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TITLE}Script.lua"));
-			Background.Init();
-
 			if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
 				this.pfMenuTitle = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.Title_ModeSelect_Title_Scale[0]);
 			else
@@ -127,7 +127,6 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			TJAPlayer3.t安全にDisposeする(ref Background);
             
 			TJAPlayer3.t安全にDisposeする(ref pfMenuTitle);
 			TJAPlayer3.t安全にDisposeする(ref pfBoxText);

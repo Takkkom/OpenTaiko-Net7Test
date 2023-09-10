@@ -2265,7 +2265,7 @@ for (int i = 0; i < 3; i++) {
 
 			foreach(var capture in ConfigIni.KeyAssign.System.Capture)
 			{
-				if (TJAPlayer3.Input管理.Keyboard.KeyPressed(capture.コード))
+				if (TJAPlayer3.Input管理.Keyboard.KeyPressed(capture.コード) && capture.コード != 0)
 				{
 					if (TJAPlayer3.Input管理.Keyboard.KeyPressing((int)SlimDXKeys.Key.LeftControl))
 					{

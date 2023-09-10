@@ -143,20 +143,9 @@ namespace TJAPlayer3
         {
             this.bリザルトボイス再生済み = false;
             this.Mode = new EndMode[5];
-            base.Activate();
-        }
 
-        public override void DeActivate()
-        {
-            this.ct進行メイン = null;
-            base.DeActivate();
-        }
-
-        public override void CreateManagedResource()
-        {
-            this.b再生済み = false;
             var origindir = CSkin.Path($"{TextureLoader.BASE}{TextureLoader.GAME}{TextureLoader.END}");
-
+            
 
             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
             {
@@ -241,32 +230,22 @@ namespace TJAPlayer3
 
                 DondaFullComboScript = new EndAnimeScript($@"{origindir}DondaFullCombo{Path.DirectorySeparatorChar}Script.lua");
                 DondaFullComboScript.Init();
-
-                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
-                {
-                    this.soundClear[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Clear.ogg"), ESoundGroup.SoundEffect);
-                    this.soundFailed[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
-                    this.soundFullCombo[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}FullCombo.ogg"), ESoundGroup.SoundEffect);
-                    this.soundDondaFullCombo[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AllPerfect.ogg"), ESoundGroup.SoundEffect);
-                }
             }
 
-            base.CreateManagedResource();
+
+            base.Activate();
         }
 
-        public override void ReleaseManagedResource()
+        public override void DeActivate()
         {
+            this.ct進行メイン = null;
+            
             if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Tower)
             {
                 Tower_DropoutScript.Dispose();
                 Tower_TopReached_PassScript.Dispose();
                 Tower_TopReached_FullComboScript.Dispose();
                 Tower_TopReached_PerfectScript.Dispose();
-
-                this.soundTowerDropout?.tDispose();
-                this.soundTowerTopPass?.tDispose();
-                this.soundTowerTopFC?.tDispose();
-                this.soundTowerTopPerfect?.tDispose();
             }
             else if (TJAPlayer3.stage選曲.n確定された曲の難易度[0] == (int)Difficulty.Dan)
             {
@@ -277,6 +256,63 @@ namespace TJAPlayer3
                 Dan_Gold_PassScript.Dispose();
                 Dan_Gold_FullComboScript.Dispose();
                 Dan_Gold_PerfectScript.Dispose();
+            }
+            else if (TJAPlayer3.ConfigIni.bAIBattleMode)
+            {
+                AILoseScript.Dispose();
+                AIWinScript.Dispose();
+                AIWin_FullComboScript.Dispose();
+                AIWin_PerfectScript.Dispose();
+            }
+            else
+            {
+                FailedScript.Dispose();
+                ClearScript.Dispose();
+                FullComboScript.Dispose();
+                DondaFullComboScript.Dispose();
+            }
+
+            base.DeActivate();
+        }
+
+        public override void CreateManagedResource()
+        {
+            this.b再生済み = false;
+
+                this.soundTowerDropout = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_Dropout.ogg"), ESoundGroup.SoundEffect);
+                this.soundTowerTopPass = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_TopReached_Pass.ogg"), ESoundGroup.SoundEffect);
+                this.soundTowerTopFC = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_TopReached_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                this.soundTowerTopPerfect = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Tower{Path.DirectorySeparatorChar}Tower_TopReached_Perfect.ogg"), ESoundGroup.SoundEffect);
+
+                this.soundDanFailed = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Fail.ogg"), ESoundGroup.SoundEffect);
+                this.soundDanRedClear = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Red_Pass.ogg"), ESoundGroup.SoundEffect);
+                this.soundDanRedFC = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Red_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                this.soundDanRedPerfect = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Red_Perfect.ogg"), ESoundGroup.SoundEffect);
+                this.soundDanGoldClear = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Gold_Pass.ogg"), ESoundGroup.SoundEffect);
+                this.soundDanGoldFC = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Gold_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                this.soundDanGoldPerfect = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Dan{Path.DirectorySeparatorChar}Dan_Gold_Perfect.ogg"), ESoundGroup.SoundEffect);
+                    
+                this.soundAILose = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Lose.ogg"), ESoundGroup.SoundEffect);
+                this.soundAIWin = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Win.ogg"), ESoundGroup.SoundEffect);
+                this.soundAIWinFullCombo = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Win_FullCombo.ogg"), ESoundGroup.SoundEffect);
+                this.soundAIWinDondaFullCombo = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AIBattle_Win_AllPerfect.ogg"), ESoundGroup.SoundEffect);
+                for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
+                {
+                    this.soundClear[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Clear.ogg"), ESoundGroup.SoundEffect);
+                    this.soundFailed[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}Failed.ogg"), ESoundGroup.SoundEffect);
+                    this.soundFullCombo[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}FullCombo.ogg"), ESoundGroup.SoundEffect);
+                    this.soundDondaFullCombo[i] = TJAPlayer3.Sound管理.tCreateSound(CSkin.Path(@$"Sounds{Path.DirectorySeparatorChar}AllPerfect.ogg"), ESoundGroup.SoundEffect);
+                }
+
+            base.CreateManagedResource();
+        }
+
+        public override void ReleaseManagedResource()
+        {
+                this.soundTowerDropout?.tDispose();
+                this.soundTowerTopPass?.tDispose();
+                this.soundTowerTopFC?.tDispose();
+                this.soundTowerTopPerfect?.tDispose();
 
                 this.soundDanFailed?.tDispose();
                 this.soundDanRedClear?.tDispose();
@@ -285,25 +321,11 @@ namespace TJAPlayer3
                 this.soundDanGoldClear?.tDispose();
                 this.soundDanGoldFC?.tDispose();
                 this.soundDanGoldPerfect?.tDispose();
-            }
-            else if (TJAPlayer3.ConfigIni.bAIBattleMode)
-            {
-                AILoseScript.Dispose();
-                AIWinScript.Dispose();
-                AIWin_FullComboScript.Dispose();
-                AIWin_PerfectScript.Dispose();
 
                 this.soundAILose?.tDispose();
                 this.soundAIWin?.tDispose();
                 this.soundAIWinFullCombo?.tDispose();
                 this.soundAIWinDondaFullCombo?.tDispose();
-            }
-            else
-            {
-                FailedScript.Dispose();
-                ClearScript.Dispose();
-                FullComboScript.Dispose();
-                DondaFullComboScript.Dispose();
 
                 for (int i = 0; i < TJAPlayer3.ConfigIni.nPlayerCount; i++)
                 {
@@ -312,7 +334,6 @@ namespace TJAPlayer3
                     this.soundFullCombo[i]?.tDispose();
                     this.soundDondaFullCombo[i]?.tDispose();
                 }
-            }
 
             base.ReleaseManagedResource();
         }

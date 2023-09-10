@@ -40,6 +40,9 @@ namespace TJAPlayer3
 
             tUpdateBarInfos();
 
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERSELECT}Script.lua"));
+            Background.Init();
+
             base.Activate();
         }
 
@@ -47,15 +50,14 @@ namespace TJAPlayer3
         {
             // On de-activation
 
+            TJAPlayer3.t安全にDisposeする(ref Background);
+
             base.DeActivate();
         }
 
         public override void CreateManagedResource()
         {
             // Ressource allocation
-
-            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.TOWERSELECT}Script.lua"));
-            Background.Init();
 
             if (!string.IsNullOrEmpty(TJAPlayer3.ConfigIni.FontName))
                 pfTitleFont = new CCachedFontRenderer(TJAPlayer3.ConfigIni.FontName, TJAPlayer3.Skin.TowerSelect_Title_Size);
@@ -73,8 +75,6 @@ namespace TJAPlayer3
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
-
-            TJAPlayer3.t安全にDisposeする(ref Background);
 
             pfTitleFont.Dispose();
             pfSubTitleFont.Dispose();

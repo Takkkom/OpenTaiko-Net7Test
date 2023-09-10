@@ -27,6 +27,10 @@ namespace TJAPlayer3
 			try
 			{
 				this.ct時間稼ぎ = new CCounter();
+
+				Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.EXIT}Script.lua"));
+				Background.Init();
+
 				base.Activate();
 			}
 			finally
@@ -41,6 +45,7 @@ namespace TJAPlayer3
 			Trace.Indent();
 			try
 			{
+				TJAPlayer3.t安全にDisposeする(ref Background);
 				base.DeActivate();
 			}
 			finally
@@ -51,8 +56,6 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.EXIT}Script.lua"));
-			Background.Init();
 
 				//            this.tx文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\9_text.png" ) );
 				//            this.tx文字2 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\9_text.png" ) );
@@ -64,7 +67,6 @@ namespace TJAPlayer3
 		}
 		public override void ReleaseManagedResource()
 		{
-			TJAPlayer3.t安全にDisposeする(ref Background);
 
 				//CDTXMania.tテクスチャの解放( ref this.tx背景 );
 				//            CDTXMania.tテクスチャの解放( ref this.tx文字 );

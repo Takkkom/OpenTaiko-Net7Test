@@ -98,12 +98,17 @@ namespace TJAPlayer3
 
             #endregion
 
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Script.lua"));
+            Background.Init();
+
             base.Activate();
         }
 
         public override void DeActivate()
         {
             // On de-activation
+
+            TJAPlayer3.t安全にDisposeする(ref Background);
 
             TJAPlayer3.Songs管理.UpdateDownloadBox();
 
@@ -126,9 +131,6 @@ namespace TJAPlayer3
                 this.pfOLFontLarge = new CCachedFontRenderer(CFontRenderer.DefaultFontName, TJAPlayer3.Skin.OnlineLounge_Font_OLFontLarge);
             }
 
-            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.ONLINELOUNGE}Script.lua"));
-            Background.Init();
-
             base.CreateManagedResource();
         }
 
@@ -137,8 +139,6 @@ namespace TJAPlayer3
             // Ressource freeing
             this.pfOLFont.Dispose();
             this.pfOLFontLarge.Dispose();
-
-            TJAPlayer3.t安全にDisposeする(ref Background);
 
             base.ReleaseManagedResource();
         }

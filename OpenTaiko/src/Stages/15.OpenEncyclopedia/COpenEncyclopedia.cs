@@ -36,6 +36,9 @@ namespace TJAPlayer3
             TJAPlayer3.Skin.soundEncyclopediaBGM?.t再生する();
 
             _controler = new CEncyclopediaControler();
+
+            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Script.lua"));
+            Background.Init();
             
             base.Activate();
         }
@@ -44,6 +47,8 @@ namespace TJAPlayer3
         {
             // On de-activation
 
+            TJAPlayer3.t安全にDisposeする(ref Background);
+
             base.DeActivate();
         }
 
@@ -51,17 +56,12 @@ namespace TJAPlayer3
         {
             // Ressource allocation
 
-            Background = new ScriptBG(CSkin.Path($"{TextureLoader.BASE}{TextureLoader.OPENENCYCLOPEDIA}Script.lua"));
-            Background.Init();
-
             base.CreateManagedResource();
         }
 
         public override void ReleaseManagedResource()
         {
             // Ressource freeing
-
-            TJAPlayer3.t安全にDisposeする(ref Background);
 
             base.ReleaseManagedResource();
         }
