@@ -10,19 +10,156 @@ using Silk.NET.DXGI;
 
 namespace SampleFramework
 {
-    public class DirectX12Polygon : IPolygon
+    internal class DirectX12Polygon : IPolygon
     {
         public uint IndiceCount { get; set; }
 
         public uint VertexStride;
 
 
-        public unsafe DirectX12Polygon(float[] vertices, uint[] indices, float[] uvs)
+        public ComPtr<ID3D12Resource> VertexBuffer;
+
+        public VertexBufferView VertexBufferView_;
+
+        public ComPtr<ID3D12Resource> IndexBuffer;
+
+        public IndexBufferView IndexBufferView_;
+
+
+        private unsafe void CreateVertexBuffer(DirectX12Device device, float[] vertices, float[] uvs)
         {
+            uint vertexBufferSize = (uint)(sizeof(float) * vertices.Length);
+
+            HeapProperties heapProperties = new HeapProperties()
+            {
+                Type = HeapType.Upload,
+                CPUPageProperty = CpuPageProperty.Unknown,
+                MemoryPoolPreference = MemoryPool.Unknown,
+                CreationNodeMask = 1,
+                VisibleNodeMask = 1
+            };
+
+            ResourceDesc resourceDesc = new ResourceDesc()
+            {
+                Dimension = ResourceDimension.Buffer,
+                Alignment = 0,
+                Width = vertexBufferSize,
+                Height = 1,
+                DepthOrArraySize = 1,
+                MipLevels = 1,
+                Format = Format.FormatUnknown,
+                SampleDesc = new SampleDesc()
+                {
+                    Count = 1,
+                    Quality = 0,
+                },
+                Layout = TextureLayout.LayoutRowMajor,
+                Flags = ResourceFlags.None
+            };
+
+            void* vertexBuffer;
+            var iid = ID3D12Resource.Guid;
+            SilkMarshal.ThrowHResult
+            (
+                device.Device.CreateCommittedResource(heapProperties, HeapFlags.None, resourceDesc, ResourceStates.GenericRead, null, &iid, &vertexBuffer)
+            );
+            VertexBuffer = (ID3D12Resource*)vertexBuffer;
+
+            Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range();
+
+            void* vertexDataBegin;
+            SilkMarshal.ThrowHResult(VertexBuffer.Map(0, &range, &vertexDataBegin));
+
+            var vertic = (float*)SilkMarshal.Allocate(sizeof(float) * vertices.Length);
+            for(int i = 0; i < vertices.Length; i++)
+            {
+                vertic[i] = vertices[i];
+            }
+            
+            Unsafe.CopyBlock(vertexDataBegin, vertic, vertexBufferSize);
+            VertexBuffer.Unmap(0, (Silk.NET.Direct3D12.Range*)0);
+
+            VertexBufferView_ = new VertexBufferView()
+            {
+                BufferLocation = VertexBuffer.GetGPUVirtualAddress(),
+                StrideInBytes = sizeof(float) * 3,
+                SizeInBytes = vertexBufferSize,
+            };
+        }
+
+        private unsafe void CreateIndexBuffer(DirectX12Device device, uint[] indices)
+        {
+            uint bufferSize = (uint)(sizeof(uint) * indices.Length);
+
+            HeapProperties heapProperties = new HeapProperties()
+            {
+                Type = HeapType.Upload,
+                CPUPageProperty = CpuPageProperty.Unknown,
+                MemoryPoolPreference = MemoryPool.Unknown,
+                CreationNodeMask = 1,
+                VisibleNodeMask = 1
+            };
+
+            ResourceDesc resourceDesc = new ResourceDesc()
+            {
+                Dimension = ResourceDimension.Buffer,
+                Alignment = 0,
+                Width = bufferSize,
+                Height = 1,
+                DepthOrArraySize = 1,
+                MipLevels = 1,
+                Format = Format.FormatUnknown,
+                SampleDesc = new SampleDesc()
+                {
+                    Count = 1,
+                    Quality = 0,
+                },
+                Layout = TextureLayout.LayoutRowMajor,
+                Flags = ResourceFlags.None
+            };
+
+            void* indexBuffer;
+            var iid = ID3D12Resource.Guid; 
+            SilkMarshal.ThrowHResult
+            (
+                device.Device.CreateCommittedResource(heapProperties, HeapFlags.None, resourceDesc, ResourceStates.GenericRead, null, &iid, &indexBuffer)
+            );
+
+            IndexBuffer = (ID3D12Resource*)indexBuffer;
+
+            Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range();
+
+            void* dataBegin;
+            SilkMarshal.ThrowHResult(IndexBuffer.Map(0, &range, &dataBegin));
+
+            var data = (uint*)SilkMarshal.Allocate(sizeof(uint) * indices.Length);
+            for(int i = 0; i < indices.Length; i++)
+            {
+                data[i] = indices[i];
+            }
+            
+            Unsafe.CopyBlock(dataBegin, data, bufferSize);
+            IndexBuffer.Unmap(0, (Silk.NET.Direct3D12.Range*)0);
+
+            IndexBufferView_ = new IndexBufferView()
+            {
+                BufferLocation = IndexBuffer.GetGPUVirtualAddress(),
+                SizeInBytes = bufferSize,
+                Format = Format.FormatR32Uint
+            };
+        }
+
+        public unsafe DirectX12Polygon(DirectX12Device device, float[] vertices, uint[] indices, float[] uvs)
+        {
+            IndiceCount = (uint)indices.Length;
+            CreateVertexBuffer(device, vertices, uvs);
+            CreateIndexBuffer(device, indices);
         }
 
         public void Dispose()
         {
+            VertexBuffer.Release();
+            IndexBuffer.Release();
         }
     }
 }
