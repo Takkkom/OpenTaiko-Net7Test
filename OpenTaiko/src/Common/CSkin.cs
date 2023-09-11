@@ -7688,6 +7688,13 @@ namespace TJAPlayer3
                             }
                             #endregion
 
+                            #region Exit
+                            else if (strCommand == "Exit_Duration")
+                            {
+                                Exit_Duration = int.Parse(strParam);
+                            }
+                            #endregion
+
                             #region Font
                             else if (strCommand == nameof(Font_Edge_Ratio)) //Config画面や簡易メニューのフォントについて(rhimm)
                             {
@@ -9626,6 +9633,10 @@ namespace TJAPlayer3
         public int[] OpenEncyclopedia_Side_Menu_Text_Offset = new int[] { 0, 0 };
         public int OpenEncyclopedia_Font_EncyclopediaMenu_Size = 14;
 
+        #endregion
+
+        #region Exit
+        public int Exit_Duration = 3000;
         #endregion
 
         #region Font
