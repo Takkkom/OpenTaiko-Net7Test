@@ -90,7 +90,7 @@ namespace TJAPlayer3
 				if( base.IsFirstDraw )
 				{
 					TJAPlayer3.Skin.soundゲーム終了音.t再生する();
-					this.ct時間稼ぎ.Start( 0, 3000, 1, TJAPlayer3.Timer );
+					this.ct時間稼ぎ.Start( 0, TJAPlayer3.Skin.Exit_Duration, 1, TJAPlayer3.Timer );
                     base.IsFirstDraw = false;
 				}
 

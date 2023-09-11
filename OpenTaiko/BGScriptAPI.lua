@@ -1,5 +1,6 @@
 local playerCount = 0
 local p1IsBlue = false
+local lang = "ja"
 
 local fps = 0
 local deltaTime = 0
@@ -10,9 +11,10 @@ local battleWin = false
 local gauge = { 0, 0, 0, 0, 0 }
 local bpm = { 0, 0, 0, 0, 0 }
 
-function setConstValues(_playerCount, _p1IsBlue)
+function setConstValues(_playerCount, _p1IsBlue, _lang)
     playerCount = _playerCount
     p1IsBlue = _p1IsBlue
+    lang = _lang
 end
 
 function updateValues(_deltaTime, _fps, _isClear, _towerNightNum, _battleState, _battleWin, _gauge, _bpm)
