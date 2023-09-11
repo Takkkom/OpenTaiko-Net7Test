@@ -500,8 +500,7 @@ namespace SampleFramework
 
         uint[] indices =
         {
-        0, 1, 3,
-        1, 2, 3
+        0, 1, 2
     };
 
         private void CreateAssets()
@@ -562,6 +561,66 @@ namespace SampleFramework
                 BufferLocation = VertexBuffer.GetGPUVirtualAddress(),
                 StrideInBytes = sizeof(float) * 3,
                 SizeInBytes = vertexBufferSize,
+            };
+        }
+
+        private void CreateAssets2()
+        {
+            uint bufferSize = (uint)(sizeof(uint) * indices.Length);
+
+            HeapProperties heapProperties = new HeapProperties()
+            {
+                Type = HeapType.Upload,
+                CPUPageProperty = CpuPageProperty.Unknown,
+                MemoryPoolPreference = MemoryPool.Unknown,
+                CreationNodeMask = 1,
+                VisibleNodeMask = 1
+            };
+
+            ResourceDesc resourceDesc = new ResourceDesc()
+            {
+                Dimension = ResourceDimension.Buffer,
+                Alignment = 0,
+                Width = bufferSize,
+                Height = 1,
+                DepthOrArraySize = 1,
+                MipLevels = 1,
+                Format = Format.FormatUnknown,
+                SampleDesc = new SampleDesc()
+                {
+                    Count = 1,
+                    Quality = 0,
+                },
+                Layout = TextureLayout.LayoutRowMajor,
+                Flags = ResourceFlags.None
+            };
+
+            void* indexBuffer;
+            var iid = ID3D12Resource.Guid;
+            SilkMarshal.ThrowHResult
+            (
+                Device.CreateCommittedResource(heapProperties, HeapFlags.None, resourceDesc, ResourceStates.GenericRead, null, &iid, &indexBuffer)
+            );
+            IndexBuffer = (ID3D12Resource*)indexBuffer;
+
+            Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range();
+
+            void* vertexDataBegin;
+            SilkMarshal.ThrowHResult(IndexBuffer.Map(0, &range, &vertexDataBegin));
+
+            var data = (uint*)SilkMarshal.Allocate(sizeof(uint) * indices.Length);
+            for(int i = 0; i < indices.Length; i++)
+            {
+                data[i] = indices[i];
+            }
+            
+            Unsafe.CopyBlock(vertexDataBegin, data, bufferSize);
+            IndexBuffer.Unmap(0, (Silk.NET.Direct3D12.Range*)0);
+
+            VertexBufferView_ = new VertexBufferView()
+            {
+                BufferLocation = IndexBuffer.GetGPUVirtualAddress(),
+                SizeInBytes = bufferSize,
             };
         }
 
@@ -643,6 +702,8 @@ namespace SampleFramework
             CreateCommandList();
 
             CreateAssets();
+
+            CreateAssets2();
 
             WaitForGpu(false);
 
@@ -747,8 +808,8 @@ namespace SampleFramework
             CommandList[FrameBufferIndex].SetPipelineState(PipelineState);
             CommandList[FrameBufferIndex].IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
             CommandList[FrameBufferIndex].IASetVertexBuffers(0, 1, VertexBufferView_);
-            //CommandList.DrawIndexedInstanced(,);
-            CommandList[FrameBufferIndex].DrawInstanced(3, 1, 0, 0);
+            CommandList[FrameBufferIndex].IASetIndexBuffer(IndexBufferView_);
+            CommandList[FrameBufferIndex].DrawIndexedInstanced(3, 1, 0, 0, 0);
         }
 
         public void SwapBuffer()
