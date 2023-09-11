@@ -37,17 +37,17 @@ namespace SampleFramework
 
         public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
         {
-            return null;
+            return new VulkanPolygon(vertices, indices, uvs);
         }
 
         public IShader GenShader()
         {
-            return null;
+            return new VulkanShader();
         }
 
         public unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType)
         {
-            return null;
+            return new VulkanTexture(data, width, height, rgbaType);
         }
         public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
         {

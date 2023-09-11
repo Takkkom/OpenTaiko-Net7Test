@@ -52,7 +52,7 @@ namespace SampleFramework
 
         private uint RtvDescriptorSize;
 
-        private float* CurrnetClearColor;
+        private float[] CurrnetClearColor;
 
         private IWindow Window_;
 
@@ -69,6 +69,9 @@ namespace SampleFramework
         private ComPtr<ID3D12Resource> IndexBuffer;
 
         private IndexBufferView IndexBufferView_;
+
+        private Viewport viewport;
+        private Box2D<int> rect;
 
 
 
@@ -123,46 +126,53 @@ namespace SampleFramework
 
         private void CreateSwapChain()
         {
-            SwapChainDesc swapChainDesc = new SwapChainDesc();
-            swapChainDesc.BufferDesc.Width = (uint)Window_.FramebufferSize.X;
-            swapChainDesc.BufferDesc.Height = (uint)Window_.FramebufferSize.Y;
-            swapChainDesc.BufferDesc.Format = Format.FormatR8G8B8A8Unorm;
-            swapChainDesc.BufferDesc.ScanlineOrdering = ModeScanlineOrder.Unspecified;
-            swapChainDesc.BufferDesc.Scaling = ModeScaling.Unspecified;
-            swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
-            swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
-            swapChainDesc.SampleDesc.Count = 1;
-            swapChainDesc.SampleDesc.Quality = 0;
-            swapChainDesc.BufferUsage = DXGI.UsageRenderTargetOutput;
-            swapChainDesc.BufferCount = FrameCount;
-            swapChainDesc.OutputWindow = Window_.Native.DXHandle.Value;
-            swapChainDesc.Windowed = true;
-            swapChainDesc.SwapEffect = SwapEffect.FlipDiscard;
+            SwapChainDesc1 swapChainDesc = new(){
+                Width = (uint)Window_.FramebufferSize.X,
+                Height = (uint)Window_.FramebufferSize.Y,
+                Format = Format.FormatR8G8B8A8Unorm,
+                SampleDesc = new SampleDesc(1, 0),
+                BufferUsage = DXGI.UsageRenderTargetOutput,
+                BufferCount = FrameCount,
+                SwapEffect = SwapEffect.FlipDiscard
+            };
+
+            SwapChainFullscreenDesc swapChainFullscreenDesc = new()
+            {
+                RefreshRate = new Rational(0, 1),
+                ScanlineOrdering = ModeScanlineOrder.Unspecified,
+                Scaling = ModeScaling.Unspecified,
+                Windowed = true
+            };
 
             void* device = CommandQueue;
             void** swapChain = (void**)SwapChain.GetAddressOf();
+
+            /*
             SilkMarshal.ThrowHResult
             (
-                Factory.CreateSwapChain(
-                    (IUnknown*)device,
-                    &swapChainDesc,
-                    (IDXGISwapChain**)swapChain
-                )
+                Factory.CreateSwapChainForHwnd((IUnknown*)device, Window_.Native.DXHandle.Value, swapChainDesc, swapChainFullscreenDesc, dxGIOutput, (IDXGISwapChain1**)swapChain)
             );
+            */
+            Window_.CreateDxgiSwapchain((IDXGIFactory2*)Factory.AsVtblPtr(), (IUnknown*)device, &swapChainDesc, &swapChainFullscreenDesc, (IDXGIOutput*)0, (IDXGISwapChain1**)swapChain);
 
             FrameBufferIndex = SwapChain.GetCurrentBackBufferIndex();
         }
 
         private void CreateRTVHeap()
         {
-            DescriptorHeapDesc rtvHeapDesc = new DescriptorHeapDesc();
-            rtvHeapDesc.NumDescriptors = FrameCount;
-            rtvHeapDesc.Type = DescriptorHeapType.Rtv;
-            rtvHeapDesc.Flags = DescriptorHeapFlags.None;
-
+            DescriptorHeapDesc rtvHeapDesc = new DescriptorHeapDesc()
+            {
+                NumDescriptors = FrameCount,
+                Type = DescriptorHeapType.Rtv,
+                Flags = DescriptorHeapFlags.None
+            };
+            
             void* rtvHeap = null;
             var iid = ID3D12DescriptorHeap.Guid;
-            Device.CreateDescriptorHeap(&rtvHeapDesc, ref iid, &rtvHeap);
+            SilkMarshal.ThrowHResult
+            (
+                Device.CreateDescriptorHeap(&rtvHeapDesc, ref iid, &rtvHeap)
+            );
             RtvHeap = (ID3D12DescriptorHeap*)rtvHeap;
 
             RtvDescriptorSize = Device.GetDescriptorHandleIncrementSize(DescriptorHeapType.Rtv);
@@ -183,7 +193,7 @@ namespace SampleFramework
                 );
                 RenderTargets[i] = (ID3D12Resource*)renderTarget;
                 Device.CreateRenderTargetView(RenderTargets[i], null, rtvHandle);
-                rtvHandle.Ptr = (uint)rtvHandle.Ptr + RtvDescriptorSize;
+                rtvHandle.Ptr += RtvDescriptorSize;
             }
         }
 
@@ -253,24 +263,25 @@ namespace SampleFramework
         {
             GraphicsPipelineStateDesc graphicsPipelineStateDesc = new GraphicsPipelineStateDesc();
 
-            InputElementDesc[] inputElementDescs = new InputElementDesc[1];
+            DirectXShaderSource directXShaderSource = new DirectXShaderSource(D3dCompiler);
 
-            fixed (byte* name = SilkMarshal.StringToMemory("POS"))
+            const int ElementsLength = 1;
+
+            var inputElementDescs = stackalloc InputElementDesc[ElementsLength]
             {
-                inputElementDescs[0] = new InputElementDesc()
+                new InputElementDesc()
                 {
-                    SemanticName = name,
+                    SemanticName = (byte*)SilkMarshal.StringToMemory("POS"),
                     SemanticIndex = 0,
                     Format = Format.FormatR32G32B32Float,
                     InputSlot = 0,
                     AlignedByteOffset = 0,
                     InputSlotClass = InputClassification.PerVertexData,
                     InstanceDataStepRate = 0
-                };
-            }
+                }
+            };
 
-            DirectXShaderSource directXShaderSource = new DirectXShaderSource(D3dCompiler);
-
+            /*
             fixed (InputElementDesc* elements = inputElementDescs)
             {
                 graphicsPipelineStateDesc.InputLayout = new InputLayoutDesc()
@@ -279,6 +290,13 @@ namespace SampleFramework
                     NumElements = (uint)inputElementDescs.Length,
                 };
             }
+            */
+
+            graphicsPipelineStateDesc.InputLayout = new InputLayoutDesc()
+            {
+                PInputElementDescs = inputElementDescs,
+                NumElements = (uint)ElementsLength,
+            };
 
             graphicsPipelineStateDesc.PRootSignature = RootSignature;
             graphicsPipelineStateDesc.VS = new ShaderBytecode(directXShaderSource.VertexCode.GetBufferPointer(), directXShaderSource.VertexCode.GetBufferSize());
@@ -436,18 +454,24 @@ namespace SampleFramework
             );
             VertexBuffer = (ID3D12Resource*)vertexBuffer;
 
+            Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range();
+
             void* vertexDataBegin;
-            Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range(0, 0);
             SilkMarshal.ThrowHResult(VertexBuffer.Map(0, &range, &vertexDataBegin));
-            fixed (void* data = vertices)
+
+            var vertic = (float*)SilkMarshal.Allocate(sizeof(float) * vertices.Length);
+            for(int i = 0; i < vertices.Length; i++)
             {
-                Unsafe.CopyBlock(vertexDataBegin, data, vertexBufferSize);
+                vertic[i] = vertices[i];
             }
+            
+            Unsafe.CopyBlock(vertexDataBegin, vertic, vertexBufferSize);
+            VertexBuffer.Unmap(0, (Silk.NET.Direct3D12.Range*)0);
 
             VertexBufferView_ = new VertexBufferView()
             {
                 BufferLocation = VertexBuffer.GetGPUVirtualAddress(),
-                StrideInBytes = sizeof(float),
+                StrideInBytes = sizeof(float) * 3,
                 SizeInBytes = vertexBufferSize,
             };
         }
@@ -508,21 +532,15 @@ namespace SampleFramework
 
         public void SetClearColor(float r, float g, float b, float a)
         {
-            fixed (float* color = new float[] { r, g, b, a })
-            {
-                CurrnetClearColor = color;
-            }
+            CurrnetClearColor = new float[] { r, g, b, a };
         }
 
         public void SetViewPort(int x, int y, uint width, uint height)
         {
             if (CommandList.AsVtblPtr() == null) return;
 
-            Viewport viewport = new Viewport(0, 0, width, height, 0.0f, 1.0f);
-            CommandList.RSSetViewports(1, viewport);
-
-            Box2D<int> rect = new Box2D<int>(x, y, new Vector2D<int>((int)width, (int)height));
-            CommandList.RSSetScissorRects(1, rect);
+            viewport = new Viewport(0, 0, width, height, 0.0f, 1.0f);
+            rect = new Box2D<int>(x, y, new Vector2D<int>((int)width, (int)height));
         }
 
         public void SetFrameBuffer(uint width, uint height)
@@ -555,17 +573,21 @@ namespace SampleFramework
             );
 
             CommandList.SetGraphicsRootSignature(RootSignature);
+            CommandList.RSSetViewports(1, viewport);
+            CommandList.RSSetScissorRects(1, rect);
 
 
             SetResourceBarrier(ResourceStates.Present, ResourceStates.RenderTarget);
 
 
             CpuDescriptorHandle rtvHandle = new CpuDescriptorHandle();
-            rtvHandle.Ptr = (uint)RtvHeap.GetCPUDescriptorHandleForHeapStart().Ptr + FrameBufferIndex * RtvDescriptorSize;
+            rtvHandle.Ptr = RtvHeap.GetCPUDescriptorHandleForHeapStart().Ptr + FrameBufferIndex * RtvDescriptorSize;
             CommandList.OMSetRenderTargets(1, rtvHandle, false, null);
 
-            Box2D<int> rect = default;
-            CommandList.ClearRenderTargetView(rtvHandle, CurrnetClearColor, 0, rect);
+            fixed (float* color = CurrnetClearColor)
+            {
+                CommandList.ClearRenderTargetView(rtvHandle, color, 0, (Box2D<int>*)0);
+            }
 
 
 
@@ -584,8 +606,8 @@ namespace SampleFramework
 
 
             CommandList.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
+            CommandList.SetPipelineState(PipelineState);
             CommandList.IASetVertexBuffers(0, 1, VertexBufferView_);
-            //CommandList.IASetIndexBuffer(IndexBufferView_);
             //CommandList.DrawIndexedInstanced(,);
             CommandList.DrawInstanced(3, 1, 0, 0);
         }
@@ -619,17 +641,66 @@ namespace SampleFramework
 
         public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
         {
-            return null;
+            return new DirectX12Polygon(vertices, indices, uvs);
         }
 
         public IShader GenShader()
         {
-            return null;
+            return new DirectX12Shader(
+                @"
+
+                Texture2D g_texture : register(t0);
+                SamplerState g_sampler : register(s0);
+
+                struct vs_in {
+                    float3 position_local : POS;
+                    float2 uvposition_local : UVPOS;
+                };
+
+                struct vs_out {
+                    float4 position_clip : SV_POSITION;
+                    float2 uvposition_clip : TEXCOORD0;
+                };
+                
+                cbuffer ConstantBufferStruct
+                {
+                    float4x4 Projection;
+                    float4 Color;
+                    float4 TextureRect;
+                }
+
+                vs_out vs_main(vs_in input) {
+                    vs_out output = (vs_out)0;
+
+                    float4 position = float4(input.position_local, 1.0);
+                    position = mul(Projection, position);
+
+                    output.position_clip = position;
+
+                    float2 texcoord = float2(TextureRect.x, TextureRect.y);
+                    texcoord.x += input.uvposition_local.x * TextureRect.z;
+                    texcoord.y += input.uvposition_local.y * TextureRect.w;
+
+                    output.uvposition_clip = texcoord;
+
+                    return output;
+                }
+
+                float4 ps_main(vs_out input) : SV_TARGET {
+                    float4 totalcolor = float4(1.0, 1.0, 1.0, 1.0);
+
+                    totalcolor = g_texture.Sample(g_sampler, input.uvposition_clip);
+
+                    totalcolor.rgba *= Color.rgba;
+
+                    return totalcolor;
+                }
+                ");
         }
 
         public unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType)
         {
-            return null;
+            return new DirectX12Texture(data, width, height, rgbaType);
         }
 
         public void DrawPolygon(IPolygon polygon, IShader shader, ITexture texture, BlendType blendType)
