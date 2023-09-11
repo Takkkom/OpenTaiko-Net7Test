@@ -491,17 +491,16 @@ namespace SampleFramework
 
         float[] vertices =
         {
-        //X    Y      Z
-        0.0f, 0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        //-0.5f,  0.5f, 0.5f
-    };
+            //X    Y      Z
+            0.0f, 0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+        };
 
         uint[] indices =
         {
-        0, 1, 2
-    };
+            0u, 1u, 2u
+        };
 
         private void CreateAssets()
         {
@@ -596,17 +595,18 @@ namespace SampleFramework
             };
 
             void* indexBuffer;
-            var iid = ID3D12Resource.Guid;
+            var iid = ID3D12Resource.Guid; 
             SilkMarshal.ThrowHResult
             (
                 Device.CreateCommittedResource(heapProperties, HeapFlags.None, resourceDesc, ResourceStates.GenericRead, null, &iid, &indexBuffer)
             );
+
             IndexBuffer = (ID3D12Resource*)indexBuffer;
 
             Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range();
 
-            void* vertexDataBegin;
-            SilkMarshal.ThrowHResult(IndexBuffer.Map(0, &range, &vertexDataBegin));
+            void* dataBegin;
+            SilkMarshal.ThrowHResult(IndexBuffer.Map(0, &range, &dataBegin));
 
             var data = (uint*)SilkMarshal.Allocate(sizeof(uint) * indices.Length);
             for(int i = 0; i < indices.Length; i++)
@@ -614,13 +614,14 @@ namespace SampleFramework
                 data[i] = indices[i];
             }
             
-            Unsafe.CopyBlock(vertexDataBegin, data, bufferSize);
+            Unsafe.CopyBlock(dataBegin, data, bufferSize);
             IndexBuffer.Unmap(0, (Silk.NET.Direct3D12.Range*)0);
 
-            VertexBufferView_ = new VertexBufferView()
+            IndexBufferView_ = new IndexBufferView()
             {
                 BufferLocation = IndexBuffer.GetGPUVirtualAddress(),
                 SizeInBytes = bufferSize,
+                Format = Format.FormatR32Uint
             };
         }
 
@@ -810,6 +811,7 @@ namespace SampleFramework
             CommandList[FrameBufferIndex].IASetVertexBuffers(0, 1, VertexBufferView_);
             CommandList[FrameBufferIndex].IASetIndexBuffer(IndexBufferView_);
             CommandList[FrameBufferIndex].DrawIndexedInstanced(3, 1, 0, 0, 0);
+            //CommandList[FrameBufferIndex].DrawInstanced(3, 1, 0, 0);
         }
 
         public void SwapBuffer()
