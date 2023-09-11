@@ -14,6 +14,8 @@ namespace SampleFramework
 {
     unsafe class DirectX12Device : IGraphicsDevice
     {
+        private const uint FrameCount = 2;
+
         private D3D12 D3d12;
 
         private DXGI DxGi;
@@ -34,19 +36,23 @@ namespace SampleFramework
 
         private ComPtr<ID3D12DescriptorHeap> RtvHeap;
 
-        private ComPtr<ID3D12Resource>[] RenderTargets = new ComPtr<ID3D12Resource>[2];
+        private ComPtr<ID3D12DescriptorHeap> DSVHeap;
 
-        private ComPtr<ID3D12CommandAllocator> CommandAllocator;
+        private ID3D12Resource*[] RenderTargets = new ID3D12Resource*[FrameCount];
+
+        private ComPtr<ID3D12Resource> DepthStencil;
+
+        private ComPtr<ID3D12CommandAllocator>[] CommandAllocator = new ComPtr<ID3D12CommandAllocator>[FrameCount];
 
         private ComPtr<ID3D12RootSignature> RootSignature;
 
         private ComPtr<ID3D12PipelineState> PipelineState;
 
-        private ComPtr<ID3D12GraphicsCommandList> CommandList;
+        private ComPtr<ID3D12GraphicsCommandList>[] CommandList = new ComPtr<ID3D12GraphicsCommandList>[FrameCount];
 
         private ComPtr<ID3D12Fence> Fence;
 
-        private uint FenceValue;
+        private uint[] FenceValue = new uint[FrameCount];
 
         private IntPtr FenceEvent;
 
@@ -58,7 +64,7 @@ namespace SampleFramework
 
         private uint FrameBufferIndex;
 
-        private uint FrameCount = 2;
+        private bool IsActivate;
 
 
 
@@ -133,7 +139,10 @@ namespace SampleFramework
                 SampleDesc = new SampleDesc(1, 0),
                 BufferUsage = DXGI.UsageRenderTargetOutput,
                 BufferCount = FrameCount,
-                SwapEffect = SwapEffect.FlipDiscard
+                Scaling = Scaling.Stretch,
+                SwapEffect = SwapEffect.FlipDiscard,
+                //Flags = (uint)SwapChainFlag.AllowModeSwitch,
+                AlphaMode = AlphaMode.Ignore
             };
 
             SwapChainFullscreenDesc swapChainFullscreenDesc = new()
@@ -145,15 +154,20 @@ namespace SampleFramework
             };
 
             void* device = CommandQueue;
-            void** swapChain = (void**)SwapChain.GetAddressOf();
+            IDXGISwapChain1* swapChain;
 
             /*
             SilkMarshal.ThrowHResult
             (
-                Factory.CreateSwapChainForHwnd((IUnknown*)device, Window_.Native.DXHandle.Value, swapChainDesc, swapChainFullscreenDesc, dxGIOutput, (IDXGISwapChain1**)swapChain)
+                Factory.CreateSwapChainForHwnd((IUnknown*)device, Window_.Native.DXHandle.Value, swapChainDesc, swapChainFullscreenDesc, (IDXGIOutput*)0, &swapChain)
             );
             */
-            Window_.CreateDxgiSwapchain((IDXGIFactory2*)Factory.AsVtblPtr(), (IUnknown*)device, &swapChainDesc, &swapChainFullscreenDesc, (IDXGIOutput*)0, (IDXGISwapChain1**)swapChain);
+            SilkMarshal.ThrowHResult
+            (
+                Window_.CreateDxgiSwapchain((IDXGIFactory2*)Factory.AsVtblPtr(), (IUnknown*)device, &swapChainDesc, &swapChainFullscreenDesc, (IDXGIOutput*)0, &swapChain)
+            );
+
+            SwapChain = (IDXGISwapChain3*)swapChain;
 
             FrameBufferIndex = SwapChain.GetCurrentBackBufferIndex();
         }
@@ -162,7 +176,7 @@ namespace SampleFramework
         {
             DescriptorHeapDesc rtvHeapDesc = new DescriptorHeapDesc()
             {
-                NumDescriptors = FrameCount,
+                NumDescriptors = FrameCount + 1,
                 Type = DescriptorHeapType.Rtv,
                 Flags = DescriptorHeapFlags.None
             };
@@ -178,6 +192,22 @@ namespace SampleFramework
             RtvDescriptorSize = Device.GetDescriptorHandleIncrementSize(DescriptorHeapType.Rtv);
         }
 
+        protected virtual void CreateDSVHeap()
+        {
+            var dsvHeapDesc = new DescriptorHeapDesc
+            {
+                NumDescriptors = 1,
+                Type = DescriptorHeapType.Dsv,
+            };
+
+            ID3D12DescriptorHeap* dsvHeap;
+
+            var iid = ID3D12DescriptorHeap.Guid;
+            SilkMarshal.ThrowHResult(Device.CreateDescriptorHeap(&dsvHeapDesc, &iid, (void**) &dsvHeap));
+
+            DSVHeap = dsvHeap;
+        }
+
         private void CreateRenderTargetViews()
         {
             CpuDescriptorHandle rtvHandle = new CpuDescriptorHandle();
@@ -186,27 +216,76 @@ namespace SampleFramework
 
             for (uint i = 0; i < FrameCount; i++)
             {
-                void* renderTarget;
+                ID3D12Resource* renderTarget;
                 SilkMarshal.ThrowHResult
                 (
-                    SwapChain.GetBuffer(i, ref iid, &renderTarget)
+                    SwapChain.GetBuffer(i, ref iid, (void**)&renderTarget)
                 );
-                RenderTargets[i] = (ID3D12Resource*)renderTarget;
-                Device.CreateRenderTargetView(RenderTargets[i], null, rtvHandle);
+                RenderTargets[i] = renderTarget;
+
+                
+                Device.CreateRenderTargetView(renderTarget, (RenderTargetViewDesc*)0, rtvHandle);
                 rtvHandle.Ptr += RtvDescriptorSize;
             }
+        }
+
+        private void CreateDepthStencil()
+        {
+            
+            ID3D12Resource* depthStencil;
+
+            var heapProperties = new HeapProperties(HeapType.Default);
+
+            var resourceDesc = new ResourceDesc
+            (
+                ResourceDimension.Texture2D,
+                0ul,
+                (ulong) Window_.FramebufferSize.X,
+                (uint) Window_.FramebufferSize.Y,
+                1,
+                1,
+                Format.FormatD32Float,
+                new SampleDesc() {Count = 1, Quality = 0},
+                TextureLayout.LayoutUnknown,
+                ResourceFlags.AllowDepthStencil
+            );
+
+            var clearValue = new ClearValue(Format.FormatD32Float, depthStencil: new DepthStencilValue(1.0f, 0));
+
+            var iid = ID3D12Resource.Guid;
+            SilkMarshal.ThrowHResult
+            (
+                Device.CreateCommittedResource
+                (
+                    &heapProperties, HeapFlags.None, &resourceDesc, ResourceStates.DepthWrite,
+                    &clearValue, &iid, (void**) &depthStencil
+                )
+            );
+
+            var dsvDesc = new DepthStencilViewDesc
+            {
+                Format = Format.FormatD32Float,
+                ViewDimension = DsvDimension.Texture2D
+            };
+            Device.CreateDepthStencilView(depthStencil, &dsvDesc, DSVHeap.GetCPUDescriptorHandleForHeapStart());
+
+            DepthStencil = depthStencil;
         }
 
         private void CreateCommandAllocator()
         {
             var iid = ID3D12CommandAllocator.Guid;
-            void* commandAllocator;
-            SilkMarshal.ThrowHResult
-            (
-                Device.CreateCommandAllocator(CommandListType.Direct, &iid, &commandAllocator)
-            );
 
-            CommandAllocator = (ID3D12CommandAllocator*)commandAllocator;
+            for(int i = 0; i < FrameCount; i++)
+            {
+                void* commandAllocator;
+                SilkMarshal.ThrowHResult
+                (
+                    Device.CreateCommandAllocator(CommandListType.Direct, &iid, &commandAllocator)
+                );
+
+                CommandAllocator[i] = (ID3D12CommandAllocator*)commandAllocator;
+            }
         }
 
         private void CreateRootSignature()
@@ -250,6 +329,7 @@ namespace SampleFramework
 
         private void CreateFenceEvent()
         {
+            FenceValue[0] = 1;
             var fenceEvent = SilkMarshal.CreateWindowsEvent(null, false, false, null);
 
             if (fenceEvent == IntPtr.Zero)
@@ -348,16 +428,35 @@ namespace SampleFramework
                     [7] = defaultRenderTargetBlend
                 }
             };
+
+            var defaultStencilOp = new DepthStencilopDesc
+            {
+                StencilFailOp = StencilOp.Keep,
+                StencilDepthFailOp = StencilOp.Keep,
+                StencilPassOp = StencilOp.Keep,
+                StencilFunc = ComparisonFunc.Always
+            };
+
             graphicsPipelineStateDesc.BlendState = blendDesc;
 
 
-            graphicsPipelineStateDesc.DepthStencilState.DepthEnable = 0;
-            graphicsPipelineStateDesc.DepthStencilState.StencilEnable = 0;
+            graphicsPipelineStateDesc.DepthStencilState = new ()
+            {
+                DepthEnable = 1,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthFunc = ComparisonFunc.Less,
+                StencilEnable = 0,
+                StencilReadMask = D3D12.DefaultStencilReadMask,
+                StencilWriteMask = D3D12.DefaultStencilWriteMask,
+                FrontFace = defaultStencilOp,
+                BackFace = defaultStencilOp
+            };
             graphicsPipelineStateDesc.SampleMask = uint.MaxValue;
             graphicsPipelineStateDesc.PrimitiveTopologyType = PrimitiveTopologyType.Triangle;
             graphicsPipelineStateDesc.NumRenderTargets = 1;
             graphicsPipelineStateDesc.RTVFormats[0] = Format.FormatR8G8B8A8Unorm;
             graphicsPipelineStateDesc.SampleDesc.Count = 1;
+            graphicsPipelineStateDesc.DepthStencilState.DepthEnable = 0;
 
 
             void* pipelineState;
@@ -377,26 +476,16 @@ namespace SampleFramework
             void* commandList;
             var iid = ID3D12GraphicsCommandList.Guid;
 
-            SilkMarshal.ThrowHResult
-            (
-                Device.CreateCommandList(0, CommandListType.Direct, CommandAllocator, PipelineState, &iid, &commandList)
-            );
-
-            CommandList = (ID3D12GraphicsCommandList*)commandList;
-
-            CommandList.Close();
-        }
-
-        private void WaitForPreviousFrame()
-        {
-            uint fence = FenceValue;
-            CommandQueue.Signal(Fence, FenceValue);
-            FenceValue++;
-
-            if (Fence.GetCompletedValue() < fence)
+            for(int i = 0; i < FrameCount; i++)
             {
-                Fence.SetEventOnCompletion(fence, FenceEvent.ToPointer());
-                _ = SilkMarshal.WaitWindowsObjects(FenceEvent);
+                SilkMarshal.ThrowHResult
+                (
+                    Device.CreateCommandList(0, CommandListType.Direct, CommandAllocator[i], (ID3D12PipelineState*)0, &iid, &commandList)
+                );
+
+                CommandList[i] = (ID3D12GraphicsCommandList*)commandList;
+
+                CommandList[i].Close();
             }
         }
 
@@ -476,6 +565,32 @@ namespace SampleFramework
             };
         }
 
+        private void WaitForGpu(bool moveToNextFrame, bool resetFrameBufferIndex = false)
+        {
+            SilkMarshal.ThrowHResult
+            (
+                CommandQueue.Signal(Fence, FenceValue[FrameBufferIndex])
+            );
+
+            if (moveToNextFrame)
+            {
+                FrameBufferIndex = SwapChain.GetCurrentBackBufferIndex();
+            }
+
+            if (!moveToNextFrame || (Fence.GetCompletedValue() < FenceValue[FrameBufferIndex]))
+            {
+                SilkMarshal.ThrowHResult
+                (
+                    Fence.SetEventOnCompletion(FenceValue[FrameBufferIndex], FenceEvent.ToPointer())
+                );
+                _ = SilkMarshal.WaitWindowsObjects(FenceEvent);
+            }
+
+            FenceValue[FrameBufferIndex]++;
+
+            if (resetFrameBufferIndex) FrameBufferIndex = 0;
+        }
+
         public DirectX12Device(IWindow window)
         {
             Window_ = window;
@@ -509,7 +624,11 @@ namespace SampleFramework
 
             CreateRTVHeap();
 
+            CreateDSVHeap();
+
             CreateRenderTargetViews();
+
+            CreateDepthStencil();
 
             CreateCommandAllocator();
 
@@ -523,11 +642,11 @@ namespace SampleFramework
 
             CreateCommandList();
 
-            SetViewPort(0, 0, (uint)window.FramebufferSize.X, (uint)window.FramebufferSize.Y);
-
-            WaitForPreviousFrame();
-
             CreateAssets();
+
+            WaitForGpu(false);
+
+            SetViewPort(0, 0, (uint)window.FramebufferSize.X, (uint)window.FramebufferSize.Y);
         }
 
         public void SetClearColor(float r, float g, float b, float a)
@@ -537,7 +656,7 @@ namespace SampleFramework
 
         public void SetViewPort(int x, int y, uint width, uint height)
         {
-            if (CommandList.AsVtblPtr() == null) return;
+            if (CommandList[FrameBufferIndex].AsVtblPtr() == null) return;
 
             viewport = new Viewport(0, 0, width, height, 0.0f, 1.0f);
             rect = new Box2D<int>(x, y, new Vector2D<int>((int)width, (int)height));
@@ -545,10 +664,25 @@ namespace SampleFramework
 
         public void SetFrameBuffer(uint width, uint height)
         {
-            if (SwapChain.AsVtblPtr() != null)
+            if (width <= 0 || height <= 0) return;
+            
+            WaitForGpu(false, true);
+
+            for (uint i = 0; i < FrameCount; i++)
             {
-                SwapChain.ResizeBuffers(0, width, height, Format.FormatR8G8B8A8Unorm, 0);
+                RenderTargets[i]->Release();
+                FenceValue[i] = FenceValue[FrameBufferIndex];
             }
+
+            SilkMarshal.ThrowHResult
+            (
+                SwapChain.ResizeBuffers(FrameCount, width, height, Format.FormatR8G8B8A8Unorm, 0)
+            );
+
+            CreateRenderTargetViews();
+
+            DepthStencil.Release();
+            CreateDepthStencil();
         }
 
         private void SetResourceBarrier(ResourceStates stateBefore, ResourceStates stateAfter)
@@ -557,24 +691,26 @@ namespace SampleFramework
             resourceBarrier.Type = ResourceBarrierType.Transition;
             resourceBarrier.Flags = ResourceBarrierFlags.None;
             resourceBarrier.Transition = new ResourceTransitionBarrier(RenderTargets[FrameBufferIndex], D3D12.ResourceBarrierAllSubresources, stateBefore, stateAfter);
-            CommandList.ResourceBarrier(1, resourceBarrier);
+            CommandList[FrameBufferIndex].ResourceBarrier(1, resourceBarrier);
         }
 
         public void ClearBuffer()
         {
+            WaitForGpu(false);
+
             SilkMarshal.ThrowHResult
             (
-                CommandAllocator.Reset()
+                CommandAllocator[FrameBufferIndex].Reset()
             );
 
             SilkMarshal.ThrowHResult
             (
-                CommandList.Reset(CommandAllocator, PipelineState)
+                CommandList[FrameBufferIndex].Reset(CommandAllocator[FrameBufferIndex], (ID3D12PipelineState*)0)
             );
-
-            CommandList.SetGraphicsRootSignature(RootSignature);
-            CommandList.RSSetViewports(1, viewport);
-            CommandList.RSSetScissorRects(1, rect);
+            
+            CommandList[FrameBufferIndex].SetGraphicsRootSignature(RootSignature);
+            CommandList[FrameBufferIndex].RSSetViewports(1, viewport);
+            CommandList[FrameBufferIndex].RSSetScissorRects(1, rect);
 
 
             SetResourceBarrier(ResourceStates.Present, ResourceStates.RenderTarget);
@@ -582,13 +718,15 @@ namespace SampleFramework
 
             CpuDescriptorHandle rtvHandle = new CpuDescriptorHandle();
             rtvHandle.Ptr = RtvHeap.GetCPUDescriptorHandleForHeapStart().Ptr + FrameBufferIndex * RtvDescriptorSize;
-            CommandList.OMSetRenderTargets(1, rtvHandle, false, null);
+            CommandList[FrameBufferIndex].OMSetRenderTargets(1, rtvHandle, false, null);
 
             fixed (float* color = CurrnetClearColor)
             {
-                CommandList.ClearRenderTargetView(rtvHandle, color, 0, (Box2D<int>*)0);
+                CommandList[FrameBufferIndex].ClearRenderTargetView(rtvHandle, color, 0, (Box2D<int>*)0);
             }
 
+            var dsvHandle = DSVHeap.GetCPUDescriptorHandleForHeapStart();
+            CommandList[FrameBufferIndex].ClearDepthStencilView(dsvHandle, ClearFlags.Depth, 1, 0, 0, (Box2D<int>*)0);
 
 
 
@@ -605,11 +743,12 @@ namespace SampleFramework
 
 
 
-            CommandList.IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
-            CommandList.SetPipelineState(PipelineState);
-            CommandList.IASetVertexBuffers(0, 1, VertexBufferView_);
+
+            CommandList[FrameBufferIndex].SetPipelineState(PipelineState);
+            CommandList[FrameBufferIndex].IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
+            CommandList[FrameBufferIndex].IASetVertexBuffers(0, 1, VertexBufferView_);
             //CommandList.DrawIndexedInstanced(,);
-            CommandList.DrawInstanced(3, 1, 0, 0);
+            CommandList[FrameBufferIndex].DrawInstanced(3, 1, 0, 0);
         }
 
         public void SwapBuffer()
@@ -618,11 +757,11 @@ namespace SampleFramework
 
             SilkMarshal.ThrowHResult
             (
-                CommandList.Close()
+                CommandList[FrameBufferIndex].Close()
             );
-
+            
             const int CommandListsCount = 1;
-            void* commandList = CommandList;
+            void* commandList = CommandList[FrameBufferIndex];
             var ppCommandLists = stackalloc ID3D12CommandList*[CommandListsCount]
             {
                 (ID3D12CommandList*)commandList,
@@ -631,12 +770,19 @@ namespace SampleFramework
 
             SilkMarshal.ThrowHResult
             (
+                Device.GetDeviceRemovedReason()
+            );
+
+            SilkMarshal.ThrowHResult
+            (
                 SwapChain.Present(Window_.VSync ? 1u : 0u, 0)
             );
 
+            WaitForGpu(false);
+
             FrameBufferIndex = SwapChain.GetCurrentBackBufferIndex();
 
-            WaitForPreviousFrame();
+            IsActivate = true;
         }
 
         public IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs)
@@ -714,18 +860,26 @@ namespace SampleFramework
 
         public void Dispose()
         {
+            WaitForGpu(false);
+
             VertexBuffer.Dispose();
             IndexBuffer.Dispose();
 
 
             Fence.Dispose();
-            CommandList.Dispose();
+            for (int i = 0; i < CommandList.Length; i++)
+            {
+                CommandList[i].Dispose();
+            }
             PipelineState.Dispose();
             RootSignature.Dispose();
-            CommandAllocator.Dispose();
+            for (int i = 0; i < CommandAllocator.Length; i++)
+            {
+                CommandAllocator[i].Dispose();
+            }
             for (int i = 0; i < RenderTargets.Length; i++)
             {
-                RenderTargets[i].Dispose();
+                RenderTargets[i]->Release();
             }
             RtvHeap.Dispose();
             SwapChain.Dispose();
