@@ -28,7 +28,23 @@ namespace SampleFramework
 
         private unsafe void CreateVertexBuffer(DirectX12Device device, float[] vertices, float[] uvs)
         {
-            uint vertexBufferSize = (uint)(sizeof(float) * vertices.Length);
+            VertexStride = 5U * sizeof(float);
+
+            List<float> mergedArray = new();
+            for(int i = 0; i < vertices.Length / 3; i++)
+            {
+                int pos = 3 * i;
+                int pos_uv = 2 * i;
+                mergedArray.Add(vertices[pos]);
+                mergedArray.Add(vertices[pos + 1]);
+                mergedArray.Add(vertices[pos + 2]);
+                mergedArray.Add(uvs[pos_uv]);
+                mergedArray.Add(uvs[pos_uv + 1]);
+            }
+
+
+
+            uint vertexBufferSize = (uint)(sizeof(float) * mergedArray.Count);
 
             HeapProperties heapProperties = new HeapProperties()
             {
@@ -67,22 +83,22 @@ namespace SampleFramework
 
             Silk.NET.Direct3D12.Range range = new Silk.NET.Direct3D12.Range();
 
-            void* vertexDataBegin;
-            SilkMarshal.ThrowHResult(VertexBuffer.Map(0, &range, &vertexDataBegin));
+            void* dataBegin;
+            SilkMarshal.ThrowHResult(VertexBuffer.Map(0, &range, &dataBegin));
 
-            var vertic = (float*)SilkMarshal.Allocate(sizeof(float) * vertices.Length);
-            for(int i = 0; i < vertices.Length; i++)
+            var data = (float*)SilkMarshal.Allocate(sizeof(float) * mergedArray.Count);
+            for(int i = 0; i < mergedArray.Count; i++)
             {
-                vertic[i] = vertices[i];
+                data[i] = mergedArray[i];
             }
             
-            Unsafe.CopyBlock(vertexDataBegin, vertic, vertexBufferSize);
+            Unsafe.CopyBlock(dataBegin, data, vertexBufferSize);
             VertexBuffer.Unmap(0, (Silk.NET.Direct3D12.Range*)0);
 
             VertexBufferView_ = new VertexBufferView()
             {
                 BufferLocation = VertexBuffer.GetGPUVirtualAddress(),
-                StrideInBytes = sizeof(float) * 3,
+                StrideInBytes = VertexStride,
                 SizeInBytes = vertexBufferSize,
             };
         }

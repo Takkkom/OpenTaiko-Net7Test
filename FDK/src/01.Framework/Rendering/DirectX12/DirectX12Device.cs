@@ -34,9 +34,11 @@ namespace SampleFramework
 
         private ComPtr<IDXGISwapChain3> SwapChain;
 
-        private ComPtr<ID3D12DescriptorHeap> RtvHeap;
+        internal ComPtr<ID3D12DescriptorHeap> RtvHeap;
 
         private ComPtr<ID3D12DescriptorHeap> DSVHeap;
+
+        internal ComPtr<ID3D12DescriptorHeap> CBVHeap;
 
         private ID3D12Resource*[] RenderTargets = new ID3D12Resource*[FrameCount];
 
@@ -46,7 +48,7 @@ namespace SampleFramework
 
         internal ComPtr<ID3D12RootSignature> RootSignature;
 
-        private ComPtr<ID3D12GraphicsCommandList>[] CommandList = new ComPtr<ID3D12GraphicsCommandList>[FrameCount];
+        internal ComPtr<ID3D12GraphicsCommandList>[] CommandList = new ComPtr<ID3D12GraphicsCommandList>[FrameCount];
 
         private ComPtr<ID3D12Fence> Fence;
 
@@ -60,7 +62,7 @@ namespace SampleFramework
 
         private IWindow Window_;
 
-        private uint FrameBufferIndex;
+        internal uint FrameBufferIndex;
 
         private bool IsActivate;
 
@@ -198,6 +200,24 @@ namespace SampleFramework
             DSVHeap = dsvHeap;
         }
 
+        private void CreateCBVHeap()
+        {
+            DescriptorHeapDesc cbvHeapDesc = new DescriptorHeapDesc()
+            {
+                NumDescriptors = 1,
+                Type = DescriptorHeapType.CbvSrvUav,
+                Flags = DescriptorHeapFlags.ShaderVisible
+            };
+            
+            void* cbvHeap = null;
+            var iid = ID3D12DescriptorHeap.Guid;
+            SilkMarshal.ThrowHResult
+            (
+                Device.CreateDescriptorHeap(&cbvHeapDesc, ref iid, &cbvHeap)
+            );
+            CBVHeap = (ID3D12DescriptorHeap*)cbvHeap;
+        }
+
         private void CreateRenderTargetViews()
         {
             CpuDescriptorHandle rtvHandle = new CpuDescriptorHandle();
@@ -280,19 +300,78 @@ namespace SampleFramework
 
         private void CreateRootSignature()
         {
-            RootSignatureDesc rootSignatureDesc = new RootSignatureDesc();
-            rootSignatureDesc.NumParameters = 0;
-            rootSignatureDesc.PParameters = null;
-            rootSignatureDesc.NumStaticSamplers = 0;
-            rootSignatureDesc.PStaticSamplers = null;
-            rootSignatureDesc.Flags = RootSignatureFlags.AllowInputAssemblerInputLayout;
+            DescriptorRange[] range = new DescriptorRange[2]
+            {
+                new DescriptorRange()
+                {
+                    RangeType = DescriptorRangeType.Srv,
+                    NumDescriptors = 1,
+                    BaseShaderRegister = 0,
+                    RegisterSpace = 0,
+                    OffsetInDescriptorsFromTableStart = D3D12.DescriptorRangeOffsetAppend 
+                },
+                new DescriptorRange()
+                {
+                    RangeType = DescriptorRangeType.Cbv,
+                    NumDescriptors = 1,
+                    BaseShaderRegister = 0,
+                    RegisterSpace = 0,
+                    OffsetInDescriptorsFromTableStart = D3D12.DescriptorRangeOffsetAppend 
+                }
+            };
+            var range1 = range[0];
+            var range2 = range[1];
+            var rootParameters = stackalloc RootParameter[2]
+            {
+                new RootParameter()
+                {
+                    ParameterType = RootParameterType.TypeDescriptorTable,
+                    DescriptorTable = new RootDescriptorTable(1, &range1),
+                    ShaderVisibility = ShaderVisibility.Pixel
+                },
+                new RootParameter()
+                {
+                    ParameterType = RootParameterType.TypeDescriptorTable,
+                    DescriptorTable = new RootDescriptorTable(1, &range2),
+                    ShaderVisibility = ShaderVisibility.Vertex
+                }
+            };
 
-            ComPtr<ID3D10Blob> signature = null;
-            ComPtr<ID3D10Blob> error = null;
+            StaticSamplerDesc sampleDesc = new()
+            {
+                Filter = Filter.MinMagMipPoint,
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap,
+                MipLODBias = 0,
+                MaxAnisotropy = 16,
+                ComparisonFunc = ComparisonFunc.Never,
+                BorderColor = StaticBorderColor.TransparentBlack,
+                MinLOD = 0.0f,
+                MaxLOD = float.MaxValue,
+                ShaderRegister = 0,
+                RegisterSpace = 0,
+                ShaderVisibility = ShaderVisibility.Pixel,
+            };
+
+            RootSignatureDesc rootSignatureDesc = new RootSignatureDesc();
+            rootSignatureDesc.NumParameters = 2;
+            rootSignatureDesc.PParameters = rootParameters;
+            rootSignatureDesc.NumStaticSamplers = 1;
+            rootSignatureDesc.PStaticSamplers = &sampleDesc;
+            rootSignatureDesc.Flags = 
+            RootSignatureFlags.AllowInputAssemblerInputLayout | 
+            RootSignatureFlags.DenyHullShaderRootAccess | 
+            RootSignatureFlags.DenyDomainShaderRootAccess | 
+            RootSignatureFlags.DenyGeometryShaderRootAccess | 
+            RootSignatureFlags.DenyPixelShaderRootAccess;
+
+            ID3D10Blob* signature = null;
+            ID3D10Blob* error = null;
 
             SilkMarshal.ThrowHResult
             (
-                D3d12.SerializeRootSignature(rootSignatureDesc, D3DRootSignatureVersion.Version1, signature.GetAddressOf(), error.GetAddressOf())
+                D3d12.SerializeRootSignature(&rootSignatureDesc, D3DRootSignatureVersion.Version10, &signature, &error)
             );
 
             var iid = ID3D12RootSignature.Guid;
@@ -300,13 +379,13 @@ namespace SampleFramework
 
             SilkMarshal.ThrowHResult
             (
-                Device.CreateRootSignature(0, signature.Get().GetBufferPointer(), signature.Get().GetBufferSize(), &iid, &rootSignature)
+                Device.CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), &iid, &rootSignature)
             );
 
             RootSignature = (ID3D12RootSignature*)rootSignature;
 
-            signature.Dispose();
-            error.Dispose();
+            signature->Release();
+            if (error != null) error->Release();
         }
 
         private void CreateFence()
@@ -351,7 +430,7 @@ namespace SampleFramework
             }
         }
 
-        private void WaitForGpu(bool moveToNextFrame, bool resetFrameBufferIndex = false)
+        internal void WaitForGpu(bool moveToNextFrame, bool resetFrameBufferIndex = false)
         {
             SilkMarshal.ThrowHResult
             (
@@ -411,6 +490,8 @@ namespace SampleFramework
             CreateRTVHeap();
 
             CreateDSVHeap();
+
+            CreateCBVHeap();
 
             CreateRenderTargetViews();
 
@@ -633,6 +714,9 @@ namespace SampleFramework
         {
             var dx12polygon = (DirectX12Polygon)polygon;
             var dx12shader = (DirectX12Shader)shader;
+            var dx12texture = (DirectX12Texture)texture;
+
+            dx12shader.Update(this);
             CommandList[FrameBufferIndex].SetPipelineState(dx12shader.PipelineState);
             CommandList[FrameBufferIndex].IASetPrimitiveTopology(D3DPrimitiveTopology.D3DPrimitiveTopologyTrianglelist);
             CommandList[FrameBufferIndex].IASetVertexBuffers(0, 1, dx12polygon.VertexBufferView_);
@@ -664,6 +748,8 @@ namespace SampleFramework
             {
                 RenderTargets[i]->Release();
             }
+            CBVHeap.Dispose();
+            DSVHeap.Dispose();
             RtvHeap.Dispose();
             SwapChain.Dispose();
             CommandQueue.Dispose();

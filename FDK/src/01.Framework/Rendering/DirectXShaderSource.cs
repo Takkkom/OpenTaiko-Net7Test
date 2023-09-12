@@ -10,22 +10,42 @@ namespace SampleFramework
     unsafe class DirectXShaderSource : IDisposable
     {
         const string shaderSource = @"
+
+    Texture2D g_texture : register(t0);
+    SamplerState g_sampler : register(s0);
+                
+    cbuffer ConstantBuffer : register(b0)
+    {
+        float4x4 Projection;
+        float4 Color;
+        float4 TextureRect;
+    }
+
     struct vs_in {
         float3 position_local : POS;
+        float2 uvposition_local : UVPOS;
     };
 
     struct vs_out {
         float4 position_clip : SV_POSITION;
+        float2 uvposition_clip : TEXCOORD0;
     };
 
     vs_out vs_main(vs_in input) {
         vs_out output = (vs_out)0;
-        output.position_clip = float4(input.position_local, 1.0);
+
+        float4 position = float4(input.position_local, 1.0);
+
+        output.position_clip = position;
+                    
+        output.uvposition_clip = input.uvposition_local;
         return output;
     }
 
     float4 ps_main(vs_out input) : SV_TARGET {
-        return float4( 1.0, 0.5, 0.2, 1.0 );
+        float4 totalcolor = float4( input.uvposition_clip.x, input.uvposition_clip.y, 0.0, 1.0 );
+
+        return totalcolor;
     }
     ";
 
