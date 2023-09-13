@@ -3700,6 +3700,7 @@ namespace TJAPlayer3
 						{
                             if ( !pChip.bHit && ( pChip.nバーからの距離dot.Taiko < 0 ) )
                             {
+                                //if (nPlayer == 0) TJAPlayer3.BeatScaling = new CCounter(0, 1000, 120.0 / pChip.dbBPM / 2.0, TJAPlayer3.Timer);
                                 if (NowAIBattleSectionTime >= NowAIBattleSection.Length && NowAIBattleSection.End == AIBattleSection.EndType.None && nPlayer == 0)
                                 {
                                     PassAIBattleSection();

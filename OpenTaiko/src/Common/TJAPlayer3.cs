@@ -562,6 +562,8 @@ namespace TJAPlayer3
 			}
 		}
 
+		public static CCounter BeatScaling;
+
 		
 
 		// メソッド
@@ -724,7 +726,16 @@ namespace TJAPlayer3
             SoundManager.PlayTimer?.Update();
             Input管理?.Polling( TJAPlayer3.ConfigIni.bバッファ入力を行う );
             FPS?.Update();
-			
+
+			if (BeatScaling != null)
+			{
+				BeatScaling.Tick();
+				float value = MathF.Sin((BeatScaling.CurrentValue / 1000.0f) * MathF.PI / 2.0f);
+				float scale = 1.0f + ((1.0f - value) / 40.0f);
+				Camera *= Matrix4X4.CreateScale(scale, scale, 1.0f);
+				if (BeatScaling.CurrentValue == BeatScaling.EndValue) BeatScaling = null;
+			}
+
 			//CameraTest
 			/*
             Camera *= Matrix4X4.CreateScale(1.0f / ScreenAspect, 1.0f, 1.0f) * 
