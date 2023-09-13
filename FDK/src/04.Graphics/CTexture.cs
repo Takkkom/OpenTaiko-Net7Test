@@ -693,41 +693,81 @@ namespace FDK
 
         public void t2D描画SongObj(float x, float y, float xScale, float yScale)
         {
-            float depth = 1f;
-            Rectangle rc画像内の描画領域 = this.rc全画像;
+            this.color4.Alpha = this._opacity / 255f;
 
-            if (this.fZ軸中心回転 == 0f)
+            var rc画像内の描画領域 = rc全画像;
+
+            float offsetX = rc画像内の描画領域.Width;
+            float offsetY = rc画像内の描画領域.Height;
+
+            Matrix4X4<float> mvp = Matrix4X4<float>.Identity;
+
+            Matrix4X4<float> scaling()
             {
-                #region [ (A) 回転なし ]
-                //-----------------
-                float fx = ((float)rc画像内の描画領域.Width) / 2f;
-                float fy = ((float)rc画像内の描画領域.Height) / 2f;
-                float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-                float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-                float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-                float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-                this.color4.Alpha = ((float)this._opacity) / 255f;
-                int color = ToArgb(this.color4);
-
-
-                //-----------------
-                #endregion
+                Matrix4X4<float> resizeMatrix = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
+                Matrix4X4<float> scaleMatrix = Matrix4X4.CreateScale(xScale, yScale, 1.0f);
+                return resizeMatrix * scaleMatrix;
             }
-            else
-            {
-                #region [ (B) 回転あり ]
-                //-----------------
-                float fx = ((float)rc画像内の描画領域.Width) / 2f;
-                float fy = ((float)rc画像内の描画領域.Height) / 2f;
-                float f左U値 = ((float)rc画像内の描画領域.Left) / ((float)this.szテクスチャサイズ.Width);
-                float f右U値 = ((float)rc画像内の描画領域.Right) / ((float)this.szテクスチャサイズ.Width);
-                float f上V値 = ((float)rc画像内の描画領域.Top) / ((float)this.szテクスチャサイズ.Height);
-                float f下V値 = ((float)rc画像内の描画領域.Bottom) / ((float)this.szテクスチャサイズ.Height);
-                this.color4.Alpha = ((float)this._opacity) / 255f;
-                int color = ToArgb(this.color4);
 
-                //-----------------
-                #endregion
+            Matrix4X4<float> rotation(float rotate)
+            {
+                Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f * Game.ScreenAspect, 1.0f, 1.0f);
+                rotationMatrix *= 
+                Matrix4X4.CreateRotationX(0.0f) * 
+                Matrix4X4.CreateRotationY(0.0f) * 
+                Matrix4X4.CreateRotationZ(rotate);
+                rotationMatrix *= Matrix4X4.CreateScale(1.0f / Game.ScreenAspect, 1.0f, 1.0f);
+                
+                return rotationMatrix;
+            }
+
+            Matrix4X4<float> translation()
+            {
+                float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
+                float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * -1;
+
+                Matrix4X4<float> translation = Matrix4X4.CreateTranslation(api_x, api_y, 0.0f);
+                Matrix4X4<float> translation2 = Matrix4X4.CreateTranslation(
+                    (rc画像内の描画領域.Width * xScale / GameWindowSize.Width), 
+                    (rc画像内の描画領域.Height * yScale / GameWindowSize.Height) * -1, 
+                    0.0f);
+                return translation * translation2;
+            }
+
+            mvp *= scaling();
+            mvp *= rotation(fZ軸中心回転);
+            mvp *= translation();
+
+            Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
+            Vector4D<float> rect = new(
+                rc画像内の描画領域.X / rc全画像.Width,
+                rc画像内の描画領域.Y / rc全画像.Height,
+                rc画像内の描画領域.Width / rc全画像.Width,
+                rc画像内の描画領域.Height / rc全画像.Height);
+            Game.Shader_.SetTextureRect(rect);
+            Game.Shader_.SetMVP(mvp);
+
+            Game.Shader_.SetCamera(Game.Camera);
+
+            if (b加算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Add);
+            }
+            else if (b乗算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Multi);
+            }
+            else if (b減算合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Sub);
+            }
+            else if (bスクリーン合成)
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Screen);
+            }
+            else 
+            {
+                Game.GraphicsDevice.DrawPolygon(Game.Polygon_, Game.Shader_, Texture_, BlendType.Normal);
             }
         }
 

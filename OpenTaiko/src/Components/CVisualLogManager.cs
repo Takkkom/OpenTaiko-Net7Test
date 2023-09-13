@@ -30,6 +30,11 @@ namespace TJAPlayer3
                 timeSinceCreation.Tick();
 
                 // Display stuff here
+
+                int x = 0;
+                int y = 0 + (40 * screenPosition);
+
+                TJAPlayer3.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.赤, msg);
             }
 
             public bool IsExpired()

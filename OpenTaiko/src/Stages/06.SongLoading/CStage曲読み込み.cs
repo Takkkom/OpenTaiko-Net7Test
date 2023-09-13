@@ -515,6 +515,7 @@ namespace TJAPlayer3
 								string message = "";
 								foreach (var text in TJAPlayer3.DTX.listErrors)
 								{
+									TJAPlayer3.VisualLogManager.PushCard(CVisualLogManager.ELogCardType.LogError, text);
 									//System.Windows.Forms.MessageBox.Show(text, "譜面にエラーが見つかりました");
 								}
 							}

@@ -2236,6 +2236,14 @@ for (int i = 0; i < 3; i++) {
 					this.Device.SetTransform(TransformState.View, mat);
 					*/
 
+					Camera *= Matrix4X4.CreateScale(fCamXScale, fCamYScale, 1f);
+					
+					Camera *= Matrix4X4.CreateScale(1.0f / ScreenAspect, 1.0f, 1.0f) * 
+					Matrix4X4.CreateRotationZ(CConversion.DegreeToRadian(fCamRotation)) * 
+					Matrix4X4.CreateScale(1.0f * ScreenAspect, 1.0f, 1.0f);
+
+					Camera *= Matrix4X4.CreateTranslation(fCamXOffset / 1280, fCamYOffset / 720, 1f);
+
 					if (TJAPlayer3.DTX != null)
 					{
 						//object rendering
@@ -2244,6 +2252,8 @@ for (int i = 0; i < 3; i++) {
 							pair.Value.tDraw();
 						}
 					}
+
+					Camera = Matrix4X4<float>.Identity;
 				}
 
 				if (r現在のステージ != null && r現在のステージ.eステージID != CStage.Eステージ.起動 && TJAPlayer3.Tx.Network_Connection != null)
