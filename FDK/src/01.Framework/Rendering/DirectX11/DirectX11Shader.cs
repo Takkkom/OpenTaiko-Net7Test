@@ -17,6 +17,8 @@ namespace SampleFramework
             public Vector4D<float> Color;
 
             public Vector4D<float> TextureRect;
+
+            public Matrix4X4<float> Camera;
         }
 
         internal ComPtr<ID3D10Blob> VertexCode = default;
@@ -198,7 +200,6 @@ namespace SampleFramework
         public void SetMVP(Matrix4X4<float> mvp)
         {
             ConstantBufferStruct_.Projection = mvp;
-            //ConstantBufferStruct_.Projection = mvp;
         }
 
         public void SetColor(Vector4D<float> color)
@@ -209,6 +210,11 @@ namespace SampleFramework
         public void SetTextureRect(Vector4D<float> rect)
         {
             ConstantBufferStruct_.TextureRect = rect;
+        }
+
+        public void SetCamera(Matrix4X4<float> camera)
+        {
+            ConstantBufferStruct_.Camera = camera;
         }
 
         public unsafe void Update()

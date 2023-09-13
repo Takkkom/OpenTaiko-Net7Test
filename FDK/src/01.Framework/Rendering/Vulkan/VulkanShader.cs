@@ -26,6 +26,10 @@ namespace SampleFramework
         {
         }
 
+        public unsafe void SetCamera(Matrix4X4<float> camera)
+        {
+        }
+
         public void Dispose()
         {
         }

@@ -59,48 +59,11 @@ namespace SampleFramework
             return new OpenGLPolygon(vertices, indices, uvs);
         }
 
-        public IShader GenShader()
+        public IShader GenShader(string name)
         {
-            return new OpenGLShader(
-                
-                @"
-                #version 330 core
-
-                layout (location = 0) in vec3 aPosition;
-                layout (location = 1) in vec2 aTexCoord;
-
-                uniform mat4 mvp;
-                uniform vec4 textureRect;
-
-                out vec2 texcoord;
-
-                void main()
-                {
-                    vec4 position = vec4(aPosition, 1.0);
-                    position = mvp * position;
-                    
-                    gl_Position = position;
-                    texcoord = textureRect.xy;
-                    texcoord.xy += aTexCoord.xy * textureRect.zw;
-                }
-                "
-                ,
-                @"
-                #version 330 core
-
-                in vec2 texcoord;
-                out vec4 out_color;
-                uniform sampler2D texture1;
-                uniform vec4 color;
-
-                void main()
-                {
-                    vec4 totalcolor = texture(texture1, texcoord);
-                    totalcolor *= color;
-                    out_color = totalcolor;
-                }
-                "
-            );
+            using StreamReader vert = new StreamReader(@$"{name}.glsl.vert");
+            using StreamReader frag = new StreamReader(@$"{name}.glsl.frag");
+            return new OpenGLShader(vert.ReadToEnd(), frag.ReadToEnd());
         }
 
         public unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType)

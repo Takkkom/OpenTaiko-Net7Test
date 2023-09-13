@@ -184,6 +184,16 @@ namespace SampleFramework
 
         public static long TimeMs;
 
+        public static Matrix4X4<float> Camera;
+
+        public static float ScreenAspect
+        {
+            get 
+            {
+                return (float)GameWindowSize.Width / GameWindowSize.Height;
+            }
+        }
+
         /// <summary>
         /// Initializes the <see cref="Game"/> class.
         /// </summary>
@@ -355,31 +365,31 @@ namespace SampleFramework
             GraphicsDevice.SetViewPort(0, 0, (uint)Window_.Size.X, (uint)Window_.FramebufferSize.Y);
             GraphicsDevice.SetFrameBuffer((uint)Window_.FramebufferSize.X, (uint)Window_.FramebufferSize.Y);
 
-            Shader_ = GraphicsDevice.GenShader();
+            Shader_ = GraphicsDevice.GenShader($@"Shaders{Path.AltDirectorySeparatorChar}Common");
 
-                Polygon_ = GraphicsDevice.GenPolygon(
-                    new float[]
-                    {
-                        1, 1 * VerticalFix, 0.0f,
-                        1, -1 * VerticalFix, 0.0f,
-                        -1, -1 * VerticalFix, 0.0f,
-                        -1, 1 * VerticalFix, 0.0f
-                    }
-                    ,
-                    new uint[]
-                    {
-                        0u, 1u, 3u,
-                        1u, 2u, 3u
-                    }
-                    ,
-                    new float[]
-                    {
-                        1.0f, 0.0f,
-                        1.0f, 1.0f,
-                        0.0f, 1.0f,
-                        0.0f, 0.0f,
-                    }
-                );
+            Polygon_ = GraphicsDevice.GenPolygon(
+                new float[]
+                {
+                    1, 1 * VerticalFix, 0.0f,
+                    1, -1 * VerticalFix, 0.0f,
+                    -1, -1 * VerticalFix, 0.0f,
+                    -1, 1 * VerticalFix, 0.0f
+                }
+                ,
+                new uint[]
+                {
+                    0u, 1u, 3u,
+                    1u, 2u, 3u
+                }
+                ,
+                new float[]
+                {
+                    1.0f, 0.0f,
+                    1.0f, 1.0f,
+                    0.0f, 1.0f,
+                    0.0f, 0.0f,
+                }
+            );
 
             Initialize();
             LoadContent();
@@ -406,6 +416,7 @@ namespace SampleFramework
 
         public void Window_Render(double deltaTime)
         {
+            Camera = Matrix4X4<float>.Identity;
             GraphicsDevice.ClearBuffer();
 
             Draw();

@@ -79,7 +79,7 @@ namespace SampleFramework
             return null;
         }
 
-        public IShader GenShader()
+        public IShader GenShader(string name)
         {
             return null;
         }

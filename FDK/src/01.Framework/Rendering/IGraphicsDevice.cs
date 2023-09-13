@@ -27,7 +27,7 @@ namespace SampleFramework
 
         IPolygon GenPolygon(float[] vertices, uint[] indices, float[] uvs);
 
-        IShader GenShader();
+        IShader GenShader(string name);
 
         unsafe ITexture GenTexture(void* data, int width, int height, RgbaType rgbaType);
 

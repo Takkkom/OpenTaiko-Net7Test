@@ -17,6 +17,8 @@ namespace SampleFramework
 
         private int TextureRectID;
 
+        private int CameraID;
+
         public OpenGLShader(string vertexCode, string fragmentCode)
         {
             uint vertexShader = OpenGLDevice.Gl.CreateShader(ShaderType.VertexShader);
@@ -57,6 +59,7 @@ namespace SampleFramework
             MVPID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "mvp");
             ColorID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "color");
             TextureRectID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "textureRect");
+            CameraID = OpenGLDevice.Gl.GetUniformLocation(ShaderProgram, "camera");
         }
 
         public unsafe void SetMVP(Matrix4X4<float> mvp)
@@ -74,6 +77,11 @@ namespace SampleFramework
         {
             System.Numerics.Vector4 vector4 = new(rect.X, rect.Y, rect.Z, rect.W);
             OpenGLDevice.Gl.Uniform4(TextureRectID, ref vector4);
+        }
+
+        public unsafe void SetCamera(Matrix4X4<float> camera)
+        {
+            OpenGLDevice.Gl.UniformMatrix4(CameraID, 1, false, (float*)&camera);
         }
 
         public void Dispose()

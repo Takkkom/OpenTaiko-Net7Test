@@ -452,31 +452,30 @@ namespace FDK
 
             float offsetX = rc画像内の描画領域.Width;
             float offsetY = rc画像内の描画領域.Height;
-            float aspect = (float)GameWindowSize.Width / GameWindowSize.Height;
 
             Matrix4X4<float> mvp = Matrix4X4<float>.Identity;
 
 
-            void scaling()
+            Matrix4X4<float> scaling()
             {
                 Matrix4X4<float> resizeMatrix = Matrix4X4.CreateScale((float)rc画像内の描画領域.Width / GameWindowSize.Width, (float)rc画像内の描画領域.Height / GameWindowSize.Height, 0.0f);
                 Matrix4X4<float> scaleMatrix = Matrix4X4.CreateScale(vc拡大縮小倍率.X, vc拡大縮小倍率.Y, vc拡大縮小倍率.Z);
-                mvp *= resizeMatrix * scaleMatrix;
+                return resizeMatrix * scaleMatrix;
             }
 
-            void rotation()
+            Matrix4X4<float> rotation(float rotate)
             {
-                Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f * aspect, 1.0f, 1.0f);
+                Matrix4X4<float> rotationMatrix = Matrix4X4.CreateScale(1.0f * Game.ScreenAspect, 1.0f, 1.0f);
                 rotationMatrix *= 
                 Matrix4X4.CreateRotationX(0.0f) * 
                 Matrix4X4.CreateRotationY(0.0f) * 
-                Matrix4X4.CreateRotationZ(fZ軸中心回転);
-                rotationMatrix *= Matrix4X4.CreateScale(1.0f / aspect, 1.0f, 1.0f);
+                Matrix4X4.CreateRotationZ(rotate);
+                rotationMatrix *= Matrix4X4.CreateScale(1.0f / Game.ScreenAspect, 1.0f, 1.0f);
                 
-                mvp *= rotationMatrix;
+                return rotationMatrix;
             }
 
-            void translation()
+            Matrix4X4<float> translation()
             {
                 float api_x = (-1 + (x * 2.0f / GameWindowSize.Width));
                 float api_y = (-1 + (y * 2.0f / GameWindowSize.Height)) * -1;
@@ -486,12 +485,12 @@ namespace FDK
                     (rc画像内の描画領域.Width * vc拡大縮小倍率.X / GameWindowSize.Width), 
                     (rc画像内の描画領域.Height * vc拡大縮小倍率.Y / GameWindowSize.Height) * -1, 
                     0.0f);
-                mvp *= translation * translation2;
+                return translation * translation2;
             }
 
-            scaling();
-            rotation();
-            translation();
+            mvp *= scaling();
+            mvp *= rotation(fZ軸中心回転);
+            mvp *= translation();
 
             Game.Shader_.SetColor(new Vector4D<float>(color4.Red, color4.Green, color4.Blue, color4.Alpha));
             Vector4D<float> rect = new(
@@ -501,6 +500,8 @@ namespace FDK
                 rc画像内の描画領域.Height / rc全画像.Height);
             Game.Shader_.SetTextureRect(rect);
             Game.Shader_.SetMVP(mvp);
+
+            Game.Shader_.SetCamera(Game.Camera);
 
             if (b加算合成)
             {

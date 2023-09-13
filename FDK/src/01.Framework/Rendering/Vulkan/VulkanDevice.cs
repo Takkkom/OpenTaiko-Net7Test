@@ -40,7 +40,7 @@ namespace SampleFramework
             return new VulkanPolygon(vertices, indices, uvs);
         }
 
-        public IShader GenShader()
+        public IShader GenShader(string name)
         {
             return new VulkanShader();
         }

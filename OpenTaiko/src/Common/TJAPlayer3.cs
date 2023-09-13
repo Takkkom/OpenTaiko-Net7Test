@@ -13,6 +13,7 @@ using SampleFramework;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
+using Silk.NET.Maths;
 using SkiaSharp;
 using DiscordRPC;
 
@@ -723,6 +724,13 @@ namespace TJAPlayer3
             SoundManager.PlayTimer?.Update();
             Input管理?.Polling( TJAPlayer3.ConfigIni.bバッファ入力を行う );
             FPS?.Update();
+			
+			//CameraTest
+			/*
+            Camera *= Matrix4X4.CreateScale(1.0f / ScreenAspect, 1.0f, 1.0f) * 
+            Matrix4X4.CreateRotationZ(MathF.PI / 4.0f) * 
+            Matrix4X4.CreateScale(1.0f * ScreenAspect, 1.0f, 1.0f);
+			*/
 
 			// #xxxxx 2013.4.8 yyagi; sleepの挿入位置を、EndScnene～Present間から、BeginScene前に移動。描画遅延を小さくするため。
 

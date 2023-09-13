@@ -247,6 +247,10 @@ namespace SampleFramework
             ConstantBufferStruct_.TextureRect = rect;
         }
 
+        public void SetCamera(Matrix4X4<float> camera)
+        {
+        }
+
         internal unsafe void Update(DirectX12Device device)
         {
             CpuDescriptorHandle rtvHandle = new CpuDescriptorHandle();
