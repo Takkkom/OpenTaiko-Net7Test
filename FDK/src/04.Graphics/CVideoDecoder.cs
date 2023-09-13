@@ -328,7 +328,7 @@ namespace FDK
 		}
 
 		//for play
-		private bool bPlaying = false;
+		public bool bPlaying { get; private set; } = false;
 		private CTimer CTimer;
 		private AVRational Framerate;
 		private CTexture lastTexture;

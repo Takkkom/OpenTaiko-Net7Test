@@ -32,7 +32,7 @@ namespace TJAPlayer3
 				{
 					this.ratio1 = Math.Min((float)SampleFramework.GameWindowSize.Height / ((float)this.rVD.FrameSize.Height), (float)SampleFramework.GameWindowSize.Width / ((float)this.rVD.FrameSize.Height));
 					
-					this.rVD.Start();
+					if (!rVD.bPlaying) this.rVD.Start();
 				}
 			}
 		}

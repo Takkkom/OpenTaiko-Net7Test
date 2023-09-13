@@ -833,6 +833,7 @@ namespace TJAPlayer3
         protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 9, 0, 8, 8 };
 		public STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含まない;
 		public STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含む;
+        public bool ShowVideo;
         public int[] n良;
         public int[] nHighestCombo;
         public int[] nCombo;
@@ -3745,8 +3746,36 @@ namespace TJAPlayer3
 							pChip.bHit = true;
 							if ( configIni.bAVI有効 )
 							{
-                                if ((dTX.listVD.TryGetValue(pChip.n整数値, out CVideoDecoder vd)))
+                                if ((dTX.listVD.TryGetValue(pChip.n整数値_内部番号, out CVideoDecoder vd)))
                                 {
+                                    ShowVideo = true;
+                                    if (TJAPlayer3.ConfigIni.bAVI有効 && vd != null)
+                                    {
+                                        this.actAVI.Start(pChip.nチャンネル番号, vd);
+                                        this.actAVI.Seek(pChip.VideoStartTimeMs);
+                                    }
+                                }
+							}
+						}
+						break;
+					case 0x55:
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
+						{
+							pChip.bHit = true;
+							if ( configIni.bAVI有効 )
+							{
+                                if ((dTX.listVD.TryGetValue(pChip.n整数値_内部番号, out CVideoDecoder vd)))
+                                {
+                                    ShowVideo = false;
+                                    if (TJAPlayer3.ConfigIni.bAVI有効 && vd != null)
+                                    {
+                                        this.actAVI.Stop();
+                                    }
+                                }
+
+                                if ((dTX.listVD.TryGetValue(1, out CVideoDecoder vd2)))
+                                {
+                                    ShowVideo = true;
                                     if (TJAPlayer3.ConfigIni.bAVI有効 && vd != null)
                                     {
                                         this.actAVI.Start(pChip.nチャンネル番号, vd);
@@ -3757,7 +3786,6 @@ namespace TJAPlayer3
 						break;
 #endregion
 #region[ 55-60: EmptySlot ]
-                    case 0x55:
                     case 0x56:
                     case 0x57:
                     case 0x58:
@@ -5045,7 +5073,11 @@ namespace TJAPlayer3
 
             TJAPlayer3.DTX.t全チップの再生停止とミキサーからの削除();
             this.t数値の初期化( true, true );
-			this.actAVI.Stop();
+			//this.actAVI.Stop();
+            foreach(var vd in TJAPlayer3.DTX.listVD)
+            {
+                vd.Value.Stop();
+            }
             this.actPanel.t歌詞テクスチャを削除する();
             for (int i = 0; i < 5; i++)
             {

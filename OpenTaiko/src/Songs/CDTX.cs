@@ -197,6 +197,7 @@ namespace TJAPlayer3
             public EAVI種別 eAVI種別;
             public E楽器パート e楽器パート = E楽器パート.UNKNOWN;
             public int nチャンネル番号;
+            public int VideoStartTimeMs;
             public STDGBVALUE<int> nバーからの距離dot;
             public int nバーからのノーツ末端距離dot;
             public int nバーからのノーツ末端距離dot_Y;
@@ -3816,8 +3817,51 @@ namespace TJAPlayer3
                 // チップを配置。
                 this.listChip.Add(chip);
             }
+            else if (command == "#BGAON")
+            {
+                try
+                {
+                    var commandData = argument.Split(' ');
+                    string listvdIndex = commandData[0];
+                    var bgaStartTime = commandData[1];
+                    int index = (10 * int.Parse(listvdIndex[0].ToString())) + int.Parse(listvdIndex[1].ToString()) + 2;
+                    
+                    var chip = new CChip();
+                    chip.nチャンネル番号 = 0x54;
+                    chip.n発声位置 = ((this.n現在の小節数) * 384);
+                    chip.dbBPM = this.dbNowBPM;
+                    chip.n発声時刻ms = (int)this.dbNowTime;
+                    chip.fNow_Measure_m = this.fNow_Measure_m;
+                    chip.fNow_Measure_s = this.fNow_Measure_s;
+                    chip.n整数値_内部番号 = index;
+                    chip.n整数値 = index;
 
+                    chip.VideoStartTimeMs = (int)(float.Parse(bgaStartTime) * 1000);
 
+                    // チップを配置。
+                    this.listChip.Add(chip);
+                }
+                catch (Exception ex)
+                {
+                        AddError(command, argument);
+                }
+            }
+            else if (command == "#BGAOFF")
+            {
+                int index = (10 * int.Parse(argument[0].ToString())) + int.Parse(argument[1].ToString()) + 2;
+                var chip = new CChip();
+                chip.nチャンネル番号 = 0x55;
+                chip.n発声位置 = ((this.n現在の小節数) * 384);
+                chip.dbBPM = this.dbNowBPM;
+                chip.n発声時刻ms = (int)this.dbNowTime;
+                chip.fNow_Measure_m = this.fNow_Measure_m;
+                chip.fNow_Measure_s = this.fNow_Measure_s;
+                chip.n整数値_内部番号 = index;
+                chip.n整数値 = index;
+
+                // チップを配置。
+                this.listChip.Add(chip);
+            }
             else if (command == "#CAMVMOVESTART")
             {
                 if (currentCamVMoveChip == null)
@@ -7552,6 +7596,40 @@ namespace TJAPlayer3
 						this.listVD.Remove(1);
 
 					this.listVD.Add(1, vd);
+				}
+				catch (Exception e)
+				{
+					Trace.TraceWarning(e.ToString()+"\n"+
+						"動画のデコーダー生成で例外が発生しましたが、処理を継続します。");
+					if (this.listVD.ContainsKey(1))
+						this.listVD.Remove(1);
+				}
+            }
+            else if (strCommandName.Contains("BGA"))
+            {
+                //2016.02.02 kairera0467
+                //背景動画の定義。DTXから入力もできるが、tjaからも入力できるようにする。
+
+                string videoPath = "";
+                if (!string.IsNullOrEmpty(strCommandParam))
+                {
+                    videoPath =
+                        CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strファイル名, strCommandParam);
+                }
+
+				string strVideoFilename;
+				if (!string.IsNullOrEmpty(this.PATH_WAV))
+					strVideoFilename = this.PATH_WAV + videoPath;
+				else
+					strVideoFilename = this.strフォルダ名 + videoPath;
+
+				try
+				{
+					CVideoDecoder vd = new CVideoDecoder(strVideoFilename);
+
+                    var indexText = strCommandName.Remove(0, 3);
+
+					this.listVD.Add((10 * int.Parse(indexText[0].ToString())) + int.Parse(indexText[1].ToString()) + 2, vd);
 				}
 				catch (Exception e)
 				{
