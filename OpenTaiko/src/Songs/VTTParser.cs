@@ -490,7 +490,7 @@ namespace TJAPlayer3
                 heights[i] = new int[textures[i].Count];
                 for (int j = 0; j < textures[i].Count; j++)
                 {
-                    int nowWidth = textures[i][j].Width - space;
+                    int nowWidth = Math.Max(textures[i][j].Width - space, 0);
                     int nowHeight = textures[i][j].Height;
                     
                     widths[i][j] += nowWidth;
@@ -531,10 +531,10 @@ namespace TJAPlayer3
                     }
                     */
                     
+                    int y = 0;
                     for (int i = 0; i < textures.Count; i++)
                     {
-                        int x = 0;
-                        int y = 0;
+                        int x = (lyrictex.Width - width[i]) / 2;
                         for (int j = 0; j < textures[i].Count; j++)
                         {
                             canvas.DrawBitmap(textures[i][j], x, y + ((height[i] - textures[i][j].Height) / 2) + (rubyheightoffset[i] / 2));
