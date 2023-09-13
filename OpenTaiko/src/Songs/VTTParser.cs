@@ -478,15 +478,25 @@ namespace TJAPlayer3
 
             int[] width = new int[textures.Count];
             int[] height = new int[textures.Count];
+            int[][] widths = new int[textures.Count][];
+            int[][] heights = new int[textures.Count][];
             int max_width = 0;
             int max_height = 0;
 
             for (int i = 0; i < textures.Count; i++)
             {
+                widths[i] = new int[textures[i].Count];
+                heights[i] = new int[textures[i].Count];
                 for (int j = 0; j < textures[i].Count; j++)
                 {
-                    width[i] += textures[i][j].Width;
-                    height[i] = textures[i][j].Height > height[i] ? textures[i][j].Height : height[i];
+                    int space = 50;
+                    int nowWidth = textures[i][j].Width - space;
+                    int nowHeight = textures[i][j].Height;
+                    
+                    widths[i][j] += nowWidth;
+                    heights[i][j] += nowHeight;
+                    width[i] += nowWidth;
+                    height[i] = nowHeight > height[i] ? nowHeight : height[i];
                 }
                 max_width = width[i] > max_width ? width[i] : max_width;
                 max_height += height[i];
@@ -501,6 +511,7 @@ namespace TJAPlayer3
                     //canvas.Clear(Color.Transparent);
                     canvas.Clear();
 
+                    /*
                     int x = 0;
                     int y = 0;
                     for (int i = 0; i < textures.Count; i++)
@@ -514,6 +525,19 @@ namespace TJAPlayer3
 
                             // disabled ruby width adjustment by コミ's request, original code below
                             // textures[i][j].Width - (10 * TJAPlayer3.Skin.Game_Lyric_FontSize / TJAPlayer3.Skin.Font_Edge_Ratio * 4) + 2 - j - rubywidthoffset[i][j];
+                        }
+                        y += height[i] - rubyheightoffset[i];
+                    }
+                    */
+                    
+                    for (int i = 0; i < textures.Count; i++)
+                    {
+                        int x = 0;
+                        int y = 0;
+                        for (int j = 0; j < textures[i].Count; j++)
+                        {
+                            canvas.DrawBitmap(textures[i][j], x, y + ((height[i] - textures[i][j].Height) / 2) + (rubyheightoffset[i] / 2));
+                            x += widths[i][j];
                         }
                         y += height[i] - rubyheightoffset[i];
                     }
