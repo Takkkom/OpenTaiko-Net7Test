@@ -483,13 +483,13 @@ namespace TJAPlayer3
             int max_width = 0;
             int max_height = 0;
 
+            int space = 50;
             for (int i = 0; i < textures.Count; i++)
             {
                 widths[i] = new int[textures[i].Count];
                 heights[i] = new int[textures[i].Count];
                 for (int j = 0; j < textures[i].Count; j++)
                 {
-                    int space = 50;
                     int nowWidth = textures[i][j].Width - space;
                     int nowHeight = textures[i][j].Height;
                     
@@ -498,7 +498,8 @@ namespace TJAPlayer3
                     width[i] += nowWidth;
                     height[i] = nowHeight > height[i] ? nowHeight : height[i];
                 }
-                max_width = width[i] > max_width ? width[i] : max_width;
+                width[i] += space;
+                max_width = (width[i] > max_width ? width[i] : max_width);
                 max_height += height[i];
             }
 
