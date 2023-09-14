@@ -2098,9 +2098,11 @@ namespace TJAPlayer3
             #endregion
 
             #region [ Window関連 ]
+            sw.WriteLine("; これは実験的な機能です");
             sw.WriteLine("; 使用する描画API(0=OpenGL, 1=Vulkan, 2=DirectX11, 3=DirectX12)");
             sw.WriteLine("; OpenGLは遅いが互換性が高く安定する、VulkanはLinuxで最速");
             sw.WriteLine("; DirectX11はWindows限定だが安定していて早い、DirectX12はWindows限定な上GPUが良くないと動かないが爆速");
+            sw.WriteLine("; もう一回言いますこれは実験的な機能です");
 			sw.WriteLine( "GraphicsDeviceType={0}", (int) this.nGraphicsDeviceType );
 			sw.WriteLine();
             sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
