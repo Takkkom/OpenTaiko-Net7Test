@@ -57,6 +57,15 @@ namespace FDK
             {
                 slant = SKFontStyleSlant.Italic;
             }
+            if (style.HasFlag(CFontRenderer.FontStyle.Strikeout))
+            {
+                paint.Style = SKPaintStyle.Stroke;
+            }
+            if (style.HasFlag(CFontRenderer.FontStyle.Underline))
+            {
+                //????
+                //paint.FontMetrics.UnderlinePosition;
+            }
 
             if (SKFontManager.Default.FontFamilies.Contains(fontpath))
                 paint.Typeface = SKTypeface.FromFamilyName(fontpath, weight, width, slant);

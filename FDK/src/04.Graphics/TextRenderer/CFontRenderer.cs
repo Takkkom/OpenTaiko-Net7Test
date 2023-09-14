@@ -61,7 +61,9 @@ namespace FDK
 		{
 			Regular = 0,
 			Bold,
-			Italic
+			Italic,
+			Underline,
+			Strikeout
 		}
 
 		public static string DefaultFontName

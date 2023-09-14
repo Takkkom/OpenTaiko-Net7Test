@@ -236,7 +236,6 @@ namespace TJAPlayer3
                                         lyricData.Add(data);
                                         data.Text = String.Empty;
                                         data.Style &= ~CCachedFontRenderer.FontStyle.Italic; }
-                                        /*
                                     else if (tagdata == "u") { 
                                         lyricData.Add(data);
                                         data.Text = String.Empty;
@@ -245,7 +244,6 @@ namespace TJAPlayer3
                                         lyricData.Add(data);
                                         data.Text = String.Empty;
                                         data.Style &= ~CCachedFontRenderer.FontStyle.Strikeout; }
-                                        */
                                 }
                                 else if (parseMode.HasFlag(ParseMode.Tag))
                                 {
@@ -341,7 +339,6 @@ namespace TJAPlayer3
                                         lyricData.Add(data);
                                         data.Text = String.Empty;
                                         data.Style |= CCachedFontRenderer.FontStyle.Italic; }
-                                        /*
                                     else if (tagdata == "u") { 
                                         lyricData.Add(data);
                                         data.Text = String.Empty;
@@ -350,7 +347,6 @@ namespace TJAPlayer3
                                         lyricData.Add(data);
                                         data.Text = String.Empty;
                                         data.Style |= CCachedFontRenderer.FontStyle.Strikeout; }
-                                        */
                                 }
                                 else { goto default; }
                                 parseMode &= ~ParseMode.Tag & ~ParseMode.TagEnd;
@@ -367,8 +363,29 @@ namespace TJAPlayer3
                                 break;
                         }
                     }
-                    data.Text = WebUtility.HtmlDecode(data.Text);
-                    data.RubyText = WebUtility.HtmlDecode(data.RubyText);
+                    string betterDecode(string sourceText)
+                    {
+                        if (sourceText == null) return "";
+                        string decodeResult = "";
+                        for(int i = 0; i < sourceText.Length; i++)
+                        {
+                            switch(sourceText[i])
+                            {
+                                case '<':
+                                case '>':
+                                case '&':
+                                case ';':
+                                decodeResult += sourceText[i];
+                                break;
+                                default:
+                                decodeResult += WebUtility.HtmlDecode(sourceText[i].ToString());
+                                break;
+                            }
+                        }
+                        return decodeResult;
+                    }
+                    data.Text = betterDecode(data.Text);
+                    data.RubyText = betterDecode(data.RubyText);
 
                     lyricData.Add(data);
 
