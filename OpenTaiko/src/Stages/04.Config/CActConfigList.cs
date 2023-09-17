@@ -1617,7 +1617,7 @@ namespace TJAPlayer3
             //CDTXMania.ConfigIni.eDark = (Eダークモード) this.iCommonDark.n現在選択されている項目番号;
 			TJAPlayer3.ConfigIni.n演奏速度 = this.iCommonPlaySpeed.n現在の値;
 
-			TJAPlayer3.ConfigIni.nGraphicsDeviceType = this.iSystemGraphicsType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
+			//TJAPlayer3.ConfigIni.nGraphicsDeviceType = this.iSystemGraphicsType.n現在選択されている項目番号;
 			TJAPlayer3.ConfigIni.b全画面モード = this.iSystemFullscreen.bON;
 			// TJAPlayer3.ConfigIni.bSTAGEFAILED有効 = this.iSystemStageFailed.bON;
 			TJAPlayer3.ConfigIni.bランダムセレクトで子BOXを検索対象とする = this.iSystemRandomFromSubBox.bON;
